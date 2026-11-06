@@ -123,6 +123,7 @@ Aqui "Notas" são as do boletim (média, pesos, itens), **não** as Anotações.
 | D56 | Versões fixadas: TypeScript **6.0.3** (7.x fora: typescript-eslint exige <6.1), Vite 8.3, React 19.3, vite-plugin-pwa **2.0** (plano dizia 1.3+; aceita Vite 8), Vitest 5.1, ESLint 10. Tiptap 3.33 e ts-fsrs 6.0 existem, ainda não instalados (D06, D07, D11, D12, D43 confirmadas) | Compatibilidade verificada no npm | Decidida |
 | D57 | Prefixo único **`ohara2-`** (banco, localStorage, cache do SW `ohara2`) e base `/ohara/`. O legado já usa `ohara-` e `ohara.` no localStorage | Evita colisão no domínio compartilhado (D02) | Decidida |
 | D58 | Hooks do Claude Code em `.claude/settings.json`: `PostToolUse` (Prettier) e `Stop` (roda `check`; falha devolve exit 2; evita laço por `stop_hook_active`). Fecha D54 | Formato confirmado | Decidida |
+| D60 | Ícone do app: morcego **A · Refinado** (`Ohara – morcego tela cheia, refinado.html`), em SVG e PNG 192/512, com versão maskable de margem segura. Ícone final, não provisório | Escolha do usuário em 2026-11-05 | Decidida |
 | D59 | Regras de camada com `no-restricted-imports` do ESLint (sem plugin extra) | Menos dependências | Decidida |
 
 ---
