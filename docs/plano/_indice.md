@@ -51,7 +51,6 @@ Ver `backlog.md`: Sala de Foco, integração com Anki, gerador de revisões (1, 
 | `teclado.md` e D20 | Etapa 2 | Etapa 0 |
 | `telas.md` e diretrizes visuais | Etapa 3 | Antes da Etapa 3 |
 | D13 (Paleta) | Etapa 3 | Etapa 3 |
-| Conceito de **Livro** (B08) | Etapas 8 e 10 | Antes da Etapa 8 |
 | `regras.md` | Etapa 9 | Em paralelo à Fase A |
 | D33, D37, D44, D54 | Ver `decisoes.md` | Nas etapas indicadas lá |
 
