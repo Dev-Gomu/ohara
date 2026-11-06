@@ -41,6 +41,9 @@ export default defineConfig({
       workbox: {
         cacheId: 'ohara2',
         navigateFallback: `${BASE}index.html`,
+        // O protótipo de teclado (Etapa 0) é outra página: nem cache nem fallback do app
+        navigateFallbackDenylist: [/\/prototipo-teclado\//],
+        globIgnores: ['prototipo-teclado/**'],
         cleanupOutdatedCaches: true,
       },
     }),

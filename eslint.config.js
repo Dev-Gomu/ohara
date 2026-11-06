@@ -11,7 +11,7 @@ const toData = {
 const toUi = { group: ['**/ui', '**/ui/**'], message: 'Camada inferior não importa ui (D45).' };
 
 export default tseslint.config(
-  { ignores: ['dist', 'dev-dist', 'node_modules'] },
+  { ignores: ['dist', 'dev-dist', 'node_modules', 'public/prototipo-teclado'] },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {

@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#3f4290" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" href="../icon.svg" type="image/svg+xml" />
+    <title>Ohara · teste de teclado</title>
+    <link rel="stylesheet" href="estilo.css" />
+  </head>
+  <body>
+    <header class="topo">
+      <nav class="telas" id="screens" aria-label="Telas"></nav>
+      <div class="aula"><span class="sigla">IMU</span><b>Imunidade inata</b></div>
+      <nav class="alternar" id="toggles" aria-label="Blocos"></nav>
+      <nav class="modos" aria-label="Modo do teste">
+        <button data-mode="mesa">Mesa</button>
+        <button data-mode="verificar">Verificar</button>
+        <button data-mode="relatorio">Relatório</button>
+      </nav>
+    </header>
+
+    <main id="mesa" class="mesa">
+      <section class="bloco" data-block="S" aria-label="Slides">
+        <h2>Slides</h2>
+        <div class="campo slide" id="slide" tabindex="-1"></div>
+      </section>
+      <section class="bloco" data-block="A" aria-label="Anotações">
+        <h2>Anotações</h2>
+        <div class="campo folha" contenteditable="true" spellcheck="false">
+          Imunidade inata: primeira linha de defesa. Escreva aqui para testar.
+        </div>
+      </section>
+      <section class="bloco" data-block="C" aria-label="Cartões">
+        <h2>Cartões</h2>
+        <textarea class="campo folha" spellcheck="false">@ O que as células NK reconhecem?</textarea>
+      </section>
+    </main>
+
+    <section id="verificar" class="painel" hidden>
+      <p class="progresso" id="vProgress"></p>
+      <p class="pedido" id="vPrompt"></p>
+      <p class="retorno" id="vFeedback" role="status"></p>
+      <textarea id="vField" class="campo-teste" hidden aria-label="Campo de teste"></textarea>
+      <div class="acoes">
+        <button id="vMissing">Não aconteceu nada</button>
+        <button id="vSkip">Pular</button>
+        <button id="vBack">Voltar uma</button>
+        <button id="vPass"></button>
+      </div>
+    </section>
+
+    <section id="relatorio" class="painel" hidden>
+      <p class="retorno" id="rSummary"></p>
+      <div class="acoes">
+        <button id="rCopy">Copiar relatório</button>
+        <button id="rSave">Baixar .txt</button>
+        <button id="rReset">Apagar e recomeçar</button>
+      </div>
+      <textarea id="rText" class="relatorio" readonly aria-label="Relatório"></textarea>
+    </section>
+
+    <footer class="rodape">
+      <span id="level"></span>
+      <span id="toast" role="status"></span>
+      <code id="lastKey"></code>
+    </footer>
+
+    <div id="overlay" class="janela" hidden role="dialog" aria-modal="true"></div>
+
+    <script type="module" src="app.js"></script>
+  </body>
+</html>
