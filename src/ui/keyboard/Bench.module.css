@@ -1,0 +1,92 @@
+.bancada {
+  width: min(760px, 100vw - 2 * var(--e4));
+  display: grid;
+  gap: var(--e3);
+  text-align: left;
+}
+
+.menu {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e2);
+}
+
+.item {
+  min-height: var(--alvo);
+  padding: 0 var(--e4);
+  border: 0;
+  border-radius: var(--rp);
+  background: var(--cx);
+  color: var(--tx);
+  font: inherit;
+  cursor: pointer;
+}
+
+.item[data-alvo='true'] {
+  background: var(--pr);
+  color: var(--prt);
+}
+
+/* Blocos mais largos que altos: é o caso em que o vizinho por centros acerta. */
+.mesa {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: var(--e3);
+}
+
+.bloco {
+  display: grid;
+  gap: var(--e2);
+  padding: var(--e3);
+  background: var(--cx);
+  border-radius: var(--r2);
+  outline: 2px solid transparent;
+}
+
+.bloco:first-child {
+  grid-row: span 2;
+  grid-template-rows: auto 1fr;
+}
+
+.bloco[data-foco='true'] {
+  outline-color: var(--pr);
+}
+
+.nome {
+  margin: 0;
+  font-size: var(--f2);
+  font-weight: 600;
+}
+
+.campo {
+  width: 100%;
+  min-height: var(--alvo);
+  padding: var(--e2);
+  border: 0;
+  border-radius: var(--r1);
+  background: var(--bg);
+  color: var(--tx);
+  font: inherit;
+  resize: none;
+}
+
+.estado {
+  margin: 0;
+  color: var(--tx2);
+  font-size: var(--f2);
+}
+
+.estado b {
+  color: var(--tx);
+}
+
+.opcoes {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--e3);
+  padding: var(--e2) var(--e4);
+  background: var(--cx);
+  border-radius: var(--r2);
+}

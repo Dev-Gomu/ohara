@@ -81,5 +81,5 @@ Esta é a tabela de atalhos que a Etapa 2 implementa. Cada linha vira um teste (
 ## Pendências
 
 - **Tablet (Galaxy Tab S7 FE, teclado ABNT2 bluetooth):** não testado. É o aparelho principal. Antes de congelar a tabela (Etapa 6), rodar o verificador e conferir o relatório.
-- **Teclas do navegador:** o teste confirma que a página recebeu a tecla, não que o navegador não agiu também. Para `Ctrl K`, `Ctrl E` e `Ctrl M`, conferir na tela se o navegador não abriu nada.
+- **Teclas do navegador:** o teste confirma que a página recebeu a tecla, não que o navegador não agiu também. Para `Ctrl K`, `Ctrl E` e `Ctrl M`, conferir na tela se o navegador não abriu nada. Confere-se no passo 6 do roteiro da Etapa 2, na versão publicada.
 - **Ctrl Alt 4 a 9 e Ctrl Shift 4 a 6:** fora da tabela, sem uso previsto.

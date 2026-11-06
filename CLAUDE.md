@@ -4,7 +4,7 @@ App pessoal de estudo de medicina (PWA). **Projeto novo, reescrito do zero.** A 
 
 ## Leia antes de agir
 - `docs/visao.md`: para quem é, critérios, o que NÃO faremos, glossário.
-- `docs/decisoes.md`: decisões técnicas (IDs D01 a D55). Não contrarie uma `Decidida` sem avisar.
+- `docs/decisoes.md`: decisões técnicas (IDs D01 a D66). Não contrarie uma `Decidida` sem avisar.
 - `docs/plano/_indice.md` e o arquivo da etapa atual: o que fazer agora.
 - `docs/backlog.md`: onde vão as ideias novas.
 - `docs/teclado.md`, `docs/telas.md`, `docs/regras.md`: só se existirem e só quando a etapa os citar.
@@ -15,6 +15,7 @@ Estudante de medicina, **não programa**, é o Product Owner. Responda em **port
 ## Comandos
 (criados na Etapa 1; ajuste esta seção se mudarem)
 - `npm run check`: tipos (`tsc --noEmit`), lint e testes. **Portão único**, igual no CI e no hook.
+- `npm run e2e`: build e roteiros do Playwright. Fora do `check`, roda no CI antes do deploy (D66).
 - `npm run dev`: servidor local (http://localhost:5173/ohara/). `npm run build`: build de produção.
 - Prefixo de tudo que fica no navegador: **`ohara2-`** (`src/core/appInfo.ts`). Base do site: `/ohara/`. Node: `.nvmrc`.
 - Rode `npm run check` antes de declarar qualquer etapa pronta. Saída curta: não cole logs longos.
@@ -77,7 +78,7 @@ O mesmo domínio do GitHub Pages já hospeda o app antigo. Use **nomes de banco 
 - Não publique nem faça `git push --force` sem pedido do usuário.
 
 ## Pendências abertas (ver `decisoes.md`)
-Paleta (React Aria ou cmdk, Etapa 3), tabela final de atalhos, Argon2 ou PBKDF2, conta Dropbox, formato do hook de parada (confirmar na Etapa 1).
+Paleta (React Aria ou cmdk, Etapa 3), Argon2 ou PBKDF2, conta Dropbox, formato do hook de parada (confirmar na Etapa 1).
 
 ## Referência rápida do legado (acréscimo de 05/11/2026)
 Há um kit de consulta barato em `referencia-legado/` (fora deste repositório, em `../Dev_Ohara/referencia-legado/`). Comece por `referencia-legado/LEIA-ME.md`: ele diz o que abrir. Contém resumo dos gostos do usuário, capturas de cada tela (tablet e PC, claro e escuro), cores e medidas (`tokens-legado.css`), atalhos (`teclado-legado.js`) e o histórico de decisões antigo (só com `grep`). É **só referência de comportamento e visual**: não copie código nem dados. Projeto antigo completo: `../PROJETO ESTUDO` (tag `legado-2026-11-05`), somente leitura. Proibido no visual, herdado do legado: tarja/faixa colada na lateral ou no topo e "lua minguante" em blocos; cartões de uma peça, cantos bem arredondados; sem divisórias, sem gradiente.

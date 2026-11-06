@@ -126,6 +126,11 @@ Aqui "Notas" são as do boletim (média, pesos, itens), **não** as Anotações.
 | D60 | Ícone do app: morcego **A · Refinado** (`Ohara – morcego tela cheia, refinado.html`), em SVG e PNG 192/512, com versão maskable de margem segura. Ícone final, não provisório | Escolha do usuário em 2026-11-05 | Decidida |
 | D61 | Tecla de ajuda: **Alt /** (IntlRo, o `/` do ABNT2); **F1** como alternativa; **Alt ;** removida (duplicata) | Teste no PC confirmou as duas; uma só basta | Decidida |
 | D59 | Regras de camada com `no-restricted-imports` do ESLint (sem plugin extra) | Menos dependências | Decidida |
+| D62 | **AltGr nunca é atalho:** com `getModifierState('AltGraph')` verdadeiro, o resolvedor devolve nulo | No ABNT2, AltGr digita ¹ ² ³ e `/`, e pode chegar como Ctrl+Alt, o que dispararia Título 1 no meio do texto | Decidida |
+| D63 | **Composição e teclas sem código devolvem nulo:** `isComposing`, `key === 'Dead'` ou `code` vazio | Acentos do ABNT2 e o teclado virtual do Android não podem disparar nada | Decidida |
+| D64 | **Repetição por linha:** só movimento, troca de página e troca de controle repetem. Nas outras, a repetição é **engolida** (`swallow`), não nula | Segurar Alt S abriria e fecharia o bloco sem parar. Com nulo, segurar Alt F ou Ctrl P entregaria a repetição ao navegador | Decidida |
+| D65 | **Com janela ou menu ⋮ aberto,** só Esc age. Teclas soltas seguem para a janela; as com Alt ou Ctrl da tabela e o F1 são engolidos, inclusive Alt 1 a 6 | Evita Alt ← voltar a página e F1 abrir a ajuda do navegador. Decisão do usuário: primeiro Esc, depois a tecla | Decidida |
+| D66 | **Playwright fora do `check`, dentro do CI:** `npm run e2e` gera o build e roda antes do deploy | Mantém o portão rápido (D48) sem abrir mão do roteiro (D50) | Decidida |
 
 ---
 
@@ -134,11 +139,9 @@ Aqui "Notas" são as do boletim (média, pesos, itens), **não** as Anotações.
 | Item | Quando |
 |---|---|
 | D13: React Aria ou cmdk para a Paleta | Etapa 3 |
-| D20: tabela final de atalhos | Etapa 0, após o protótipo |
 | D33: conta Dropbox | Etapa 12, se o teste favorecer |
 | D37: Argon2 ou PBKDF2 | Etapa 13 |
 | D44: otimizador do FSRS no navegador | Etapa 11 |
-| D54: formato do hook de parada | Etapa 1 |
 
 ## Itens a verificar na Etapa 1
 

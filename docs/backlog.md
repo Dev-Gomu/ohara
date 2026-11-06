@@ -44,3 +44,4 @@ Lista curta do que foi **adiado ou ainda não decidido**. O que está no plano d
 - 2026-11-05: **B09 Importar o backup .zip do app antigo** (matérias, aulas, anotações, cartões, provas) para o app novo, sem migrar código. Só depois da Fase B.
 - 2026-11-05: Ideias que sobraram do legado, sem decisão: cloze nos cartões, suspender cartão, estudar só uma prova, limite de novos por dia, pomodoro, paleta de comandos no gerenciador de cartões, escolha do ícone de atalhos (o "?" do legado não agradou).
 - 2026-11-05: Manter o app antigo no ar até o novo ter tudo o que o usuário usa.
+- 2026-11-06: **Antes da Etapa 4:** rever `neighbor`. Ele compara só os centros, então com blocos mais altos que largos (tablet em pé) o bloco alto ao lado pode ganhar do bloco de baixo. Há um teste que documenta o caso.

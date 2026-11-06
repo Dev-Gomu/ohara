@@ -1,5 +1,6 @@
 import { useRegisterSW } from 'virtual:pwa-register/react';
 import styles from './App.module.css';
+import { Bench } from './keyboard/Bench';
 
 export function App() {
   const {
@@ -11,6 +12,7 @@ export function App() {
     <main className={styles.tela}>
       <h1 className={styles.nome}>Ohara</h1>
       <p className={styles.versao}>versão {__APP_VERSION__}</p>
+      <Bench />
       {needRefresh && (
         <div className={styles.aviso} role="status">
           <span>Há uma versão nova.</span>

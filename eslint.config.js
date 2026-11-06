@@ -10,8 +10,39 @@ const toData = {
 };
 const toUi = { group: ['**/ui', '**/ui/**'], message: 'Camada inferior não importa ui (D45).' };
 
+const keyEvent = '/^key(down|up|press)$/';
+const keyMessage =
+  'Tecla nova entra na tabela de teclas: só o listener único escuta teclado (D15).';
+const noLooseKeys = [
+  {
+    selector: 'JSXAttribute[name.name=/^onKey(Down|Up|Press)(Capture)?$/]',
+    message: keyMessage,
+  },
+  {
+    selector: `CallExpression[callee.name='addEventListener'][arguments.0.value=${keyEvent}]`,
+    message: keyMessage,
+  },
+  {
+    selector: `CallExpression[callee.property.name='addEventListener'][arguments.0.value=${keyEvent}]`,
+    message: keyMessage,
+  },
+  {
+    selector: 'AssignmentExpression[left.property.name=/^onkey(down|up|press)$/]',
+    message: keyMessage,
+  },
+];
+
 export default tseslint.config(
-  { ignores: ['dist', 'dev-dist', 'node_modules', 'public/prototipo-teclado'] },
+  {
+    ignores: [
+      'dist',
+      'dev-dist',
+      'node_modules',
+      'public/prototipo-teclado',
+      'playwright-report',
+      'test-results',
+    ],
+  },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {
@@ -20,6 +51,11 @@ export default tseslint.config(
   {
     files: ['src/ui/**/*.{ts,tsx}'],
     ...reactHooks.configs.flat.recommended,
+  },
+  {
+    files: ['src/**/*.{ts,tsx}'],
+    ignores: ['src/ui/keyboard/listener.ts'],
+    rules: { 'no-restricted-syntax': ['error', ...noLooseKeys] },
   },
   {
     // core: TypeScript puro, sem imports externos nem de outras camadas

@@ -22,7 +22,7 @@ Em paralelo, a qualquer momento antes da Etapa 8: sessão separada extrai `regra
 | Etapa | O que | Obs. |
 |---|---|---|
 | **1** | **Fundação:** repositório, Vite, TypeScript, lint, `npm run check`, CI, deploy no GitHub Pages, PWA mínima com aviso de versão, camadas e isolamento do app antigo | **Detalhada em `etapa-01.md`** |
-| 2 | **Teclado:** resolvedor puro, tabela de teclas como dado, listener único, níveis de foco, ajuda gerada | Modo de plano. Precisa de `teclado.md` |
+| 2 | **Teclado:** resolvedor puro, tabela de teclas como dado, listener único, níveis de foco, ajuda gerada | Modo de plano. **Detalhada em `etapa-02.md`** |
 | 3 | **Casca de navegação:** seis telas vazias, Alt+1 a 6, Paleta (decide D13), tema claro/escuro, diretrizes visuais | Precisa de `telas.md` e diretrizes visuais |
 | 4 | **Mosaico e Mesa:** motor dwindle genérico e a Mesa com blocos de mentira, arranjo por aula | Toque e teclado |
 | 5 | **Fixtures e telas de leitura:** dados fictícios (inclui casos extremos) alimentando Acervo e Hub | Define o conjunto de fixtures com o usuário |

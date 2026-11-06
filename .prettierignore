@@ -5,3 +5,5 @@ package-lock.json
 docs
 CLAUDE.md
 public/prototipo-teclado
+playwright-report
+test-results

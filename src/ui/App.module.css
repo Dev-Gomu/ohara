@@ -2,6 +2,7 @@
   min-height: 100dvh;
   display: grid;
   place-content: center;
+  justify-items: center;
   gap: var(--e2);
   text-align: center;
 }
