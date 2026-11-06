@@ -1,6 +1,6 @@
 # Ohara: teclado
 
-**Status:** versão 1, Etapa 0 concluída com o PC. O tablet ficou pendente (ver "Pendências"). Data: 06/11/2026.
+**Status:** versão 1, Etapa 0 concluída com o PC. Roteiro da Etapa 2 passou no tablet (ver "Testado"). Falta o verificador completo no tablet (ver "Pendências"). Data: 06/11/2026.
 **Fonte:** protótipo em `public/prototipo-teclado/` (`teclas.js` é a tabela candidata) e o relatório do PC (Linux, Chrome instalado como app, teclado ABNT2).
 
 Esta é a tabela de atalhos que a Etapa 2 implementa. Cada linha vira um teste (D16).
@@ -78,8 +78,14 @@ Esta é a tabela de atalhos que a Etapa 2 implementa. Cada linha vira um teste (
 - 60 de 60 teclas com cursor em campo.
 - Nenhum conflito entre teclas no mesmo nível (checado por `teclas.js`).
 
+## Testado no tablet (Galaxy Tab S7 FE, na horizontal)
+
+- **Teclado:** Pebble Keys 2 380s, bluetooth, ABNT2.
+- **Roteiro de 5 minutos da Etapa 2 (0.2.0):** 7 de 7 passos.
+- Enter, Esc, H J K L, setas, digitação no campo, AltGr, Alt /, F1, toque no campo.
+
 ## Pendências
 
-- **Tablet (Galaxy Tab S7 FE, teclado ABNT2 bluetooth):** não testado. É o aparelho principal. Antes de congelar a tabela (Etapa 6), rodar o verificador e conferir o relatório.
-- **Teclas do navegador:** o teste confirma que a página recebeu a tecla, não que o navegador não agiu também. Para `Ctrl K`, `Ctrl E` e `Ctrl M`, conferir na tela se o navegador não abriu nada. Confere-se no passo 6 do roteiro da Etapa 2, na versão publicada.
+- **Tablet, verificador completo:** o roteiro passou, mas a lista de 70 teclas ainda não foi rodada no tablet. Antes de congelar a tabela (Etapa 6), rodar o verificador do protótipo no tablet e conferir o relatório.
+- **Teclas do navegador:** o passo 6 do roteiro passou no tablet. Ainda não foi testado no PC, na versão 0.2.0.
 - **Ctrl Alt 4 a 9 e Ctrl Shift 4 a 6:** fora da tabela, sem uso previsto.
