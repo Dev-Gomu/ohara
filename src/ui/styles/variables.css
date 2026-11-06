@@ -1,0 +1,46 @@
+/* Variáveis básicas. Identidade provisória a partir dos tokens do legado ("Névoa enxuta"). */
+:root {
+  --bg: #eeeffc;
+  --cx: #ffffff;
+  --tx: #23254a;
+  --tx2: #54577a;
+  --pr: #3f4290;
+  --prt: #ffffff;
+  --fonte: system-ui, sans-serif;
+  --f2: 13.5px;
+  --f3: 15.5px;
+  --f5: 28px;
+  --e2: 8px;
+  --e3: 12px;
+  --e4: 16px;
+  --e5: 24px;
+  --r1: 12px;
+  --r2: 24px;
+  --rp: 999px;
+  --alvo: 44px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14152b;
+    --cx: #1f2140;
+    --tx: #e6e7fa;
+    --tx2: #a9acd2;
+    --pr: #9ea1f0;
+    --prt: #14152b;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background: var(--bg);
+  color: var(--tx);
+  font-family: var(--fonte);
+  font-size: var(--f3);
+}
