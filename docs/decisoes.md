@@ -42,7 +42,7 @@
 | D17 | **Três níveis de foco**: menu, bloco, campo. Enter desce, Esc sobe. Esc no menu não faz nada | Modelo previsível | Decidida |
 | D18 | Prioridade do Esc: janelas (ajuda, Paleta, consulta) → menu ⋮ → sobe um nível | Esc sempre faz o que o contexto promete | Decidida |
 | D19 | No campo, teclas soltas e setas são do texto. No nível bloco, h j k l e setas movem o foco | Digitar nunca dispara atalho | Decidida |
-| D20 | Risco: Alt+1 a 9 troca de aba no Firefox/Linux e pode ser capturado por outros sistemas. A **tabela final** sai do log de teclas do protótipo da Mesa | Teste em aparelho real antes de congelar | **PENDENTE** |
+| D20 | Risco: Alt+1 a 9 troca de aba no Firefox/Linux e pode ser capturado por outros sistemas. A **tabela final** sai do log de teclas do protótipo da Mesa | Teste em aparelho real antes de congelar | Decidida (PC). Tablet pendente, ver `teclado.md` |
 
 ## 4. Dados e armazenamento
 
@@ -124,6 +124,7 @@ Aqui "Notas" são as do boletim (média, pesos, itens), **não** as Anotações.
 | D57 | Prefixo único **`ohara2-`** (banco, localStorage, cache do SW `ohara2`) e base `/ohara/`. O legado já usa `ohara-` e `ohara.` no localStorage | Evita colisão no domínio compartilhado (D02) | Decidida |
 | D58 | Hooks do Claude Code em `.claude/settings.json`: `PostToolUse` (Prettier) e `Stop` (roda `check`; falha devolve exit 2; evita laço por `stop_hook_active`). Fecha D54 | Formato confirmado | Decidida |
 | D60 | Ícone do app: morcego **A · Refinado** (`Ohara – morcego tela cheia, refinado.html`), em SVG e PNG 192/512, com versão maskable de margem segura. Ícone final, não provisório | Escolha do usuário em 2026-11-05 | Decidida |
+| D61 | Tecla de ajuda: **Alt /** (IntlRo, o `/` do ABNT2); **F1** como alternativa; **Alt ;** removida (duplicata) | Teste no PC confirmou as duas; uma só basta | Decidida |
 | D59 | Regras de camada com `no-restricted-imports` do ESLint (sem plugin extra) | Menos dependências | Decidida |
 
 ---
