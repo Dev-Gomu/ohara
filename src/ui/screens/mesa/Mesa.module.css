@@ -113,3 +113,18 @@
   color: var(--cor-tinta);
   font: var(--ui-botao);
 }
+
+.sigla {
+  padding: 4px 11px;
+  border-radius: var(--raio-pilula);
+  background: var(--cor-materia);
+  color: var(--cor-tinta);
+  font: var(--ui-sigla);
+}
+
+.vazio {
+  grid-column: 1 / -1;
+  padding: var(--e3);
+  color: var(--cor-texto-2);
+  font: var(--leitura-texto);
+}

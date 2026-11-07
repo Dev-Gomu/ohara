@@ -1,0 +1,51 @@
+.regua {
+  display: flex;
+  align-items: center;
+  gap: var(--e2);
+  height: 100%;
+  padding: 8px 10px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.item {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 132px;
+  height: 56px;
+  padding: 0 var(--e4);
+  border-radius: var(--raio-item);
+  background: var(--cor-cartao-2);
+  text-align: left;
+}
+
+.item[data-sel='true'] {
+  background: var(--cor-destaque);
+  color: var(--cor-tinta);
+}
+
+.titulo {
+  font: var(--ui-item);
+}
+
+.detalhe {
+  color: var(--cor-texto-2);
+  font: var(--ui-sigla);
+  font-weight: 500;
+}
+
+.item[data-sel='true'] .detalhe {
+  color: var(--cor-tinta);
+}
+
+.criar {
+  flex: none;
+  height: 56px;
+  padding: 0 var(--e4);
+  border: 2px dashed var(--cor-texto-2);
+  border-radius: var(--raio-item);
+  color: var(--cor-texto-2);
+  font: var(--ui-item);
+}

@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { SCREENS } from '../../core/keyboard/actions';
 import { SCREEN_NAMES } from '../../core/keyboard/keys';
 import { dispatch, useKeyboardState } from '../keyboard/store';
+import { storage } from '../study/study';
 import styles from './ScreenFrame.module.css';
 
 interface ScreenFrameProps {
@@ -40,6 +41,7 @@ export function ScreenFrame({ title, caps = true, bar, end, children }: ScreenFr
         </h1>
         <div className={styles.fim}>
           {end}
+          {!storage.persistent && <span className={styles.aviso}>Dados de exemplo</span>}
           <button
             type="button"
             className={`${styles.numero} ${ringAt(SCREENS.length)}`}

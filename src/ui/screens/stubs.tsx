@@ -27,18 +27,6 @@ function Stub({ title, blocks }: { title: string; blocks: StubBlock[] }) {
   );
 }
 
-export const Hub = () => (
-  <Stub
-    title="Hub"
-    blocks={[
-      { id: 'hub.provas', title: 'Próximas provas' },
-      { id: 'hub.agenda', title: 'Agenda de hoje' },
-    ]}
-  />
-);
-export const Acervo = () => (
-  <Stub title="Acervo" blocks={[{ id: 'acervo.a', title: 'Matérias' }]} />
-);
 export const Treino = () => (
   <Stub title="Treino" blocks={[{ id: 'treino.a', title: 'Baralhos' }]} />
 );

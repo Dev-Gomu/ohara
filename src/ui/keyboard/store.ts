@@ -20,6 +20,7 @@ export interface UiBlock extends BlockSpec {
 export interface FocusPlace {
   block: string;
   level: Level;
+  items?: Readonly<Record<string, number>>;
 }
 
 export interface ScreenRegistration {

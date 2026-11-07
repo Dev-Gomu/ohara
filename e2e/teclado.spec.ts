@@ -18,7 +18,7 @@ async function pressAltSlash(page: Page) {
 
 test.beforeEach(async ({ page }) => {
   await page.goto('./');
-  await expect(bloco(page)).toHaveText('hub.provas');
+  await expect(bloco(page)).toHaveText('hub.agenda');
   await page.keyboard.press('Alt+Digit2');
   await expect(bloco(page)).toHaveText('mesa.notes');
 });
@@ -26,6 +26,7 @@ test.beforeEach(async ({ page }) => {
 test('Alt 2 chega com o cursor nas Anotações', async ({ page }) => {
   await expect(nivel(page)).toHaveText('campo');
   await expect(anotacoes(page)).toBeFocused();
+  await anotacoes(page).fill('');
   await page.keyboard.type('hjkl');
   await page.keyboard.press('ArrowLeft');
   await page.keyboard.type('x');
@@ -73,7 +74,7 @@ test('nos Cartões, setas andam na grade e saem pela borda', async ({ page }) =>
 });
 
 test('Alt S fecha e reabre o bloco, sem perder o texto', async ({ page }) => {
-  await page.keyboard.type('abc');
+  await anotacoes(page).fill('abc');
   const slides = page.locator('[data-block="mesa.slides"]');
   await page.keyboard.press('Alt+KeyS');
   await expect(slides).toHaveCount(0);
@@ -84,7 +85,7 @@ test('Alt S fecha e reabre o bloco, sem perder o texto', async ({ page }) => {
 });
 
 test('Alt M amplia e volta, e o texto continua', async ({ page }) => {
-  await page.keyboard.type('abc');
+  await anotacoes(page).fill('abc');
   await page.keyboard.press('Alt+KeyM');
   await expect(page.locator('[data-block="mesa.slides"]')).toBeHidden();
   await expect(anotacoes(page)).toBeFocused();
@@ -119,7 +120,7 @@ test('Alt R redimensiona com as setas até Esc', async ({ page }) => {
 
 test('Alt ] passa o slide sem tirar o cursor das Anotações', async ({ page }) => {
   await page.keyboard.press('Alt+Backslash');
-  await expect(page.getByText('Página 15')).toBeVisible();
+  await expect(page.getByText('Página 2')).toBeVisible();
   await expect(anotacoes(page)).toBeFocused();
 });
 

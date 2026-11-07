@@ -23,6 +23,7 @@
   /* Escala de texto: peso, tamanho/linha */
   --voz-numero: 800 66px/54px var(--fonte-voz);
   --voz-numero-mini: 800 48px/40px var(--fonte-voz);
+  --voz-pergunta: 800 32px/40px var(--fonte-voz);
   --voz-tela: 800 30px/32px var(--fonte-voz);
   --voz-titulo: 800 22px/24px var(--fonte-voz);
   --voz-item: 800 20px/22px var(--fonte-voz);
@@ -33,6 +34,7 @@
   --ui-rotulo: 700 13px/20px var(--fonte-interface); /* caixa-alta, espaçamento .06em */
   --ui-sigla: 700 12.5px/16px var(--fonte-interface);
   --ui-tecla: 600 12px/18px var(--fonte-interface);
+  --leitura-resposta: 400 22px/32px var(--fonte-leitura);
   --leitura-texto: 400 16.5px/25px var(--fonte-leitura);
   --leitura-compacta: 400 15.5px/23px var(--fonte-leitura);
   --leitura-campo: 400 16px/24px var(--fonte-leitura);

@@ -119,6 +119,8 @@ A biblioteca traz cinco. Os dois últimos abaixo faltavam, e o Selecionado é in
 | **Selecionado** | Filtro: fundo roxo com tinta. Item de lista: fundo de marca | **Sempre preenchimento, nunca borda.** Permanece quando o foco sai |
 | **Vazio ou criar** | Borda tracejada | É navegável e tem ação. O tracejado não significa mais "desabilitado" |
 
+**Seleção sem consequência não aparece fora de foco:** a lista de aulas mantém a seleção porque ela comanda a prévia. Já em lembretes e no calendário do Hub, a seleção só aparece com o bloco ativo.
+
 **Três sinais, três formas:** foco é anel, seleção é preenchimento e mouse é borda. Um item pode estar selecionado e em foco ao mesmo tempo, e os dois sinais se somam.
 
 Toda lista ou bloco também tem três situações de conteúdo:
@@ -228,7 +230,7 @@ A aula 3 do 2º bimestre custa 6 teclas, saindo de "Todas": → → Enter ↓ �
 | Leitura | Source Sans 3 400, 600, itálico | Texto corrido, respostas, lembretes, tudo que se digita |
 | Título de nota | Source Sans 3 600, 700 | Títulos 1, 2 e 3 dentro das Anotações |
 
-A escala tem 18 degraus fechados em `src/ui/styles/tokens.css`. Não use tamanho fora dela. Os HTML do ClaudeWeb somam mais de 30 combinações, com vizinhos como 15 e 15,5 px que não criam hierarquia.
+A escala tem 20 degraus fechados em `src/ui/styles/tokens.css`. Não use tamanho fora dela. Os HTML do ClaudeWeb somam mais de 30 combinações, com vizinhos como 15 e 15,5 px que não criam hierarquia.
 
 **Caixa-alta só em texto escrito pelo app e em nome de matéria.** Título de aula, pergunta de cartão e título de nota ficam exatamente como foram digitados. O motivo é funcional: em caixa-alta, `TNF-α` vira `TNF-Α`, `IL-1β` vira `IL-1Β`, `pH` vira `PH` e `mRNA` vira `MRNA`.
 

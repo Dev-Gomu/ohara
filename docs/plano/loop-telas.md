@@ -28,7 +28,7 @@ Sem a Etapa 7, as duas fazem **só a parte de tela**, com dados fictícios. Isso
 |---|---|---|---|
 | 1 | 3 Casca de navegação | Pronta | ver `git log` |
 | 2 | 4 Mosaico e Mesa | Pronta | ver `git log` |
-| 3 | 5 Fixtures e telas de leitura | A fazer | |
+| 3 | 5 Fixtures e telas de leitura | Pronta | ver `git log` |
 | 4 | 6 Treino, Agenda, Configs e janelas | A fazer | |
 | 5 | 8 Acervo e Anotações (telas) | A fazer | |
 | 6 | 9 Agenda, Grade e Lembretes (telas) | A fazer | |
@@ -41,4 +41,6 @@ Ele revisa esta lista no fim. Uma linha por escolha: etapa, o que foi escolhido,
 |---|---|---|
 | 3 | Fontes em 9 arquivos, 236 KB no total | Subconjunto com latim, grego, setas e símbolos |
 | 3 | Clicar no número da tela atual volta ao bloco | Evita ficar preso no nível menu com o dedo |
+| 5 | Hub e Acervo usam horário fixo 13:42 nos dados de exemplo | Sempre há uma aula de agora para ver |
+| 5 | Seleção some em blocos onde ela não comanda nada | Evita realce sem sentido, registrado na diretriz |
 | 3 | Tema: preferência do aparelho em `localStorage`, começa no tema do sistema | Não é dado do estudo |

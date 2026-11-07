@@ -87,3 +87,36 @@ p {
   clip-path: inset(50%);
   white-space: nowrap;
 }
+
+/* A cor da matéria é guardada como posição na paleta. */
+[data-materia='0'] {
+  --cor-materia: var(--cor-laranja);
+}
+
+[data-materia='1'] {
+  --cor-materia: var(--cor-destaque);
+}
+
+[data-materia='2'] {
+  --cor-materia: var(--cor-azul);
+}
+
+[data-materia='3'] {
+  --cor-materia: var(--cor-verde);
+}
+
+[data-materia='4'] {
+  --cor-materia: var(--cor-rosa);
+}
+
+[data-materia='5'] {
+  --cor-materia: var(--cor-amarelo);
+}
+
+[data-materia='6'] {
+  --cor-materia: var(--cor-ciano);
+}
+
+[data-materia='7'] {
+  --cor-materia: var(--cor-cinza-lavanda);
+}

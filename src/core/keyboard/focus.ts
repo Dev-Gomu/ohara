@@ -44,7 +44,7 @@ export type TouchTarget =
 export type FocusChange =
   | KeyAction
   | { type: 'touch'; target: TouchTarget }
-  | { type: 'jump'; block: string; level: Level };
+  | { type: 'jump'; block: string; level: Level; items?: Readonly<Record<string, number>> };
 
 export function overlayOf(state: FocusState): Overlay {
   if (state.window !== null) return 'window';
@@ -192,7 +192,12 @@ export function reduceFocus(
     case 'touch':
       return touch(state, change.target, layout);
     case 'jump':
-      return { ...state, block: change.block, level: change.level };
+      return {
+        ...state,
+        block: change.block,
+        level: change.level,
+        items: { ...state.items, ...change.items },
+      };
     default:
       return state;
   }

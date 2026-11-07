@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import { leaf, split } from '../../../core/mosaic/tree';
+import { leaf, leaves, split } from '../../../core/mosaic/tree';
+import { currentEventIndex, eventsOn, subjectOf } from '../../../core/study/queries';
+import type { StudyData } from '../../../core/study/types';
 import { Block } from '../../components/Block';
 import { NavItem } from '../../components/NavItem';
 import { dispatch } from '../../keyboard/store';
@@ -7,6 +8,9 @@ import { useBlocks } from '../../keyboard/useBlocks';
 import { Mosaic } from '../../mosaic/Mosaic';
 import { useMosaic } from '../../mosaic/useMosaic';
 import { ScreenFrame } from '../../shell/ScreenFrame';
+import { MESA_LESSON } from '../../study/navigation';
+import { useScreenMemory } from '../../study/screenMemory';
+import { nowTime, storage, today, useStudy } from '../../study/study';
 import styles from './Mesa.module.css';
 
 const SLIDES = 'mesa.slides';
@@ -21,33 +25,54 @@ const TOGGLES = [
   { id: CARDS, label: 'Cartões', keys: 'Alt C' },
 ];
 
-const PAGES = 38;
-const CARD_LIST = [
-  ['Qual receptor reconhece LPS?', 'TLR4'],
-  ['Citocina que induz PCR no fígado', 'IL-6'],
-  ['Quimiotático clássico de neutrófilos', 'IL-8 (CXCL8)'],
-  ['Molécula do rolamento', 'Selectinas'],
-] as const;
 const CARD_COLORS = ['roxo', 'rosa', 'azul', 'verde'];
 
+function defaultLesson(data: StudyData): string {
+  const events = eventsOn(data, today);
+  const event = events[currentEventIndex(events, nowTime)];
+  return event?.lessonId ?? data.lessons[0]?.id ?? '';
+}
+
 export function Mesa() {
-  const mosaic = useMosaic('aula-demo', INITIAL, ALL);
-  const [page, setPage] = useState(14);
-  const [notes, setNotes] = useState('');
+  const data = useStudy();
+  const [lessonId] = useScreenMemory(MESA_LESSON, defaultLesson(data));
+  return <LessonDesk key={lessonId} data={data} lessonId={lessonId} />;
+}
+
+function LessonDesk({ data, lessonId }: { data: StudyData; lessonId: string }) {
+  const lesson = data.lessons.find((item) => item.id === lessonId);
+  const subject = lesson && subjectOf(data, lesson.subjectId);
+  const cards = data.cards.filter((card) => card.lessonId === lessonId);
+  const pages = lesson?.slides ?? 1;
+  const mosaic = useMosaic(`aula-${lessonId}`, INITIAL, ALL);
+  const [page, setPage] = useScreenMemory(`mesa.pagina.${lessonId}`, 1);
+
+  function writeNotes(notes: string) {
+    storage.write((current) => ({
+      ...current,
+      lessons: current.lessons.map((item) => (item.id === lessonId ? { ...item, notes } : item)),
+    }));
+  }
 
   useBlocks({
     blocks: [
-      { id: SLIDES, kind: 'none' },
-      { id: NOTES, kind: 'text' },
-      { id: CARDS, kind: 'nav', nav: { axis: 'grid', count: CARD_LIST.length, columns: 2 } },
-    ],
-    arrival: { block: NOTES, level: 'field' },
+      { id: SLIDES, kind: 'none' as const },
+      { id: NOTES, kind: 'text' as const },
+      {
+        id: CARDS,
+        kind: 'nav' as const,
+        nav: { axis: 'grid' as const, count: cards.length, columns: 2 },
+      },
+    ].filter((block) => mosaic.isOpen(block.id)),
+    arrival: mosaic.isOpen(NOTES)
+      ? { block: NOTES, level: 'field' }
+      : { block: leaves(mosaic.tree)[0] ?? '', level: 'block' },
     options: mosaic.options,
     actions: {
       ...mosaic.actions,
       changePage: (change) => {
         if (change.type !== 'changePage') return false;
-        setPage((current) => Math.min(PAGES, Math.max(1, current + change.step)));
+        setPage(Math.min(pages, Math.max(1, page + change.step)));
       },
     },
   });
@@ -55,7 +80,7 @@ export function Mesa() {
   function render(id: string) {
     if (id === SLIDES) {
       return (
-        <Block id={id} title="Slides" count={`${page} de ${PAGES}`} shortcut="Alt S" menu>
+        <Block id={id} title="Slides" count={`${page} de ${pages}`} shortcut="Alt S" menu>
           <div className={styles.folha}>
             <p className={styles.slide}>Página {page}</p>
           </div>
@@ -69,22 +94,23 @@ export function Mesa() {
             className={styles.texto}
             data-field
             aria-label="Anotações"
-            value={notes}
-            onChange={(event) => setNotes(event.target.value)}
+            value={lesson?.notes ?? ''}
+            onChange={(event) => writeNotes(event.target.value)}
           />
         </Block>
       );
     }
     return (
-      <Block id={id} title="Cartões" count={`${CARD_LIST.length} nesta aula`} shortcut="Alt C" menu>
+      <Block id={id} title="Cartões" count={`${cards.length} nesta aula`} shortcut="Alt C" menu>
         <div className={styles.cartoes}>
-          {CARD_LIST.map(([question, answer], index) => (
+          {cards.length === 0 && <p className={styles.vazio}>Sem cartões nesta aula.</p>}
+          {cards.map(({ id: cardId, question, answer }, index) => (
             <NavItem
-              key={question}
+              key={cardId}
               block={id}
               index={index}
               className={styles.cartao}
-              color={CARD_COLORS[index]}
+              color={CARD_COLORS[index % CARD_COLORS.length]}
             >
               <span className={styles.pergunta}>{question}</span>
               <span className={styles.resposta}>{answer}</span>
@@ -97,24 +123,29 @@ export function Mesa() {
 
   return (
     <ScreenFrame
-      title="Resposta inflamatória aguda"
+      title={lesson?.title}
       caps={false}
       end={
-        <div className={styles.alternar} role="group" aria-label="Blocos">
-          {TOGGLES.map(({ id, label, keys }) => (
-            <button
-              key={id}
-              type="button"
-              className={styles.pilula}
-              data-sel={mosaic.isOpen(id)}
-              aria-pressed={mosaic.isOpen(id)}
-              title={keys}
-              onClick={() => mosaic.toggle(id)}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
+        <>
+          <span className={styles.sigla} data-materia={subject?.color}>
+            {subject?.code}
+          </span>
+          <div className={styles.alternar} role="group" aria-label="Blocos">
+            {TOGGLES.map(({ id, label, keys }) => (
+              <button
+                key={id}
+                type="button"
+                className={styles.pilula}
+                data-sel={mosaic.isOpen(id)}
+                aria-pressed={mosaic.isOpen(id)}
+                title={keys}
+                onClick={() => mosaic.toggle(id)}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        </>
       }
     >
       <Mosaic
