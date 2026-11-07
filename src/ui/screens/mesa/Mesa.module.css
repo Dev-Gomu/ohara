@@ -212,3 +212,20 @@
   background: var(--cor-marca);
   color: var(--cor-tinta);
 }
+
+@keyframes bolha-entra {
+  from {
+    opacity: 0;
+    margin-top: 4px;
+  }
+}
+
+.bolha {
+  animation: bolha-entra 120ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bolha {
+    animation: none;
+  }
+}

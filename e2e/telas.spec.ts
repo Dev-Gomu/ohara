@@ -186,6 +186,7 @@ const editor = (page: Page) => page.getByRole('textbox', { name: 'Anotações' }
 test('Anotações: teclas de formatação passam pela tabela', async ({ page }) => {
   await page.keyboard.press('Alt+Digit2');
   await expect(editor(page)).toBeFocused();
+  await expect(editor(page)).not.toHaveText('');
   await editor(page).fill('');
   await page.keyboard.press('Control+KeyB');
   await page.keyboard.type('forte');
@@ -194,7 +195,8 @@ test('Anotações: teclas de formatação passam pela tabela', async ({ page }) 
   await page.keyboard.press('Enter');
   await page.keyboard.press('Control+Alt+Digit1');
   await page.keyboard.type('Título');
-  await expect(editor(page).locator('h1')).toHaveText('Título');
+  // Limpar o texto pode deixar o título de abertura no primeiro bloco: o novo é o último.
+  await expect(editor(page).locator('h1').last()).toHaveText('Título');
 });
 
 test('Anotações: o texto sobrevive à troca de tela', async ({ page }) => {

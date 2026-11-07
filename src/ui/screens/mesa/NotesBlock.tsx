@@ -61,16 +61,31 @@ export function stepToolbar(step: -1 | 1): boolean {
 }
 
 interface Bubble {
-  top: number;
-  left: number;
+  // Centro da seleção e a borda onde a bolha encosta.
+  x: number;
+  y: number;
+  below: boolean;
 }
 
-// Posição da bolha: logo acima do começo da seleção, sem sair da janela.
+const SETTLE_MS = 200;
+const BUBBLE_HEIGHT = 52;
+
+// Ancorada na caixa inteira da seleção. Em cima por padrão; embaixo no toque (o menu do sistema
+// ocupa o alto) ou quando falta espaço.
 function bubbleAt(editor: Editor): Bubble | null {
-  const { from, empty } = editor.state.selection;
+  const { from, to, empty } = editor.state.selection;
   if (empty || !editor.isFocused) return null;
-  const point = editor.view.coordsAtPos(from);
-  return { top: Math.max(8, point.top - 52), left: Math.max(8, point.left) };
+  const start = editor.view.coordsAtPos(from);
+  const end = editor.view.coordsAtPos(to);
+  const top = Math.min(start.top, end.top);
+  const bottom = Math.max(start.bottom, end.bottom);
+  const touch = matchMedia('(pointer: coarse)').matches;
+  const below = touch || top - BUBBLE_HEIGHT < 8;
+  return {
+    x: (Math.min(start.left, end.left) + Math.max(start.right, end.right)) / 2,
+    y: below ? bottom + 8 : top - 8,
+    below,
+  };
 }
 
 function Tools({
@@ -111,23 +126,63 @@ function Tools({
   );
 }
 
-// Modo fantasma: sem barra, a bolha aparece sobre o trecho selecionado.
+// Modo fantasma: sem barra, a bolha aparece sobre o trecho selecionado, mas só depois que a
+// seleção assenta (sem arraste em curso), e some ao rolar ou ao limpar a seleção.
 function useBubble(editor: Editor | null, active: boolean): Bubble | null {
   const [bubble, setBubble] = useState<Bubble | null>(null);
   useEffect(() => {
     if (!editor || !active) return;
-    const update = () => setBubble(bubbleAt(editor));
-    editor.on('selectionUpdate', update);
-    editor.on('blur', update);
-    editor.on('focus', update);
-    return () => {
-      editor.off('selectionUpdate', update);
-      editor.off('blur', update);
-      editor.off('focus', update);
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    let pressed = false;
+    const hide = () => {
+      clearTimeout(timer);
       setBubble(null);
+    };
+    const settle = () => {
+      hide();
+      if (!pressed) timer = setTimeout(() => setBubble(bubbleAt(editor)), SETTLE_MS);
+    };
+    // Tocar na própria bolha não é arrastar a seleção: mexer nela cancelaria o clique.
+    const onBubble = (event: Event) =>
+      event.target instanceof Element && event.target.closest('[data-keep-field]') !== null;
+    const down = (event: Event) => {
+      if (!onBubble(event)) pressed = true;
+    };
+    const up = (event: Event) => {
+      if (onBubble(event)) return;
+      pressed = false;
+      settle();
+    };
+    editor.on('selectionUpdate', settle);
+    editor.on('focus', settle);
+    editor.on('blur', hide);
+    editor.on('update', settle);
+    document.addEventListener('pointerdown', down, true);
+    document.addEventListener('pointerup', up, true);
+    document.addEventListener('scroll', hide, true);
+    return () => {
+      editor.off('selectionUpdate', settle);
+      editor.off('focus', settle);
+      editor.off('blur', hide);
+      editor.off('update', settle);
+      document.removeEventListener('pointerdown', down, true);
+      document.removeEventListener('pointerup', up, true);
+      document.removeEventListener('scroll', hide, true);
+      hide();
     };
   }, [editor, active]);
   return bubble;
+}
+
+// Metade da largura da bolha, para ela não sair da janela.
+const HALF = 178;
+
+function bubbleStyle(bubble: Bubble): CSSProperties {
+  return {
+    left: `clamp(${HALF}px, ${bubble.x}px, calc(100vw - ${HALF}px))`,
+    top: bubble.y,
+    transform: bubble.below ? 'translateX(-50%)' : 'translate(-50%, -100%)',
+  };
 }
 
 export function NotesBlock({ id, editor }: { id: string; editor: Editor | null }) {
@@ -142,7 +197,7 @@ export function NotesBlock({ id, editor }: { id: string; editor: Editor | null }
           <Tools
             editor={editor}
             className={styles.bolha ?? ''}
-            style={{ top: bubble.top, left: bubble.left }}
+            style={bubbleStyle(bubble)}
             keepField={id}
           />,
           document.body,
