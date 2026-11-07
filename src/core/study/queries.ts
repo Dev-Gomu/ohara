@@ -67,7 +67,7 @@ export function subjectOf(data: StudyData, subjectId: string): Subject | undefin
 
 export function upcomingExams(data: StudyData, today: string): Exam[] {
   return data.exams
-    .filter((exam) => daysBetween(today, exam.date) >= 0)
+    .filter((exam) => exam.date !== '' && daysBetween(today, exam.date) >= 0)
     .sort((a, b) => a.date.localeCompare(b.date));
 }
 

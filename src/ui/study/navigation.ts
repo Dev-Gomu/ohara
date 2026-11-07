@@ -20,9 +20,12 @@ export function openSubject(subjectId: string): void {
 
 export const AGENDA_MONTH = 'agenda.mes';
 export const AGENDA_VIEWS = 'agenda.visao';
+// Dia que a Agenda mostra; semana, mês e lista partem dele.
+export const AGENDA_DAY = 'agenda.dia';
 
 // Abre o Mês já no dia pedido.
 export function openDay(day: string): void {
+  setScreenMemory(AGENDA_DAY, day);
   dispatch({ type: 'goToScreen', screen: 'agenda' });
   dispatch({
     type: 'jump',

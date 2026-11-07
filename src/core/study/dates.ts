@@ -59,6 +59,12 @@ export function weekOf(day: string): string[] {
   return Array.from({ length: 7 }, (_, index) => addDays(start, index));
 }
 
+// Semana da Agenda: de segunda a domingo, porque o domingo quase sempre fica vazio.
+export function mondayWeekOf(day: string): string[] {
+  const start = addDays(day, -((parseDay(day).getDay() + 6) % 7));
+  return Array.from({ length: 7 }, (_, index) => addDays(start, index));
+}
+
 export function weekdayShort(day: string): string {
   return (WEEKDAYS[parseDay(day).getDay()] ?? '').slice(0, 3);
 }

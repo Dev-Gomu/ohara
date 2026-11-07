@@ -49,15 +49,18 @@ export function toIcs(data: StudyData, from: string): string {
       return vevent(event.id, day, event.start, event.end, summary);
     }),
   );
-  const exams = data.exams.flatMap((exam) =>
-    vevent(
-      exam.id,
-      exam.date,
-      exam.time,
-      plusTwoHours(exam.time),
-      `Prova de ${subjectOf(data, exam.subjectId)?.name ?? ''}`,
-    ),
-  );
+  // Prova sem data ou hora fica de fora: o .ics não tem como marcá-la.
+  const exams = data.exams
+    .filter((exam) => exam.date !== '' && exam.time !== '')
+    .flatMap((exam) =>
+      vevent(
+        exam.id,
+        exam.date,
+        exam.time,
+        plusTwoHours(exam.time),
+        `Prova de ${subjectOf(data, exam.subjectId)?.name ?? ''}`,
+      ),
+    );
   const lines = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',

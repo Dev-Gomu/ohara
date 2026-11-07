@@ -37,10 +37,10 @@ Em paralelo, a qualquer momento antes da Etapa 8: sessão separada extrai `regra
 
 **Etapas 1 e 2:** já concluídas.
 
-**Feitas em 07/11/2026, sem teste do usuário:** etapas 3, 4, 5 e 6, e a parte de tela das etapas 8 e 9, no branch `telas-3-a-9`. Situação em `loop-telas.md`. **Rodada 2 (Opus, 07/11):** escolha do Treino, editor de cartões na Mesa e celular com um bloco por vez (ver `loop-telas.md`). **Próxima: sessão da Agenda** (Opus). Começar escrevendo `docs/regras.md` (Agenda e Grade, a partir do legado: `referencia-legado/DECISOES-legado.md` linhas 249 e 255 e o backlog de 07/11), depois propor o layout pelo checklist de `diretrizes-visuais.md`, com o usuário participando. Foco em tablet (1280×800) e PC; celular fora de foco.
+**Feitas em 07/11/2026, sem teste do usuário:** etapas 3, 4, 5 e 6, e a parte de tela das etapas 8 e 9, no branch `telas-3-a-9`. Situação em `loop-telas.md`. **Rodada 2 (Opus, 07/11):** escolha do Treino, editor de cartões na Mesa e celular com um bloco por vez (ver `loop-telas.md`). **Sessão da Agenda (07/11):** `regras.md` escrito e layout B aplicado (D82), sem teste do usuário. Troca de tela ficou sem animação (D83). **Próxima: Etapa 7, banco** (Opus, modo de plano). Foco em tablet (1280×800) e PC; celular fora de foco.
 
 **Pendentes com Opus (07/11/2026):**
-1. Sessão da Agenda, com `regras.md` antes. Depende do usuário: o que quer e aprovar o desenho.
+1. ~~Sessão da Agenda~~ feita em 07/11 (D82).
 2. Etapa 7, banco, em modo de plano. Depende do usuário aprovar o plano.
 3. Cores (adiado). Três protótipos recusados em `docs/prototipos/`; pedir referências ao usuário antes de prototipar.
 4. Etapa 11, FSRS. Depende das etapas 7 e 10 (Sonnet).

@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="pt-BR" data-tema="claro">
+<head>
+<meta charset="utf-8">
+<title>Agenda: protótipo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&family=Nunito:wght@700;800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../src/ui/styles/tokens.css">
+<style>
+* { box-sizing: border-box; margin: 0; }
+body { background: #777; font: var(--ui-apoio); padding: 16px; color: var(--cor-texto); }
+.controles { display: flex; gap: 8px; margin-bottom: 12px; }
+.controles button { font: var(--ui-botao); padding: 8px 14px; border-radius: 999px; border: 0; cursor: pointer; }
+.controles button[aria-pressed='true'] { background: #14122b; color: #fff; }
+.tela { width: 1280px; height: 800px; background: var(--cor-fundo); padding: var(--margem-tela); display: flex; flex-direction: column; gap: var(--vao-mosaico); overflow: hidden; }
+.topo { height: var(--barra-topo); display: flex; align-items: center; gap: 8px; }
+.num { width: 40px; height: 40px; border-radius: 999px; background: var(--cor-cartao); display: grid; place-items: center; font: var(--ui-botao); }
+.num.on { background: var(--cor-destaque); color: var(--cor-tinta); }
+.titulo-tela { font: var(--voz-titulo); text-transform: uppercase; margin-left: 12px; }
+.bloco { background: var(--cor-cartao); border-radius: var(--raio-bloco); padding: var(--bloco-pad-y) var(--bloco-pad-x); min-height: 0; display: flex; flex-direction: column; gap: 10px; }
+.bloco.ativo { box-shadow: inset 0 0 0 var(--borda-bloco) var(--cor-bloco-ativo); }
+.cab { display: flex; align-items: center; gap: 8px; }
+.cab h2 { font: var(--ui-rotulo); text-transform: uppercase; letter-spacing: .06em; }
+.cab .n { font: var(--ui-rotulo); color: var(--cor-texto-2); }
+.tecla { font: var(--ui-tecla); padding: 0 8px; border-radius: 999px; background: var(--cor-cartao-2); color: var(--cor-texto-2); margin-left: auto; white-space: nowrap; }
+.linha1 { display: flex; gap: var(--vao-mosaico); }
+.regua { flex-direction: row; align-items: center; padding: 10px 12px; }
+.pil { font: var(--ui-botao); padding: 0 16px; height: 44px; border-radius: var(--raio-botao); background: var(--cor-cartao-2); display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+.pil.sel { background: var(--cor-destaque); color: var(--cor-tinta); }
+.pil.ic { width: 44px; padding: 0; justify-content: center; }
+.prim { background: var(--cor-botao); color: var(--cor-sobre-botao); }
+.prim .tecla { background: transparent; color: inherit; opacity: .75; margin-left: 4px; padding: 0; }
+.periodo { font: var(--ui-item); margin: 0 8px; font-variant-numeric: tabular-nums; }
+.sigla { font: var(--ui-sigla); padding: 2px 8px; border-radius: 999px; color: var(--cor-tinta); background: var(--m); white-space: nowrap; }
+.filtro { display: flex; flex-wrap: wrap; gap: 6px; }
+.filtro .sigla { height: 32px; display: inline-flex; align-items: center; padding: 0 10px; }
+.filtro .sigla.off { background: var(--cor-cartao-2); color: var(--cor-texto-2); }
+.filtro .todas { font: var(--ui-sigla); height: 32px; padding: 0 12px; border-radius: 999px; background: var(--cor-marca); display: inline-flex; align-items: center; }
+.item { display: flex; align-items: center; gap: 8px; min-height: 48px; padding: 6px 10px; border-radius: var(--raio-item); background: var(--cor-cartao-2); }
+.item .t { font: var(--ui-item); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.item .falta { font: var(--ui-apoio); color: var(--cor-texto-2); white-space: nowrap; }
+.lista { display: flex; flex-direction: column; gap: 6px; overflow: hidden; }
+.chk { width: 20px; height: 20px; border-radius: 7px; box-shadow: inset 0 0 0 2px var(--cor-texto-2); flex: none; }
+
+/* Semana */
+.semana { flex: 1; padding: 12px 14px 12px 8px; }
+.sem { flex: 1; display: grid; grid-template-columns: 40px repeat(7, minmax(0, 1fr)); grid-template-rows: auto auto 1fr; column-gap: 6px; min-height: 0; }
+.dcab { text-align: center; padding-bottom: 4px; }
+.dcab .ds { font: var(--ui-rotulo); text-transform: uppercase; letter-spacing: .06em; color: var(--cor-texto-2); }
+.dcab .dn { font: var(--voz-item); display: inline-block; min-width: 40px; border-radius: 999px; padding: 2px 8px; font-variant-numeric: tabular-nums; }
+.dcab.hoje .dn { background: var(--cor-marca); }
+.diatodo { display: flex; flex-direction: column; gap: 4px; padding-bottom: 6px; min-height: 30px; }
+.chipdia { font: var(--ui-sigla); border-radius: 10px; padding: 4px 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--cor-tinta); background: var(--m); }
+.chipdia.vaz { background: transparent; color: var(--cor-texto); box-shadow: inset 0 0 0 2px var(--cor-texto-2); }
+.horas { position: relative; }
+.horas span { position: absolute; right: 4px; font: var(--ui-tecla); color: var(--cor-texto-2); transform: translateY(-9px); font-variant-numeric: tabular-nums; }
+.col { position: relative; background: var(--cor-cartao-2); border-radius: 16px; }
+.aula { z-index: 2; position: absolute; left: 4px; right: 4px; border-radius: 12px; padding: 5px 7px; display: flex; flex-direction: column; gap: 2px; overflow: hidden; }
+.aula .h { font: var(--ui-tecla); font-variant-numeric: tabular-nums; }
+.aula .s { font: var(--ui-tecla); color: var(--cor-texto-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.foco { outline: var(--anel-traco) solid var(--cor-foco); outline-offset: var(--anel-afastamento); z-index: 2; }
+.agora { position: absolute; left: 0; right: 0; height: 3px; border-radius: 999px; background: var(--cor-texto); z-index: 1; }
+.agora::before { content: ''; position: absolute; left: -4px; top: -4px; width: 11px; height: 11px; border-radius: 999px; background: var(--cor-texto); }
+
+/* A: blocos em tom pastel da matéria (como o legado) */
+[data-var='A'] .aula { background: color-mix(in srgb, var(--m) 38%, var(--cor-cartao)); }
+[data-var='A'] .aula .h, [data-var='A'] .aula .s { color: var(--cor-texto); }
+/* B: blocos neutros, cor só na sigla; a aula de agora ganha a cor cheia */
+[data-var='B'] .aula { background: var(--cor-cartao); }
+[data-var='B'] .aula.ja { background: var(--m); }
+[data-var='B'] .aula.ja .h, [data-var='B'] .aula.ja .s { color: var(--cor-tinta); }
+[data-var='B'] .aula.ja .sigla { background: var(--cor-tinta); color: var(--cor-sobre-tinta); }
+
+.corpo { flex: 1; display: flex; gap: var(--vao-mosaico); min-height: 0; }
+.coluna { display: flex; flex-direction: column; gap: var(--vao-mosaico); flex: none; }
+.previa h3 { font: var(--voz-titulo); }
+.previa .dados { display: flex; flex-direction: column; gap: 4px; color: var(--cor-texto-2); font-variant-numeric: tabular-nums; }
+.previa .acoes { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; }
+.nota { font: var(--leitura-compacta); color: var(--cor-texto-2); }
+</style>
+</head>
+<body>
+<div class="controles">
+  <button data-v="A" aria-pressed="true">A · Trilho + semana</button>
+  <button data-v="B" aria-pressed="false">B · Semana + prévia</button>
+  <button id="tema">Tema claro / escuro</button>
+</div>
+<div class="tela" id="tela" data-var="A"></div>
+
+<script>
+const M = { IMU:'--cor-azul', GEN:'--cor-verde', PRO:'--cor-destaque', APS:'--cor-amarelo', FAR:'--cor-rosa', MIC:'--cor-ciano', BIO:'--cor-laranja', FIS:'--cor-cinza-lavanda' };
+const m = (s) => `--m: var(${M[s]})`;
+const DIAS = [['seg',2],['ter',3],['qua',4],['qui',5],['sex',6],['sáb',7],['dom',8]];
+const HOJE = 5, AGORA = 8.4, INI = 7, FIM = 19;
+const AULAS = [
+  [0,'IMU',8,10,'T · sala 12'],[0,'GEN',10,12,'sala 3'],[0,'PRO',14,16,'Ambulatório'],
+  [1,'APS',8,10,'UBS'],[1,'FAR',10,12,'sala 5'],[1,'MIC',14,16,'Lab 2'],
+  [2,'IMU',8,10,'T · sala 12'],[2,'BIO',10,11,'sala 7'],[2,'FIS',14,17,'Lab 1'],
+  [3,'IMU',8,9,'P'],[3,'GEN',9,10,'sala 3'],[3,'APS',11,12,'UBS'],[3,'PRO',13,15,'Ambulatório'],[3,'FIS',15,17,'Lab 1'],
+  [4,'MIC',8,10,'Lab 2'],[4,'BIO',10,12,'sala 7'],[4,'APS',14,16,'UBS'],
+  [5,'PRO',8,10,'Teórica · sala 204'],[5,'FAR',10,11.5,'sala 5'],
+];
+const DIATODO = { 1:[['MIC','Entrega · Relatório',true]], 4:[['GEN','Prova 1 · Genética',false]], 2:[["FAR","Prova 2 · 08:00",false]] };
+const COMPLETAR = [['GEN','Prova 2','falta data'],['MIC','Prova 1','falta hora, peso'],['BIO','Trabalho','falta data']];
+const LEMBRETES = ['Imprimir roteiro do lab','Pagar xerox','Mandar e-mail ao preceptor'];
+const hm = (h) => `${String(Math.floor(h)).padStart(2,'0')}:${h % 1 ? '30' : '00'}`;
+
+function semana(ativo) {
+  const px = 100 / (FIM - INI);
+  let h = '<div class="sem"><div></div>';
+  DIAS.forEach(([s,n],i) => h += `<div class="dcab${i===HOJE?' hoje':''}"><div class="ds">${s}</div><span class="dn">${n}</span></div>`);
+  h += '<div></div>';
+  DIAS.forEach((_,i) => h += `<div class="diatodo">${(DIATODO[i]||[]).map(([sg,t,v]) => `<div class="chipdia${v?' vaz':''}" style="${m(sg)}">${sg} ${t}</div>`).join('')}</div>`);
+  h += '<div class="horas">';
+  for (let x = INI + 1; x < FIM; x++) h += `<span style="top:${(x-INI)*px}%">${x}h</span>`;
+  h += '</div>';
+  DIAS.forEach((_,i) => {
+    h += '<div class="col">';
+    AULAS.filter(a => a[0]===i).forEach(([,sg,a,b,s]) => {
+      const ja = i===HOJE && AGORA>=a && AGORA<b;
+      h += `<div class="aula${ja?' ja':''}${ja?' foco':''}" style="${m(sg)};top:calc(${(a-INI)*px}% + 2px);height:calc(${(b-a)*px}% - 4px)"><span><span class="sigla">${sg}</span> <span class="h">${hm(a)}</span></span>${b-a>=1.5?`<span class="s">${s}</span>`:''}</div>`;
+    });
+    if (i===HOJE) h += `<div class="agora" style="top:${(AGORA-INI)*px}%"></div>`;
+    h += '</div>';
+  });
+  return `<section class="bloco semana${ativo?' ativo':''}">${h}</div></section>`;
+}
+const visoes = () => ['Semana','Mês','Lista','Grade'].map((v,i) => `<span class="pil${i?'':' sel'}">${v}</span>`).join('');
+const nav = () => `<span class="pil ic">‹</span><span class="pil">Hoje</span><span class="pil ic">›</span><span class="periodo">2 – 8 nov</span><span class="tecla" style="margin:0 8px 0 0">PgUp PgDn</span><span class="pil prim">+ Novo <span class="tecla">Alt N</span></span>`;
+const filtro = () => `<div class="filtro"><span class="todas">Todas</span>${Object.keys(M).map((s,i) => `<span class="sigla${i===7?' off':''}" style="${m(s)}">${s}</span>`).join('')}</div>`;
+const completar = () => `<section class="bloco"><div class="cab"><h2>A completar</h2><span class="n">${COMPLETAR.length}</span></div><div class="lista">${COMPLETAR.map(([s,t,f]) => `<div class="item"><span class="sigla" style="${m(s)}">${s}</span><span class="t">${t}</span><span class="falta">${f}</span></div>`).join('')}</div></section>`;
+const lembretes = () => `<section class="bloco" style="flex:1"><div class="cab"><h2>Lembretes</h2><span class="n">${LEMBRETES.length}</span><span class="tecla">Alt I</span></div><div class="lista">${LEMBRETES.map(t => `<div class="item"><span class="chk"></span><span class="t">${t}</span></div>`).join('')}</div></section>`;
+
+const A = () => `
+  <div class="linha1"><section class="bloco regua" style="flex:1">${visoes()}<span style="flex:1"></span>${nav()}</section></div>
+  <div class="corpo">
+    <div class="coluna" style="width:300px">
+      <section class="bloco"><div class="cab"><h2>Matérias</h2></div>${filtro()}</section>
+      ${completar()}${lembretes()}
+    </div>
+    ${semana(true)}
+  </div>`;
+const B = () => `
+  <div class="linha1"><section class="bloco regua" style="flex:1">${visoes()}<span style="flex:1"></span>${nav()}</section></div>
+  <div class="corpo">
+    ${semana(true)}
+    <div class="coluna" style="width:330px">
+      <section class="bloco previa" style="flex:1">
+        <div class="cab"><span class="sigla" style="${m('PRO')}">PRO</span><span class="tecla">agora</span></div>
+        <h3>Propedêutica</h3>
+        <div class="dados"><span>Sábado, 7 nov · 08:00 – 10:00</span><span>Teórica · sala 204</span><span>Toda semana (Grade)</span></div>
+        <p class="nota">Cai na Prova 2 (14 nov · 7d)</p>
+        <div class="acoes"><span class="pil prim">Abrir na Mesa <span class="tecla">Enter</span></span><span class="pil">Mover</span><span class="pil">Sem aula</span></div>
+      </section>
+      <section class="bloco"><div class="cab"><h2>Matérias</h2></div>${filtro()}</section>
+      ${completar()}
+    </div>
+  </div>`;
+
+const tela = document.getElementById('tela');
+function render(v) {
+  tela.dataset.var = v;
+  tela.innerHTML = `<div class="topo">${[1,2,3,4,5,6].map(n => `<span class="num${n===5?' on':''}">${n}</span>`).join('')}<span class="titulo-tela">Agenda</span></div>` + (v==='A'?A():B());
+  document.querySelectorAll('[data-v]').forEach(b => b.setAttribute('aria-pressed', b.dataset.v===v));
+}
+document.querySelectorAll('[data-v]').forEach(b => b.onclick = () => render(b.dataset.v));
+document.getElementById('tema').onclick = () => { const r = document.documentElement; r.dataset.tema = r.dataset.tema==='claro'?'escuro':'claro'; };
+render(new URLSearchParams(location.search).get('v') || 'A');
+if (location.search.includes('escuro')) document.documentElement.dataset.tema = 'escuro';
+</script>
+</body>
+</html>

@@ -91,6 +91,26 @@ function askSlot(data: StudyData) {
   });
 }
 
+// Completa data e hora de uma prova cadastrada só com a matéria (regras.md C3 e C4).
+export function askCompleteExam(data: StudyData, examId: string) {
+  const exam = data.exams.find((item) => item.id === examId);
+  if (!exam) return;
+  ask({
+    title: 'Completar prova',
+    action: 'Salvar',
+    fields: [
+      { id: 'date', label: 'Data', type: 'date', value: exam.date || today },
+      { id: 'time', label: 'Hora', type: 'time', value: exam.time || '08:00' },
+    ],
+    onSubmit: ({ date = exam.date, time = exam.time }) => {
+      storage.write((current) => ({
+        ...current,
+        exams: current.exams.map((item) => (item.id === examId ? { ...item, date, time } : item)),
+      }));
+    },
+  });
+}
+
 function exportIcs(data: StudyData) {
   const url = URL.createObjectURL(new Blob([toIcs(data, today)], { type: 'text/calendar' }));
   const link = document.createElement('a');

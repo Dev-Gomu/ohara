@@ -138,10 +138,11 @@ test('Mesa: Alt N abre um cartão, Ctrl Enter salva os completos', async ({ page
   await expect(cartoes.locator('textarea')).toHaveValue('@ Sem verso ainda');
 });
 
-test('Agenda: a régua troca a visão e o dia comanda o painel', async ({ page }) => {
+test('Agenda: a régua troca a visão e o dia comanda a prévia', async ({ page }) => {
   await page.keyboard.press('Alt+Digit5');
   await expect(bloco(page)).toHaveText('agenda.semana');
-  await page.keyboard.press('ArrowUp');
+  // A chegada é a aula de agora, no meio do dia: ↑ andaria no dia, Alt K sobe à régua.
+  await page.keyboard.press('Alt+KeyK');
   await expect(bloco(page)).toHaveText('agenda.visao');
   await page.keyboard.press('ArrowRight');
   await expect(page.locator('[data-block="agenda.mes"]')).toBeVisible();
@@ -278,7 +279,7 @@ test('Anotações: o histórico restaura a versão anterior', async ({ page }) =
 
 test('Agenda: a Grade mostra o horário e Alt N oferece os itens', async ({ page }) => {
   await page.keyboard.press('Alt+Digit5');
-  await page.keyboard.press('ArrowUp');
+  await page.keyboard.press('Alt+KeyK');
   await page.keyboard.press('ArrowRight');
   await page.keyboard.press('ArrowRight');
   await page.keyboard.press('ArrowRight');
@@ -298,7 +299,7 @@ test('Agenda: prova nova aparece no Hub', async ({ page }) => {
   await expect(bloco(page)).toHaveText('agenda.semana');
   await page.keyboard.press('Alt+KeyN');
   await page.getByRole('menuitem', { name: 'Nova prova' }).click();
-  await page.getByLabel('Matéria').selectOption({ label: 'Bioética' });
+  await page.getByTestId('pergunta').getByLabel('Matéria').selectOption({ label: 'Bioética' });
   await page.getByRole('button', { name: /Criar/ }).click();
   await expect(page.getByTestId('pergunta')).toBeHidden();
   await page.keyboard.press('Alt+Digit1');

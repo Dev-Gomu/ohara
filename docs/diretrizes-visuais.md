@@ -188,7 +188,7 @@ Mapa de foco de cada tela. O detalhe funcional fica em `telas.md`, quando existi
 | **Acervo, início** | Régua + grade | Anos, Matérias | Grade, na última matéria aberta | Abre a matéria |
 | **Acervo, matéria** | Régua + lista + prévia | Pastas, Aulas, Prévia | Régua, na última pasta usada | Régua: entra nas aulas. Aula: abre na Mesa |
 | **Treino** | Régua + lista + foco único | Matérias, O que treinar, Resumo; depois o cartão ampliado | Iniciar, com a última escolha | Lista: marca ou desmarca. Iniciar: começa a sessão |
-| **Agenda** | Régua + conteúdo | Visão (Semana, Mês, Lista, Grade), Conteúdo, Dia, Lembretes | Hoje, na Semana | Abre o item |
+| **Agenda** | Régua + conteúdo + prévia (D82) | Visão (Semana, Mês, Lista, Grade), Conteúdo, Prévia, Matérias, A completar | Semana, na aula de agora ou no dia de hoje | Ação principal da Prévia (aula: abre na Mesa) |
 | **Configs** | Lista + prévia | Seções, Detalhe | Última seção | Entra na seção |
 
 **Caso-modelo: a matéria aberta.**
@@ -254,7 +254,8 @@ Grade de 24 px, traço de 2 px, pontas arredondadas, sempre SVG, nunca emoji. Ta
 
 - Borda de bloco ativo: 200 ms, como no Hyprland.
 - Anel forte: **instantâneo**. Com a tecla segurada, atraso faria o anel ficar para trás.
-- Toque: 120 ms. Bloco abrindo: de 87% a 100%.
+- Toque: 120 ms. Bloco abrindo: de 87% a 100%, só quando abre com a tela já aberta.
+- **Troca de tela (D83):** instantânea, sem animação.
 - Sem movimento decorativo. "Reduzir movimento" zera tudo.
 - Cartão subir 3 px só com mouse.
 

@@ -196,12 +196,17 @@ export function createFixtures(today: string): StudyData {
       ['imu', 11, '10:00'],
       ['pro', 14, '13:00'],
       ['aps', 20, '08:00'],
-    ].map(([subjectId, days, time], index) => ({
-      id: `p-${index}`,
-      subjectId: String(subjectId),
-      date: addDays(today, Number(days)),
-      time: String(time),
-    })),
+    ]
+      .map(([subjectId, days, time], index) => ({
+        id: `p-${index}`,
+        subjectId: String(subjectId),
+        date: addDays(today, Number(days)),
+        time: String(time),
+      }))
+      .concat(
+        { id: 'p-sem-data', subjectId: 'gen', date: '', time: '' },
+        { id: 'p-sem-hora', subjectId: 'far', date: addDays(today, 25), time: '' },
+      ),
     events: eventsFor(today, lessons),
     slots: slotsFor(today),
     reminders: [

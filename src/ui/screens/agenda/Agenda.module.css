@@ -1,39 +1,135 @@
 .agenda {
   height: 100%;
   display: grid;
-  grid-template-rows: 76px minmax(0, 1fr) 220px;
-  grid-template-columns: minmax(0, 1fr) 372px;
+  grid-template:
+    'regua regua' 76px
+    'conteudo previa' minmax(0, 1fr)
+    'conteudo materias' auto
+    'conteudo completar' auto
+    / minmax(0, 1fr) 340px;
   gap: var(--vao-mosaico);
 }
 
 .regua {
-  grid-column: 1 / -1;
+  grid-area: regua;
 }
 
 .conteudo {
-  grid-row: 2 / 4;
+  grid-area: conteudo;
 }
 
-.semana,
+.previa {
+  grid-area: previa;
+}
+
+.barra {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.barra > :first-child {
+  flex: 1;
+  min-width: 0;
+}
+
+.periodo {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--e2);
+  padding-right: var(--e3);
+}
+
+.periodo button {
+  min-width: var(--alvo);
+  height: var(--alvo);
+  padding: 0 var(--e3);
+  border-radius: var(--raio-botao);
+  background: var(--cor-cartao-2);
+  font: var(--ui-botao);
+}
+
+.periodo .novo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e2);
+  background: var(--cor-botao);
+  color: var(--cor-sobre-botao);
+}
+
+.novo kbd {
+  opacity: 0.75;
+  font: var(--ui-tecla);
+}
+
+.datas {
+  min-width: 128px;
+  font: var(--ui-item);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.tecla {
+  padding: 0 var(--e2);
+  border-radius: var(--raio-pilula);
+  background: var(--cor-cartao-2);
+  color: var(--cor-texto-2);
+  font: var(--ui-tecla);
+  white-space: nowrap;
+}
+
+.filtro {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 6px;
+  padding: 0 var(--bloco-pad-x) var(--bloco-pad-y);
+}
+
+.lugar {
+  display: contents;
+}
+
+.filtroItem {
+  height: 36px;
+  border-radius: var(--raio-pilula);
+  background: var(--cor-cartao-2);
+  color: var(--cor-texto-2);
+  font: var(--ui-sigla);
+}
+
+/* Filtro de uma escolha: só a matéria escolhida ganha a cor (seleção por preenchimento). */
+.filtroItem[data-sel='true'] {
+  background: var(--cor-materia, var(--cor-marca));
+  color: var(--cor-tinta);
+}
+
+.filtroItem[data-cor='todas'][data-sel='true'] {
+  background: var(--cor-marca);
+  color: var(--cor-texto);
+}
+
+.completar {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 180px;
+  padding: 0 var(--bloco-pad-x) var(--bloco-pad-y);
+  overflow: auto;
+}
+
+.falta {
+  color: var(--cor-texto-2);
+  font: var(--ui-apoio);
+  white-space: nowrap;
+}
+
 .mes,
-.grade,
 .lista {
   flex: 1;
   min-height: 0;
   padding: 10px;
   overflow: auto;
-}
-
-.semana {
-  display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: var(--e1);
-}
-
-.grade {
-  display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: var(--e1);
 }
 
 .mes {
@@ -101,19 +197,6 @@
   color: var(--cor-sobre-tinta);
 }
 
-.lembrete {
-  flex: none;
-  min-height: var(--alvo);
-  padding: var(--e2) var(--e3);
-  border-radius: var(--raio-item);
-  font: var(--leitura-compacta);
-  text-align: left;
-}
-
-[data-foco] .lembrete[data-sel='true'] {
-  background: var(--cor-marca);
-}
-
 .item {
   display: grid;
   flex: none;
@@ -126,7 +209,8 @@
   text-align: left;
 }
 
-.item[data-sel='true'] {
+/* A completar não comanda nada: a seleção só aparece com o bloco ativo. */
+[data-foco] .item[data-sel='true'] {
   background: var(--cor-marca);
 }
 
@@ -134,7 +218,7 @@
   color: var(--cor-texto-2);
 }
 
-.item[data-sel='true'] .hora {
+[data-foco] .item[data-sel='true'] .hora {
   color: var(--cor-texto);
 }
 
@@ -165,9 +249,7 @@
     flex-direction: column;
   }
 
-  .semana,
-  .mes,
-  .grade {
+  .mes {
     overflow-x: auto;
     grid-template-columns: repeat(7, 96px);
   }

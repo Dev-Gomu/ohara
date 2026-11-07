@@ -39,6 +39,7 @@ export interface Card {
   due: string;
 }
 
+// Prova exige só a matéria; data e hora vazias aparecem em "A completar" (regras.md C3).
 export interface Exam {
   id: string;
   subjectId: string;

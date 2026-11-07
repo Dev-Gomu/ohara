@@ -1,5 +1,12 @@
-import { useRef, type CSSProperties, type PointerEvent, type ReactNode } from 'react';
-import type { Split, Tree } from '../../core/mosaic/tree';
+import {
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type PointerEvent,
+  type ReactNode,
+} from 'react';
+import { leaves, type Split, type Tree } from '../../core/mosaic/tree';
 import styles from './Mosaic.module.css';
 
 interface MosaicProps {
@@ -48,6 +55,15 @@ function Divider({ node, onMove }: { node: Split; onMove: (ratio: number) => voi
 
 // Grade dentro de grade (D10): cada divisão vira duas trilhas proporcionais.
 export function Mosaic({ tree, maximized, render, onChange }: MosaicProps) {
+  // A troca de tela é instantânea (D83): só bloco aberto com a tela já aberta
+  // ganha o efeito de abrir. Bloco fechado sai da lista e, se voltar, abre animado.
+  const [original] = useState(() => new Set(leaves(tree)));
+  useEffect(() => {
+    const now = new Set(leaves(tree));
+    original.forEach((id) => {
+      if (!now.has(id)) original.delete(id);
+    });
+  });
   function node(item: Tree): ReactNode {
     if (item.kind === 'leaf') {
       return (
@@ -55,6 +71,7 @@ export function Mosaic({ tree, maximized, render, onChange }: MosaicProps) {
           key={item.id}
           className={styles.folha}
           data-sobre={maximized === item.id ? '' : undefined}
+          data-novo={original.has(item.id) ? undefined : ''}
           hidden={maximized !== null && maximized !== item.id}
         >
           {render(item.id)}

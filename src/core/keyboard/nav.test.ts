@@ -61,3 +61,25 @@ describe('grade (D71)', () => {
     expect(stepNav(grid, 2, 'down')).toBe(4);
   });
 });
+
+describe('colunas da semana', () => {
+  const week = { axis: 'columns', count: 7, lengths: [3, 0, 1, 3] } as const;
+
+  it('anda dentro do dia e sai pelas bordas de cima e de baixo', () => {
+    expect(stepNav(week, 0, 'down')).toBe(1);
+    expect(stepNav(week, 2, 'down')).toBe('exit');
+    expect(stepNav(week, 0, 'up')).toBe('exit');
+  });
+
+  it('pula dia vazio e mantém a linha quando cabe', () => {
+    expect(stepNav(week, 0, 'right')).toBe(3);
+    expect(stepNav(week, 3, 'right')).toBe(4);
+    expect(stepNav(week, 6, 'left')).toBe(3);
+    expect(stepNav(week, 2, 'right')).toBe(3);
+  });
+
+  it('sai pelas laterais sem dar a volta', () => {
+    expect(stepNav(week, 1, 'left')).toBe('exit');
+    expect(stepNav(week, 5, 'right')).toBe('exit');
+  });
+});
