@@ -3,11 +3,14 @@ import {
   bimesterResult,
   BIMESTERS,
   formatGrade,
+  neededForSemester,
+  neededInFourthForYear,
   neededInSecondSemester,
   semesterResult,
   statusOf,
   yearResult,
   type Item,
+  type Needed,
   type Result,
   type Status,
 } from '../../core/grades/grades';
@@ -52,6 +55,11 @@ function show(result: Result): string {
   return result.value === null
     ? '—'
     : `${formatGrade(result.value)}${result.partial ? ' (parcial)' : ''}`;
+}
+
+function need(value: Needed): string {
+  if (value.kind === 'precisa') return formatGrade(value.value);
+  return value.kind === 'impossivel' ? 'não dá' : '—';
 }
 
 interface Action {
@@ -335,12 +343,17 @@ function Open(props: { data: StudyData; items: readonly Item[]; unreadable: numb
               <p className={styles.destaque}>
                 {STATUS[statusOf(year, scheme.min)]} · mínimo {formatGrade(scheme.min)}
               </p>
-              <p className={styles.texto}>
-                {needed.kind === 'precisa' &&
-                  `Preciso de ${formatGrade(needed.value)} no 2º semestre.`}
-                {needed.kind === 'impossivel' && 'Não dá para chegar ao mínimo.'}
-                {needed.kind === 'sem-dados' && 'Lance notas do 1º semestre para ver quanto falta.'}
-              </p>
+              <p className={styles.destaque}>Quanto preciso para fechar</p>
+              <dl className={styles.quadro}>
+                <dt>1º semestre, no 2º bimestre</dt>
+                <dd>{need(neededForSemester(mine, scheme, 1))}</dd>
+                <dt>2º semestre, no 4º bimestre</dt>
+                <dd>{need(neededForSemester(mine, scheme, 2))}</dd>
+                <dt>Ano, no 4º bimestre</dt>
+                <dd>{need(neededInFourthForYear(mine, scheme))}</dd>
+                <dt>Ano, média do 2º semestre</dt>
+                <dd>{need(needed)}</dd>
+              </dl>
             </>
           )}
         </div>

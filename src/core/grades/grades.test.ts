@@ -4,6 +4,8 @@ import {
   copyScheme,
   defaultScheme,
   formatGrade,
+  neededForSemester,
+  neededInFourthForYear,
   neededInSecondSemester,
   parseGrade,
   semesterResult,
@@ -163,5 +165,50 @@ describe('texto da nota', () => {
     expect(parseGrade('')).toBeNull();
     expect(parseGrade('11')).toBeUndefined();
     expect(parseGrade('abc')).toBeUndefined();
+  });
+});
+
+describe('preciso no bimestre', () => {
+  it('1º semestre: com 6 no 1º bimestre, precisa de 8 no 2º para fechar 7', () => {
+    expect(neededForSemester([item(1, 6)], scheme, 1)).toEqual({ kind: 'precisa', value: 8 });
+  });
+
+  it('2º semestre usa o 3º bimestre e os pesos 30/70', () => {
+    const custom: Scheme = { ...scheme, bimester1: [50, 30] };
+    const needed = neededForSemester([item(3, 5)], custom, 2);
+    expect(needed.kind === 'precisa' && needed.value).toBeCloseTo((700 - 150) / 70, 5);
+  });
+
+  it('sem o 1º bimestre do semestre não há conta', () => {
+    expect(neededForSemester([item(2, 9)], scheme, 1)).toEqual({ kind: 'sem-dados' });
+  });
+
+  it('extremos: acima de 10 é impossível, abaixo de 0 vira 0 e o bônus ajuda', () => {
+    expect(neededForSemester([item(1, 3)], scheme, 1)).toEqual({ kind: 'impossivel' });
+    expect(neededForSemester([item(1, 10)], { ...scheme, min: 4 }, 1)).toEqual({
+      kind: 'precisa',
+      value: 0,
+    });
+    const bonus: Scheme = { ...scheme, bonusSemester: [1, 0] };
+    expect(neededForSemester([item(1, 6)], bonus, 1)).toEqual({ kind: 'precisa', value: 6 });
+  });
+
+  it('quanto preciso no 4º para passar no ano', () => {
+    const items = [item(1, 8), item(2, 8), item(3, 6)];
+    // 1º sem = 8; 2º sem precisa de 6; 6 = (6 + b4) / 2 -> b4 = 6
+    expect(neededInFourthForYear(items, scheme)).toEqual({ kind: 'precisa', value: 6 });
+  });
+
+  it('4º para o ano: extremos e falta de dados', () => {
+    expect(neededInFourthForYear([item(1, 3), item(2, 3), item(3, 3)], scheme)).toEqual({
+      kind: 'impossivel',
+    });
+    expect(neededInFourthForYear([item(1, 10), item(2, 10), item(3, 10)], scheme)).toEqual({
+      kind: 'precisa',
+      value: 0,
+    });
+    expect(neededInFourthForYear([item(1, 8), item(2, 8)], scheme)).toEqual({
+      kind: 'sem-dados',
+    });
   });
 });

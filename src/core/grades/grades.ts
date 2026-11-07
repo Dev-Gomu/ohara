@@ -141,6 +141,37 @@ export function neededInSecondSemester(items: readonly Item[], scheme: Scheme): 
   return { kind: 'precisa', value: Math.max(0, needed) };
 }
 
+function toNeeded(value: number, cap: number): Needed {
+  if (value > cap + 1e-9) return { kind: 'impossivel' };
+  return { kind: 'precisa', value: Math.max(0, value) };
+}
+
+// Média que falta no 2º bimestre do semestre (2º ou 4º) para a média dele bater o mínimo,
+// dado o 1º bimestre do mesmo semestre (1º ou 3º). O bônus do semestre já entra na conta.
+export function neededForSemester(items: readonly Item[], scheme: Scheme, semester: 1 | 2): Needed {
+  const firstWeight = scheme.bimester1[semester - 1] ?? 50;
+  const first = bimesterResult(items, scheme, semester === 1 ? 1 : 3).value;
+  const secondWeight = 100 - firstWeight;
+  if (first === null || secondWeight <= 0) return { kind: 'sem-dados' };
+  const bonus = scheme.bonusSemester[semester - 1] ?? 0;
+  return toNeeded(((scheme.min - bonus) * 100 - firstWeight * first) / secondWeight, scheme.cap);
+}
+
+// Média que falta no 4º bimestre para a média do ano bater o mínimo, dados os outros três.
+export function neededInFourthForYear(items: readonly Item[], scheme: Scheme): Needed {
+  const semester1 = semesterResult(items, scheme, 1).value;
+  const third = bimesterResult(items, scheme, 3).value;
+  const yearWeight2 = 100 - scheme.semester1;
+  const fourthWeight = 100 - (scheme.bimester1[1] ?? 50);
+  if (semester1 === null || third === null || yearWeight2 <= 0 || fourthWeight <= 0) {
+    return { kind: 'sem-dados' };
+  }
+  const semester2 = (scheme.min * 100 - scheme.semester1 * semester1) / yearWeight2;
+  const bonus = scheme.bonusSemester[1] ?? 0;
+  const fourth = ((semester2 - bonus) * 100 - (scheme.bimester1[1] ?? 50) * third) / fourthWeight;
+  return toNeeded(fourth, scheme.cap);
+}
+
 export function formatGrade(value: number | null): string {
   return value === null ? '—' : value.toFixed(1).replace('.', ',');
 }
