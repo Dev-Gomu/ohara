@@ -13,6 +13,19 @@ import type {
 
 export const SUBJECT_COLORS = 8;
 
+export const EMPTY_STUDY: StudyData = {
+  years: [],
+  subjects: [],
+  folders: [],
+  lessons: [],
+  cards: [],
+  exams: [],
+  events: [],
+  slots: [],
+  reminders: [],
+  noteVersions: [],
+};
+
 export function subjectCode(name: string): string {
   const letters = name
     .normalize('NFD')

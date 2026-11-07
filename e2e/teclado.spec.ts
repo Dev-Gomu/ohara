@@ -17,7 +17,7 @@ async function pressAltSlash(page: Page) {
 }
 
 test.beforeEach(async ({ page }) => {
-  await page.goto('./');
+  await page.goto('./?exemplo');
   await expect(bloco(page)).toHaveText('hub.agenda');
   await page.keyboard.press('Alt+Digit2');
   await expect(bloco(page)).toHaveText('mesa.notes');

@@ -1,6 +1,7 @@
 import Highlight from '@tiptap/extension-highlight';
 import TaskItem from '@tiptap/extension-task-item';
 import TaskList from '@tiptap/extension-task-list';
+import { useEffect } from 'react';
 import { useEditor, type Editor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import type { KeyAction } from '../../../core/keyboard/actions';
@@ -13,16 +14,27 @@ type EditorHandler = (change: KeyAction) => boolean | void;
 
 function saveNotes(lessonId: string, html: string) {
   storage.write((data) => {
+    if (!data.lessons.some((item) => item.id === lessonId)) return data;
     const previous = data.lessons.find((item) => item.id === lessonId)?.notes ?? '';
     return {
       ...data,
-      noteVersions: addVersion(data.noteVersions, lessonId, previous, Date.now(), crypto.randomUUID()),
+      noteVersions: addVersion(
+        data.noteVersions,
+        lessonId,
+        previous,
+        Date.now(),
+        crypto.randomUUID(),
+      ),
       lessons: data.lessons.map((item) => (item.id === lessonId ? { ...item, notes: html } : item)),
     };
   });
 }
 
 export function useNotesEditor(lessonId: string, html: string): Editor | null {
+  useEffect(() => {
+    if (lessonId) void storage.loadLesson(lessonId);
+  }, [lessonId]);
+
   return useEditor({
     extensions: [
       StarterKit.configure({ link: { openOnClick: false } }),

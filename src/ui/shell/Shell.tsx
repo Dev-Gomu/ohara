@@ -16,6 +16,7 @@ import { OptionsWindow } from './OptionsWindow';
 import { Palette } from './Palette';
 import { PromptWindow } from './PromptWindow';
 import { ReminderWindow } from './ReminderWindow';
+import { storage } from '../study/study';
 import styles from './Shell.module.css';
 
 const SCREEN_VIEWS: Readonly<Record<Screen, ComponentType>> = {
@@ -44,6 +45,11 @@ export function Shell() {
   const View = SCREEN_VIEWS[screen];
 
   useEffect(startKeyboard, []);
+
+  // D25: trocar de tela grava o que estiver na fila.
+  useEffect(() => {
+    void storage.flush();
+  }, [screen]);
 
   useLayoutEffect(() => {
     const field = document.querySelector<HTMLElement>(`[data-block="${focus.block}"] [data-field]`);

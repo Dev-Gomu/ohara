@@ -7,7 +7,7 @@ const selecionado = (page: Page, id: string) =>
   page.locator(`[data-block="${id}"] [data-sel="true"]`);
 
 test.beforeEach(async ({ page }) => {
-  await page.goto('./');
+  await page.goto('./?exemplo');
   await expect(bloco(page)).toHaveText('hub.agenda');
 });
 
