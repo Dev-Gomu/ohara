@@ -70,4 +70,3 @@ Feita em Opus, no mesmo branch. Também corrigido: Alt M ampliava só até a met
 5. **Alt 2** (Mesa). Com o cursor nas Anotações, aperte **Alt N**: abre um cartão no bloco Cartões. Digite a frente, Enter, o verso; teste `# Seção`, `- item`, `+ a favor`, `-- contra`, `? dúvida`, `**negrito**` e `==destaque==`. A prévia ao lado mostra o cartão pronto.
 6. **Alt N** de novo abre outro cartão. Deixe este sem verso e aperte **Ctrl Enter**: salva o completo, o incompleto fica no editor. Toque em "Salvos" para ver a lista.
 7. **Alt M** no bloco Cartões: ele ocupa a tela inteira. Alt M de novo volta.
-8. No celular (ou janela estreita): cada tela mostra um bloco; a barra de baixo troca entre eles.

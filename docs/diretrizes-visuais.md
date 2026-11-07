@@ -158,7 +158,7 @@ A proibição de novos blocos (`visao.md`) vale para os blocos de trabalho da **
 |---|---|---|
 | Tablet, sempre na horizontal | 1280 × 800 | **Referência.** Todo desenho nasce aqui |
 | PC | 1920 × 1200 (950 a 1150 úteis) | Os blocos crescem. Nada de novo aparece só por haver espaço |
-| Celular | Consulta | Um bloco por vez, com troca por barra inferior. Sem mosaico. Régua e busca (blocos sem título) ficam sempre à vista (D79) |
+| Celular | **Fora de foco** (usuário, 07/11/2026) | Fica o que já existe (D79: um bloco por vez, barra inferior). Não desenhar, conferir nem corrigir para celular |
 
 ## 5. Padrões de layout
 
