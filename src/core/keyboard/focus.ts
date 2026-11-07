@@ -24,6 +24,8 @@ export interface BlockSpec {
   resets?: readonly string[];
   // Na régua de filtro, Enter segue para o conteúdo filtrado.
   enterGoesTo?: string;
+  // Mantém o item do destino: no calendário, o dia escolhido não volta ao primeiro.
+  enterKeepsItem?: boolean;
 }
 
 export interface FocusLayout {
@@ -44,6 +46,7 @@ export type TouchTarget =
 export type FocusChange =
   | KeyAction
   | { type: 'touch'; target: TouchTarget }
+  | { type: 'openWindow'; window: WindowId }
   | { type: 'jump'; block: string; level: Level; items?: Readonly<Record<string, number>> };
 
 export function overlayOf(state: FocusState): Overlay {
@@ -64,16 +67,13 @@ function innerLevel(block: string, layout: FocusLayout): Level {
 function enter(state: FocusState, layout: FocusLayout): FocusState {
   if (state.level === 'menu') return { ...state, level: 'block' };
   if (state.level === 'block') return { ...state, level: innerLevel(state.block, layout) };
-  const target = specOf(layout, state.block).enterGoesTo;
+  const spec = specOf(layout, state.block);
+  const target = spec.enterGoesTo;
   if (state.level !== 'nav' || target === undefined) return state;
   const count = specOf(layout, target).nav?.count ?? 0;
   if (count === 0) return state;
-  return {
-    ...state,
-    block: target,
-    level: innerLevel(target, layout),
-    items: { ...state.items, [target]: 0 },
-  };
+  const items = spec.enterKeepsItem ? state.items : { ...state.items, [target]: 0 };
+  return { ...state, block: target, level: innerLevel(target, layout), items };
 }
 
 // D72: da subtela, Esc no nível bloco volta à tela-mãe antes de subir à barra de telas.
@@ -181,6 +181,8 @@ export function reduceFocus(
       return cycleBlock(state, -1, layout);
     case 'openHelp':
       return { ...state, window: 'help' };
+    case 'openWindow':
+      return { ...state, window: change.window };
     case 'openPalette':
       return { ...state, window: 'palette' };
     case 'quickReminder':

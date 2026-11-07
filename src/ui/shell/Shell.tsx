@@ -7,7 +7,10 @@ import { useKeyboardState } from '../keyboard/store';
 import { Mesa } from '../screens/mesa/Mesa';
 import { Acervo } from '../screens/acervo/Acervo';
 import { Hub } from '../screens/hub/Hub';
-import { Agenda, Configs, Treino } from '../screens/stubs';
+import { Agenda } from '../screens/agenda/Agenda';
+import { Configs } from '../screens/configs/Configs';
+import { Treino } from '../screens/treino/Treino';
+import { ConsultWindows } from './ConsultWindows';
 import { HelpWindow } from './HelpWindow';
 import { OptionsWindow } from './OptionsWindow';
 import { Palette } from './Palette';
@@ -71,6 +74,7 @@ export function Shell() {
       <Palette />
       <ReminderWindow />
       <OptionsWindow />
+      <ConsultWindows />
     </>
   );
 }

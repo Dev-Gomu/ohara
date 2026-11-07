@@ -136,7 +136,7 @@ Aqui "Notas" são as do boletim (média, pesos, itens), **não** as Anotações.
 | D68 | **Fontes servidas pelo próprio app** (arquivos woff2 no build, sem CDN do Google), só com os pesos da D67 | Funciona offline no PWA (D02 e D57), e a licença OFL permite | Decidida |
 | D75 | **Cores de matéria:** acrescentar amarelo `#F2C14E`, ciano `#35C7D1` e cinza-lavanda `#A7AEC4` às 5 atuais, para 8 matérias. As três novas dão 7,8:1 a 10,3:1 com a tinta; o roxo atual dá 5:1 | Roxo forte e roxo quase não se diferenciam. Medido em `diretrizes-visuais.md` 6.1 | Decidida (usuário, 07/11/2026) |
 | D76 | **Filtro inicial da matéria:** abre no bimestre mais recente com aulas, não em "Todas" | Leva direto à aula atual; "Todas" continua na régua | Decidida (usuário, 07/11/2026) |
-| D77 | **Teclas do Treino:** Espaço vira o cartão; 1 a 4 respondem (Errei, Difícil, Bom, Fácil). Entram em `teclado.md` na Etapa 6 | Mãos ficam no teclado durante a revisão | Decidida (usuário, 07/11/2026) |
+| D77 | **Teclas do Treino:** Espaço vira o cartão; 1 a 4 respondem (Errei, Difícil, Bom, Fácil). Em `teclado.md` | Mãos ficam no teclado durante a revisão | Decidida (usuário, 07/11/2026) |
 | D78 | **Alt N:** deixa de ser "Cartão novo" e passa a ser "novo item no bloco em foco" (cartão, lembrete ou aula, conforme o bloco). Substitui a linha "Alt N" de `teclado.md` | Uma tecla de criar serve a todos os blocos, sem tecla por tipo | Decidida (usuário, 07/11/2026) |
 | D70 | **Dois tipos de campo:** texto (setas e Enter são do texto, D19) e navegável (lista, régua, grade: setas e H J K L andam entre itens, Enter faz a ação principal). Amplia a D19 | Régua e lista não tinham nível próprio. Detalhe em `diretrizes-visuais.md` 2.2 | Decidida (delegada pelo usuário em 07/11/2026) |
 | D71 | **Regras das setas:** cada controle usa um eixo; a seta do outro eixo e a seta na borda saem para o vizinho; segurar a tecla não atravessa a borda; controle interno não dá a volta | Liga régua, lista e prévia sem subir de nível. Complementa a D64 | Decidida (delegada pelo usuário em 07/11/2026) |
@@ -150,7 +150,6 @@ Aqui "Notas" são as do boletim (média, pesos, itens), **não** as Anotações.
 
 | Item | Quando |
 |---|---|
-| Atualizar `teclado.md` com D77 (Treino) | Etapa 6, junto do checkpoint de atalhos |
 | D33: conta Dropbox | Etapa 12, se o teste favorecer |
 | D37: Argon2 ou PBKDF2 | Etapa 13 |
 | D44: otimizador do FSRS no navegador | Etapa 11 |

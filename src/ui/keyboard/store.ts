@@ -131,7 +131,7 @@ function runScreenAction(change: FocusChange, layout: FocusLayout): boolean {
     goToScreen(change.screen);
     return true;
   }
-  if (change.type !== 'touch' && change.type !== 'jump') {
+  if (change.type !== 'touch' && change.type !== 'jump' && change.type !== 'openWindow') {
     const handler = registration.actions?.[change.type];
     if (handler && handler(change) !== false) return true;
   }

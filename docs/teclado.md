@@ -59,6 +59,12 @@ Esta é a tabela de atalhos que a Etapa 2 implementa. Cada linha vira um teste (
 | Alt [ · Alt Page Up | Página anterior |
 | Alt ] · Alt Page Down | Próxima página |
 
+### Treino (no cartão, D77)
+| Tecla | Ação |
+|---|---|
+| Espaço | Vira o cartão |
+| 1 · 2 · 3 · 4 | Errei, Difícil, Bom, Fácil |
+
 ### Editor (Anotações e Cartões)
 | Tecla | Ação |
 |---|---|
@@ -86,6 +92,10 @@ Esta é a tabela de atalhos que a Etapa 2 implementa. Cada linha vira um teste (
 - **Teclado:** Pebble Keys 2 380s, bluetooth, ABNT2.
 - **Roteiro de 5 minutos da Etapa 2 (0.2.0):** 7 de 7 passos.
 - Enter, Esc, H J K L, setas, digitação no campo, AltGr, Alt /, F1, toque no campo.
+
+## Checkpoint da Etapa 6 (07/11/2026)
+
+Tabela congelada com 75 teclas. Tecla nova, a partir daqui, precisa de motivo registrado em `decisoes.md`.
 
 ## Pendências
 

@@ -3,7 +3,8 @@ import type { BlockKind, Direction, KeyAction, Level, Screen } from './actions';
 
 // a = Alt, c = Ctrl, s = Shift
 export type Mods = '' | 'a' | 'c' | 's' | 'as' | 'ca' | 'cs';
-export type KeyGroup = 'Telas' | 'Foco e movimento' | 'Blocos' | 'Sistema' | 'Slides' | 'Editor';
+export type KeyGroup =
+  'Telas' | 'Foco e movimento' | 'Blocos' | 'Sistema' | 'Slides' | 'Treino' | 'Editor';
 
 export interface KeyRow {
   group: KeyGroup;
@@ -20,6 +21,7 @@ const ALL: readonly Level[] = ['menu', 'block', 'field', 'nav'];
 const OUTSIDE_TEXT: readonly Level[] = ['menu', 'block', 'nav'];
 const BLOCK_FIELD: readonly Level[] = ['block', 'field', 'nav'];
 const FIELD: readonly Level[] = ['field'];
+const NAV: readonly Level[] = ['nav'];
 
 const row = (
   group: KeyGroup,
@@ -64,6 +66,13 @@ const TOGGLES: readonly [string, string, BlockKind, string][] = [
 ];
 
 const HEADINGS = [1, 2, 3] as const;
+
+const GRADES = [
+  [1, 'Errei'],
+  [2, 'Difícil'],
+  [3, 'Bom'],
+  [4, 'Fácil'],
+] as const;
 
 export const KEYS: readonly KeyRow[] = [
   ...SCREEN_IDS.map((screen, i) =>
@@ -248,6 +257,11 @@ export const KEYS: readonly KeyRow[] = [
     { type: 'changePage', step: 1 },
     'Próxima página',
     true,
+  ),
+
+  row('Treino', 'Espaço', 'Space', '', NAV, { type: 'flipCard' }, 'Vira o cartão'),
+  ...GRADES.map(([grade, name]) =>
+    row('Treino', String(grade), `Digit${grade}`, '', NAV, { type: 'rateCard', grade }, name),
   ),
 
   row('Editor', 'Ctrl B', 'KeyB', 'c', FIELD, { type: 'bold' }, 'Negrito'),

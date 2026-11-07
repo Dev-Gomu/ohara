@@ -1,4 +1,4 @@
-import { addDays } from './dates';
+import { addDays, parseDay } from './dates';
 import type { Card, ClassEvent, Folder, Lesson, StudyData, Subject } from './types';
 
 const YEAR = 'ano-2';
@@ -98,7 +98,7 @@ function eventsFor(today: string, lessons: readonly Lesson[]): ClassEvent[] {
     ['imu', 'Resposta inflamatória aguda', '13:00', '15:00'],
     ['pro', 'Exame do abdome', '15:10', '17:00'],
   ];
-  return rows.map(([subjectId, title, start, end], index) => ({
+  const events = rows.map(([subjectId, title, start, end], index) => ({
     id: `ev-${index}`,
     subjectId,
     lessonId: lessonOf(title),
@@ -107,11 +107,37 @@ function eventsFor(today: string, lessons: readonly Lesson[]): ClassEvent[] {
     start,
     end,
   }));
+  return [...events, ...weekEvents(today)];
+}
+
+function weekEvents(today: string): ClassEvent[] {
+  const week: [string, string, string, string][] = [
+    ['far', 'Farmacocinética', '08:00', '10:00'],
+    ['fis', 'Fisiologia cardíaca', '10:15', '12:00'],
+    ['pat', 'Lesão celular', '14:00', '16:00'],
+  ];
+  return Array.from({ length: 41 }, (_, index) => addDays(today, index - 20))
+    .filter((date) => date !== today && ![0, 6].includes(parseDay(date).getDay()))
+    .flatMap((date) =>
+      week.map(([subjectId, title, start, end], index) => ({
+        id: `ev-${date}-${index}`,
+        subjectId,
+        lessonId: null,
+        title,
+        date,
+        start,
+        end,
+      })),
+    );
 }
 
 function cardsFor(today: string, lessons: readonly Lesson[]): Card[] {
   const main = lessons.find((item) => item.title === 'Resposta inflamatória aguda');
-  const extra = lessons.filter((item) => item.subjectId === 'imu').slice(0, 5);
+  const imu = lessons.filter((item) => item.subjectId === 'imu').slice(0, 5);
+  const firsts = ['gen', 'pro', 'far'].flatMap(
+    (id) => lessons.find((item) => item.subjectId === id) ?? [],
+  );
+  const extra = [...imu, ...firsts];
   const featured = IMU_CARDS.map(([question, answer], index) => ({
     id: `c-${index}`,
     lessonId: main?.id ?? '',

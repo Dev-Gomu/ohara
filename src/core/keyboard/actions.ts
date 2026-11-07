@@ -44,7 +44,9 @@ export type KeyAction =
   | { type: 'orderedList' }
   | { type: 'bulletList' }
   | { type: 'taskList' }
-  | { type: 'saveCards' };
+  | { type: 'saveCards' }
+  | { type: 'flipCard' }
+  | { type: 'rateCard'; grade: 1 | 2 | 3 | 4 };
 
 // "swallow" para o evento sem executar nada: a tecla é nossa, mas agora não deve agir
 // nem chegar ao navegador.

@@ -53,3 +53,12 @@ export function monthGrid(day: string): string[] {
   const total = Math.ceil(cells / 7) * 7;
   return Array.from({ length: total }, (_, index) => addDays(start, index));
 }
+
+export function weekOf(day: string): string[] {
+  const start = addDays(day, -parseDay(day).getDay());
+  return Array.from({ length: 7 }, (_, index) => addDays(start, index));
+}
+
+export function weekdayShort(day: string): string {
+  return (WEEKDAYS[parseDay(day).getDay()] ?? '').slice(0, 3);
+}

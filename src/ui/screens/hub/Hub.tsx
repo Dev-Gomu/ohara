@@ -1,14 +1,12 @@
-import { longDate } from '../../../core/study/dates';
 import { currentEventIndex, eventsOn, upcomingExams } from '../../../core/study/queries';
 import { leaf, split } from '../../../core/mosaic/tree';
-import { monthGrid } from '../../../core/study/dates';
+import { longDate, monthGrid } from '../../../core/study/dates';
 import { dispatch, getKeyboardState } from '../../keyboard/store';
 import { useBlocks } from '../../keyboard/useBlocks';
 import { Mosaic } from '../../mosaic/Mosaic';
 import { useMosaic } from '../../mosaic/useMosaic';
 import { ScreenFrame } from '../../shell/ScreenFrame';
-import { openLesson } from '../../study/navigation';
-import { setScreenMemory } from '../../study/screenMemory';
+import { openDay, openLesson } from '../../study/navigation';
 import { nowTime, storage, today, useStudy } from '../../study/study';
 import { CalendarBlock, ExamsBlock, RemindersBlock, TodayBlock } from './HubBlocks';
 
@@ -48,15 +46,18 @@ export function Hub() {
         id: EXAMS,
         kind: 'nav',
         nav: { axis: 'x', count: exams.length },
-        onActivate: () => dispatch({ type: 'goToScreen', screen: 'agenda' }),
+        onActivate: (index) => {
+          const exam = exams[index];
+          if (exam) openDay(exam.date);
+        },
       },
       {
         id: CALENDAR,
         kind: 'nav',
         nav: { axis: 'grid', count: days.length, columns: 7 },
         onActivate: (index) => {
-          setScreenMemory('agenda.dia', days[index]);
-          dispatch({ type: 'goToScreen', screen: 'agenda' });
+          const day = days[index];
+          if (day) openDay(day);
         },
       },
       {

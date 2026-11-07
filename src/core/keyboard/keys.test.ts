@@ -19,6 +19,7 @@ const LABELS_IN_DOC = [
   'Alt Shift 0',
   ...['Alt P', 'Ctrl P', 'Alt I', 'Alt /', 'F1'],
   ...['Alt [', 'Alt Page Up', 'Alt ]', 'Alt Page Down'],
+  ...['Espaço', '1', '2', '3', '4'],
   ...['B', 'I', 'U', 'K', 'E', 'M'].map((k) => `Ctrl ${k}`),
   ...['Ctrl Shift H', 'Ctrl Shift X'],
   ...['1', '2', '3'].map((n) => `Ctrl Alt ${n}`),
@@ -41,8 +42,8 @@ function pressOf(key: KeyRow): KeyInput {
 }
 
 describe('tabela de teclas', () => {
-  it('tem as 70 teclas de teclado.md', () => {
-    expect(KEYS).toHaveLength(70);
+  it('tem as 75 teclas de teclado.md', () => {
+    expect(KEYS).toHaveLength(75);
     expect(KEYS.map((key) => key.label).sort()).toEqual([...LABELS_IN_DOC].sort());
   });
 
@@ -91,6 +92,7 @@ describe('ajuda', () => {
       'Blocos',
       'Sistema',
       'Slides',
+      'Treino',
       'Editor',
     ]);
   });
