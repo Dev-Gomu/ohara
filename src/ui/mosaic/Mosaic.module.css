@@ -27,6 +27,15 @@
   z-index: 2;
 }
 
+/* Sem isto, o bloco ampliado cobre só a coluna dele, não o mosaico inteiro. */
+.mosaico[data-ampliado] .divisao {
+  position: static;
+}
+
+.mosaico[data-ampliado] .divisa {
+  display: none;
+}
+
 .folha[hidden] {
   display: none;
 }
@@ -63,16 +72,25 @@
 
 @media (max-width: 767px) {
   .mosaico {
-    height: auto;
-  }
-
-  .divisao {
+    height: 100%;
     display: flex;
     flex-direction: column;
   }
 
+  .divisao {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+  }
+
+  /* Só o bloco da vez aparece: some a folha e a divisão que não o contêm. */
+  .divisao:not(:has([data-celular='visivel'])),
+  .folha:not(:has(> [data-celular='visivel'])) {
+    display: none;
+  }
+
   .folha {
-    min-height: 320px;
+    flex: 1;
   }
 
   .divisa {

@@ -76,7 +76,7 @@ export function Configs() {
             ))}
           </div>
         </Block>
-        <Block id={DETAIL} title={section?.name}>
+        <Block id={DETAIL} title={section?.name} label="Detalhe">
           <div className={styles.lista}>
             {rows.map((row, position) => (
               <NavItem

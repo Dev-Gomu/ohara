@@ -43,7 +43,7 @@ Esta é a tabela de atalhos que a Etapa 2 implementa. Cada linha vira um teste (
 | Alt O | Opções (⋮) do bloco |
 | Alt T · Alt F · Alt B | Vai à barra de cima · ao campo · à barra de baixo |
 | Alt , · Alt . | Controle anterior e próximo na barra |
-| Alt N | Novo item no bloco em foco (D78) |
+| Alt N | Novo item no bloco em foco (D78). Na Mesa, sempre um cartão novo, de qualquer bloco |
 | Alt 0 · Alt Shift 0 | Tamanhos padrão · ordem padrão |
 
 ### Sistema

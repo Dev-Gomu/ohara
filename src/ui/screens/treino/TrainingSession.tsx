@@ -1,5 +1,6 @@
 import { flip, isFinished, rate, type Grade, type Session } from '../../../core/study/session';
 import { Block } from '../../components/Block';
+import { CardBack, Inline } from '../../components/CardBack';
 import { NavItem } from '../../components/NavItem';
 import { useBlocks } from '../../keyboard/useBlocks';
 import { ScreenFrame } from '../../shell/ScreenFrame';
@@ -61,17 +62,23 @@ export function TrainingSession({ session, onChange }: TrainingSessionProps) {
         {finished ? (
           <div className={styles.cartao}>
             <p className={styles.pergunta}>Treino concluído</p>
-            <p className={styles.resposta}>
+            <p className={styles.legenda}>
               {session.answered} cartões revisados, {session.missed} erros no caminho.
             </p>
             <NavItem block={CARD} index={0} className={styles.iniciar} ring="anel" onOpen={leave}>
-              Voltar aos baralhos <kbd className={styles.teclaBotao}>Enter</kbd>
+              Voltar à escolha <kbd className={styles.teclaBotao}>Enter</kbd>
             </NavItem>
           </div>
         ) : (
           <div className={styles.cartao}>
-            <p className={styles.pergunta}>{card?.question}</p>
-            {session.flipped && <p className={styles.resposta}>{card?.answer}</p>}
+            <p className={styles.pergunta}>
+              <Inline text={card?.question ?? ''} />
+            </p>
+            {session.flipped && (
+              <div className={styles.resposta}>
+                <CardBack back={card?.answer ?? ''} />
+              </div>
+            )}
             {session.flipped ? (
               <div className={styles.notas}>
                 {GRADES.map(([grade, label]) => (

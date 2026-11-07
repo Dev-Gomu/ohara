@@ -11,7 +11,7 @@ import styles from './Hub.module.css';
 export function ExamsBlock({ id, exams }: { id: string; exams: readonly Exam[] }) {
   const data = useStudy();
   return (
-    <Block id={id} className={styles.semFundo}>
+    <Block id={id} label="Provas" className={styles.semFundo}>
       <div className={styles.provas}>
         {exams.map((exam, index) => {
           const subject = subjectOf(data, exam.subjectId);
@@ -45,7 +45,7 @@ interface CalendarProps {
 export function CalendarBlock({ id, days, exams }: CalendarProps) {
   const month = parseDay(today).getMonth();
   return (
-    <Block id={id} title={monthName(today)} count={today.slice(0, 4)} menu>
+    <Block id={id} title={monthName(today)} label="Calendário" count={today.slice(0, 4)} menu>
       <div className={styles.calendario}>
         {WEEK.map((day, index) => (
           <span key={index} className={styles.semana}>

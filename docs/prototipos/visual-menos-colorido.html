@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Conforto visual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&family=Nunito:wght@800&display=swap" rel="stylesheet">
+<style>
+/* Protótipo isolado: não usa nem altera src/. Rodada 3: tema claro, mesmo layout do app novo. */
+:root { --fonte-voz: 'Nunito', system-ui, sans-serif; --fonte-interface: 'Inter', system-ui, sans-serif; --vao: 8px; color-scheme: light; }
+
+/* Atual, como está no app */
+[data-v='atual'] {
+  --fundo: #ece8fb; --cartao: #fff; --cartao-2: #eae6fc; --texto: #14122b; --texto-2: #5c5878;
+  --destaque: #8872d8; --sobre-destaque: #fff; --anel: #14122b;
+  --m-gen: #fb7e5b; --m-imu: #9178e6; --m-pro: #5fa0fc; --m-aps: #00c386; --m-far: #e879c0; --m-fis: #f2c14e; --m-pat: #35c7d1; --m-bio: #a7aec4;
+}
+
+/* Proposta: as mesmas oito cores do app, mas usadas em duas doses.
+   --sup: superfície (cor diluída no papel), --tin: tinta (cor escurecida, para número e sigla). */
+[data-v='nova'] {
+  --fundo: #f2f1f6;      /* papel levemente frio: menos ofuscante que branco puro */
+  --cartao: #fcfcfd;
+  --cartao-2: #ecebf2;
+  --texto: #25233a;      /* nunca preto puro */
+  --texto-2: #6a6880;
+  --destaque: #7a66d4; --sobre-destaque: #fff; --anel: #25233a;
+  --m-gen: #ee8a68; --m-imu: #9a86e4; --m-pro: #6aa2ee; --m-aps: #3cb98c; --m-far: #e08cc0; --m-fis: #e6b850; --m-pat: #4bbcc4; --m-bio: #a4aac0;
+  --forca: 26%;
+}
+[data-v='nova'] .m {
+  --sup: color-mix(in oklab, var(--m) var(--forca), var(--cartao));
+  --sup-forte: color-mix(in oklab, var(--m) calc(var(--forca) * 1.7), var(--cartao));
+  --tin: color-mix(in oklab, var(--m) 62%, #2a2340);
+}
+
+* { box-sizing: border-box; margin: 0; }
+body { background: #dedde4; font: 500 14px/20px var(--fonte-interface); color: #25233a; }
+
+.controles { display: flex; flex-wrap: wrap; gap: 12px 28px; align-items: center; padding: 16px; max-width: 1280px; margin: 0 auto; }
+.grupo { display: flex; gap: 4px; align-items: center; flex-wrap: wrap; }
+.grupo > span { font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; margin-right: 6px; opacity: .7; }
+.grupo button { font: 600 14px var(--fonte-interface); border: 0; border-radius: 999px; padding: 8px 14px; min-height: 40px; cursor: pointer; background: rgb(127 127 127 / 16%); color: inherit; }
+.grupo button[aria-pressed='true'] { background: #25233a; color: #fff; }
+.grupo input { width: 180px; accent-color: #7a66d4; }
+.grupo output { font: 700 13px var(--fonte-interface); width: 72px; }
+.nota { max-width: 1280px; margin: 0 auto; padding: 0 16px 12px; font-size: 14px; opacity: .85; }
+
+.app { max-width: 1280px; margin: 0 auto 32px; background: var(--fundo); color: var(--texto); border-radius: 16px; padding: 8px; min-height: 740px; display: flex; flex-direction: column; gap: var(--vao); overflow: hidden; }
+.topo { display: flex; align-items: center; gap: 6px; height: 48px; padding: 0 4px; }
+.num { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; font: 700 13px var(--fonte-interface); background: var(--cartao); color: var(--texto-2); }
+.num.atual { background: var(--destaque); color: var(--sobre-destaque); }
+.titulo-tela { font: 800 20px var(--fonte-voz); text-transform: uppercase; margin-left: 10px; }
+.selo { margin-left: auto; font: 600 12px var(--fonte-interface); background: var(--cartao); color: var(--texto-2); padding: 6px 12px; border-radius: 999px; }
+
+.bloco { background: var(--cartao); border-radius: 24px; padding: 14px 18px; position: relative; min-width: 0; }
+.bloco.ativo { outline: 3px solid var(--anel); outline-offset: 3px; }
+.rotulo { font: 700 12px var(--fonte-interface); text-transform: uppercase; letter-spacing: .06em; color: var(--texto-2); margin-bottom: 10px; }
+.apoio { font: 500 13px var(--fonte-interface); color: var(--texto-2); }
+.sigla { font: 700 11.5px/16px var(--fonte-interface); padding: 2px 8px; border-radius: 999px; }
+
+/* Hub */
+.provas { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--vao); }
+.prova { min-height: 150px; display: flex; flex-direction: column; justify-content: space-between; }
+.grande { font: 800 60px/52px var(--fonte-voz); }
+.grande small { font: 600 14px var(--fonte-interface); margin-left: 4px; color: var(--texto-2); }
+.materia { font: 800 16px/20px var(--fonte-voz); text-transform: uppercase; }
+.hub-baixo { display: grid; grid-template-columns: 1fr 1.3fr 1fr; gap: var(--vao); flex: 1; }
+.cal { display: grid; grid-template-columns: repeat(7, 1fr); grid-auto-rows: 38px; align-items: center; justify-items: center; gap: 2px; font: 600 13px var(--fonte-interface); }
+.cal b { color: var(--texto-2); font-size: 11px; }
+.cal i { font-style: normal; width: 34px; height: 34px; display: grid; place-items: center; border-radius: 50%; }
+.cal i.fora { color: var(--texto-2); opacity: .45; }
+.cal i.hoje { background: var(--destaque); color: var(--sobre-destaque); }
+.itens { display: flex; flex-direction: column; gap: 6px; }
+.item { display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 6px 12px; border-radius: 18px; }
+.hora { font: 600 12px var(--fonte-interface); color: var(--texto-2); width: 80px; }
+.item .meio { flex: 1; min-width: 0; }
+.item .nome { font: 800 15px var(--fonte-voz); text-transform: uppercase; }
+.lembrete { display: flex; gap: 10px; align-items: flex-start; padding: 8px 4px; font-size: 14px; }
+.circ { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--texto-2); flex: none; margin-top: 1px; }
+.botao { margin-top: auto; background: var(--texto); color: var(--cartao); border-radius: 18px; padding: 12px; text-align: center; font: 700 14px var(--fonte-interface); }
+.coluna { display: flex; flex-direction: column; }
+
+/* Acervo */
+.acervo-topo { display: flex; gap: var(--vao); }
+.anos { display: flex; gap: 6px; align-items: center; flex: 1; padding: 8px; }
+.ano { padding: 8px 14px; border-radius: 16px; background: var(--cartao-2); font: 700 13px var(--fonte-interface); }
+.ano small { display: block; font: 500 11px var(--fonte-interface); color: var(--texto-2); }
+.busca { width: 300px; color: var(--texto-2); display: flex; align-items: center; }
+.grade { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 1fr; gap: var(--vao); flex: 1; }
+.mat { display: flex; flex-direction: column; justify-content: space-between; min-height: 230px; }
+.mat .grande { font: 800 48px/44px var(--fonte-voz); }
+.mat .nome { font: 800 17px/20px var(--fonte-voz); text-transform: uppercase; }
+
+/* ----- Atual: cor cheia, texto quase preto ----- */
+[data-v='atual'] .prova, [data-v='atual'] .mat { background: var(--m); color: #101d1b; }
+[data-v='atual'] .prova .apoio, [data-v='atual'] .prova small, [data-v='atual'] .mat .apoio, [data-v='atual'] .mat small { color: #101d1b; opacity: .8; }
+[data-v='atual'] .sigla { background: var(--m); color: #101d1b; }
+[data-v='atual'] .mat .sigla { background: #101d1b; color: #fff; }
+[data-v='atual'] .item.sel { background: #6d28d9; color: #fff; }
+[data-v='atual'] .item.sel .hora, [data-v='atual'] .item.sel .apoio { color: #fff; }
+[data-v='atual'] .ano.sel { background: #6d28d9; color: #fff; }
+[data-v='atual'] .ano.sel small { color: #fff; }
+[data-v='atual'] .cal i.dia-prova { background: var(--cartao-2); }
+
+/* ----- Proposta: cor diluída na superfície, tinta escura da mesma cor ----- */
+[data-v='nova'] .prova, [data-v='nova'] .mat { background: var(--sup); }
+[data-v='nova'] .prova .grande, [data-v='nova'] .mat .grande { color: var(--tin); }
+[data-v='nova'] .materia, [data-v='nova'] .mat .nome { color: var(--texto); }
+[data-v='nova'] .sigla { background: var(--sup-forte); color: var(--tin); }
+[data-v='nova'] .mat .sigla { background: var(--cartao); color: var(--tin); }
+[data-v='nova'] .item { background: transparent; }
+[data-v='nova'] .item .nome { color: var(--tin); }
+[data-v='nova'] .item.sel { background: var(--sup); }
+[data-v='nova'] .ano.sel { background: color-mix(in oklab, var(--destaque) 22%, var(--cartao)); color: var(--texto); }
+[data-v='nova'] .cal i.dia-prova { background: var(--sup-forte); color: var(--tin); }
+[data-v='nova'] .mat.vazia { background: var(--cartao); }
+[data-v='nova'] .mat.vazia .grande { color: var(--texto-2); }
+
+@media (max-width: 800px) {
+  .provas, .grade { grid-template-columns: repeat(2, 1fr); }
+  .hub-baixo { grid-template-columns: 1fr; }
+  .acervo-topo { flex-direction: column; }
+  .busca { width: auto; }
+  .titulo-tela { display: none; }
+}
+</style>
+</head>
+<body>
+<div class="controles">
+  <div class="grupo" id="g-v"><span>Versão</span><button data-val="atual">Atual</button><button data-val="nova">Proposta</button></div>
+  <div class="grupo" id="g-tela"><span>Tela</span><button data-val="hub">Hub</button><button data-val="acervo">Acervo</button></div>
+  <div class="grupo" id="g-forca"><span>Quanta cor</span><input type="range" min="10" max="50" step="2" id="forca"><output id="forca-txt"></output></div>
+</div>
+<p class="nota" id="nota"></p>
+<div class="app" id="app"></div>
+
+<script>
+const M = {
+  GEN: ['Genética', '--m-gen'], IMU: ['Imunologia', '--m-imu'], PRO: ['Propedêutica', '--m-pro'], APS: ['Atenção primária', '--m-aps'],
+  FAR: ['Farmacologia', '--m-far'], FIS: ['Fisiologia', '--m-fis'], PAT: ['Patologia geral e bases moleculares da doença', '--m-pat'], BIO: ['Bioética', '--m-bio'],
+};
+const cor = s => `style="--m: var(${M[s][1]})"`;
+const notas = {
+  atual: 'Como está hoje: cada cor ocupa o cartão inteiro, viva, com texto quase preto por cima.',
+  nova: 'Mesmo layout e mesmas oito cores. A cor entra diluída no fundo do cartão e escurecida no número e na sigla, então o olho não leva choque. O papel é cinza-lilás bem claro, o texto é grafite e o roxo fica só para o que é seu agora. Use “Quanta cor” para achar o ponto.',
+};
+const provas = [['GEN', 7, '14 nov, 08:00'], ['IMU', 11, '18 nov, 10:00'], ['PRO', 14, '21 nov, 13:30'], ['APS', 20, '27 nov, 08:00']];
+const diaProva = { 14: 'GEN', 18: 'IMU', 21: 'PRO', 27: 'APS' };
+const hoje = [['08:00–09:30', 'GEN', 'Expressão gênica'], ['10:00–11:30', 'APS', 'Territorialização'], ['13:30–15:00', 'IMU', 'Resposta inflamatória aguda'], ['15:10–17:00', 'PRO', 'Exame do abdome']];
+const materias = [['GEN', 3, '07 nov'], ['IMU', 9, '06 nov'], ['PRO', 2, '05 nov'], ['APS', 1, '04 nov'], ['FAR', 2, '03 nov'], ['FIS', 42, '02 nov'], ['PAT', 1, '01 nov'], ['BIO', 0, null]];
+
+const topo = (n, t) => `<div class="topo">${[1,2,3,4,5,6].map(i => `<span class="num ${i===n?'atual':''}">${i}</span>`).join('')}<span class="titulo-tela">${t}</span><span class="selo">Dados de exemplo</span></div>`;
+
+function hub() {
+  const dias = []; for (let d = 26; d <= 31; d++) dias.push(`<i class="fora">${d}</i>`);
+  for (let d = 1; d <= 30; d++) dias.push(diaProva[d] ? `<i class="dia-prova m" ${cor(diaProva[d])}>${d}</i>` : `<i class="${d===7?'hoje':''}">${d}</i>`);
+  return topo(1, 'Sábado, 7 de novembro') + `
+  <div class="provas">${provas.map(([s, n, q]) => `<div class="bloco prova m" ${cor(s)}>
+    <div class="grande">${n}<small>dias</small></div><div><div class="materia">${M[s][0]}</div><div class="apoio">${q}</div></div></div>`).join('')}</div>
+  <div class="hub-baixo">
+    <div class="bloco"><div class="rotulo">Novembro 2026</div><div class="cal">${'DSTQQSS'.split('').map(l=>`<b>${l}</b>`).join('')}${dias.join('')}</div></div>
+    <div class="bloco ativo"><div class="rotulo">Agenda de hoje</div><div class="itens">${hoje.map(([h, s, t], i) => `
+      <div class="item m ${i===2?'sel':''}" ${cor(s)}><span class="hora">${h}</span><div class="meio"><div class="nome">${M[s][0]}</div><div class="apoio">${t}</div></div><span class="sigla">${s}</span></div>`).join('')}</div></div>
+    <div class="bloco coluna"><div class="rotulo">Lembretes</div>
+      <div class="lembrete"><span class="circ"></span>Levar o jaleco para a Propedêutica.</div>
+      <div class="lembrete"><span class="circ"></span>Revisar IL-6 e TNF-α antes da prova de Imunologia.</div>
+      <div class="lembrete"><span class="circ"></span>Confirmar a sala do laboratório de Genética.</div>
+      <div class="botao">Novo lembrete</div></div>
+  </div>`;
+}
+
+function acervo() {
+  return topo(3, 'Acervo') + `
+  <div class="acervo-topo">
+    <div class="bloco anos"><div class="ano">1º ano<small>arquivado</small></div><div class="ano sel">2º ano<small>8 matérias</small></div><div class="ano">3º ano<small>0 matérias</small></div><div class="ano">+ Nova matéria</div></div>
+    <div class="bloco busca">Buscar matéria, aula ou cartão</div>
+  </div>
+  <div class="grade">${materias.map(([s, n, ult], i) => `
+    <div class="bloco mat m ${n===0?'vazia':''} ${i===0?'ativo':''}" ${cor(s)}>
+      <span class="sigla" style="align-self:flex-start">${s}</span>
+      <div class="grande">${n}<small>${n===1?'aula':'aulas'}</small></div>
+      <div><div class="nome">${M[s][0]}</div><div class="apoio">${ult ? 'Último acesso: ' + ult : 'Nenhuma aula ainda'}</div></div>
+    </div>`).join('')}</div>`;
+}
+
+const estado = { v: 'nova', tela: 'hub', forca: 26 };
+try { Object.assign(estado, JSON.parse(localStorage.getItem('prototipo-cor-3') || '{}')); } catch {}
+const faixa = f => f <= 16 ? 'pouca' : f <= 30 ? 'média' : f <= 40 ? 'bastante' : 'muita';
+
+function desenhar() {
+  const app = document.getElementById('app');
+  app.dataset.v = estado.v;
+  app.style.setProperty('--forca', estado.forca + '%');
+  app.innerHTML = estado.tela === 'hub' ? hub() : acervo();
+  document.getElementById('nota').textContent = notas[estado.v];
+  document.getElementById('forca').value = estado.forca;
+  document.getElementById('forca-txt').textContent = faixa(estado.forca);
+  document.getElementById('g-forca').style.opacity = estado.v === 'nova' ? 1 : .35;
+  for (const [g, k] of [['g-v', 'v'], ['g-tela', 'tela']])
+    document.querySelectorAll(`#${g} button`).forEach(b => b.setAttribute('aria-pressed', String(b.dataset.val === estado[k])));
+  try { localStorage.setItem('prototipo-cor-3', JSON.stringify(estado)); } catch {}
+}
+for (const [g, k] of [['g-v', 'v'], ['g-tela', 'tela']])
+  document.getElementById(g).addEventListener('click', e => { const b = e.target.closest('button'); if (b) { estado[k] = b.dataset.val; desenhar(); } });
+document.getElementById('forca').addEventListener('input', e => { estado.forca = Number(e.target.value); desenhar(); });
+desenhar();
+</script>
+</body>
+</html>

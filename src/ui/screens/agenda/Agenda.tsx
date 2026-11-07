@@ -145,7 +145,7 @@ export function Agenda() {
         <Block id={AGENDA_VIEWS} className={styles.regua}>
           <Ruler block={AGENDA_VIEWS} items={VIEWS} />
         </Block>
-        <Block id={content} className={styles.conteudo}>
+        <Block id={content} label="Dias" className={styles.conteudo}>
           <div className={styles[['semana', 'mes', 'lista', 'grade'][view] ?? 'semana']}>
             {days.map((item, index) => (
               <NavItem
@@ -166,6 +166,7 @@ export function Agenda() {
         </Block>
         <Block
           id={DAY}
+          label="Dia"
           title={onGrade ? WEEKDAY_NAMES[dayIndex] : longDate(day)}
           count={String(items.length)}
           shortcut="Alt N"

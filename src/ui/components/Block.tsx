@@ -1,10 +1,16 @@
-import type { ReactNode } from 'react';
+import { createContext, useContext, type ReactNode } from 'react';
 import { dispatch, useKeyboardState } from '../keyboard/store';
 import styles from './Block.module.css';
+
+// Bloco que o celular mostra agora. As telas maiores ignoram (D79).
+export const PhoneBlock = createContext('');
 
 interface BlockProps {
   id: string;
   title?: string;
+  // Nome na barra do celular, quando o título muda ou falta. Sem título nem rótulo, o bloco
+  // é régua ou busca e fica sempre à vista no celular.
+  label?: string;
   count?: string;
   shortcut?: string;
   tools?: ReactNode;
@@ -14,8 +20,12 @@ interface BlockProps {
 }
 
 export function Block(props: BlockProps) {
-  const { id, title, count, shortcut, tools, menu, className, children } = props;
+  const { id, title, label, count, shortcut, tools, menu, className, children } = props;
   const { focus } = useKeyboardState();
+  const phone = useContext(PhoneBlock);
+  const page = label ?? title;
+  const shown =
+    page === undefined ? undefined : phone === '' || phone === id ? 'visivel' : 'oculto';
   const here = focus.block === id;
   const onBlock = here && focus.level === 'block';
   const inside = here && (focus.level === 'field' || focus.level === 'nav');
@@ -24,6 +34,8 @@ export function Block(props: BlockProps) {
       className={`${styles.bloco} ${onBlock ? 'anel' : ''} ${className ?? ''}`}
       data-block={id}
       data-foco={onBlock ? 'bloco' : inside ? 'dentro' : undefined}
+      data-pagina={page}
+      data-celular={shown}
       aria-label={title}
     >
       {title !== undefined && (

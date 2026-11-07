@@ -19,14 +19,14 @@ Visão do dia. Título: data de hoje.
 Trabalho em uma aula. Título: nome da aula, data e sigla.
 - **Slides:** páginas do PDF. Alt [ e Alt ] passam a página de qualquer bloco.
 - **Anotações:** texto com títulos, listas, marca-texto e histórico de versões.
-- **Cartões:** lista dos cartões da aula. Alt N cria.
+- **Cartões:** abas **Novo** e **Salvos**. Novo é o editor do app antigo: `@ frente` abre um cartão e as linhas de baixo são o verso (`#` seção, `-` item, `1.` número, `+` a favor, `--` contra, `?` dúvida, `**negrito**`, `==destaque==`), com prévia ao lado. Alt N abre um cartão novo de qualquer bloco da Mesa; Ctrl Enter salva os completos e deixa os incompletos no editor. Salvos lista os da aula (editar e excluir ficam para depois).
 - Arranjo lembrado por aula e por aparelho. Sem aula atual, abre a última aula usada.
 
 ## 3. Acervo (Alt 3)
 Biblioteca. **Início:** régua de anos e grade de matérias (cor, sigla, nome, aulas, último acesso); ano arquivado é só consulta. **Matéria aberta:** régua de pastas (Todas, bimestres, Sem bimestre, Nova pasta), lista de aulas por data e prévia da aula. Abas Aulas e Cartões dentro da matéria. Busca por matéria, aula ou cartão com Alt F.
 
 ## 4. Treino (Alt 4)
-Revisão com repetição espaçada. Lista de baralhos com cartões vencidos e novos. Em sessão: cartão ampliado, Espaço vira, 1 a 4 respondem (Errei, Difícil, Bom, Fácil), progresso à vista. Fim de sessão com resumo.
+Revisão com repetição espaçada. **Escolha:** régua de matérias (Todas ou uma), lista do que treinar (tudo, bimestres e, na matéria, cada aula, com marcar várias) e resumo com Iniciar; a escolha fica lembrada e o foco nasce em Iniciar. Sem cartão vencido, Iniciar vira "Adiantar". Em sessão: cartão ampliado, Espaço vira, 1 a 4 respondem (Errei, Difícil, Bom, Fácil), progresso à vista. Fim de sessão com resumo.
 
 ## 5. Agenda (Alt 5)
 Régua de visão (Semana, Mês, Lista), grade de horários, provas, trabalhos, compromissos e lembretes. Porta de entrada das Notas, que chegam na Etapa 13.

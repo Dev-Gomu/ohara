@@ -1,8 +1,13 @@
-.colunas {
+.escolha {
   height: 100%;
   display: grid;
   grid-template-columns: minmax(0, 1fr) 420px;
+  grid-template-rows: auto minmax(0, 1fr);
   gap: var(--vao-mosaico);
+}
+
+.regua {
+  grid-column: 1 / -1;
 }
 
 .lista {
@@ -15,45 +20,63 @@
   overflow: auto;
 }
 
-.baralho {
+.linha {
   display: grid;
   flex: none;
-  grid-template-columns: 64px minmax(0, 1fr) auto;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
   gap: var(--e3);
-  min-height: 64px;
+  min-height: 56px;
   padding: 6px var(--e3);
   border-radius: var(--raio-item);
   text-align: left;
 }
 
-.baralho[data-sel='true'] {
+/* O cursor da lista não comanda nada: só aparece com o bloco ativo (diretriz 3.2). */
+[data-foco] .linha[data-sel='true'] {
   background: var(--cor-marca);
 }
 
-.sigla {
-  justify-self: start;
-  padding: 4px 11px;
-  border-radius: var(--raio-pilula);
-  background: var(--cor-materia);
-  color: var(--cor-tinta);
+.marca {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--cor-texto-2);
+  border-radius: var(--raio-minimo);
   font: var(--ui-sigla);
 }
 
-.nome {
+.marca[aria-checked='true'] {
+  border-color: var(--cor-botao);
+  background: var(--cor-botao);
+  color: var(--cor-sobre-botao);
+}
+
+.marca[data-tipo='lesson'] {
+  margin-left: var(--e5);
+}
+
+.rotulo {
   overflow: hidden;
-  font: var(--voz-item);
+  font: var(--ui-item);
   text-overflow: ellipsis;
-  text-transform: uppercase;
   white-space: nowrap;
 }
 
-.vencidos {
-  color: var(--cor-texto-2);
+.rotulo[data-tipo='all'],
+.rotulo[data-tipo='folder'] {
+  font: var(--voz-mini);
 }
 
-.baralho[data-sel='true'] .vencidos {
+.contagem {
+  color: var(--cor-texto-2);
+  font: var(--ui-apoio);
+}
+
+.recorte {
   color: var(--cor-texto);
+  font: var(--ui-item);
 }
 
 .resumo {
@@ -117,8 +140,11 @@
 }
 
 .resposta {
+  width: 100%;
   max-width: var(--texto-max);
-  font: var(--leitura-resposta);
+  padding: var(--e4) var(--e5);
+  border-radius: var(--raio-item);
+  background: var(--cor-cartao-2);
 }
 
 .notas {
@@ -158,9 +184,9 @@
 }
 
 @media (max-width: 767px) {
-  .colunas {
-    height: auto;
-    grid-template-columns: minmax(0, 1fr);
+  .escolha {
+    display: flex;
+    flex-direction: column;
   }
 
   .notas {

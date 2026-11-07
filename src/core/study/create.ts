@@ -1,4 +1,6 @@
+import type { Draft } from './cardText';
 import type {
+  Card,
   ClassEvent,
   EventKind,
   Exam,
@@ -78,4 +80,22 @@ export function addEvent(
 ): StudyData {
   const event: ClassEvent = { id, kind, subjectId: '', lessonId: null, title, date, start, end };
   return { ...data, events: [...data.events, event] };
+}
+
+// Cartão novo entra vencido hoje: aparece no Treino do mesmo dia.
+export function addCards(
+  data: StudyData,
+  lessonId: string,
+  drafts: readonly Draft[],
+  ids: readonly string[],
+  today: string,
+): StudyData {
+  const cards: Card[] = drafts.map((draft, index) => ({
+    id: ids[index] ?? `${lessonId}-${data.cards.length + index}`,
+    lessonId,
+    question: draft.front,
+    answer: draft.back,
+    due: today,
+  }));
+  return { ...data, cards: [...data.cards, ...cards] };
 }

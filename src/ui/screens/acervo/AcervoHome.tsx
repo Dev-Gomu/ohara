@@ -186,7 +186,7 @@ export function AcervoHome({ onOpen }: { onOpen: (id: string) => void }) {
             </div>
           </Block>
         ) : (
-          <Block id={SUBJECTS} className={`${styles.semFundo} ${styles.largo}`}>
+          <Block id={SUBJECTS} label="Matérias" className={`${styles.semFundo} ${styles.largo}`}>
             <div className={styles.grade}>
               {subjects.length === 0 && <p className={styles.vazio}>Nenhuma matéria neste ano.</p>}
               {subjects.map((subject, index) => (

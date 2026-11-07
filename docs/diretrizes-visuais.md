@@ -158,7 +158,7 @@ A proibição de novos blocos (`visao.md`) vale para os blocos de trabalho da **
 |---|---|---|
 | Tablet, sempre na horizontal | 1280 × 800 | **Referência.** Todo desenho nasce aqui |
 | PC | 1920 × 1200 (950 a 1150 úteis) | Os blocos crescem. Nada de novo aparece só por haver espaço |
-| Celular | Consulta | Um bloco por vez, com troca por barra inferior. Sem mosaico |
+| Celular | Consulta | Um bloco por vez, com troca por barra inferior. Sem mosaico. Régua e busca (blocos sem título) ficam sempre à vista (D79) |
 
 ## 5. Padrões de layout
 
@@ -187,7 +187,7 @@ Mapa de foco de cada tela. O detalhe funcional fica em `telas.md`, quando existi
 | **Mesa** | Mosaico | Slides, Anotações, Cartões | Cursor nas Anotações da aula atual | Escrever |
 | **Acervo, início** | Régua + grade | Anos, Matérias | Grade, na última matéria aberta | Abre a matéria |
 | **Acervo, matéria** | Régua + lista + prévia | Pastas, Aulas, Prévia | Régua, na última pasta usada | Régua: entra nas aulas. Aula: abre na Mesa |
-| **Treino** | Lista + foco único | Baralhos, depois o cartão ampliado | Primeiro baralho com cartões vencidos | Inicia a sessão |
+| **Treino** | Régua + lista + foco único | Matérias, O que treinar, Resumo; depois o cartão ampliado | Iniciar, com a última escolha | Lista: marca ou desmarca. Iniciar: começa a sessão |
 | **Agenda** | Régua + conteúdo | Visão (Semana, Mês, Lista, Grade), Conteúdo, Dia, Lembretes | Hoje, na Semana | Abre o item |
 | **Configs** | Lista + prévia | Seções, Detalhe | Última seção | Entra na seção |
 

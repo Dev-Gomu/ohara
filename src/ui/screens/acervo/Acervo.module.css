@@ -252,9 +252,8 @@
 @media (max-width: 767px) {
   .inicio,
   .materiaAberta {
-    height: auto;
-    grid-template-rows: none;
-    grid-template-columns: minmax(0, 1fr);
+    display: flex;
+    flex-direction: column;
   }
 
   .grade {

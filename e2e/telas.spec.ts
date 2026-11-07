@@ -89,7 +89,7 @@ test('Alt I cria um lembrete que aparece no Hub', async ({ page }) => {
 
 test('Treino: Espaço vira, número responde, Errei volta para a fila', async ({ page }) => {
   await page.keyboard.press('Alt+Digit4');
-  await expect(bloco(page)).toHaveText('treino.baralhos');
+  await expect(bloco(page)).toHaveText('treino.resumo');
   await page.keyboard.press('Enter');
   await expect(bloco(page)).toHaveText('treino.cartao');
   const antes = await page.locator('[data-block="treino.cartao"] p').first().textContent();
@@ -102,7 +102,40 @@ test('Treino: Espaço vira, número responde, Errei volta para a fila', async ({
   await expect(page.getByText(/^1 de/)).toBeVisible();
   await page.keyboard.press('Escape');
   await page.keyboard.press('Escape');
-  await expect(bloco(page)).toHaveText('treino.baralhos');
+  await expect(bloco(page)).toHaveText('treino.resumo');
+});
+
+test('Treino: escolher uma aula só treina os cartões dela', async ({ page }) => {
+  await page.keyboard.press('Alt+Digit4');
+  await page.keyboard.press('ArrowUp');
+  await expect(bloco(page)).toHaveText('treino.materias');
+  await page.keyboard.press('ArrowRight');
+  await page.keyboard.press('ArrowRight');
+  await page.keyboard.press('Enter');
+  await expect(bloco(page)).toHaveText('treino.escolha');
+  for (let step = 0; step < 9; step += 1) await page.keyboard.press('ArrowDown');
+  await page.keyboard.press('Enter');
+  const resumo = page.locator('[data-block="treino.resumo"]');
+  await expect(resumo).toContainText('Imunologia · 1 aula');
+  await page.keyboard.press('ArrowRight');
+  await page.keyboard.press('Enter');
+  await expect(page.getByText(/^0 de 6$/)).toBeVisible();
+});
+
+test('Mesa: Alt N abre um cartão, Ctrl Enter salva os completos', async ({ page }) => {
+  await page.keyboard.press('Alt+Digit2');
+  await page.keyboard.press('Alt+KeyN');
+  await expect(bloco(page)).toHaveText('mesa.cards');
+  await page.keyboard.type('Quem libera IL-6?');
+  await page.keyboard.press('Enter');
+  await page.keyboard.type('Macrófago');
+  await page.keyboard.press('Alt+KeyN');
+  await page.keyboard.type('Sem verso ainda');
+  await page.keyboard.press('Control+Enter');
+  const cartoes = page.locator('[data-block="mesa.cards"]');
+  await expect(cartoes).toContainText('1 cartão salvo');
+  await expect(cartoes.getByRole('button', { name: 'Salvos 7' })).toBeVisible();
+  await expect(cartoes.locator('textarea')).toHaveValue('@ Sem verso ainda');
 });
 
 test('Agenda: a régua troca a visão e o dia comanda o painel', async ({ page }) => {

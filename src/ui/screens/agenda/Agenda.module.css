@@ -161,13 +161,8 @@
 
 @media (max-width: 767px) {
   .agenda {
-    height: auto;
-    grid-template-rows: none;
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .conteudo {
-    grid-row: auto;
+    display: flex;
+    flex-direction: column;
   }
 
   .semana,

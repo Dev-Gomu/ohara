@@ -59,14 +59,27 @@ test('Alt H J K L andam pelos blocos e mantêm a profundidade', async ({ page })
   await expect(bloco(page)).toHaveText('mesa.notes');
 });
 
-test('nos Cartões, setas andam na grade e saem pela borda', async ({ page }) => {
+test('nos Cartões, Enter entra no editor e Esc volta ao bloco', async ({ page }) => {
+  await page.keyboard.press('Alt+KeyH');
+  await page.keyboard.press('Alt+KeyJ');
+  await expect(bloco(page)).toHaveText('mesa.cards');
+  await page.keyboard.press('Enter');
+  await expect(page.locator('[data-block="mesa.cards"] textarea')).toBeFocused();
+  await page.keyboard.press('Escape');
+  await expect(nivel(page)).toHaveText('bloco');
+});
+
+test('nos Cartões salvos, setas andam na grade e saem pela borda', async ({ page }) => {
+  await page.keyboard.press('Alt+KeyH');
+  await page.keyboard.press('Alt+KeyJ');
+  await page.getByRole('button', { name: /^Salvos/ }).click();
   await page.keyboard.press('Alt+KeyH');
   await page.keyboard.press('Alt+KeyJ');
   await expect(bloco(page)).toHaveText('mesa.cards');
   await page.keyboard.press('Enter');
   await expect(nivel(page)).toHaveText('campo navegável');
   await page.keyboard.press('ArrowRight');
-  await expect(page.locator('[data-block="mesa.cards"] [data-sel="true"]')).toContainText('PCR');
+  await expect(page.locator('[data-block="mesa.cards"] [data-nav-index][data-sel="true"]')).toContainText('PCR');
   await page.keyboard.press('ArrowRight');
   await expect(bloco(page)).toHaveText('mesa.notes');
   await expect(anotacoes(page)).toBeFocused();

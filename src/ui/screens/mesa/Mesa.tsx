@@ -2,8 +2,7 @@ import { leaf, leaves, split } from '../../../core/mosaic/tree';
 import { currentEventIndex, eventsOn, subjectOf } from '../../../core/study/queries';
 import type { StudyData } from '../../../core/study/types';
 import { Block } from '../../components/Block';
-import { NavItem } from '../../components/NavItem';
-import { dispatch } from '../../keyboard/store';
+import { dispatch, getKeyboardState } from '../../keyboard/store';
 import { useBlocks } from '../../keyboard/useBlocks';
 import { Mosaic } from '../../mosaic/Mosaic';
 import { useMosaic } from '../../mosaic/useMosaic';
@@ -11,6 +10,7 @@ import { ScreenFrame } from '../../shell/ScreenFrame';
 import { MESA_LESSON } from '../../study/navigation';
 import { useScreenMemory } from '../../study/screenMemory';
 import { nowTime, today, useStudy } from '../../study/study';
+import { CardsBlock, useCardsEditor } from './CardsBlock';
 import styles from './Mesa.module.css';
 import { HistoryWindow, NotesBlock } from './NotesBlock';
 import { editorActions, useNotesEditor } from './useNotesEditor';
@@ -26,8 +26,6 @@ const TOGGLES = [
   { id: NOTES, label: 'Anotações', keys: 'Alt A' },
   { id: CARDS, label: 'Cartões', keys: 'Alt C' },
 ];
-
-const CARD_COLORS = ['roxo', 'rosa', 'azul', 'verde'];
 
 function defaultLesson(data: StudyData): string {
   const events = eventsOn(data, today);
@@ -50,16 +48,20 @@ function LessonDesk({ data, lessonId }: { data: StudyData; lessonId: string }) {
   const [page, setPage] = useScreenMemory(`mesa.pagina.${lessonId}`, 1);
 
   const editor = useNotesEditor(lessonId, lesson?.notes ?? '');
+  const cardsEditor = useCardsEditor(CARDS, lessonId);
+  const inCards = () => getKeyboardState().focus.block === CARDS;
 
   useBlocks({
     blocks: [
       { id: SLIDES, kind: 'none' as const },
       { id: NOTES, kind: 'text' as const },
-      {
-        id: CARDS,
-        kind: 'nav' as const,
-        nav: { axis: 'grid' as const, count: cards.length, columns: 2 },
-      },
+      cardsEditor.mode === 'novo'
+        ? { id: CARDS, kind: 'text' as const }
+        : {
+            id: CARDS,
+            kind: 'nav' as const,
+            nav: { axis: 'grid' as const, count: cards.length, columns: 2 },
+          },
     ].filter((block) => mosaic.isOpen(block.id)),
     arrival: mosaic.isOpen(NOTES)
       ? { block: NOTES, level: 'field' }
@@ -75,10 +77,30 @@ function LessonDesk({ data, lessonId }: { data: StudyData; lessonId: string }) {
             },
           ]
         : []),
+      ...(block === CARDS
+        ? [
+            cardsEditor.mode === 'novo'
+              ? {
+                  id: 'salvos',
+                  label: 'Ver cartões salvos',
+                  run: () => cardsEditor.setMode('salvos'),
+                }
+              : { id: 'novo', label: 'Escrever cartões', run: cardsEditor.newCard },
+          ]
+        : []),
     ],
     actions: {
       ...mosaic.actions,
       ...editorActions(editor, page),
+      saveCards: () => {
+        if (!inCards()) return false;
+        cardsEditor.save();
+      },
+      // Na Mesa, o único item novo é o cartão: Alt N cria de qualquer bloco, sem largar a aula.
+      newItem: () => {
+        if (!mosaic.isOpen(CARDS)) mosaic.toggle(CARDS);
+        cardsEditor.newCard();
+      },
       changePage: (change) => {
         if (change.type !== 'changePage') return false;
         setPage(Math.min(pages, Math.max(1, page + change.step)));
@@ -99,25 +121,7 @@ function LessonDesk({ data, lessonId }: { data: StudyData; lessonId: string }) {
     if (id === NOTES) {
       return <NotesBlock id={id} editor={editor} />;
     }
-    return (
-      <Block id={id} title="Cartões" count={`${cards.length} nesta aula`} shortcut="Alt C" menu>
-        <div className={styles.cartoes}>
-          {cards.length === 0 && <p className={styles.vazio}>Sem cartões nesta aula.</p>}
-          {cards.map(({ id: cardId, question, answer }, index) => (
-            <NavItem
-              key={cardId}
-              block={id}
-              index={index}
-              className={styles.cartao}
-              color={CARD_COLORS[index % CARD_COLORS.length]}
-            >
-              <span className={styles.pergunta}>{question}</span>
-              <span className={styles.resposta}>{answer}</span>
-            </NavItem>
-          ))}
-        </div>
-      </Block>
-    );
+    return <CardsBlock id={id} cards={cards} editor={cardsEditor} />;
   }
 
   return (

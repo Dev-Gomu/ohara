@@ -1,0 +1,58 @@
+.verso {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e1);
+  font: var(--leitura-texto);
+  text-align: left;
+}
+
+.verso[data-compacto='true'] {
+  font: var(--leitura-compacta);
+}
+
+.linha {
+  display: flex;
+  gap: var(--e2);
+}
+
+.linha[data-tipo='section'] {
+  margin-top: var(--e1);
+  color: var(--cor-texto-2);
+  font: var(--ui-rotulo);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.linha:first-child[data-tipo='section'] {
+  margin-top: 0;
+}
+
+.linha:is(
+  [data-tipo='item'],
+  [data-tipo='number'],
+  [data-tipo='pro'],
+  [data-tipo='con'],
+  [data-tipo='doubt']
+) {
+  padding-left: var(--e2);
+}
+
+.marca {
+  flex: none;
+  min-width: 1.1em;
+  color: var(--cor-texto-2);
+  font-weight: 700;
+}
+
+.linha[data-tipo='pro'] .marca,
+.linha[data-tipo='con'] .marca,
+.linha[data-tipo='doubt'] .marca {
+  color: var(--cor-texto);
+}
+
+.destaque {
+  padding: 0 2px;
+  border-radius: 4px;
+  background: var(--cor-marca);
+  color: inherit;
+}

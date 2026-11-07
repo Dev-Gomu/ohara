@@ -54,6 +54,10 @@
   min-width: 0;
 }
 
+.barraCelular {
+  display: none;
+}
+
 .aviso {
   padding: 4px 11px;
   border-radius: var(--raio-pilula);
@@ -63,14 +67,49 @@
   white-space: nowrap;
 }
 
-/* Celular é consulta: a barra rola por dentro, e o conteúdo vira uma coluna. */
+/* Celular é consulta: um bloco por vez, com a barra de blocos embaixo (D79). */
 @media (max-width: 767px) {
+  .tela {
+    grid-template-rows: var(--barra-topo) minmax(0, 1fr) auto;
+  }
+
   .topo {
     overflow-x: auto;
     scrollbar-width: none;
   }
 
   .corpo {
+    display: flex;
+    flex-direction: column;
     overflow: auto;
+  }
+
+  .corpo > * {
+    flex: 1;
+  }
+
+  .barraCelular {
+    display: flex;
+    gap: var(--e1);
+    padding: var(--e1);
+    border-radius: var(--raio-pilula);
+    background: var(--cor-cartao);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .paginaCelular {
+    flex: 1 0 auto;
+    min-height: var(--alvo);
+    padding: 0 var(--e3);
+    border-radius: var(--raio-pilula);
+    color: var(--cor-texto-2);
+    font: var(--ui-botao);
+    white-space: nowrap;
+  }
+
+  .paginaCelular[data-sel='true'] {
+    background: var(--cor-marca);
+    color: var(--cor-texto);
   }
 }

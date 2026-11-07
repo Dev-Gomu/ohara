@@ -54,7 +54,7 @@
 
 @media (max-width: 767px) {
   .colunas {
-    height: auto;
-    grid-template-columns: minmax(0, 1fr);
+    display: flex;
+    flex-direction: column;
   }
 }

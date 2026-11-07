@@ -64,3 +64,14 @@
   font: var(--ui-tecla);
   white-space: nowrap;
 }
+
+@media (max-width: 767px) {
+  .bloco[data-celular='oculto'] {
+    display: none;
+  }
+
+  .bloco[data-celular='visivel'] {
+    flex: 1;
+    min-height: 320px;
+  }
+}
