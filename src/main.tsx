@@ -17,9 +17,11 @@ import { setStorage, storage, today } from './ui/study/study';
 import './ui/styles/fonts.css';
 import './ui/styles/tokens.css';
 import './ui/styles/base.css';
-import { applyTheme } from './ui/theme';
+import './ui/styles/paletas.css';
+import { applyPalette, applyTheme } from './ui/theme';
 
 applyTheme();
+applyPalette();
 
 const container = document.getElementById('root');
 if (!container) throw new Error('Elemento #root não encontrado');

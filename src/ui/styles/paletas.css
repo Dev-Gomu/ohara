@@ -1,0 +1,86 @@
+/* Paletas de teste (sem cores quentes). A original fica sem atributo; Configs e ?paleta=a|b trocam.
+   Os nomes das variáveis de cor de matéria (laranja, rosa...) ficam: só os valores mudam. */
+
+/* A: Azul-gelo. Fundo azulado frio, acento azul, matérias em azuis, violetas e verdes-água. */
+:root[data-paleta='a'] {
+  --cor-destaque: #86a8ee;
+  --cor-destaque-forte: #6f95e6;
+  --cor-tinta: #0f1a24;
+  --cor-sobre-tinta: #f2f6fb;
+  --cor-laranja: #6fcbb5;
+  --cor-azul: #b394ea;
+  --cor-verde: #6ec3dc;
+  --cor-rosa: #8ccf9f;
+  --cor-amarelo: #9b9aea;
+  --cor-ciano: #9fb0c8;
+  --cor-cinza-lavanda: #84b4cc;
+  --cor-fundo: #e9eef5;
+  --cor-cartao: #ffffff;
+  --cor-cartao-2: #e1e8f1;
+  --cor-texto: #121a2b;
+  --cor-texto-2: #4f5d74;
+  --cor-botao: #121a2b;
+  --cor-sobre-botao: #f2f6fb;
+  --cor-marca: #cfdcf3;
+  --cor-foco: #121a2b;
+  --cor-bloco-ativo: #3f6fd6;
+  --cor-nota-titulo: #121a2b;
+  --cor-veu: rgb(18 26 43 / 40%);
+}
+
+:root[data-paleta='a'][data-tema='escuro'] {
+  --cor-fundo: #0b111c;
+  --cor-cartao: #131b2a;
+  --cor-cartao-2: #1d2738;
+  --cor-texto: #eaf0fa;
+  --cor-texto-2: #9fb0c8;
+  --cor-botao: #eaf0fa;
+  --cor-sobre-botao: #0b111c;
+  --cor-marca: #2e4a85;
+  --cor-foco: #eaf0fa;
+  --cor-bloco-ativo: #7ea6ea;
+  --cor-nota-titulo: #7ea6ea;
+  --cor-veu: rgb(11 17 28 / 60%);
+}
+
+/* B: Cinza-índigo. Fundo cinza frio quase neutro, acento índigo, matérias em tons de joia frios. */
+:root[data-paleta='b'] {
+  --cor-destaque: #a094ec;
+  --cor-destaque-forte: #8f82e2;
+  --cor-tinta: #12141f;
+  --cor-sobre-tinta: #f4f4fb;
+  --cor-laranja: #6f8fe0;
+  --cor-azul: #5bbdc4;
+  --cor-verde: #66b89a;
+  --cor-rosa: #8d9db5;
+  --cor-amarelo: #7b83d6;
+  --cor-ciano: #82cbe0;
+  --cor-cinza-lavanda: #a9a4e0;
+  --cor-fundo: #f0f2f6;
+  --cor-cartao: #ffffff;
+  --cor-cartao-2: #e6e9f0;
+  --cor-texto: #161826;
+  --cor-texto-2: #575c70;
+  --cor-botao: #161826;
+  --cor-sobre-botao: #f4f4fb;
+  --cor-marca: #d9d6f4;
+  --cor-foco: #161826;
+  --cor-bloco-ativo: #6558c9;
+  --cor-nota-titulo: #161826;
+  --cor-veu: rgb(22 24 38 / 40%);
+}
+
+:root[data-paleta='b'][data-tema='escuro'] {
+  --cor-fundo: #0e0f16;
+  --cor-cartao: #171923;
+  --cor-cartao-2: #222432;
+  --cor-texto: #eeeefa;
+  --cor-texto-2: #a2a4bd;
+  --cor-botao: #eeeefa;
+  --cor-sobre-botao: #0e0f16;
+  --cor-marca: #4a4590;
+  --cor-foco: #eeeefa;
+  --cor-bloco-ativo: #9a8ff0;
+  --cor-nota-titulo: #9a8ff0;
+  --cor-veu: rgb(14 15 22 / 60%);
+}

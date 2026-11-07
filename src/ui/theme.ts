@@ -31,3 +31,49 @@ export function toggleTheme(): void {
     // Vale só até fechar o app.
   }
 }
+
+// Paletas de teste: 'original' não põe atributo. ?paleta=a|b|original escolhe e fica guardada.
+export type Palette = 'original' | 'a' | 'b';
+
+const PALETTES: readonly Palette[] = ['original', 'a', 'b'];
+const PALETTE_KEY = prefixed('paleta');
+
+export const PALETTE_NAMES: Readonly<Record<Palette, string>> = {
+  original: 'Original',
+  a: 'A · Azul-gelo',
+  b: 'B · Cinza-índigo',
+};
+
+function asPalette(value: string | null): Palette | null {
+  return PALETTES.find((item) => item === value) ?? null;
+}
+
+function storedPalette(): Palette {
+  try {
+    return asPalette(localStorage.getItem(PALETTE_KEY)) ?? 'original';
+  } catch {
+    return 'original';
+  }
+}
+
+export function currentPalette(): Palette {
+  return asPalette(document.documentElement.dataset.paleta ?? 'original') ?? 'original';
+}
+
+export function applyPalette(palette?: Palette): void {
+  const fromUrl = asPalette(new URLSearchParams(window.location.search).get('paleta'));
+  const chosen = palette ?? fromUrl ?? storedPalette();
+  if (chosen === 'original') delete document.documentElement.dataset.paleta;
+  else document.documentElement.dataset.paleta = chosen;
+  try {
+    localStorage.setItem(PALETTE_KEY, chosen);
+  } catch {
+    // Sem armazenamento, a escolha vale só até recarregar.
+  }
+}
+
+export function cyclePalette(): Palette {
+  const next = PALETTES[(PALETTES.indexOf(currentPalette()) + 1) % PALETTES.length] ?? 'original';
+  applyPalette(next);
+  return next;
+}

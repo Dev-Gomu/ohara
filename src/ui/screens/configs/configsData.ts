@@ -7,7 +7,7 @@ import { downloadBytes } from '../../study/download';
 import { showNotice } from '../../study/notice';
 import { ask } from '../../shell/PromptWindow';
 import { storage } from '../../study/study';
-import { toggleTheme } from '../../theme';
+import { currentPalette, cyclePalette, PALETTE_NAMES, toggleTheme } from '../../theme';
 
 export interface Row {
   label: string;
@@ -95,6 +95,11 @@ export function buildSections(diag: Diagnostics | null): readonly Section[] {
       name: 'Aparência',
       rows: [
         { label: 'Trocar tema', detail: 'Claro ou escuro, neste aparelho.', run: toggleTheme },
+        {
+          label: 'Trocar paleta de cores',
+          detail: `Original, A (azul-gelo) ou B (cinza-índigo). Agora: ${PALETTE_NAMES[currentPalette()]}.`,
+          run: () => showNotice(`Paleta: ${PALETTE_NAMES[cyclePalette()]}.`),
+        },
       ],
     },
     {
