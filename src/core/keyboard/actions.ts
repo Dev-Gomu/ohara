@@ -30,6 +30,7 @@ export type KeyAction =
   | { type: 'defaultOrder' }
   | { type: 'openPalette' }
   | { type: 'quickReminder' }
+  | { type: 'undo' }
   | { type: 'openHelp' }
   | { type: 'changePage'; step: -1 | 1 }
   | { type: 'bold' }

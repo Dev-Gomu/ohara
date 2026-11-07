@@ -7,12 +7,13 @@ import { useBlocks } from '../../keyboard/useBlocks';
 import { Mosaic } from '../../mosaic/Mosaic';
 import { useMosaic } from '../../mosaic/useMosaic';
 import { ScreenFrame } from '../../shell/ScreenFrame';
+import { cardOptions } from '../../study/editOptions';
 import { MESA_LESSON } from '../../study/navigation';
 import { useScreenMemory } from '../../study/screenMemory';
 import { nowTime, today, useStudy } from '../../study/study';
 import { CardsBlock, useCardsEditor } from './CardsBlock';
 import styles from './Mesa.module.css';
-import { HistoryWindow, NotesBlock } from './NotesBlock';
+import { focusToolbar, HistoryWindow, NotesBlock, stepToolbar } from './NotesBlock';
 import { editorActions, useNotesEditor } from './useNotesEditor';
 
 const SLIDES = 'mesa.slides';
@@ -50,6 +51,7 @@ function LessonDesk({ data, lessonId }: { data: StudyData; lessonId: string }) {
   const editor = useNotesEditor(lessonId, lesson?.notes ?? '');
   const cardsEditor = useCardsEditor(CARDS, lessonId);
   const inCards = () => getKeyboardState().focus.block === CARDS;
+  const inNotes = () => getKeyboardState().focus.block === NOTES;
 
   useBlocks({
     blocks: [
@@ -77,6 +79,9 @@ function LessonDesk({ data, lessonId }: { data: StudyData; lessonId: string }) {
             },
           ]
         : []),
+      ...(block === CARDS && cardsEditor.mode === 'salvos'
+        ? cardOptions(cards[getKeyboardState().focus.items[CARDS] ?? 0])
+        : []),
       ...(block === CARDS
         ? [
             cardsEditor.mode === 'novo'
@@ -101,6 +106,11 @@ function LessonDesk({ data, lessonId }: { data: StudyData; lessonId: string }) {
         if (!mosaic.isOpen(CARDS)) mosaic.toggle(CARDS);
         cardsEditor.newCard();
       },
+      // A única barra das Anotações é a de formatação, embaixo: Alt T e Alt B levam a ela.
+      goToTopBar: () => inNotes() && focusToolbar(),
+      goToBottomBar: () => inNotes() && focusToolbar(),
+      previousControl: () => stepToolbar(-1),
+      nextControl: () => stepToolbar(1),
       changePage: (change) => {
         if (change.type !== 'changePage') return false;
         setPage(Math.min(pages, Math.max(1, page + change.step)));

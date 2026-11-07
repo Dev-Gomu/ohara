@@ -1,6 +1,7 @@
 import { shortDate } from '../../../core/study/dates';
 import { lessonsOf } from '../../../core/study/queries';
 import { addSubject } from '../../../core/study/create';
+import { removeSubject, renameSubject } from '../../../core/study/edit';
 import { search, type SearchResult } from '../../../core/study/search';
 import type { StudyData, Subject } from '../../../core/study/types';
 import { Block } from '../../components/Block';
@@ -12,6 +13,7 @@ import { ask } from '../../shell/PromptWindow';
 import { ScreenFrame } from '../../shell/ScreenFrame';
 import { openLesson } from '../../study/navigation';
 import { useScreenMemory } from '../../study/screenMemory';
+import { removeWithUndo } from '../../study/undo';
 import { storage, useStudy } from '../../study/study';
 import styles from './Acervo.module.css';
 
@@ -63,6 +65,33 @@ function askSubject(yearId: string) {
       if (name) storage.write((data) => addSubject(data, crypto.randomUUID(), yearId, name));
     },
   });
+}
+
+function subjectOptions(subject: Subject | undefined) {
+  if (!subject) return [];
+  return [
+    {
+      id: 'renomear',
+      label: 'Renomear matéria',
+      run: () =>
+        ask({
+          title: 'Renomear matéria',
+          action: 'Salvar',
+          fields: [{ id: 'name', label: 'Nome', value: subject.name }],
+          onSubmit: ({ name }) => {
+            if (name) storage.write((data) => renameSubject(data, subject.id, name.trim()));
+          },
+        }),
+    },
+    {
+      id: 'excluir',
+      label: 'Excluir matéria',
+      run: () =>
+        removeWithUndo(`Matéria "${subject.name}" excluída.`, (data) =>
+          removeSubject(data, subject.id),
+        ),
+    },
+  ];
 }
 
 export function AcervoHome({ onOpen }: { onOpen: (id: string) => void }) {
@@ -117,6 +146,10 @@ export function AcervoHome({ onOpen }: { onOpen: (id: string) => void }) {
           },
     ],
     arrival: { block: content, level: 'nav', items: { [YEARS]: chosen } },
+    options: (block) =>
+      block === SUBJECTS
+        ? subjectOptions(subjects[getKeyboardState().focus.items[SUBJECTS] ?? 0])
+        : [],
     actions: {
       newItem: newSubject,
       goToField: () => dispatch({ type: 'jump', block: SEARCH, level: 'field' }),
@@ -186,7 +219,12 @@ export function AcervoHome({ onOpen }: { onOpen: (id: string) => void }) {
             </div>
           </Block>
         ) : (
-          <Block id={SUBJECTS} label="Matérias" className={`${styles.semFundo} ${styles.largo}`}>
+          <Block
+            id={SUBJECTS}
+            label="Matérias"
+            menu
+            className={`${styles.semFundo} ${styles.largo}`}
+          >
             <div className={styles.grade}>
               {subjects.length === 0 && <p className={styles.vazio}>Nenhuma matéria neste ano.</p>}
               {subjects.map((subject, index) => (

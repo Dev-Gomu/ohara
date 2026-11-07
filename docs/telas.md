@@ -19,7 +19,7 @@ Visão do dia. Título: data de hoje.
 Trabalho em uma aula. Título: nome da aula, data e sigla.
 - **Slides:** páginas do PDF. Alt [ e Alt ] passam a página de qualquer bloco.
 - **Anotações:** texto com títulos, listas, marca-texto e histórico de versões.
-- **Cartões:** abas **Novo** e **Salvos**. Novo é o editor do app antigo: `@ frente` abre um cartão e as linhas de baixo são o verso (`#` seção, `-` item, `1.` número, `+` a favor, `--` contra, `?` dúvida, `**negrito**`, `==destaque==`), com prévia ao lado. Alt N abre um cartão novo de qualquer bloco da Mesa; Ctrl Enter salva os completos e deixa os incompletos no editor. Salvos lista os da aula (editar e excluir ficam para depois).
+- **Cartões:** abas **Novo** e **Salvos**. Novo é o editor do app antigo: `@ frente` abre um cartão e as linhas de baixo são o verso (`#` seção, `-` item, `1.` número, `+` a favor, `--` contra, `?` dúvida, `**negrito**`, `==destaque==`), com prévia ao lado. Alt N abre um cartão novo de qualquer bloco da Mesa; Ctrl Enter salva os completos e deixa os incompletos no editor. Salvos lista os da aula; Alt O edita ou exclui o selecionado.
 - Arranjo lembrado por aula e por aparelho. Sem aula atual, abre a última aula usada.
 
 ## 3. Acervo (Alt 3)

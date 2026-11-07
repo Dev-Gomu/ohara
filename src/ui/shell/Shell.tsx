@@ -15,6 +15,7 @@ import { HelpWindow } from './HelpWindow';
 import { OptionsWindow } from './OptionsWindow';
 import { Palette } from './Palette';
 import { PromptWindow } from './PromptWindow';
+import { UndoBar } from './UndoBar';
 import { ReminderWindow } from './ReminderWindow';
 import { storage } from '../study/study';
 import styles from './Shell.module.css';
@@ -83,6 +84,7 @@ export function Shell() {
       <OptionsWindow />
       <ConsultWindows />
       <PromptWindow />
+      <UndoBar />
     </>
   );
 }

@@ -20,6 +20,7 @@ import { ask } from '../../shell/PromptWindow';
 import { ScreenFrame } from '../../shell/ScreenFrame';
 import { openLesson } from '../../study/navigation';
 import { useScreenMemory } from '../../study/screenMemory';
+import { cardOptions, folderOptions, lessonOptions } from '../../study/editOptions';
 import { storage, today, useStudy } from '../../study/study';
 import styles from './Acervo.module.css';
 
@@ -115,6 +116,13 @@ export function SubjectView({ subjectId, onBack }: SubjectViewProps) {
       items: { [FOLDERS]: initialTabIndex(tabs, data, subjectId), [LESSONS]: 0 },
     },
     back: onBack,
+    options: (block) => {
+      if (block === FOLDERS) {
+        return folderOptions(data.folders.find((item) => item.id === tab));
+      }
+      if (block === LESSONS) return showCards ? cardOptions(card) : lessonOptions(lesson);
+      return [];
+    },
     actions: {
       toggleBlock: (change) => {
         if (change.type !== 'toggleBlock' || change.block !== 'cards') return false;
@@ -168,6 +176,7 @@ export function SubjectView({ subjectId, onBack }: SubjectViewProps) {
           title={showCards ? 'Cartões' : 'Aulas'}
           count={String(count)}
           shortcut="Alt N"
+          menu
         >
           <div className={styles.lista}>
             {count === 0 && (

@@ -44,10 +44,8 @@ Lista curta do que foi **adiado ou ainda não decidido**. O que está no plano d
 - 2026-11-05: **B09 Importar o backup .zip do app antigo** (matérias, aulas, anotações, cartões, provas) para o app novo, sem migrar código. Só depois da Fase B.
 - 2026-11-05: Ideias que sobraram do legado, sem decisão: cloze nos cartões, suspender cartão, estudar só uma prova, limite de novos por dia, pomodoro, paleta de comandos no gerenciador de cartões, escolha do ícone de atalhos (o "?" do legado não agradou).
 - 2026-11-05: Manter o app antigo no ar até o novo ter tudo o que o usuário usa.
-- 2026-11-07: **Barra do bloco por teclado:** Alt T, Alt B, Alt , e Alt . existem na tabela, mas ainda não movem o foco para a barra de formatação.
-- 2026-11-07: **Renomear e excluir** matéria, pasta e aula, com Lixeira. Não entrou nas telas da Etapa 8.
 - 2026-11-07: **Agenda (Etapa 9, regras em `regras.md`):** Mover e Sem aula na Prévia, aula avulsa, inverter quinzenal, editar a Grade pelo cronograma, prova só com a matéria, campos de prova (bimestre, conteúdo, local, observação), atrasados no topo da Lista, importar .ics como atalho da Grade.
 - 2026-11-07: **Cores mais confortáveis** (tema claro primeiro). Três protótipos recusados em `docs/prototipos/visual-menos-colorido.html`; retomar depois das telas.
-- 2026-11-07: **Cartões salvos:** editar e excluir na aba Salvos da Mesa e no Acervo. Hoje só se veem.
 - 2026-11-07: **Importar banco** (restaurar o `.sqlite3` exportado) e **busca FTS** do SQLite quando a busca em memória ficar lenta. Fora da Etapa 7.
 - 2026-11-07: **Anotar sobre o PDF** e **busca dentro do PDF**. Fora da Etapa 10.
+- 2026-11-07: **Lixeira visível:** hoje o que se exclui some da tela e fica marcado no banco (`deleted = 1`), com Desfazer por 10 s (Alt Z). Falta uma tela para ver e restaurar depois disso. Também falta o ⋮ por toque na régua de pastas (hoje só Alt O).

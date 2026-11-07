@@ -10,6 +10,7 @@ import {
   type FocusState,
 } from '../../core/keyboard/focus';
 import { KEYS } from '../../core/keyboard/keys';
+import { runUndo } from '../study/undo';
 import type { Rect } from '../../core/keyboard/neighbor';
 
 export interface UiBlock extends BlockSpec {
@@ -152,6 +153,10 @@ function runScreenAction(change: FocusChange, layout: FocusLayout): boolean {
 }
 
 export function dispatch(change: FocusChange, repeat = false): void {
+  if (change.type === 'undo') {
+    runUndo();
+    return;
+  }
   document.documentElement.dataset.entrada = change.type === 'touch' ? 'toque' : 'teclado';
   const layout = readLayout();
   const lastAction = describeChange(change);

@@ -83,3 +83,15 @@ Os dados agora ficam no SQLite (OPFS, em Worker); as telas não mudaram. `?exemp
 5. Abra o app numa segunda aba: aparece "já está aberto em outra aba".
 6. **Alt 6**, desça até Backup, Enter, Enter: baixa um `.sqlite3`.
 7. **Alt 6**, desça até Sobre: "Armazenamento persistente" mostra sim ou não.
+
+## Pendências pequenas (07/11/2026, Sonnet)
+
+Renomear e excluir matéria, pasta, aula e cartão; Alt T, Alt B, Alt , e Alt . na barra de formatação (D92, D93). Sem teste do usuário.
+
+**Roteiro de 5 minutos**
+1. `npm run dev`, abra http://localhost:5173/ohara/?exemplo (dados de exemplo).
+2. **Alt 3**, **Alt O**: "Renomear matéria", digite outro nome, Enter.
+3. **Alt O** de novo, "Excluir matéria": aparece o aviso embaixo. **Alt Z** traz a matéria de volta.
+4. Entre numa matéria (Enter), desça às aulas (↓), **Alt O**: "Editar aula" ou "Excluir aula". **Alt C** mostra os cartões, e Alt O edita ou exclui o cartão.
+5. Na régua de pastas (← →), **Alt O**: renomear ou excluir a pasta. As aulas ficam em "Sem bimestre".
+6. **Alt 2**: selecione um trecho das Anotações, **Alt B** foca a barra, **Alt .** anda, **Enter** aplica.

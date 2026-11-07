@@ -8,7 +8,7 @@ export interface PromptField {
   id: string;
   label: string;
   value?: string;
-  type?: 'text' | 'date' | 'time';
+  type?: 'text' | 'date' | 'time' | 'area';
   options?: readonly { value: string; label: string }[];
 }
 
@@ -57,6 +57,14 @@ function Form({ prompt }: { prompt: Prompt }) {
                 </option>
               ))}
             </select>
+          ) : field.type === 'area' ? (
+            <textarea
+              className={`${styles.entrada} ${styles.area}`}
+              autoFocus={index === 0}
+              rows={5}
+              value={values[field.id] ?? ''}
+              onChange={(event) => setValues({ ...values, [field.id]: event.target.value })}
+            />
           ) : (
             <input
               className={styles.entrada}
