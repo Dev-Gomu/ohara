@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import {
   blocksOf,
+  cancelDay,
+  reopenDay,
   markOccurrence,
   pastOccurrences,
   presenceOf,
@@ -133,5 +135,30 @@ describe('marcar a aula', () => {
       kind: 'cancelada',
     });
     expect(markOccurrence(cancelada, found, { kind: 'presente' }, 'x').attendance).toEqual([]);
+  });
+});
+
+describe('feriado', () => {
+  const data = dataWith([
+    slot('s1', '08:00', '10:00'),
+    { ...slot('s2', '10:00', '11:00'), subjectId: 'fis' },
+  ]);
+
+  it('cancela as aulas do dia em todas as matérias e é reversível', () => {
+    let id = 0;
+    const holiday = cancelDay(data, '2026-11-09', () => `r${(id += 1)}`);
+    expect(holiday.attendance.map((item) => [item.subjectId, item.cancelled])).toEqual([
+      ['imu', true],
+      ['fis', true],
+    ]);
+    expect(cancelDay(holiday, '2026-11-09', () => 'outro').attendance).toHaveLength(2);
+    expect(reopenDay(holiday, '2026-11-09').attendance).toEqual([]);
+  });
+
+  it('dia sem aula não muda nada, e falta marcada vira cancelada', () => {
+    expect(cancelDay(data, '2026-11-10', () => 'x')).toBe(data);
+    const faltou = markOccurrence(data, occ(2), { kind: 'falta', hours: 2 }, 'f1');
+    const holiday = cancelDay({ ...faltou }, '2026-11-02', () => 'novo');
+    expect(holiday.attendance.find((item) => item.subjectId === 'imu')?.cancelled).toBe(true);
   });
 });

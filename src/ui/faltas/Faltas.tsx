@@ -1,5 +1,7 @@
 import {
+  cancelDay,
   markOccurrence,
+  reopenDay,
   pastOccurrences,
   presenceOf,
   setClassesFrom,
@@ -109,6 +111,33 @@ function askSituation(item: Occurrence): void {
   });
 }
 
+function askHoliday(): void {
+  ask({
+    title: 'Feriado ou dia sem aula',
+    action: 'Aplicar',
+    fields: [
+      { id: 'data', label: 'Dia', type: 'date', value: isoDay(new Date()) },
+      {
+        id: 'acao',
+        label: 'O que fazer',
+        value: 'cancelar',
+        options: [
+          { value: 'cancelar', label: 'Cancelar todas as aulas do dia (nenhuma matéria conta)' },
+          { value: 'reabrir', label: 'Desfazer: as aulas canceladas do dia voltam a contar' },
+        ],
+      },
+    ],
+    onSubmit: ({ data = '', acao = 'cancelar' }) => {
+      storage.write((all) =>
+        acao === 'reabrir' ? reopenDay(all, data) : cancelDay(all, data, () => crypto.randomUUID()),
+      );
+      showNotice(
+        acao === 'reabrir' ? 'Aulas do dia voltaram a contar.' : 'Aulas do dia canceladas.',
+      );
+    },
+  });
+}
+
 function askStart(subject: Subject): void {
   ask({
     title: `Início das aulas de ${subject.code}`,
@@ -173,6 +202,7 @@ export function Faltas() {
         keys: 'Alt N',
         run: () => askStart(subject),
       },
+      { id: 'feriado', label: 'Feriado ou dia sem aula', run: askHoliday },
       ...(item && inClasses()
         ? [{ id: 'marcar', label: 'Marcar esta aula', run: () => askSituation(item) }]
         : []),

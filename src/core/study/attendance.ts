@@ -139,3 +139,29 @@ export function setClassesFrom(data: StudyData, subjectId: string, date: string)
     ),
   };
 }
+
+// Feriado: cancela de uma vez todas as aulas do dia, de todas as matérias.
+export function cancelDay(data: StudyData, date: string, newId: () => string): StudyData {
+  let next = data;
+  for (const event of eventsOn(data, date)) {
+    if (event.kind !== 'aula' || event.subjectId === '') continue;
+    const item: Occurrence = {
+      subjectId: event.subjectId,
+      date,
+      start: event.start,
+      end: event.end,
+      blocks: blocksOf(event.start, event.end),
+      record: findRecord(next, event.subjectId, date, event.start),
+    };
+    next = markOccurrence(next, item, { kind: 'cancelada' }, newId());
+  }
+  return next;
+}
+
+// Desfaz o feriado: as aulas canceladas daquele dia voltam a contar como presença.
+export function reopenDay(data: StudyData, date: string): StudyData {
+  return {
+    ...data,
+    attendance: data.attendance.filter((record) => !(record.date === date && record.cancelled)),
+  };
+}
