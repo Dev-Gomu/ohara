@@ -121,6 +121,11 @@
   font: var(--ui-item);
 }
 
+.ferramenta:focus-visible {
+  outline: var(--anel-traco) solid var(--cor-foco);
+  outline-offset: var(--anel-afastamento);
+}
+
 .ferramenta[data-sel='true'] {
   background: var(--cor-marca);
 }
