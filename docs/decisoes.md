@@ -76,7 +76,7 @@ Aqui "Notas" são as do boletim (média, pesos, itens), **não** as Anotações.
 |---|---|---|---|
 | D35 | Notas e boletim **cifrados com AES-GCM** (Web Crypto) antes de gravar no banco e antes de sincronizar. Cifra só esses dados, não o resto do app | Só o dono pode ver; a nuvem guarda dados ilegíveis | Decidida |
 | D36 | Chave derivada de **frase própria**, não de PIN de 4 dígitos | Um PIN curto é quebrado em segundos por força bruta | Decidida |
-| D37 | Derivação: **Argon2** se houver biblioteca leve para o navegador; senão **PBKDF2** com muitas iterações | | **PENDENTE** |
+| D37 | Derivação: **Argon2** se houver biblioteca leve para o navegador; senão **PBKDF2** com muitas iterações | | Decidida (D87: PBKDF2) |
 | D38 | **Código de recuperação** gerado na primeira vez e mostrado uma só vez. Trocar a frase **recifra apenas a chave mestra** | Evita reprocessar todas as notas | Decidida |
 | D39 | **PIN curto opcional**, só como atalho de desbloqueio local, por aparelho. Não protege o arquivo sincronizado | Conveniência sem enfraquecer a proteção | Decidida |
 | D40 | Perdendo frase **e** código, os dados são **irrecuperáveis** (não há servidor) | Custo aceito conscientemente | Decidida |
@@ -149,6 +149,16 @@ Aqui "Notas" são as do boletim (média, pesos, itens), **não** as Anotações.
 | D82 | **Agenda = versão B (semana + prévia):** régua de visões no topo; Semana e Grade com horas (dias de segunda a domingo, provas e entregas no alto do dia, só a aula de agora em cor cheia); à direita, Prévia do item em foco, Matérias (filtro de uma escolha) e A completar. Nas colunas, ↑ ↓ andam no dia e ← → trocam de dia, pulando dia vazio. Alt PgUp PgDn trocam a semana ou o mês. Tab: régua, conteúdo, Prévia, Matérias, A completar (o filtro vem depois do conteúdo, exceção à diretriz 8.4, porque é pouco usado) | Escolhida entre A e B em `docs/prototipos/agenda-semana.html`. Lembretes saem da Agenda e ficam no Alt I | Decidida (usuário, 07/11/2026) |
 | D83 | **Troca de tela sem animação.** Os blocos não fazem zoom ao chegar na tela, só ao serem reabertos com a tela aberta | Zoom e deslize foram testados e não agradaram; troca instantânea é mais rápida no uso com Alt 1 a 6 | Decidida (usuário, 07/11/2026) |
 
+## Planos das Etapas 7 a 13 (Opus, 07/11/2026)
+
+| ID | Decisão | Motivo | Status |
+|---|---|---|---|
+| D84 | **Espelho de leitura:** a tela lê um `StudyData` carregado do banco. `write` compara antes e depois (`diffStudy`) e manda só as linhas mudadas ao Worker, com fila de 300 ms. Se falhar, abre a tela de erro e recarrega do banco. **Refina a D26:** o espelho é cópia só de leitura, nunca fonte | As telas já usam `Storage` em sincronia. Ler do Worker a cada tecla obrigaria refazer todas as telas | Decidida (usuário, 07/11/2026) |
+| D85 | `note_versions` ficam **só no aparelho** (não sincronizam) e só entram no espelho as da aula aberta. Antes de uma Anotação recebida sobrescrever a local, a local vira versão | Dezenas de MB sem uso no espelho e na nuvem. A rede de segurança da D34 continua valendo nos dois aparelhos | Decidida |
+| D86 | **Exceção de camada:** só `src/core/study/fsrs.ts` importa `ts-fsrs` | Biblioteca pura, sem E/S. Mantém a D43 (função fina) sem mover regra para `data/` | Decidida |
+| D87 | **Derivação da chave das Notas: PBKDF2-SHA256 com 600 000 iterações** (gravadas na `vault`) e frase de pelo menos 12 caracteres. **Fecha a D37** | Nativo no navegador e no Node dos testes, sem dependência. A frase própria (D36) compensa a vantagem do Argon2 | Decidida |
+| D88 | **Formato da sincronização:** cada aparelho só grava os próprios arquivos (`log` numerado e `base` compactada) na pasta do app. Os PDFs vão em `blob.<sha256>` | Nenhum aparelho sobrescreve o de outro, então não há corrida de gravação no Drive. A junção pela D29 dá o mesmo resultado em qualquer ordem | Decidida |
+
 ---
 
 ## Pendências consolidadas
@@ -156,8 +166,7 @@ Aqui "Notas" são as do boletim (média, pesos, itens), **não** as Anotações.
 | Item | Quando |
 |---|---|
 | D33: conta Dropbox | Etapa 12, se o teste favorecer |
-| D37: Argon2 ou PBKDF2 | Etapa 13 |
-| D44: otimizador do FSRS no navegador | Etapa 11 |
+| D44: otimizador do FSRS no navegador | Depois da Etapa 11 (B06); a tabela `reviews` guarda o histórico para ele |
 
 ## Itens a verificar na Etapa 1
 

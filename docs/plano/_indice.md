@@ -37,17 +37,19 @@ Em paralelo, a qualquer momento antes da Etapa 8: sessão separada extrai `regra
 
 **Etapas 1 e 2:** já concluídas.
 
-**Feitas em 07/11/2026, sem teste do usuário:** etapas 3, 4, 5 e 6, e a parte de tela das etapas 8 e 9, no branch `telas-3-a-9`. Situação em `loop-telas.md`. **Rodada 2 (Opus, 07/11):** escolha do Treino, editor de cartões na Mesa e celular com um bloco por vez (ver `loop-telas.md`). **Sessão da Agenda (07/11):** `regras.md` escrito e layout B aplicado (D82), sem teste do usuário. Troca de tela ficou sem animação (D83). **Próxima: Etapa 7, banco** (Opus, modo de plano). Foco em tablet (1280×800) e PC; celular fora de foco.
+**Feitas em 07/11/2026, sem teste do usuário:** etapas 3, 4, 5 e 6, e a parte de tela das etapas 8 e 9, no branch `telas-3-a-9`. Situação em `loop-telas.md`. **Rodada 2 (Opus, 07/11):** escolha do Treino, editor de cartões na Mesa e celular com um bloco por vez (ver `loop-telas.md`). **Sessão da Agenda (07/11):** `regras.md` escrito e layout B aplicado (D82), sem teste do usuário. Troca de tela ficou sem animação (D83). **Próxima: Etapa 7, banco**, executada pelo Sonnet a partir do plano do Opus (a coluna "Modelo ideal" acima foi trocada pela fila abaixo). Foco em tablet (1280×800) e PC; celular fora de foco.
 
-**Pendentes com Opus (07/11/2026):**
-1. ~~Sessão da Agenda~~ feita em 07/11 (D82).
-2. Etapa 7, banco, em modo de plano. Depende do usuário aprovar o plano.
-3. Cores (adiado). Três protótipos recusados em `docs/prototipos/`; pedir referências ao usuário antes de prototipar.
-4. Etapa 11, FSRS. Depende das etapas 7 e 10 (Sonnet).
-5. Etapa 12, sincronização. Depende da Etapa 7 e da conta Dropbox.
-6. Etapa 13, notas cifradas. Depende da Etapa 7; Argon2 ou PBKDF2 decide-se na etapa.
+**Planos do Opus (07/11/2026):** as Etapas 7, 10, 11, 12 e 13 estão detalhadas em `etapa-XX.md`, com decisões D84 a D88. Nesta etapa da Fase B, essas cinco são exceção à regra de ouro. **Aprovados pelo usuário em 07/11/2026.** Só sobra com o Opus: **cores** (adiado; pedir referências ao usuário antes de prototipar) e a revisão final de cada etapa, se o usuário quiser.
 
-**Pendentes com Sonnet:** renomear e excluir (matéria, pasta, aula, Lixeira); editar e excluir cartões salvos; Alt T, Alt B, Alt , e Alt . na barra de formatação; Etapa 10 (slides em PDF e cartões salvos), depois da 7.
+**Fila do Sonnet (uma por sessão, `/clear` entre elas, nesta ordem):**
+1. **Etapa 7**, banco (`etapa-07.md`).
+2. **Pendências pequenas:** renomear e excluir matéria, pasta e aula, com Lixeira (exclusão lógica da Etapa 7); editar e excluir cartões salvos; Alt T, Alt B, Alt , e Alt . levando o foco à barra de formatação. Itens no `backlog.md`, sem arquivo de etapa: o Sonnet escreve os critérios no começo.
+3. **Etapa 10**, slides e livros em PDF (`etapa-10.md`).
+4. **Etapa 11**, FSRS (`etapa-11.md`).
+5. **Etapa 12**, sincronização (`etapa-12.md`). O usuário acrescenta as origens no Google Cloud antes.
+6. **Etapa 13**, notas cifradas (`etapa-13.md`). Começa perguntando onde fica a tela.
+
+Cada sessão do Sonnet: lê `CLAUDE.md`, este índice e o arquivo da etapa; não refaz o desenho; roda `check` e `e2e`; commita em `telas-3-a-9`; atualiza esta fila; entrega o roteiro de 5 minutos.
 
 **Regra de troca:** se uma etapa de Sonnet encontrar decisão de produto ou de segurança, para e pergunta. Não decide sozinha.
 
@@ -86,7 +88,7 @@ Ver `backlog.md`: Sala de Foco, integração com Anki, gerador de revisões (1, 
 | `telas.md` e diretrizes visuais | Etapa 3 | Antes da Etapa 3 |
 | D13 (Paleta) | Etapa 3 | Etapa 3 |
 | `regras.md` | Etapa 9 | Em paralelo à Fase A |
-| D33, D37, D44, D54 | Ver `decisoes.md` | Nas etapas indicadas lá |
+| D33, D44 | Ver `decisoes.md` | Nas etapas indicadas lá |
 
 **Nota:** a numeração e a divisão das etapas 2 a 13 são **proposta**. O que está fixado em outros documentos: modo de plano nas Etapas 2, 7 e 12; fixtures na 5; checkpoint na 6; banco na 7; teste Drive vs Dropbox na 12; boletim cifrado na 13.
 

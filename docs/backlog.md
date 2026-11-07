@@ -49,3 +49,5 @@ Lista curta do que foi **adiado ou ainda não decidido**. O que está no plano d
 - 2026-11-07: **Agenda (Etapa 9, regras em `regras.md`):** Mover e Sem aula na Prévia, aula avulsa, inverter quinzenal, editar a Grade pelo cronograma, prova só com a matéria, campos de prova (bimestre, conteúdo, local, observação), atrasados no topo da Lista, importar .ics como atalho da Grade.
 - 2026-11-07: **Cores mais confortáveis** (tema claro primeiro). Três protótipos recusados em `docs/prototipos/visual-menos-colorido.html`; retomar depois das telas.
 - 2026-11-07: **Cartões salvos:** editar e excluir na aba Salvos da Mesa e no Acervo. Hoje só se veem.
+- 2026-11-07: **Importar banco** (restaurar o `.sqlite3` exportado) e **busca FTS** do SQLite quando a busca em memória ficar lenta. Fora da Etapa 7.
+- 2026-11-07: **Anotar sobre o PDF** e **busca dentro do PDF**. Fora da Etapa 10.
