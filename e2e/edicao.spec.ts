@@ -60,3 +60,24 @@ test('Mesa: Alt B vai à barra de formatação, Alt . anda e Enter aplica', asyn
   await page.keyboard.press('Enter');
   await expect(editor.locator('strong')).toHaveText('texto');
 });
+
+test('Mesa: a barra nasce oculta, a bolha aparece ao selecionar e Alt T mostra a barra', async ({
+  page,
+}) => {
+  await page.keyboard.press('Alt+Digit2');
+  const editor = page.getByRole('textbox', { name: 'Anotações' });
+  const bar = page.getByRole('toolbar', { name: 'Formatação' });
+  await expect(editor).toBeFocused();
+  await editor.fill('texto');
+  await expect(bar).toHaveCount(0);
+  await page.keyboard.press('Control+KeyA');
+  await expect(bar).toHaveCount(1);
+  await bar.getByRole('button', { name: 'N' }).click();
+  await expect(editor.locator('strong')).toHaveText('texto');
+  await page.keyboard.press('ArrowRight');
+  await expect(bar).toHaveCount(0);
+  await page.keyboard.press('Alt+KeyT');
+  await expect(bar).toHaveCount(1);
+  await page.keyboard.press('Alt+KeyT');
+  await expect(bar).toHaveCount(0);
+});

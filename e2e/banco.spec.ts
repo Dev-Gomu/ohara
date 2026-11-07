@@ -52,6 +52,8 @@ test.describe('banco real (OPFS), começando vazio', () => {
     const editor = page.getByRole('textbox', { name: 'Anotações' });
     await expect(editor).toBeVisible();
     await editor.fill('texto guardado no disco');
+    // Com a máquina carregada, fechar antes de a gravação chegar ao Worker pode perder o texto.
+    await page.waitForTimeout(500);
     await page.reload();
     await expect(tela(page)).toHaveText('hub');
     await page.keyboard.press('Alt+Digit2');

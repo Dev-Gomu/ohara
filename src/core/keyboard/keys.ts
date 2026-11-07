@@ -169,7 +169,15 @@ export const KEYS: readonly KeyRow[] = [
     'Troca pelo bloco escondido',
   ),
   row('Blocos', 'Alt O', 'KeyO', 'a', BLOCK_FIELD, { type: 'openOptions' }, 'Opções (⋮) do bloco'),
-  row('Blocos', 'Alt T', 'KeyT', 'a', BLOCK_FIELD, { type: 'goToTopBar' }, 'Vai à barra de cima'),
+  row(
+    'Blocos',
+    'Alt T',
+    'KeyT',
+    'a',
+    BLOCK_FIELD,
+    { type: 'goToTopBar' },
+    'Barra de cima; nas Anotações, mostra ou oculta a de formatação',
+  ),
   row('Blocos', 'Alt F', 'KeyF', 'a', BLOCK_FIELD, { type: 'goToField' }, 'Vai ao campo'),
   row(
     'Blocos',

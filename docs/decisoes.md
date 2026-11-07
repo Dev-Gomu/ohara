@@ -163,6 +163,7 @@ Aqui "Notas" são as do boletim (média, pesos, itens), **não** as Anotações.
 | D91 | **SQL testado em Node:** o `@sqlite.org/sqlite-wasm` roda em Node, em memória; `src/data/sql.test.ts` aplica a migração 001 e faz ida e volta de todas as tabelas | Fecha o "A VERIFICAR" do plano da Etapa 7 | Decidida (Claude, 07/11/2026) |
 | D92 | **Renomear e excluir:** pelo menu ⋮ (Alt O) do bloco, no item selecionado. Excluir matéria leva pastas, aulas, cartões, provas, aulas da Agenda e Grade; excluir pasta mantém as aulas, sem pasta; excluir aula leva os cartões e solta a Agenda. Cartões se editam em janela (frente e verso). Sem confirmação: aviso com **Desfazer** por 10 s, **Alt Z** (regras G8) | No banco a exclusão é lógica (D84). A Lixeira para ver e restaurar depois fica no backlog | Decidida (Claude, 07/11/2026; revisar com o usuário) |
 | D93 | **Barra de formatação por teclado:** Alt T e Alt B, nas Anotações, focam o primeiro botão da barra (a única); Alt , e Alt . andam entre eles; Enter aplica e devolve o cursor ao texto | Fecha o item do backlog | Decidida (Claude, 07/11/2026) |
+| D94 | **Barra de formatação em modo fantasma (substitui D93):** nasce oculta; Alt T mostra ou oculta nas Anotações; oculta, selecionar texto abre uma bolha com os mesmos botões; Alt B vai à barra, mostrando-a se preciso; Alt , e Alt . andam entre os botões. Preferência guardada no aparelho (localStorage, como o tema) | Pedido do usuário, igual ao app antigo (Alt T, `barraEd`) | Decidida (usuário, 07/11/2026) |
 
 ---
 

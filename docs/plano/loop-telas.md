@@ -95,3 +95,7 @@ Renomear e excluir matéria, pasta, aula e cartão; Alt T, Alt B, Alt , e Alt . 
 4. Entre numa matéria (Enter), desça às aulas (↓), **Alt O**: "Editar aula" ou "Excluir aula". **Alt C** mostra os cartões, e Alt O edita ou exclui o cartão.
 5. Na régua de pastas (← →), **Alt O**: renomear ou excluir a pasta. As aulas ficam em "Sem bimestre".
 6. **Alt 2**: selecione um trecho das Anotações, **Alt B** foca a barra, **Alt .** anda, **Enter** aplica.
+
+## Barra de formatação ocultável (07/11/2026)
+
+Modelo fantasma do app antigo: a barra das Anotações nasce **oculta**; **Alt T** mostra ou oculta (também em ⋮ do bloco); com ela oculta, selecionar um trecho abre uma **bolha** sobre o texto; **Alt B** vai à barra (mostrando-a se preciso). A escolha fica lembrada no aparelho. Sem teste do usuário.

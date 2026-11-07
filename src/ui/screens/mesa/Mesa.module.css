@@ -190,3 +190,25 @@
   color: var(--cor-texto-2);
   font: var(--leitura-texto);
 }
+
+.bolha {
+  position: fixed;
+  z-index: 20;
+  display: flex;
+  gap: 2px;
+  padding: 4px;
+  border-radius: var(--raio-campo);
+  background: var(--cor-botao);
+  color: var(--cor-sobre-botao);
+  box-shadow: 0 4px 16px rgb(0 0 0 / 0.3);
+}
+
+.bolha .ferramenta {
+  background: transparent;
+  color: inherit;
+}
+
+.bolha .ferramenta[data-sel='true'] {
+  background: var(--cor-marca);
+  color: var(--cor-tinta);
+}

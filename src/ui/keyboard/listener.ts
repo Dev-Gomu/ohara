@@ -28,6 +28,9 @@ function onKeyDown(event: KeyboardEvent): void {
 
 function touchTargetOf(target: EventTarget | null): TouchTarget {
   if (!(target instanceof Element)) return { kind: 'outside' };
+  // Painel flutuante de um campo (a bolha das Anotações): tocar nele mantém o cursor no texto.
+  const keep = target.closest<HTMLElement>('[data-keep-field]')?.dataset.keepField;
+  if (keep !== undefined) return { kind: 'field', block: keep };
   const block = target.closest<HTMLElement>('[data-block]')?.dataset.block;
   if (block !== undefined) {
     const item = target.closest<HTMLElement>('[data-nav-index]')?.dataset.navIndex;
