@@ -1,3 +1,4 @@
+import type { ImportCheck } from '../db/backup';
 import type { Diagnostics } from '../db/protocol';
 import type { StudyData } from './types';
 
@@ -19,6 +20,10 @@ export interface Storage {
   // Estado só deste aparelho (D28), como a página atual de cada aula.
   getDeviceState(key: string): string | undefined;
   setDeviceState(key: string, value: string): void;
+  // Apaga os bytes que nenhum anexo vivo usa; devolve quantos arquivos saíram.
+  sweepBlobs(): Promise<number>;
+  // Troca o banco inteiro por um backup. Depois de 'ok', a página precisa recarregar.
+  importDatabase(bytes: ArrayBuffer): Promise<ImportCheck | null>;
   exportDatabase(): Promise<Uint8Array | null>;
   diagnose(): Promise<Diagnostics | null>;
 }
@@ -37,6 +42,8 @@ export function createMemoryStorage(initial: StudyData): Storage {
     removeBlob: (sha256) => Promise.resolve(void blobs.delete(sha256)),
     getDeviceState: (key) => device.get(key),
     setDeviceState: (key, value) => void device.set(key, value),
+    sweepBlobs: () => Promise.resolve(0),
+    importDatabase: () => Promise.resolve(null),
     exportDatabase: () => Promise.resolve(null),
     diagnose: () => Promise.resolve(null),
     read: () => data,

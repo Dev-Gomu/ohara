@@ -2,6 +2,7 @@ import { diffStudy } from '../core/db/diff';
 import type { Change, Diagnostics } from '../core/db/protocol';
 import { fromRow } from '../core/db/rows';
 import { SPECS } from '../core/db/specs';
+import { orphanBlobs } from '../core/study/files';
 import { EMPTY_STUDY } from '../core/study/create';
 import type { Storage } from '../core/study/storage';
 import type { StudyData } from '../core/study/types';
@@ -137,6 +138,16 @@ export async function createDbStorage(
         ),
       };
       notify();
+    },
+    async sweepBlobs() {
+      await flush();
+      const orphans = orphanBlobs(await client.listFiles(), mirror.files);
+      for (const name of orphans) await client.removeFile(name);
+      return orphans.length;
+    },
+    async importDatabase(bytes) {
+      await flush();
+      return client.importDb(bytes);
     },
     async exportDatabase() {
       await flush();

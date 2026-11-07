@@ -9,6 +9,7 @@ import {
   hasBlob,
   MAX_FILE_BYTES,
   mimeOf,
+  orphanBlobs,
   newFile,
   slidesOf,
   toHex,
@@ -62,5 +63,13 @@ describe('arquivos', () => {
     expect(clampPage(0, 3)).toBe(1);
     expect(clampPage(2, 3)).toBe(2);
     expect(clampPage(4, 0)).toBe(1);
+  });
+});
+
+describe('bytes órfãos', () => {
+  it('lista só o que nenhum anexo vivo usa', () => {
+    const data = attachFile(EMPTY_STUDY, slides('f1', 'h1', 'l1'));
+    expect(orphanBlobs(['h1', 'h2', 'h3'], data.files)).toEqual(['h2', 'h3']);
+    expect(orphanBlobs([], data.files)).toEqual([]);
   });
 });

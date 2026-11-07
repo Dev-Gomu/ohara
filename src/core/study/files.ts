@@ -85,3 +85,9 @@ export function newFile(
 export function devicePageKey(lessonId: string): string {
   return `pagina.${lessonId}`;
 }
+
+// Bytes guardados que nenhum anexo vivo usa mais (aula ou matéria excluída, anexo trocado).
+export function orphanBlobs(names: readonly string[], files: readonly StudyFile[]): string[] {
+  const live = new Set(files.map((file) => file.sha256));
+  return names.filter((name) => !live.has(name));
+}

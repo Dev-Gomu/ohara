@@ -88,3 +88,32 @@ test.describe('banco real (OPFS), começando vazio', () => {
     await expect(second.getByText(/já está aberto em outra aba/)).toBeVisible();
   });
 });
+
+test.describe('backup', () => {
+  test('exporta, apaga a matéria e importa de volta', async ({ page }) => {
+    await page.goto('./');
+    await expect(tela(page)).toHaveText('hub');
+    await createSubject(page, 'Bioquímica');
+    await page.waitForTimeout(600);
+    await page.keyboard.press('Alt+Digit6');
+    const download = page.waitForEvent('download');
+    await page.getByRole('button', { name: /Backup/ }).click();
+    await page.getByRole('button', { name: /Exportar banco/ }).click();
+    const path = await (await download).path();
+
+    await createSubject(page, 'Temporaria');
+    await page.waitForTimeout(600);
+    await page.keyboard.press('Alt+Digit6');
+    await page.getByRole('button', { name: /Backup/ }).click();
+    await page.getByRole('button', { name: /Importar banco/ }).click();
+    await page.getByRole('textbox').fill('substituir');
+    const chooser = page.waitForEvent('filechooser');
+    await page.keyboard.press('Enter');
+    await (await chooser).setFiles(path);
+    await expect(tela(page)).toHaveText('hub');
+    await page.keyboard.press('Alt+Digit3');
+    await expect(page.getByRole('button', { name: /Bioquímica/ })).toBeVisible();
+    await expect(page.getByRole('button', { name: /Temporaria/ })).toHaveCount(0);
+    await expect(page.getByTestId('erro')).toHaveCount(0);
+  });
+});

@@ -1,3 +1,4 @@
+import type { ImportCheck } from './backup';
 import type { Row } from './rows';
 import type { TableName } from './specs';
 
@@ -49,6 +50,8 @@ export type Request =
   | { type: 'putFile'; sha256: string; bytes: ArrayBuffer }
   | { type: 'getFile'; sha256: string }
   | { type: 'removeFile'; sha256: string }
+  | { type: 'listFiles' }
+  | { type: 'importDb'; bytes: ArrayBuffer }
   | { type: 'export' }
   | { type: 'diagnose' };
 
@@ -59,6 +62,8 @@ export interface ResultMap {
   putFile: null;
   getFile: ArrayBuffer | null;
   removeFile: null;
+  listFiles: string[];
+  importDb: ImportCheck;
   export: Uint8Array;
   diagnose: Diagnostics;
 }

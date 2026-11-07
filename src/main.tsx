@@ -13,7 +13,7 @@ import { DB_NAME } from './data/dbName';
 import { ErrorScreen } from './ui/shell/ErrorScreen';
 import { Loading } from './ui/shell/Loading';
 import { Shell } from './ui/shell/Shell';
-import { setStorage, today } from './ui/study/study';
+import { setStorage, storage, today } from './ui/study/study';
 import './ui/styles/fonts.css';
 import './ui/styles/tokens.css';
 import './ui/styles/base.css';
@@ -89,6 +89,8 @@ async function boot() {
     return fail(code, error instanceof Error ? error.message : String(error), client);
   }
   show(<Shell />);
+  // Arquivos de aulas excluídas só saem do disco aqui: o Desfazer já não vale depois de recarregar.
+  void storage.sweepBlobs().catch(() => undefined);
 }
 
 void boot();

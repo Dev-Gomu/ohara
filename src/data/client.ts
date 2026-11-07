@@ -1,3 +1,4 @@
+import type { ImportCheck } from '../core/db/backup';
 import type {
   DbFailure,
   Diagnostics,
@@ -24,6 +25,8 @@ export interface DbClient {
   putFile(sha256: string, bytes: ArrayBuffer): Promise<void>;
   getFile(sha256: string): Promise<ArrayBuffer | null>;
   removeFile(sha256: string): Promise<void>;
+  listFiles(): Promise<string[]>;
+  importDb(bytes: ArrayBuffer): Promise<ImportCheck>;
   exportFile(): Promise<Uint8Array>;
   diagnose(): Promise<Diagnostics>;
 }
@@ -64,6 +67,8 @@ export function createClient(): DbClient {
     putFile: async (sha256, bytes) => void (await send({ type: 'putFile', sha256, bytes })),
     getFile: (sha256) => send({ type: 'getFile', sha256 }),
     removeFile: async (sha256) => void (await send({ type: 'removeFile', sha256 })),
+    listFiles: () => send({ type: 'listFiles' }),
+    importDb: (bytes) => send({ type: 'importDb', bytes }),
     exportFile: () => send({ type: 'export' }),
     diagnose: () => send({ type: 'diagnose' }),
   };

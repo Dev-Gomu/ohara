@@ -71,10 +71,10 @@ export async function detach(file: StudyFile): Promise<void> {
 }
 
 // O seletor só abre a partir de um gesto do usuário: Enter no menu conta como gesto.
-export function pickFile(onPick: (file: File) => void): void {
+export function pickFile(onPick: (file: File) => void, accept = ACCEPT): void {
   const input = document.createElement('input');
   input.type = 'file';
-  input.accept = ACCEPT;
+  input.accept = accept;
   input.style.display = 'none';
   input.addEventListener('change', () => {
     const file = input.files?.[0];
@@ -84,4 +84,8 @@ export function pickFile(onPick: (file: File) => void): void {
   input.addEventListener('cancel', () => input.remove());
   document.body.append(input);
   input.click();
+}
+
+export function pickBackup(onPick: (file: File) => void): void {
+  pickFile(onPick, '.sqlite3,.sqlite,.db,application/vnd.sqlite3,application/octet-stream');
 }

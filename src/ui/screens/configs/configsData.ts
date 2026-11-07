@@ -2,7 +2,10 @@ import type { Diagnostics } from '../../../core/db/protocol';
 import { SPECS } from '../../../core/db/specs';
 import { isoDay } from '../../../core/study/dates';
 import { dispatch } from '../../keyboard/store';
+import { pickBackup } from '../../study/attach';
 import { downloadBytes } from '../../study/download';
+import { showNotice } from '../../study/notice';
+import { ask } from '../../shell/PromptWindow';
 import { storage } from '../../study/study';
 import { toggleTheme } from '../../theme';
 
@@ -26,6 +29,46 @@ function megabytes(bytes: number | null): string {
 async function exportDatabase(): Promise<void> {
   const bytes = await storage.exportDatabase();
   if (bytes) downloadBytes(bytes, `ohara-${isoDay(new Date())}.sqlite3`);
+}
+
+async function sweepFiles(): Promise<void> {
+  const count = await storage.sweepBlobs();
+  showNotice(
+    count === 0
+      ? 'Nenhum arquivo sem uso.'
+      : `${count} ${count === 1 ? 'arquivo sem uso apagado' : 'arquivos sem uso apagados'}.`,
+  );
+}
+
+const IMPORT_MESSAGES = {
+  'nao-sqlite': 'Esse arquivo não é um banco SQLite.',
+  'nao-ohara': 'Esse banco não é um backup do Ohara.',
+  'versao-nova': 'Esse backup é de uma versão mais nova do Ohara. Atualize o app antes.',
+} as const;
+
+async function importBackup(file: File): Promise<void> {
+  const check = await storage.importDatabase(await file.arrayBuffer());
+  if (check === null) return showNotice('Importar só funciona com o banco real.');
+  if (check !== 'ok') return showNotice(IMPORT_MESSAGES[check]);
+  window.location.reload();
+}
+
+function askImport(): void {
+  ask({
+    title: 'Importar banco',
+    action: 'Escolher arquivo',
+    fields: [
+      {
+        id: 'confirma',
+        label:
+          'Isto SUBSTITUI todos os dados deste aparelho. Os PDFs anexados não vêm no backup. Exporte antes. Para seguir, digite substituir',
+      },
+    ],
+    onSubmit: ({ confirma }) => {
+      if (confirma?.trim().toLowerCase() === 'substituir') pickBackup(importBackup);
+      else showNotice('Importação cancelada: a palavra não conferiu.');
+    },
+  });
 }
 
 function aboutRows(diag: Diagnostics | null): Row[] {
@@ -72,6 +115,16 @@ export function buildSections(diag: Diagnostics | null): readonly Section[] {
           label: 'Exportar banco',
           detail: 'Baixa uma cópia dos dados, em um arquivo .sqlite3.',
           run: () => void exportDatabase(),
+        },
+        {
+          label: 'Importar banco',
+          detail: 'Restaura um arquivo .sqlite3 exportado antes. Substitui os dados atuais.',
+          run: askImport,
+        },
+        {
+          label: 'Limpar arquivos sem uso',
+          detail: 'Apaga PDFs de aulas ou matérias excluídas. Também roda ao abrir o app.',
+          run: () => void sweepFiles(),
         },
       ],
     },
