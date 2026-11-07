@@ -248,3 +248,20 @@
   color: var(--cor-texto-2);
   font: var(--leitura-texto);
 }
+
+@media (max-width: 767px) {
+  .inicio,
+  .materiaAberta {
+    height: auto;
+    grid-template-rows: none;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .grade {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .capa {
+    min-height: 160px;
+  }
+}

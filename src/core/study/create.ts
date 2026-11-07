@@ -1,4 +1,13 @@
-import type { Folder, Lesson, StudyData, Subject } from './types';
+import type {
+  ClassEvent,
+  EventKind,
+  Exam,
+  Folder,
+  Lesson,
+  Slot,
+  StudyData,
+  Subject,
+} from './types';
 
 export const SUBJECT_COLORS = 8;
 
@@ -48,4 +57,25 @@ export function addLesson(
 ): StudyData {
   const lesson: Lesson = { id, subjectId, folderId, title, date, slides: 0, notes: '' };
   return { ...data, lessons: [...data.lessons, lesson] };
+}
+
+export function addExam(data: StudyData, exam: Exam): StudyData {
+  return { ...data, exams: [...data.exams, exam] };
+}
+
+export function addSlot(data: StudyData, slot: Slot): StudyData {
+  return { ...data, slots: [...data.slots, slot] };
+}
+
+export function addEvent(
+  data: StudyData,
+  id: string,
+  kind: EventKind,
+  title: string,
+  date: string,
+  start: string,
+  end: string,
+): StudyData {
+  const event: ClassEvent = { id, kind, subjectId: '', lessonId: null, title, date, start, end };
+  return { ...data, events: [...data.events, event] };
 }

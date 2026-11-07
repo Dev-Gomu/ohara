@@ -31,7 +31,7 @@ Sem a Etapa 7, as duas fazem **só a parte de tela**, com dados fictícios. Isso
 | 3 | 5 Fixtures e telas de leitura | Pronta | ver `git log` |
 | 4 | 6 Treino, Agenda, Configs e janelas | Pronta | ver `git log` |
 | 5 | 8 Acervo e Anotações (telas) | Pronta | ver `git log` |
-| 6 | 9 Agenda, Grade e Lembretes (telas) | A fazer | |
+| 6 | 9 Agenda, Grade e Lembretes (telas) | Pronta | ver `git log` |
 
 ## Escolhas feitas sem o usuário
 
@@ -48,4 +48,7 @@ Ele revisa esta lista no fim. Uma linha por escolha: etapa, o que foi escolhido,
 | 8 | Editor com barra de formatação sempre visível | Toque precisa dela; escondê-la exigiria mais um passo |
 | 8 | Aba Cartões da matéria alterna com Alt C | Reaproveita a tecla existente, sem tecla nova |
 | 8 | Nova matéria fica no fim da régua de anos | Mantém a grade em duas linhas, como a diretriz pede |
+| 9 | `regras.md` não foi escrito: usei as regras do legado para Grade e itens da Agenda | A etapa pedia o arquivo; ele segue pendente antes da parte real |
+| 9 | Alt N na Agenda abre um menu com prova, trabalho, compromisso, Grade e lembrete | Uma tecla só para vários tipos (D78) |
+| 9 | Celular em coluna que rola, não um bloco por vez | Evitar a rolagem lateral agora; o resto foi para o backlog |
 | 3 | Tema: preferência do aparelho em `localStorage`, começa no tema do sistema | Não é dado do estudo |

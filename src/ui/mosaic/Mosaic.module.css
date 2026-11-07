@@ -60,3 +60,22 @@
   height: 24px;
   cursor: row-resize;
 }
+
+@media (max-width: 767px) {
+  .mosaico {
+    height: auto;
+  }
+
+  .divisao {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .folha {
+    min-height: 320px;
+  }
+
+  .divisa {
+    display: none;
+  }
+}

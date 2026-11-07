@@ -62,3 +62,15 @@
   font: var(--ui-sigla);
   white-space: nowrap;
 }
+
+/* Celular é consulta: a barra rola por dentro, e o conteúdo vira uma coluna. */
+@media (max-width: 767px) {
+  .topo {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .corpo {
+    overflow: auto;
+  }
+}

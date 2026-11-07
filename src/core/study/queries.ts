@@ -1,5 +1,5 @@
-import { daysBetween } from './dates';
-import type { ClassEvent, Exam, Folder, Lesson, StudyData, Subject } from './types';
+import { daysBetween, parseDay } from './dates';
+import type { ClassEvent, Exam, Folder, Lesson, Slot, StudyData, Subject } from './types';
 
 export const ALL_FOLDERS = 'todas';
 export const NO_FOLDER = 'sem';
@@ -71,9 +71,39 @@ export function upcomingExams(data: StudyData, today: string): Exam[] {
     .sort((a, b) => a.date.localeCompare(b.date));
 }
 
+function slotOccurs(slot: Slot, day: string): boolean {
+  if (parseDay(day).getDay() !== slot.weekday) return false;
+  if (slot.every === 1) return true;
+  return Math.floor(Math.abs(daysBetween(slot.anchor, day)) / 7) % 2 === 0;
+}
+
+// Aula virtual: calculada da Grade. Uma aula real no mesmo horário toma o lugar dela.
+function virtualEvents(data: StudyData, day: string, real: readonly ClassEvent[]): ClassEvent[] {
+  return data.slots
+    .filter((slot) => slotOccurs(slot, day))
+    .filter((slot) => !real.some((e) => e.subjectId === slot.subjectId && e.start === slot.start))
+    .map((slot) => ({
+      id: `${slot.id}-${day}`,
+      kind: 'aula' as const,
+      subjectId: slot.subjectId,
+      lessonId: null,
+      title: slot.label,
+      date: day,
+      start: slot.start,
+      end: slot.end,
+    }));
+}
+
 export function eventsOn(data: StudyData, day: string): ClassEvent[] {
-  return data.events
-    .filter((event) => event.date === day)
+  const real = data.events.filter((event) => event.date === day);
+  return [...real, ...virtualEvents(data, day, real)].sort((a, b) =>
+    a.start.localeCompare(b.start),
+  );
+}
+
+export function slotsOn(data: StudyData, weekday: number): Slot[] {
+  return data.slots
+    .filter((slot) => slot.weekday === weekday)
     .sort((a, b) => a.start.localeCompare(b.start));
 }
 

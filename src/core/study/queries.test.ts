@@ -9,6 +9,7 @@ import {
   initialTabIndex,
   lessonsOf,
   NO_FOLDER,
+  slotsOn,
   upcomingExams,
 } from './queries';
 
@@ -56,5 +57,53 @@ describe('dia', () => {
     expect(currentEventIndex(events, '13:30')).toBe(2);
     expect(currentEventIndex(events, '09:45')).toBe(1);
     expect(currentEventIndex(events, '23:00')).toBe(events.length - 1);
+  });
+});
+
+describe('Grade', () => {
+  const slot = {
+    id: 's',
+    subjectId: 'bio',
+    weekday: 1,
+    start: '07:00',
+    end: '08:00',
+    every: 1 as const,
+    anchor: '2026-11-02',
+    label: 'Teoria',
+    room: '',
+  };
+
+  it('a regra semanal gera aulas virtuais no dia certo', () => {
+    const next = { ...data, slots: [slot] };
+    expect(eventsOn(next, '2026-11-09').map((event) => event.title)).toEqual(['Teoria']);
+    expect(eventsOn(next, '2026-11-10')).toEqual([]);
+  });
+
+  it('a quinzenal pula uma semana', () => {
+    const next = { ...data, slots: [{ ...slot, every: 2 as const }] };
+    expect(eventsOn(next, '2026-11-02')).toHaveLength(1);
+    expect(eventsOn(next, '2026-11-09')).toHaveLength(0);
+    expect(eventsOn(next, '2026-11-16')).toHaveLength(1);
+  });
+
+  it('aula real no mesmo horário toma o lugar da virtual', () => {
+    const real = {
+      id: 'r',
+      kind: 'aula' as const,
+      subjectId: 'bio',
+      lessonId: 'x',
+      title: 'Real',
+      date: '2026-11-09',
+      start: '07:00',
+      end: '08:00',
+    };
+    const next = { ...data, slots: [slot], events: [real] };
+    expect(eventsOn(next, '2026-11-09').map((event) => event.title)).toEqual(['Real']);
+  });
+
+  it('lista as regras do dia da semana por horário', () => {
+    const late = { ...slot, id: 't', start: '09:00' };
+    const next = { ...data, slots: [late, slot] };
+    expect(slotsOn(next, 1).map((item) => item.start)).toEqual(['07:00', '09:00']);
   });
 });

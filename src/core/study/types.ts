@@ -46,14 +46,32 @@ export interface Exam {
   time: string;
 }
 
+export type EventKind = 'aula' | 'trabalho' | 'compromisso';
+
 export interface ClassEvent {
   id: string;
+  kind: EventKind;
+  // Vazio em compromisso sem matéria.
   subjectId: string;
   lessonId: string | null;
   title: string;
   date: string;
   start: string;
   end: string;
+}
+
+// Regra semanal da Grade. As aulas futuras são calculadas dela, não gravadas.
+export interface Slot {
+  id: string;
+  subjectId: string;
+  weekday: number;
+  start: string;
+  end: string;
+  every: 1 | 2;
+  // Semana de referência da repetição quinzenal.
+  anchor: string;
+  label: string;
+  room: string;
 }
 
 export interface Reminder {
@@ -77,6 +95,7 @@ export interface StudyData {
   cards: Card[];
   exams: Exam[];
   events: ClassEvent[];
+  slots: Slot[];
   reminders: Reminder[];
   noteVersions: readonly NoteVersion[];
 }

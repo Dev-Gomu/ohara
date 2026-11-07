@@ -242,3 +242,41 @@ test('Anotações: o histórico restaura a versão anterior', async ({ page }) =
   await expect(page.getByTestId('historico')).toBeHidden();
   await expect(editor(page)).toContainText('TLR4');
 });
+
+test('Agenda: a Grade mostra o horário e Alt N oferece os itens', async ({ page }) => {
+  await page.keyboard.press('Alt+Digit5');
+  await page.keyboard.press('ArrowUp');
+  await page.keyboard.press('ArrowRight');
+  await page.keyboard.press('ArrowRight');
+  await page.keyboard.press('ArrowRight');
+  await expect(page.locator('[data-block="agenda.grade"]')).toBeVisible();
+  await page.keyboard.press('Enter');
+  await expect(bloco(page)).toHaveText('agenda.grade');
+  await page.keyboard.press('Alt+KeyN');
+  await expect(page.getByRole('menuitem', { name: 'Nova prova' })).toBeVisible();
+  await page.keyboard.press('Enter');
+  await expect(page.getByTestId('pergunta')).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(page.getByTestId('pergunta')).toBeHidden();
+});
+
+test('Agenda: prova nova aparece no Hub', async ({ page }) => {
+  await page.keyboard.press('Alt+Digit5');
+  await expect(bloco(page)).toHaveText('agenda.semana');
+  await page.keyboard.press('Alt+KeyN');
+  await page.getByRole('menuitem', { name: 'Nova prova' }).click();
+  await page.getByLabel('Matéria').selectOption({ label: 'Bioética' });
+  await page.getByRole('button', { name: /Criar/ }).click();
+  await expect(page.getByTestId('pergunta')).toBeHidden();
+  await page.keyboard.press('Alt+Digit1');
+  await expect(page.locator('[data-block="hub.provas"]')).toContainText('Bioética');
+});
+
+test('Agenda: Exportar .ics baixa o arquivo', async ({ page }) => {
+  await page.keyboard.press('Alt+Digit5');
+  await expect(bloco(page)).toHaveText('agenda.semana');
+  await page.keyboard.press('Alt+KeyN');
+  const download = page.waitForEvent('download');
+  await page.getByRole('menuitem', { name: 'Exportar .ics' }).click();
+  expect((await download).suggestedFilename()).toBe('ohara-agenda.ics');
+});

@@ -1,7 +1,7 @@
 .agenda {
   height: 100%;
   display: grid;
-  grid-template-rows: 76px minmax(0, 1fr);
+  grid-template-rows: 76px minmax(0, 1fr) 220px;
   grid-template-columns: minmax(0, 1fr) 372px;
   gap: var(--vao-mosaico);
 }
@@ -10,8 +10,13 @@
   grid-column: 1 / -1;
 }
 
+.conteudo {
+  grid-row: 2 / 4;
+}
+
 .semana,
 .mes,
+.grade,
 .lista {
   flex: 1;
   min-height: 0;
@@ -22,6 +27,12 @@
 .semana {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: var(--e1);
+}
+
+.grade {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: var(--e1);
 }
 
@@ -85,6 +96,24 @@
   white-space: nowrap;
 }
 
+.evento[data-prova='true'] {
+  background: var(--cor-tinta);
+  color: var(--cor-sobre-tinta);
+}
+
+.lembrete {
+  flex: none;
+  min-height: var(--alvo);
+  padding: var(--e2) var(--e3);
+  border-radius: var(--raio-item);
+  font: var(--leitura-compacta);
+  text-align: left;
+}
+
+[data-foco] .lembrete[data-sel='true'] {
+  background: var(--cor-marca);
+}
+
 .item {
   display: grid;
   flex: none;
@@ -128,4 +157,23 @@
   padding: var(--e3);
   color: var(--cor-texto-2);
   font: var(--leitura-texto);
+}
+
+@media (max-width: 767px) {
+  .agenda {
+    height: auto;
+    grid-template-rows: none;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .conteudo {
+    grid-row: auto;
+  }
+
+  .semana,
+  .mes,
+  .grade {
+    overflow-x: auto;
+    grid-template-columns: repeat(7, 96px);
+  }
 }

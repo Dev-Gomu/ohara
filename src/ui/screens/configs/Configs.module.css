@@ -51,3 +51,10 @@
 .linha[data-sel='true'] .detalhe {
   color: var(--cor-texto);
 }
+
+@media (max-width: 767px) {
+  .colunas {
+    height: auto;
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

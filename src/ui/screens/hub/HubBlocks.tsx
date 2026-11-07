@@ -92,12 +92,14 @@ export function TodayBlock({ id, events }: { id: string; events: readonly ClassE
                   {event.start}–{event.end}
                 </span>
                 <span className={styles.aulaTexto}>
-                  <b className={styles.aulaNome}>{subject?.name}</b>
+                  <b className={styles.aulaNome}>{subject?.name ?? event.title}</b>
                   <span className={styles.aulaTema}>{event.title}</span>
                 </span>
-                <span className={styles.sigla} data-materia={subject?.color}>
-                  {subject?.code}
-                </span>
+                {subject && (
+                  <span className={styles.sigla} data-materia={subject.color}>
+                    {subject.code}
+                  </span>
+                )}
               </span>
             </NavItem>
           );

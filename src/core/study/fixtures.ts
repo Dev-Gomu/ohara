@@ -1,5 +1,5 @@
 import { addDays, parseDay } from './dates';
-import type { Card, ClassEvent, Folder, Lesson, StudyData, Subject } from './types';
+import type { Card, ClassEvent, Folder, Lesson, Slot, StudyData, Subject } from './types';
 
 const YEAR = 'ano-2';
 
@@ -100,8 +100,9 @@ function eventsFor(today: string, lessons: readonly Lesson[]): ClassEvent[] {
     ['imu', 'Resposta inflamatória aguda', '13:00', '15:00'],
     ['pro', 'Exame do abdome', '15:10', '17:00'],
   ];
-  const events = rows.map(([subjectId, title, start, end], index) => ({
+  return rows.map(([subjectId, title, start, end], index) => ({
     id: `ev-${index}`,
+    kind: 'aula',
     subjectId,
     lessonId: lessonOf(title),
     title,
@@ -109,26 +110,29 @@ function eventsFor(today: string, lessons: readonly Lesson[]): ClassEvent[] {
     start,
     end,
   }));
-  return [...events, ...weekEvents(today)];
 }
 
-function weekEvents(today: string): ClassEvent[] {
-  const week: [string, string, string, string][] = [
-    ['far', 'Farmacocinética', '08:00', '10:00'],
-    ['fis', 'Fisiologia cardíaca', '10:15', '12:00'],
-    ['pat', 'Lesão celular', '14:00', '16:00'],
+// Grade de segunda a sexta, fora do dia de hoje: hoje tem as aulas reais acima.
+function slotsFor(today: string): Slot[] {
+  const week: [string, string, string, string, string][] = [
+    ['far', 'Teoria', '08:00', '10:00', 'Sala 12'],
+    ['fis', 'Teoria', '10:15', '12:00', 'Sala 12'],
+    ['pat', 'Prática', '14:00', '16:00', 'Laboratório 3'],
   ];
-  return Array.from({ length: 41 }, (_, index) => addDays(today, index - 20))
-    .filter((date) => date !== today && ![0, 6].includes(parseDay(date).getDay()))
-    .flatMap((date) =>
-      week.map(([subjectId, title, start, end], index) => ({
-        id: `ev-${date}-${index}`,
+  const skip = parseDay(today).getDay();
+  return [1, 2, 3, 4, 5]
+    .filter((weekday) => weekday !== skip)
+    .flatMap((weekday) =>
+      week.map(([subjectId, label, start, end, room], index) => ({
+        id: `g-${weekday}-${index}`,
         subjectId,
-        lessonId: null,
-        title,
-        date,
+        weekday,
         start,
         end,
+        every: 1 as const,
+        anchor: today,
+        label,
+        room,
       })),
     );
 }
@@ -199,6 +203,7 @@ export function createFixtures(today: string): StudyData {
       time: String(time),
     })),
     events: eventsFor(today, lessons),
+    slots: slotsFor(today),
     reminders: [
       'Levar o jaleco para a Propedêutica.',
       'Revisar IL-6 e TNF-α antes da prova de Imunologia.',

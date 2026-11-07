@@ -5,7 +5,7 @@
 **Fontes:** `visao.md`, `teclado.md`, `decisoes.md`, código de `src/core/keyboard/`, biblioteca de elementos e Acervo do ClaudeWeb, capturas da Rodada 2 e gostos registrados do legado.
 **Valores exatos:** `src/ui/styles/tokens.css`. **Para testar o fluxo com as mãos:** `diretrizes-visuais-demo.html`.
 
-As regras marcadas com **[proposta]** estão decididas (D70 a D74), mas ainda não existem em `teclado.md` nem no código. A Etapa 3 as implementa.
+As regras marcadas com **[proposta]** nasceram propostas e foram decididas (D70 a D74). Já estão no código e em `teclado.md`.
 
 ## 1. Princípio
 
@@ -179,7 +179,7 @@ Lista suspensa só serve em formulário, para escolher um valor. Nunca para nave
 
 ### Tela por tela
 
-Mapa de foco de cada tela. O detalhe funcional fica em `telas.md`, quando existir. Só o Acervo, o Hub e a Mesa têm referência visual até agora. Treino, Agenda e Configs são **ponto de partida**, a validar com tela renderizada.
+Mapa de foco de cada tela. O detalhe funcional fica em `telas.md`, quando existir. Todas existem no app desde as etapas 3 a 9, com dados de exemplo. Treino, Agenda e Configs foram desenhadas sem referência do ClaudeWeb e ainda precisam da revisão do usuário.
 
 | Tela | Padrão | Blocos, na ordem do Tab | Chegada | Enter principal |
 |---|---|---|---|---|
@@ -188,7 +188,7 @@ Mapa de foco de cada tela. O detalhe funcional fica em `telas.md`, quando existi
 | **Acervo, início** | Régua + grade | Anos, Matérias | Grade, na última matéria aberta | Abre a matéria |
 | **Acervo, matéria** | Régua + lista + prévia | Pastas, Aulas, Prévia | Régua, na última pasta usada | Régua: entra nas aulas. Aula: abre na Mesa |
 | **Treino** | Lista + foco único | Baralhos, depois o cartão ampliado | Primeiro baralho com cartões vencidos | Inicia a sessão |
-| **Agenda** | Régua + conteúdo | Visão (Semana, Mês, Lista), Calendário, Lembretes | Hoje | Abre o item |
+| **Agenda** | Régua + conteúdo | Visão (Semana, Mês, Lista, Grade), Conteúdo, Dia, Lembretes | Hoje, na Semana | Abre o item |
 | **Configs** | Lista + prévia | Seções, Detalhe | Última seção | Entra na seção |
 
 **Caso-modelo: a matéria aberta.**
@@ -365,7 +365,6 @@ Antes de virar tela real:
 - **Teclas do Treino:** Espaço vira, 1 a 4 respondem. Entram em `teclado.md` na Etapa 6.
 - **Alt N:** cria novo item no bloco em foco. Entra em `teclado.md` na Etapa 6.
 
-**Técnicas (entram nas etapas):**
-- Etapa 3: `telas.md`, fontes em woff2 (D68), teclas das regras 2.2 a 2.5 em `teclado.md`.
-- Etapa 4: vizinhos declarados e revisão do `neighbor` (já no backlog).
-- Validar a tela renderizada de Treino, Agenda e Configs antes de implementar.
+**Técnicas:**
+- Celular: hoje os blocos viram uma coluna que rola. A regra da seção 4.3 (um bloco por vez, com barra inferior) ainda não foi feita.
+- As regras [proposta] da seção 2 já estão no código e em `teclado.md`.

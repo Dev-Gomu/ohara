@@ -8,49 +8,46 @@ import {
   weekdayShort,
   weekOf,
 } from '../../../core/study/dates';
-import { eventsOn, subjectOf, upcomingExams } from '../../../core/study/queries';
 import type { StudyData } from '../../../core/study/types';
 import { Block } from '../../components/Block';
 import { NavItem, useSelectedIndex } from '../../components/NavItem';
 import { Ruler } from '../../components/Ruler';
+import { dispatch } from '../../keyboard/store';
 import { useBlocks } from '../../keyboard/useBlocks';
 import { ScreenFrame } from '../../shell/ScreenFrame';
+import { toggleReminder } from '../../study/actions';
 import { AGENDA_MONTH, AGENDA_VIEWS, openLesson } from '../../study/navigation';
 import { today, useStudy } from '../../study/study';
 import styles from './Agenda.module.css';
+import { dayItems, weekdayItems } from './agendaData';
+import { agendaOptions } from './agendaForms';
 
 const WEEK = 'agenda.semana';
 const LIST = 'agenda.lista';
+const GRADE = 'agenda.grade';
 const DAY = 'agenda.dia';
+const REMINDERS = 'agenda.lembretes';
 const LIST_DAYS = 21;
+const WEEKDAY_NAMES = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
 
 const VIEWS = [
   { id: 'semana', title: 'Semana', detail: 'dias e aulas' },
   { id: 'mes', title: 'Mês', detail: monthName(today) },
   { id: 'lista', title: 'Lista', detail: `próximos ${LIST_DAYS} dias` },
+  { id: 'grade', title: 'Grade', detail: 'horário da semana' },
 ];
 
-function dayItems(data: StudyData, day: string) {
-  return [
-    ...upcomingExams(data, day)
-      .filter((exam) => exam.date === day)
-      .map((exam) => ({
-        id: exam.id,
-        hour: exam.time,
-        title: `Prova de ${subjectOf(data, exam.subjectId)?.name ?? ''}`,
-        code: subjectOf(data, exam.subjectId)?.code,
-        color: subjectOf(data, exam.subjectId)?.color,
-        lessonId: null,
-      })),
-    ...eventsOn(data, day).map((event) => ({
-      id: event.id,
-      hour: event.start,
-      title: event.title,
-      code: subjectOf(data, event.subjectId)?.code,
-      color: subjectOf(data, event.subjectId)?.color,
-      lessonId: event.lessonId,
-    })),
-  ];
+function WeekdayCell({ data, index }: { data: StudyData; index: number }) {
+  return (
+    <>
+      <span className={styles.cabeca}>{WEEKDAY_NAMES[index]}</span>
+      {weekdayItems(data, index + 1).map((item) => (
+        <span key={item.id} className={styles.evento} data-materia={item.color}>
+          {item.hour} {item.code}
+        </span>
+      ))}
+    </>
+  );
 }
 
 function DayCell({ data, day }: { data: StudyData; day: string }) {
@@ -61,8 +58,14 @@ function DayCell({ data, day }: { data: StudyData; day: string }) {
         {weekdayShort(day)} {parseDay(day).getDate()}
       </span>
       {items.map((item) => (
-        <span key={item.id} className={styles.evento} data-materia={item.color}>
-          {item.hour} {item.code}
+        <span
+          key={item.id}
+          className={styles.evento}
+          data-materia={item.color ?? 7}
+          data-prova={item.exam}
+        >
+          {item.hour} {item.exam ? 'Prova ' : ''}
+          {item.code ?? item.title}
         </span>
       ))}
     </>
@@ -75,11 +78,13 @@ export function Agenda() {
   const week = weekOf(today);
   const month = monthGrid(today);
   const list = Array.from({ length: LIST_DAYS }, (_, index) => addDays(today, index));
-  const content = [WEEK, AGENDA_MONTH, LIST][view] ?? WEEK;
-  const days = [week, month, list][view] ?? week;
+  const onGrade = view === 3;
+  const content = [WEEK, AGENDA_MONTH, LIST, GRADE][view] ?? WEEK;
+  const days = [week, month, list, WEEKDAY_NAMES][view] ?? week;
   const dayIndex = useSelectedIndex(content, days.length);
-  const day = days[dayIndex] ?? today;
-  const items = dayItems(data, day);
+  const day = onGrade ? today : (days[dayIndex] ?? today);
+  const items = onGrade ? weekdayItems(data, dayIndex + 1) : dayItems(data, day);
+  const reminders = data.reminders.filter((item) => !item.done);
   const open = (index: number) => {
     const lessonId = items[index]?.lessonId;
     if (lessonId) openLesson(lessonId);
@@ -99,7 +104,7 @@ export function Agenda() {
         id: content,
         kind: 'nav',
         nav: {
-          axis: view === 2 ? 'y' : view === 0 ? 'x' : 'grid',
+          axis: view === 2 ? 'y' : view === 1 ? 'grid' : 'x',
           count: days.length,
           columns: 7,
         },
@@ -109,8 +114,15 @@ export function Agenda() {
         id: DAY,
         kind: 'nav',
         nav: { axis: 'y', count: items.length },
-        neighbors: { left: content, up: AGENDA_VIEWS },
+        neighbors: { left: content, up: AGENDA_VIEWS, down: REMINDERS },
         onActivate: open,
+      },
+      {
+        id: REMINDERS,
+        kind: 'nav',
+        nav: { axis: 'y', count: reminders.length },
+        neighbors: { left: content, up: DAY },
+        onActivate: (index) => toggleReminder(reminders[index]?.id),
       },
     ],
     arrival: {
@@ -120,8 +132,11 @@ export function Agenda() {
         [WEEK]: week.indexOf(today),
         [AGENDA_MONTH]: month.indexOf(today),
         [LIST]: 0,
+        [GRADE]: 0,
       },
     },
+    options: () => agendaOptions(data, day),
+    actions: { newItem: () => dispatch({ type: 'openOptions' }) },
   });
 
   return (
@@ -130,22 +145,32 @@ export function Agenda() {
         <Block id={AGENDA_VIEWS} className={styles.regua}>
           <Ruler block={AGENDA_VIEWS} items={VIEWS} />
         </Block>
-        <Block id={content}>
-          <div className={styles[['semana', 'mes', 'lista'][view] ?? 'semana']}>
+        <Block id={content} className={styles.conteudo}>
+          <div className={styles[['semana', 'mes', 'lista', 'grade'][view] ?? 'semana']}>
             {days.map((item, index) => (
               <NavItem
                 key={item}
                 block={content}
                 index={index}
                 className={styles.dia}
-                label={shortDate(item)}
+                label={onGrade ? item : shortDate(item)}
               >
-                <DayCell data={data} day={item} />
+                {onGrade ? (
+                  <WeekdayCell data={data} index={index} />
+                ) : (
+                  <DayCell data={data} day={item} />
+                )}
               </NavItem>
             ))}
           </div>
         </Block>
-        <Block id={DAY} title={longDate(day)} count={String(items.length)}>
+        <Block
+          id={DAY}
+          title={onGrade ? WEEKDAY_NAMES[dayIndex] : longDate(day)}
+          count={String(items.length)}
+          shortcut="Alt N"
+          menu
+        >
           <div className={styles.lista}>
             {items.length === 0 && <p className={styles.vazio}>Nada neste dia.</p>}
             {items.map((item, index) => (
@@ -158,9 +183,27 @@ export function Agenda() {
               >
                 <span className={styles.hora}>{item.hour}</span>
                 <b className={styles.titulo}>{item.title}</b>
-                <span className={styles.sigla} data-materia={item.color}>
-                  {item.code}
-                </span>
+                {item.code !== undefined && (
+                  <span className={styles.sigla} data-materia={item.color}>
+                    {item.code}
+                  </span>
+                )}
+              </NavItem>
+            ))}
+          </div>
+        </Block>
+        <Block id={REMINDERS} title="Lembretes" count={String(reminders.length)} shortcut="Alt I">
+          <div className={styles.lista}>
+            {reminders.length === 0 && <p className={styles.vazio}>Nada pendente.</p>}
+            {reminders.map((item, index) => (
+              <NavItem
+                key={item.id}
+                block={REMINDERS}
+                index={index}
+                className={styles.lembrete}
+                onOpen={() => toggleReminder(item.id)}
+              >
+                {item.text}
               </NavItem>
             ))}
           </div>

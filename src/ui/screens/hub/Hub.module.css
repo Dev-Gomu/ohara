@@ -229,3 +229,10 @@
   color: var(--cor-sobre-botao);
   font: var(--ui-botao);
 }
+
+@media (max-width: 767px) {
+  .provas {
+    grid-auto-columns: 220px;
+    overflow-x: auto;
+  }
+}

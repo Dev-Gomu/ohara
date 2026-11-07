@@ -37,7 +37,7 @@ Em paralelo, a qualquer momento antes da Etapa 8: sessão separada extrai `regra
 
 **Etapas 1 e 2:** já concluídas.
 
-**Em curso:** etapas 3, 4, 5, 6, 8 e 9, nessa ordem, todas em Opus e sem a 7. Regras e situação em `loop-telas.md`.
+**Feitas em 07/11/2026, sem teste do usuário:** etapas 3, 4, 5 e 6, e a parte de tela das etapas 8 e 9, no branch `telas-3-a-9`. Situação em `loop-telas.md`. **Próxima:** revisão do usuário, depois a Etapa 7.
 
 **Regra de troca:** se uma etapa de Sonnet encontrar decisão de produto ou de segurança, para e pergunta. Não decide sozinha.
 

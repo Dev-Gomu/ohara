@@ -7,7 +7,8 @@ import { Mosaic } from '../../mosaic/Mosaic';
 import { useMosaic } from '../../mosaic/useMosaic';
 import { ScreenFrame } from '../../shell/ScreenFrame';
 import { openDay, openLesson } from '../../study/navigation';
-import { nowTime, storage, today, useStudy } from '../../study/study';
+import { toggleReminder } from '../../study/actions';
+import { nowTime, today, useStudy } from '../../study/study';
 import { CalendarBlock, ExamsBlock, RemindersBlock, TodayBlock } from './HubBlocks';
 
 const EXAMS = 'hub.provas';
@@ -21,15 +22,6 @@ const INITIAL = split(
   split('row', leaf(CALENDAR), split('row', leaf(TODAY), leaf(REMINDERS), 0.57), 0.3),
   0.26,
 );
-
-function toggleReminder(id: string | undefined) {
-  storage.write((data) => ({
-    ...data,
-    reminders: data.reminders.map((item) =>
-      item.id === id ? { ...item, done: !item.done } : item,
-    ),
-  }));
-}
 
 export function Hub() {
   const data = useStudy();

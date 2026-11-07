@@ -9,6 +9,7 @@ export interface PromptField {
   label: string;
   value?: string;
   type?: 'text' | 'date' | 'time';
+  options?: readonly { value: string; label: string }[];
 }
 
 export interface Prompt {
@@ -43,13 +44,28 @@ function Form({ prompt }: { prompt: Prompt }) {
       {prompt.fields.map((field, index) => (
         <label key={field.id} className={styles.campo}>
           <span className={styles.rotulo}>{field.label}</span>
-          <input
-            className={styles.entrada}
-            type={field.type ?? 'text'}
-            autoFocus={index === 0}
-            value={values[field.id] ?? ''}
-            onChange={(event) => setValues({ ...values, [field.id]: event.target.value })}
-          />
+          {field.options ? (
+            <select
+              className={styles.entrada}
+              autoFocus={index === 0}
+              value={values[field.id] ?? ''}
+              onChange={(event) => setValues({ ...values, [field.id]: event.target.value })}
+            >
+              {field.options.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          ) : (
+            <input
+              className={styles.entrada}
+              type={field.type ?? 'text'}
+              autoFocus={index === 0}
+              value={values[field.id] ?? ''}
+              onChange={(event) => setValues({ ...values, [field.id]: event.target.value })}
+            />
+          )}
         </label>
       ))}
       <button type="submit" className={styles.enviar}>
