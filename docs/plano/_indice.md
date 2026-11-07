@@ -37,7 +37,17 @@ Em paralelo, a qualquer momento antes da Etapa 8: sessão separada extrai `regra
 
 **Etapas 1 e 2:** já concluídas.
 
-**Feitas em 07/11/2026, sem teste do usuário:** etapas 3, 4, 5 e 6, e a parte de tela das etapas 8 e 9, no branch `telas-3-a-9`. Situação em `loop-telas.md`. **Rodada 2 (Opus, 07/11):** escolha do Treino, editor de cartões na Mesa e celular com um bloco por vez (ver `loop-telas.md`). **Próxima:** revisão do usuário; a Agenda tem sessão própria; depois a Etapa 7 (modo de plano).
+**Feitas em 07/11/2026, sem teste do usuário:** etapas 3, 4, 5 e 6, e a parte de tela das etapas 8 e 9, no branch `telas-3-a-9`. Situação em `loop-telas.md`. **Rodada 2 (Opus, 07/11):** escolha do Treino, editor de cartões na Mesa e celular com um bloco por vez (ver `loop-telas.md`). **Próxima: sessão da Agenda** (Opus). Começar escrevendo `docs/regras.md` (Agenda e Grade, a partir do legado: `referencia-legado/DECISOES-legado.md` linhas 249 e 255 e o backlog de 07/11), depois propor o layout pelo checklist de `diretrizes-visuais.md`, com o usuário participando. Foco em tablet (1280×800) e PC; celular fora de foco.
+
+**Pendentes com Opus (07/11/2026):**
+1. Sessão da Agenda, com `regras.md` antes. Depende do usuário: o que quer e aprovar o desenho.
+2. Etapa 7, banco, em modo de plano. Depende do usuário aprovar o plano.
+3. Cores (adiado). Três protótipos recusados em `docs/prototipos/`; pedir referências ao usuário antes de prototipar.
+4. Etapa 11, FSRS. Depende das etapas 7 e 10 (Sonnet).
+5. Etapa 12, sincronização. Depende da Etapa 7 e da conta Dropbox.
+6. Etapa 13, notas cifradas. Depende da Etapa 7; Argon2 ou PBKDF2 decide-se na etapa.
+
+**Pendentes com Sonnet:** renomear e excluir (matéria, pasta, aula, Lixeira); editar e excluir cartões salvos; Alt T, Alt B, Alt , e Alt . na barra de formatação; Etapa 10 (slides em PDF e cartões salvos), depois da 7.
 
 **Regra de troca:** se uma etapa de Sonnet encontrar decisão de produto ou de segurança, para e pergunta. Não decide sozinha.
 
