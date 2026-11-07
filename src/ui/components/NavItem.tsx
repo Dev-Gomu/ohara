@@ -8,6 +8,7 @@ interface NavItemProps {
   ring?: 'anel' | 'anel-interno';
   onOpen?: () => void;
   label?: string;
+  color?: string;
   children: ReactNode;
 }
 
@@ -17,7 +18,8 @@ export function useSelectedIndex(block: string, count: number): number {
 }
 
 // Item de campo navegável. Quem desenha a seleção é a tela, pelo atributo data-sel.
-export function NavItem({ block, index, className, ring, onOpen, label, children }: NavItemProps) {
+export function NavItem(props: NavItemProps) {
+  const { block, index, className, ring, onOpen, label, color, children } = props;
   const { focus } = useKeyboardState();
   const element = useRef<HTMLButtonElement>(null);
   const selected = (focus.items[block] ?? 0) === index;
@@ -35,6 +37,7 @@ export function NavItem({ block, index, className, ring, onOpen, label, children
       className={`${className ?? ''} ${focused ? (ring ?? 'anel-interno') : ''}`}
       data-nav-index={index}
       data-sel={selected}
+      data-cor={color}
       aria-current={selected}
       aria-label={label}
       onClick={onOpen}

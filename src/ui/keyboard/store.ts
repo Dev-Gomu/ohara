@@ -26,7 +26,16 @@ export interface ScreenRegistration {
   blocks: readonly UiBlock[];
   arrival: FocusPlace;
   back?: () => void;
-  actions?: Partial<Record<KeyAction['type'], () => void>>;
+  // Devolver false deixa a tecla seguir o caminho normal.
+  actions?: Partial<Record<KeyAction['type'], (change: KeyAction) => boolean | void>>;
+  options?: (block: string) => readonly BlockOption[];
+}
+
+export interface BlockOption {
+  id: string;
+  label: string;
+  keys?: string;
+  run: () => void;
 }
 
 export interface KeyboardState {
@@ -72,7 +81,7 @@ function readLayout(): FocusLayout {
   const rects: Record<string, Rect> = {};
   for (const element of document.querySelectorAll<HTMLElement>('[data-block]')) {
     const { x, y, width, height } = element.getBoundingClientRect();
-    rects[element.dataset.block ?? ''] = { x, y, w: width, h: height };
+    if (width > 0) rects[element.dataset.block ?? ''] = { x, y, w: width, h: height };
   }
   return {
     rects,
@@ -81,6 +90,14 @@ function readLayout(): FocusLayout {
     specs: Object.fromEntries(registration.blocks.map((block) => [block.id, block])),
     hasParent: registration.back !== undefined,
   };
+}
+
+export function blockRects(): Readonly<Record<string, Rect>> {
+  return readLayout().rects;
+}
+
+export function blockOptions(block: string): readonly BlockOption[] {
+  return registration.options?.(block) ?? [];
 }
 
 function describeChange(change: FocusChange): string | null {
@@ -113,6 +130,10 @@ function runScreenAction(change: FocusChange, layout: FocusLayout): boolean {
     goToScreen(change.screen);
     return true;
   }
+  if (change.type !== 'touch' && change.type !== 'jump') {
+    const handler = registration.actions?.[change.type];
+    if (handler && handler(change) !== false) return true;
+  }
   if (change.type === 'escape' && escapeGoesBack(focus, layout)) {
     registration.back?.();
     return true;
@@ -126,12 +147,7 @@ function runScreenAction(change: FocusChange, layout: FocusLayout): boolean {
     block?.onActivate?.(focus.items[focus.block] ?? 0);
     return block?.enterGoesTo === undefined;
   }
-  const handler =
-    change.type === 'touch' || change.type === 'jump'
-      ? undefined
-      : registration.actions?.[change.type];
-  handler?.();
-  return handler !== undefined;
+  return false;
 }
 
 export function dispatch(change: FocusChange, repeat = false): void {

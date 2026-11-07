@@ -7,10 +7,26 @@ export interface Rect {
   h: number;
 }
 
-// Abaixo disso o outro bloco conta como alinhado, não como estando naquele lado.
-const MIN_DISTANCE = 2;
+// Folga para vãos e arredondamento: tocar a borda ainda conta como estar daquele lado.
+const TOLERANCE = 2;
 
-// O vizinho é o mais próximo no lado pedido; estar alinhado pesa mais do que estar perto.
+function gapTo(origin: Rect, rect: Rect, direction: Direction): number {
+  if (direction === 'right') return rect.x - (origin.x + origin.w);
+  if (direction === 'left') return origin.x - (rect.x + rect.w);
+  if (direction === 'down') return rect.y - (origin.y + origin.h);
+  return origin.y - (rect.y + rect.h);
+}
+
+function overlap(origin: Rect, rect: Rect, direction: Direction): number {
+  const horizontal = direction === 'left' || direction === 'right';
+  const [a, b, c, d] = horizontal
+    ? [origin.y, origin.y + origin.h, rect.y, rect.y + rect.h]
+    : [origin.x, origin.x + origin.w, rect.x, rect.x + rect.w];
+  return Math.min(b, d) - Math.max(a, c);
+}
+
+// O vizinho é quem encosta naquele lado e divide mais borda com o bloco. Comparar só centros
+// erra quando um bloco alto fica ao lado de dois baixos.
 export function neighbor(
   rects: Readonly<Record<string, Rect>>,
   from: string,
@@ -18,22 +34,20 @@ export function neighbor(
 ): string | null {
   const origin = rects[from];
   if (!origin) return null;
-  const horizontal = direction === 'left' || direction === 'right';
-  const sign = direction === 'right' || direction === 'down' ? 1 : -1;
-  const originX = origin.x + origin.w / 2;
-  const originY = origin.y + origin.h / 2;
   let best: string | null = null;
-  let bestScore = Infinity;
+  let bestGap = Infinity;
+  let bestOverlap = -Infinity;
   for (const [id, rect] of Object.entries(rects)) {
     if (id === from) continue;
-    const dx = rect.x + rect.w / 2 - originX;
-    const dy = rect.y + rect.h / 2 - originY;
-    const main = (horizontal ? dx : dy) * sign;
-    if (main < MIN_DISTANCE) continue;
-    const score = main + Math.abs(horizontal ? dy : dx) * 0.5;
-    if (score < bestScore) {
-      bestScore = score;
+    const gap = gapTo(origin, rect, direction);
+    const shared = overlap(origin, rect, direction);
+    if (gap < -TOLERANCE || shared <= 0) continue;
+    const closer = gap < bestGap - TOLERANCE;
+    const sameRow = Math.abs(gap - bestGap) <= TOLERANCE;
+    if (closer || (sameRow && shared > bestOverlap)) {
       best = id;
+      bestGap = gap;
+      bestOverlap = shared;
     }
   }
   return best;

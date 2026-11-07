@@ -27,7 +27,7 @@ Sem a Etapa 7, as duas fazem **só a parte de tela**, com dados fictícios. Isso
 | Ordem | Etapa | Situação | Commit |
 |---|---|---|---|
 | 1 | 3 Casca de navegação | Pronta | ver `git log` |
-| 2 | 4 Mosaico e Mesa | A fazer | |
+| 2 | 4 Mosaico e Mesa | Pronta | ver `git log` |
 | 3 | 5 Fixtures e telas de leitura | A fazer | |
 | 4 | 6 Treino, Agenda, Configs e janelas | A fazer | |
 | 5 | 8 Acervo e Anotações (telas) | A fazer | |

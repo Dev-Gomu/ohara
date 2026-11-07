@@ -8,10 +8,10 @@ interface StubBlock {
   title: string;
 }
 
-function Stub({ title, blocks, text }: { title: string; blocks: StubBlock[]; text?: boolean }) {
+function Stub({ title, blocks }: { title: string; blocks: StubBlock[] }) {
   const [first] = blocks;
   useBlocks({
-    blocks: blocks.map(({ id }) => ({ id, kind: text ? 'text' : 'none' })),
+    blocks: blocks.map(({ id }) => ({ id, kind: 'none' })),
     arrival: { block: first?.id ?? '', level: 'block' },
   });
   return (
@@ -19,7 +19,7 @@ function Stub({ title, blocks, text }: { title: string; blocks: StubBlock[]; tex
       <div className={styles.grade}>
         {blocks.map((block) => (
           <Block key={block.id} id={block.id} title={block.title}>
-            {text && <textarea className={styles.campo} data-field aria-label={block.title} />}
+            <span />
           </Block>
         ))}
       </div>
@@ -33,17 +33,6 @@ export const Hub = () => (
     blocks={[
       { id: 'hub.provas', title: 'Próximas provas' },
       { id: 'hub.agenda', title: 'Agenda de hoje' },
-    ]}
-  />
-);
-export const Mesa = () => (
-  <Stub
-    title="Mesa"
-    text
-    blocks={[
-      { id: 'mesa.slides', title: 'Slides' },
-      { id: 'mesa.notes', title: 'Anotações' },
-      { id: 'mesa.cards', title: 'Cartões' },
     ]}
   />
 );

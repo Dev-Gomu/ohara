@@ -3,9 +3,11 @@ import { useRegisterSW } from 'virtual:pwa-register/react';
 import type { Level, Screen } from '../../core/keyboard/actions';
 import { overlayOf } from '../../core/keyboard/focus';
 import { startKeyboard } from '../keyboard/listener';
-import { dispatch, useKeyboardState } from '../keyboard/store';
-import { Acervo, Agenda, Configs, Hub, Mesa, Treino } from '../screens/stubs';
+import { useKeyboardState } from '../keyboard/store';
+import { Mesa } from '../screens/mesa/Mesa';
+import { Acervo, Agenda, Configs, Hub, Treino } from '../screens/stubs';
 import { HelpWindow } from './HelpWindow';
+import { OptionsWindow } from './OptionsWindow';
 import { Palette } from './Palette';
 import { ReminderWindow } from './ReminderWindow';
 import styles from './Shell.module.css';
@@ -55,14 +57,6 @@ export function Shell() {
         <span data-testid="bloco">{focus.block}</span>. Última ação:{' '}
         <span data-testid="ultima-acao">{lastAction ?? 'nenhuma'}</span>
       </p>
-      {focus.optionsOpen && (
-        <div className={styles.aviso} data-testid="opcoes">
-          <span>Opções do bloco</span>
-          <button className={styles.botao} onClick={() => dispatch({ type: 'escape' })}>
-            Fechar
-          </button>
-        </div>
-      )}
       {needRefresh && (
         <div className={styles.aviso} role="status">
           <span>Há uma versão nova.</span>
@@ -74,6 +68,7 @@ export function Shell() {
       <HelpWindow />
       <Palette />
       <ReminderWindow />
+      <OptionsWindow />
     </>
   );
 }

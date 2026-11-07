@@ -1,0 +1,62 @@
+.mosaico {
+  position: relative;
+  height: 100%;
+  display: grid;
+  min-height: 0;
+}
+
+.divisao {
+  position: relative;
+  display: grid;
+  gap: var(--vao-mosaico);
+  min-width: 0;
+  min-height: 0;
+}
+
+.folha {
+  display: grid;
+  min-width: 0;
+  min-height: 0;
+  animation: abrir var(--tempo-borda) ease-out;
+}
+
+/* Ampliado cobre o mosaico sem desmontar os outros blocos: nada digitado se perde. */
+.folha[data-sobre] {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+
+.folha[hidden] {
+  display: none;
+}
+
+@keyframes abrir {
+  from {
+    transform: scale(var(--abrir-escala));
+    opacity: 0;
+  }
+}
+
+/* A divisa é invisível: sem divisórias. Só existe para o dedo arrastar. */
+.divisa {
+  position: absolute;
+  z-index: 1;
+  touch-action: none;
+}
+
+.divisa[data-axis='row'] {
+  top: 0;
+  bottom: 0;
+  left: calc(var(--divisa, 50%) - 12px);
+  width: 24px;
+  cursor: col-resize;
+}
+
+.divisa[data-axis='col'] {
+  left: 0;
+  right: 0;
+  top: calc(var(--divisa, 50%) - 12px);
+  height: 24px;
+  cursor: row-resize;
+}
