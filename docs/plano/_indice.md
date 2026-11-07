@@ -17,16 +17,40 @@
 
 Em paralelo, a qualquer momento antes da Etapa 8: sessão separada extrai `regras.md` do legado (D05), aprovado pelo usuário.
 
+## Ordem de execução (07/11/2026)
+
+**Prioridade do usuário:** tudo que aparece no front-end vem antes. As etapas 3 a 6 são só front-end, com dados fictícios, e vêm primeiro. A etapa 7 (banco) é a única que não aparece na tela, mas as etapas 8 a 10 não podem mostrar dado real sem ela.
+
+| Ordem | Etapa | Modelo ideal | Motivo |
+|---|---|---|---|
+| 1 | **3** Casca de navegação | **Opus 5.5** | Decide a Paleta (D13) e aplica D70 a D74. Erro aqui se propaga |
+| 2 | **4** Mosaico e Mesa | **Opus 5.5** | Motor dwindle, vizinhos declarados (D73) e layout da Mesa. Julgamento de design |
+| 3 | **5** Fixtures e telas de leitura | **Sonnet 5.5** | Trabalho repetitivo: dados de exemplo e ligação com as telas, já desenhadas |
+| 4 | **6** Treino, Agenda, Configs e janelas | **Opus 5.5** | Desenho do Treino (foco único) e checkpoint de atalhos (D77, D78) |
+| 5 | **7** Banco | **Opus 5.5** | Modo de plano. Modelo de dados e falhas do OPFS, sem margem para erro |
+| 6 | **8** Acervo e Anotações reais | **Opus 5.5** para Tiptap e histórico; Sonnet 5.5 para o resto | Editor e versões são o ponto mais sensível de perda de dados |
+| 7 | **9** Agenda, Grade e Lembretes reais | **Sonnet 5.5** | Regras já escritas em `regras.md`; .ics é formato fechado |
+| 8 | **10** Slides e Cartões | **Sonnet 5.5** | PDFs no OPFS e formulários. Revisão final pelo Opus |
+| 9 | **11** Treino real com FSRS | **Opus 5.5** | Algoritmo de repetição: o erro é silencioso e afeta estudo real |
+| 10 | **12** Sincronização | **Opus 5.5** | Modo de plano. Fila offline, conflitos e teste Drive contra Dropbox |
+| 11 | **13** Notas cifradas | **Opus 5.5** | Segurança. Testes de cifra obrigatórios e revisão de cada linha |
+
+**Etapas 1 e 2:** já concluídas.
+
+**Em curso:** etapas 3, 4, 5, 6, 8 e 9, nessa ordem, todas em Opus e sem a 7. Regras e situação em `loop-telas.md`.
+
+**Regra de troca:** se uma etapa de Sonnet encontrar decisão de produto ou de segurança, para e pergunta. Não decide sozinha.
+
 ## Fase A: interface com dados fictícios (sem banco)
 
 | Etapa | O que | Obs. |
 |---|---|---|
-| **1** | **Fundação:** repositório, Vite, TypeScript, lint, `npm run check`, CI, deploy no GitHub Pages, PWA mínima com aviso de versão, camadas e isolamento do app antigo | **Detalhada em `etapa-01.md`** |
-| 2 | **Teclado:** resolvedor puro, tabela de teclas como dado, listener único, níveis de foco, ajuda gerada | Modo de plano. **Detalhada em `etapa-02.md`** |
-| 3 | **Casca de navegação:** seis telas vazias, Alt+1 a 6, Paleta (decide D13), tema claro/escuro, diretrizes visuais | Precisa de `telas.md` e diretrizes visuais |
-| 4 | **Mosaico e Mesa:** motor dwindle genérico e a Mesa com blocos de mentira, arranjo por aula | Toque e teclado |
+| **1** | **Fundação:** repositório, Vite, TypeScript, lint, `npm run check`, CI, deploy no GitHub Pages, PWA mínima com aviso de versão, camadas e isolamento do app antigo | **Concluída** |
+| 2 | **Teclado:** resolvedor puro, tabela de teclas como dado, listener único, níveis de foco, ajuda gerada | **Concluída.** Modo de plano. Detalhada em `etapa-02.md` |
+| 3 | **Casca de navegação:** seis telas vazias, Alt+1 a 6, Paleta (decide D13), tema claro/escuro, diretrizes visuais | Precisa de `telas.md` e `diretrizes-visuais.md` |
+| 4 | **Mosaico e Mesa:** motor dwindle genérico e a Mesa com blocos de mentira, arranjo por aula | Toque e teclado. Usa D73 |
 | 5 | **Fixtures e telas de leitura:** dados fictícios (inclui casos extremos) alimentando Acervo e Hub | Define o conjunto de fixtures com o usuário |
-| 6 | **Treino, Agenda e Configs** com dados fictícios, mais janelas de consulta. **Checkpoint: escopo congelado, atalhos congelados** | Usuário revisa tudo antes de seguir |
+| 6 | **Treino, Agenda e Configs** com dados fictícios, mais janelas de consulta. **Checkpoint: escopo congelado, atalhos congelados** | Usuário revisa tudo antes de seguir. Inclui D77 e D78 |
 
 ## Fase B: dados reais
 

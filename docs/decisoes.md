@@ -123,7 +123,8 @@ Aqui "Notas" são as do boletim (média, pesos, itens), **não** as Anotações.
 | D56 | Versões fixadas: TypeScript **6.0.3** (7.x fora: typescript-eslint exige <6.1), Vite 8.3, React 19.3, vite-plugin-pwa **2.0** (plano dizia 1.3+; aceita Vite 8), Vitest 5.1, ESLint 10. Tiptap 3.33 e ts-fsrs 6.0 existem, ainda não instalados (D06, D07, D11, D12, D43 confirmadas) | Compatibilidade verificada no npm | Decidida |
 | D57 | Prefixo único **`ohara2-`** (banco, localStorage, cache do SW `ohara2`) e base `/ohara/`. O legado já usa `ohara-` e `ohara.` no localStorage | Evita colisão no domínio compartilhado (D02) | Decidida |
 | D58 | Hooks do Claude Code em `.claude/settings.json`: `PostToolUse` (Prettier) e `Stop` (roda `check`; falha devolve exit 2; evita laço por `stop_hook_active`). Fecha D54 | Formato confirmado | Decidida |
-| D60 | Ícone do app: morcego **A · Refinado** (`Ohara – morcego tela cheia, refinado.html`), em SVG e PNG 192/512, com versão maskable de margem segura. Ícone final, não provisório | Escolha do usuário em 2026-11-05 | Decidida |
+| D60 | Ícone do app: morcego **A · Refinado** (`Ohara – morcego tela cheia, refinado.html`), em SVG e PNG 192/512, com versão maskable de margem segura. Ícone final, não provisório | Escolha do usuário em 2026-11-05 | Substituída pela D69 |
+| D69 | Ícone oficial: o gato-morcego preto sobre lavanda (`image(4).svg`), com **cantos arredondados** (raio de 24%, como o ícone anterior). Em `public/`: `icon.svg`, PNG 192 e 512, e maskable 512 em tela cheia | Escolha do usuário em 07/11/2026. Substitui a D60 | Decidida |
 | D61 | Tecla de ajuda: **Alt /** (IntlRo, o `/` do ABNT2); **F1** como alternativa; **Alt ;** removida (duplicata) | Teste no PC confirmou as duas; uma só basta | Decidida |
 | D59 | Regras de camada com `no-restricted-imports` do ESLint (sem plugin extra) | Menos dependências | Decidida |
 | D62 | **AltGr nunca é atalho:** com `getModifierState('AltGraph')` verdadeiro, o resolvedor devolve nulo | No ABNT2, AltGr digita ¹ ² ³ e `/`, e pode chegar como Ctrl+Alt, o que dispararia Título 1 no meio do texto | Decidida |
@@ -131,6 +132,17 @@ Aqui "Notas" são as do boletim (média, pesos, itens), **não** as Anotações.
 | D64 | **Repetição por linha:** só movimento, troca de página e troca de controle repetem. Nas outras, a repetição é **engolida** (`swallow`), não nula | Segurar Alt S abriria e fecharia o bloco sem parar. Com nulo, segurar Alt F ou Ctrl P entregaria a repetição ao navegador | Decidida |
 | D65 | **Com janela ou menu ⋮ aberto,** só Esc age. Teclas soltas seguem para a janela; as com Alt ou Ctrl da tabela e o F1 são engolidos, inclusive Alt 1 a 6 | Evita Alt ← voltar a página e F1 abrir a ajuda do navegador. Decisão do usuário: primeiro Esc, depois a tecla | Decidida |
 | D66 | **Playwright fora do `check`, dentro do CI:** `npm run e2e` gera o build e roda antes do deploy | Mantém o portão rápido (D48) sem abrir mão do roteiro (D50) | Decidida |
+| D67 | **Tipografia:** voz **Nunito** (700 e 800), interface **Inter** (500, 600 e 700), leitura **Source Sans 3** (400, 600 e itálico 400) e título de nota também **Source Sans 3** (600 e 700), separado da voz | Escolha do usuário em 07/11/2026, entre seis combinações em `tipografia-claudeweb/ohara-fontes.html`. As três têm acentos, grego, setas, ≥ ≤ e ₂ (conferido nos arquivos oficiais). Licença OFL | Decidida |
+| D68 | **Fontes servidas pelo próprio app** (arquivos woff2 no build, sem CDN do Google), só com os pesos da D67 | Funciona offline no PWA (D02 e D57), e a licença OFL permite | Decidida |
+| D75 | **Cores de matéria:** acrescentar amarelo `#F2C14E`, ciano `#35C7D1` e cinza-lavanda `#A7AEC4` às 5 atuais, para 8 matérias. As três novas dão 7,8:1 a 10,3:1 com a tinta; o roxo atual dá 5:1 | Roxo forte e roxo quase não se diferenciam. Medido em `diretrizes-visuais.md` 6.1 | Decidida (usuário, 07/11/2026) |
+| D76 | **Filtro inicial da matéria:** abre no bimestre mais recente com aulas, não em "Todas" | Leva direto à aula atual; "Todas" continua na régua | Decidida (usuário, 07/11/2026) |
+| D77 | **Teclas do Treino:** Espaço vira o cartão; 1 a 4 respondem (Errei, Difícil, Bom, Fácil). Entram em `teclado.md` na Etapa 6 | Mãos ficam no teclado durante a revisão | Decidida (usuário, 07/11/2026) |
+| D78 | **Alt N:** deixa de ser "Cartão novo" e passa a ser "novo item no bloco em foco" (cartão, lembrete ou aula, conforme o bloco). Substitui a linha "Alt N" de `teclado.md` | Uma tecla de criar serve a todos os blocos, sem tecla por tipo | Decidida (usuário, 07/11/2026) |
+| D70 | **Dois tipos de campo:** texto (setas e Enter são do texto, D19) e navegável (lista, régua, grade: setas e H J K L andam entre itens, Enter faz a ação principal). Amplia a D19 | Régua e lista não tinham nível próprio. Detalhe em `diretrizes-visuais.md` 2.2 | Decidida (delegada pelo usuário em 07/11/2026) |
+| D71 | **Regras das setas:** cada controle usa um eixo; a seta do outro eixo e a seta na borda saem para o vizinho; segurar a tecla não atravessa a borda; controle interno não dá a volta | Liga régua, lista e prévia sem subir de nível. Complementa a D64 | Decidida (delegada pelo usuário em 07/11/2026) |
+| D72 | **Esc com tela-mãe:** janela → menu ⋮ → campo → bloco → tela-mãe → menu de telas. O foco volta ao item de origem. Amplia a D18 | Matéria aberta precisa voltar à lista de matérias | Decidida (delegada pelo usuário em 07/11/2026) |
+| D73 | **Mosaico livre** (Mesa, Hub; dwindle, D10) e **mosaico fixo** (Acervo, Treino, Agenda, Configs; grade CSS, mesmo foco, **vizinhos declarados**). A proibição de novos blocos vale para a Mesa | Teste no `neighbor`: com a lista mais estreita que a prévia, ↓ na régua cai na prévia | Decidida (delegada pelo usuário em 07/11/2026) |
+| D74 | **Diretrizes visuais:** `diretrizes-visuais.md` e `tokens-visuais.css` valem para toda tela. Um só anel forte mostra onde as teclas agem; seleção é preenchimento; caixa-alta só em texto do app e nome de matéria | Caixa-alta troca `TNF-α` por `TNF-Α`. Ajusta a regra de texto do usuário da D67 | Decidida (delegada pelo usuário em 07/11/2026) |
 
 ---
 
@@ -139,6 +151,7 @@ Aqui "Notas" são as do boletim (média, pesos, itens), **não** as Anotações.
 | Item | Quando |
 |---|---|
 | D13: React Aria ou cmdk para a Paleta | Etapa 3 |
+| Atualizar `teclado.md` com D77 (Treino) e D78 (Alt N) | Etapa 6, junto do checkpoint de atalhos |
 | D33: conta Dropbox | Etapa 12, se o teste favorecer |
 | D37: Argon2 ou PBKDF2 | Etapa 13 |
 | D44: otimizador do FSRS no navegador | Etapa 11 |

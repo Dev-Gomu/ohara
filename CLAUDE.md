@@ -7,6 +7,7 @@ App pessoal de estudo de medicina (PWA). **Projeto novo, reescrito do zero.** A 
 - `docs/decisoes.md`: decisões técnicas (IDs D01 a D66). Não contrarie uma `Decidida` sem avisar.
 - `docs/plano/_indice.md` e o arquivo da etapa atual: o que fazer agora.
 - `docs/backlog.md`: onde vão as ideias novas.
+- `docs/diretrizes-visuais.md`: obrigatório antes de propor ou mudar qualquer layout (checklist e modelo de proposta).
 - `docs/teclado.md`, `docs/telas.md`, `docs/regras.md`: só se existirem e só quando a etapa os citar.
 
 ## O usuário
