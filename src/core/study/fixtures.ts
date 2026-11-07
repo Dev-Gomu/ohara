@@ -214,6 +214,8 @@ export function createFixtures(today: string): StudyData {
       'Confirmar a sala do laboratório de Genética.',
     ].map((text, index) => ({ id: `l-${index}`, text, date: today, done: false })),
     files: [],
+    vault: [],
+    secrets: [],
     noteVersions: [],
   };
 }

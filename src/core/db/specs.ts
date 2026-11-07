@@ -19,6 +19,8 @@ export type TableName =
   | 'slots'
   | 'reminders'
   | 'files'
+  | 'vault'
+  | 'secret_records'
   | 'note_versions';
 
 export interface TableSpec {
@@ -125,6 +127,24 @@ export const SPECS: readonly TableSpec[] = [
       optional('lessonId'),
       optional('subjectId'),
     ],
+  },
+  {
+    table: 'vault',
+    collection: 'vault',
+    sync: true,
+    columns: [
+      num('iterations'),
+      text('passSalt'),
+      text('passWrapped'),
+      text('codeSalt'),
+      text('codeWrapped'),
+    ],
+  },
+  {
+    table: 'secret_records',
+    collection: 'secrets',
+    sync: true,
+    columns: [text('iv'), text('ciphertext')],
   },
   {
     table: 'note_versions',

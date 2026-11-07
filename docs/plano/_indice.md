@@ -47,7 +47,7 @@ Em paralelo, a qualquer momento antes da Etapa 8: sessão separada extrai `regra
 3. ~~**Etapa 10**, slides e livros em PDF (`etapa-10.md`).~~ **Feita em 07/11/2026**, sem teste do usuário (D95 e D96).
 4. **Etapa 11**, FSRS (`etapa-11.md`).
 5. **Etapa 12**, sincronização (`etapa-12.md`). O usuário acrescenta as origens no Google Cloud antes.
-6. **Etapa 13**, notas cifradas (`etapa-13.md`). Começa perguntando onde fica a tela.
+6. ~~**Etapa 13**, notas cifradas (`etapa-13.md`).~~ **Feita em 07/11/2026 sem a sincronização** (D98 e D99). Falta o teste do outro aparelho, que entra na Etapa 12.
 
 Cada sessão do Sonnet: lê `CLAUDE.md`, este índice e o arquivo da etapa; não refaz o desenho; roda `check` e `e2e`; commita em `telas-3-a-9`; atualiza esta fila; entrega o roteiro de 5 minutos.
 

@@ -104,6 +104,22 @@ export interface StudyFile {
   subjectId: string | null;
 }
 
+// Cofre e registros das Notas: só texto cifrado entra no espelho (D35). Quem decifra é a tela.
+export interface VaultRow {
+  id: string;
+  iterations: number;
+  passSalt: string;
+  passWrapped: string;
+  codeSalt: string;
+  codeWrapped: string;
+}
+
+export interface SecretRow {
+  id: string;
+  iv: string;
+  ciphertext: string;
+}
+
 export interface StudyData {
   years: Year[];
   subjects: Subject[];
@@ -115,5 +131,7 @@ export interface StudyData {
   slots: Slot[];
   reminders: Reminder[];
   files: StudyFile[];
+  vault: VaultRow[];
+  secrets: SecretRow[];
   noteVersions: readonly NoteVersion[];
 }

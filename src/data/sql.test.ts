@@ -43,6 +43,8 @@ const empty: StudyData = {
   slots: [],
   reminders: [],
   files: [],
+  vault: [],
+  secrets: [],
   noteVersions: [],
 };
 
@@ -53,7 +55,7 @@ describe('SQL (SQLite em memória)', () => {
     const db = await memoryDb();
     migrate(db, MIGRATIONS);
     migrate(db, MIGRATIONS);
-    expect(schemaVersion(db)).toBe(2);
+    expect(schemaVersion(db)).toBe(3);
   });
 
   it('ida e volta das nove tabelas e das versões', async () => {

@@ -57,7 +57,7 @@ let registration: ScreenRegistration = { blocks: [], arrival: { block: '', level
 const memory: Partial<Record<Screen, FocusPlace>> = {};
 const subscribers = new Set<() => void>();
 
-function subscribe(subscriber: () => void): () => void {
+export function subscribe(subscriber: () => void): () => void {
   subscribers.add(subscriber);
   return () => subscribers.delete(subscriber);
 }

@@ -24,6 +24,8 @@ export const EMPTY_STUDY: StudyData = {
   slots: [],
   reminders: [],
   files: [],
+  vault: [],
+  secrets: [],
   noteVersions: [],
 };
 

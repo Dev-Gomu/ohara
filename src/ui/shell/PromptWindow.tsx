@@ -8,7 +8,7 @@ export interface PromptField {
   id: string;
   label: string;
   value?: string;
-  type?: 'text' | 'date' | 'time' | 'area';
+  type?: 'text' | 'date' | 'time' | 'area' | 'password';
   options?: readonly { value: string; label: string }[];
 }
 

@@ -25,6 +25,7 @@ import { gradeColumns, weekColumns, type AgendaColumn } from './agendaData';
 import { agendaOptions, askCompleteExam } from './agendaForms';
 import { AgendaPreview, previewActions } from './AgendaPreview';
 import { AgendaWeek } from './AgendaWeek';
+import { Notas } from '../../notas/Notas';
 
 const WEEK = 'agenda.semana';
 const LIST = 'agenda.lista';
@@ -74,10 +75,28 @@ function DayCell({ column, list }: { column: AgendaColumn; list: boolean }) {
   );
 }
 
+const NOTES_VIEW = 4;
+
+// Notas é a quinta visão da régua (D41): fica na Agenda, mas só com a frase.
+function viewItems(month: string) {
+  return [
+    { id: 'semana', title: 'Semana', detail: 'dias e horas' },
+    { id: 'mes', title: 'Mês', detail: month },
+    { id: 'lista', title: 'Lista', detail: `${LIST_DAYS} dias` },
+    { id: 'grade', title: 'Grade', detail: 'horário fixo' },
+    { id: 'notas', title: 'Notas', detail: 'boletim' },
+  ];
+}
+
 export function Agenda() {
+  const view = useSelectedIndex(AGENDA_VIEWS, 5);
+  if (view === NOTES_VIEW) return <Notas rulerItems={viewItems('')} />;
+  return <AgendaMain view={view} />;
+}
+
+function AgendaMain({ view }: { view: number }) {
   const data = useStudy();
   const [shown, setShown] = useScreenMemory(AGENDA_DAY, today);
-  const view = useSelectedIndex(AGENDA_VIEWS, 4);
   const open = data.years.filter((year) => !year.archived).map((year) => year.id);
   const subjects = data.subjects.filter((subject) => open.includes(subject.yearId));
   const subjectIndex = useSelectedIndex(SUBJECTS, subjects.length + 1);
@@ -101,12 +120,7 @@ export function Agenda() {
   const changePage = (step: number) => {
     if (view !== 3) setShown(movePage(view, shown, step));
   };
-  const views = [
-    { id: 'semana', title: 'Semana', detail: 'dias e horas' },
-    { id: 'mes', title: 'Mês', detail: monthName(view === 1 ? anchor : today) },
-    { id: 'lista', title: 'Lista', detail: `${LIST_DAYS} dias` },
-    { id: 'grade', title: 'Grade', detail: 'horário fixo' },
-  ];
+  const views = viewItems(monthName(view === 1 ? anchor : today));
   const period =
     view === 3
       ? 'Toda semana'
@@ -119,7 +133,7 @@ export function Agenda() {
       {
         id: AGENDA_VIEWS,
         kind: 'nav',
-        nav: { axis: 'x', count: 4 },
+        nav: { axis: 'x', count: 5 },
         neighbors: { down: content },
         enterGoesTo: content,
         enterKeepsItem: true,
