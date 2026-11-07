@@ -11,6 +11,8 @@ const BASE = '/ohara/';
 export default defineConfig({
   base: BASE,
   define: { __APP_VERSION__: JSON.stringify(pkg.version) },
+  optimizeDeps: { exclude: ['@sqlite.org/sqlite-wasm'] },
+  worker: { format: 'es' },
   plugins: [
     react(),
     VitePWA({
@@ -44,6 +46,9 @@ export default defineConfig({
         // O protótipo de teclado (Etapa 0) é outra página: nem cache nem fallback do app
         navigateFallbackDenylist: [/\/prototipo-teclado\//],
         globIgnores: ['prototipo-teclado/**'],
+        // O SQLite em WebAssembly precisa estar no cache para o app abrir offline
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2,wasm}'],
+        maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
         cleanupOutdatedCaches: true,
       },
     }),
