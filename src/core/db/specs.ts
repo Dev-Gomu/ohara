@@ -19,6 +19,7 @@ export type TableName =
   | 'slots'
   | 'reminders'
   | 'files'
+  | 'attendance'
   | 'vault'
   | 'secret_records'
   | 'note_versions';
@@ -52,7 +53,14 @@ export const SPECS: readonly TableSpec[] = [
     table: 'subjects',
     collection: 'subjects',
     sync: true,
-    columns: [text('yearId'), text('name'), text('code'), num('color'), optional('lastAccess')],
+    columns: [
+      text('yearId'),
+      text('name'),
+      text('code'),
+      num('color'),
+      optional('lastAccess'),
+      optional('classesFrom'),
+    ],
   },
   {
     table: 'folders',
@@ -126,6 +134,18 @@ export const SPECS: readonly TableSpec[] = [
       text('kind'),
       optional('lessonId'),
       optional('subjectId'),
+    ],
+  },
+  {
+    table: 'attendance',
+    collection: 'attendance',
+    sync: true,
+    columns: [
+      text('subjectId'),
+      text('date'),
+      text('start', 'start_time'),
+      num('missed'),
+      bool('cancelled'),
     ],
   },
   {

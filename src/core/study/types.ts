@@ -12,6 +12,8 @@ export interface Subject {
   // Posição na paleta, nunca o valor da cor: o tema pode mudar sem mexer nos dados.
   color: number;
   lastAccess: string | null;
+  // Início da contagem de presença; null até o usuário informar.
+  classesFrom: string | null;
 }
 
 export interface Folder {
@@ -120,6 +122,16 @@ export interface SecretRow {
   ciphertext: string;
 }
 
+// Exceção de uma aula: falta (em horas) ou aula cancelada (feriado, professor ausente).
+export interface Attendance {
+  id: string;
+  subjectId: string;
+  date: string;
+  start: string;
+  missed: number;
+  cancelled: boolean;
+}
+
 export interface StudyData {
   years: Year[];
   subjects: Subject[];
@@ -131,6 +143,7 @@ export interface StudyData {
   slots: Slot[];
   reminders: Reminder[];
   files: StudyFile[];
+  attendance: Attendance[];
   vault: VaultRow[];
   secrets: SecretRow[];
   noteVersions: readonly NoteVersion[];

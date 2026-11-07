@@ -17,7 +17,7 @@ import { Palette } from './Palette';
 import { PromptWindow } from './PromptWindow';
 import { UndoBar } from './UndoBar';
 import { ReminderWindow } from './ReminderWindow';
-import { NOTES_OPEN } from '../study/navigation';
+import { FAULTS_OPEN, NOTES_OPEN } from '../study/navigation';
 import { setScreenMemory } from '../study/screenMemory';
 import { storage } from '../study/study';
 import styles from './Shell.module.css';
@@ -52,7 +52,10 @@ export function Shell() {
   // D25: trocar de tela grava o que estiver na fila.
   useEffect(() => {
     void storage.flush();
-    if (screen !== 'agenda') setScreenMemory(NOTES_OPEN, false);
+    if (screen !== 'agenda') {
+      setScreenMemory(NOTES_OPEN, false);
+      setScreenMemory(FAULTS_OPEN, false);
+    }
   }, [screen]);
 
   useLayoutEffect(() => {

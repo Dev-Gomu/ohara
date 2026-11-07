@@ -24,6 +24,7 @@ export const EMPTY_STUDY: StudyData = {
   slots: [],
   reminders: [],
   files: [],
+  attendance: [],
   vault: [],
   secrets: [],
   noteVersions: [],
@@ -55,6 +56,7 @@ export function addSubject(data: StudyData, id: string, yearId: string, name: st
     code: subjectCode(name),
     color: nextColor(year),
     lastAccess: null,
+    classesFrom: null,
   };
   return { ...data, subjects: [...data.subjects, subject] };
 }

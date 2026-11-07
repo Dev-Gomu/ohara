@@ -26,7 +26,22 @@ export const AGENDA_DAY = 'agenda.dia';
 // A tela de Notas vive dentro da Agenda, mas só se chega a ela pelo botão do topo ou pela Paleta (D41).
 export const NOTES_OPEN = 'agenda.notas';
 
+export const FAULTS_OPEN = 'agenda.faltas';
+
+export function openFaults(): void {
+  setScreenMemory(NOTES_OPEN, false);
+  setScreenMemory(FAULTS_OPEN, true);
+  dispatch({ type: 'goToScreen', screen: 'agenda' });
+  dispatch({ type: 'jump', block: '', level: 'block' });
+}
+
+export function closeFaults(): void {
+  setScreenMemory(FAULTS_OPEN, false);
+  dispatch({ type: 'jump', block: '', level: 'block' });
+}
+
 export function openNotes(): void {
+  setScreenMemory(FAULTS_OPEN, false);
   setScreenMemory(NOTES_OPEN, true);
   dispatch({ type: 'goToScreen', screen: 'agenda' });
   dispatch({ type: 'jump', block: '', level: 'block' });

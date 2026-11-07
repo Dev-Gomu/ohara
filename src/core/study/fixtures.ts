@@ -172,6 +172,7 @@ export function createFixtures(today: string): StudyData {
     code,
     color,
     lastAccess: id === 'bio' ? null : addDays(today, -index),
+    classesFrom: id === 'far' ? addDays(today, -28) : null,
   }));
   const lessons = [
     ...lessonsFor('imu', IMU_LESSONS, today),
@@ -185,7 +186,15 @@ export function createFixtures(today: string): StudyData {
     ],
     subjects: [
       ...subjects,
-      { id: 'ana', yearId: 'ano-1', name: 'Anatomia', code: 'ANA', color: 2, lastAccess: null },
+      {
+        id: 'ana',
+        yearId: 'ano-1',
+        name: 'Anatomia',
+        code: 'ANA',
+        color: 2,
+        lastAccess: null,
+        classesFrom: null,
+      },
     ],
     folders: subjects.flatMap((subject) => foldersFor(subject.id)),
     lessons,
@@ -214,6 +223,7 @@ export function createFixtures(today: string): StudyData {
       'Confirmar a sala do laboratório de Genética.',
     ].map((text, index) => ({ id: `l-${index}`, text, date: today, done: false })),
     files: [],
+    attendance: [],
     vault: [],
     secrets: [],
     noteVersions: [],

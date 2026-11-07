@@ -17,7 +17,13 @@ import { Ruler } from '../../components/Ruler';
 import { dispatch } from '../../keyboard/store';
 import { useBlocks } from '../../keyboard/useBlocks';
 import { ScreenFrame } from '../../shell/ScreenFrame';
-import { AGENDA_MONTH, AGENDA_DAY, AGENDA_VIEWS, NOTES_OPEN } from '../../study/navigation';
+import {
+  AGENDA_MONTH,
+  AGENDA_DAY,
+  AGENDA_VIEWS,
+  FAULTS_OPEN,
+  NOTES_OPEN,
+} from '../../study/navigation';
 import { useScreenMemory } from '../../study/screenMemory';
 import { nowTime, today, useStudy } from '../../study/study';
 import styles from './Agenda.module.css';
@@ -25,6 +31,7 @@ import { gradeColumns, weekColumns, type AgendaColumn } from './agendaData';
 import { agendaOptions, askCompleteExam } from './agendaForms';
 import { AgendaPreview, previewActions } from './AgendaPreview';
 import { AgendaWeek } from './AgendaWeek';
+import { Faltas } from '../../faltas/Faltas';
 import { Notas } from '../../notas/Notas';
 
 const WEEK = 'agenda.semana';
@@ -87,7 +94,9 @@ function viewItems(month: string) {
 export function Agenda() {
   const view = useSelectedIndex(AGENDA_VIEWS, 4);
   const [notes] = useScreenMemory(NOTES_OPEN, false);
+  const [faults] = useScreenMemory(FAULTS_OPEN, false);
   if (notes) return <Notas />;
+  if (faults) return <Faltas />;
   return <AgendaMain view={view} />;
 }
 

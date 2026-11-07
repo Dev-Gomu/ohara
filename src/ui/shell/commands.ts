@@ -2,7 +2,7 @@ import { SCREENS } from '../../core/keyboard/actions';
 import { SCREEN_NAMES } from '../../core/keyboard/keys';
 import type { StudyData } from '../../core/study/types';
 import { dispatch } from '../keyboard/store';
-import { openLesson, openNotes, openSubject } from '../study/navigation';
+import { openFaults, openLesson, openNotes, openSubject } from '../study/navigation';
 import { toggleTheme } from '../theme';
 
 export const CONSULT_WINDOWS = [
@@ -32,6 +32,7 @@ export function commands(data: StudyData): Command[] {
       label: title,
       run: () => dispatch({ type: 'openWindow', window: id }),
     })),
+    { id: 'faltas', label: 'Faltas e presença', run: openFaults },
     { id: 'notas', label: 'Notas do boletim', run: openNotes },
     { id: 'tema', label: 'Trocar tema', run: toggleTheme },
     {
