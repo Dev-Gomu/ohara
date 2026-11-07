@@ -10,13 +10,14 @@ export function addVersion(
   lessonId: string,
   html: string,
   now: number,
+  id: string,
 ): readonly NoteVersion[] {
   const own = versions.filter((version) => version.lessonId === lessonId);
   const last = own.at(-1);
   if (last && (now - last.at < VERSION_INTERVAL || last.html === html)) return versions;
   const kept = own.length >= MAX_VERSIONS ? own.slice(own.length - MAX_VERSIONS + 1) : own;
   const others = versions.filter((version) => version.lessonId !== lessonId);
-  return [...others, ...kept, { lessonId, at: now, html }];
+  return [...others, ...kept, { id, lessonId, at: now, html }];
 }
 
 export function versionsOf(versions: readonly NoteVersion[], lessonId: string): NoteVersion[] {

@@ -16,7 +16,7 @@ function saveNotes(lessonId: string, html: string) {
     const previous = data.lessons.find((item) => item.id === lessonId)?.notes ?? '';
     return {
       ...data,
-      noteVersions: addVersion(data.noteVersions, lessonId, previous, Date.now()),
+      noteVersions: addVersion(data.noteVersions, lessonId, previous, Date.now(), crypto.randomUUID()),
       lessons: data.lessons.map((item) => (item.id === lessonId ? { ...item, notes: html } : item)),
     };
   });

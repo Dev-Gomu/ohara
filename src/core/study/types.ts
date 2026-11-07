@@ -83,6 +83,7 @@ export interface Reminder {
 }
 
 export interface NoteVersion {
+  id: string;
   lessonId: string;
   at: number;
   html: string;
