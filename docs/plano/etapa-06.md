@@ -16,4 +16,4 @@
 4. Aperte Alt 5, ↑, → e Enter: Mês aberto no dia de hoje. Setas trocam o dia, e o painel à direita acompanha.
 5. No Hub, vá ao calendário e aperte Enter num dia: a Agenda abre nele.
 6. Aperte Alt 6, Enter e Enter: o tema troca.
-7. Aperte Alt P, digite "provas", ↓ e Enter: abre a janela. Esc devolve ao lugar.
+7. Aperte Alt P, digite "provas" e Enter: abre a janela. Esc devolve ao lugar.

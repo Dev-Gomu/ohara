@@ -30,7 +30,7 @@ Sem a Etapa 7, as duas fazem **só a parte de tela**, com dados fictícios. Isso
 | 2 | 4 Mosaico e Mesa | Pronta | ver `git log` |
 | 3 | 5 Fixtures e telas de leitura | Pronta | ver `git log` |
 | 4 | 6 Treino, Agenda, Configs e janelas | Pronta | ver `git log` |
-| 5 | 8 Acervo e Anotações (telas) | A fazer | |
+| 5 | 8 Acervo e Anotações (telas) | Pronta | ver `git log` |
 | 6 | 9 Agenda, Grade e Lembretes (telas) | A fazer | |
 
 ## Escolhas feitas sem o usuário
@@ -45,4 +45,7 @@ Ele revisa esta lista no fim. Uma linha por escolha: etapa, o que foi escolhido,
 | 5 | Seleção some em blocos onde ela não comanda nada | Evita realce sem sentido, registrado na diretriz |
 | 6 | Sessão de Treino usa fila simples: Errei volta ao fim. FSRS real fica na Etapa 11 | Só a tela está no escopo |
 | 6 | Checkpoint de atalhos fechado com 75 teclas, sem revisão do usuário | Pedido de não esperar; ele revisa no fim |
+| 8 | Editor com barra de formatação sempre visível | Toque precisa dela; escondê-la exigiria mais um passo |
+| 8 | Aba Cartões da matéria alterna com Alt C | Reaproveita a tecla existente, sem tecla nova |
+| 8 | Nova matéria fica no fim da régua de anos | Mantém a grade em duas linhas, como a diretriz pede |
 | 3 | Tema: preferência do aparelho em `localStorage`, começa no tema do sistema | Não é dado do estudo |

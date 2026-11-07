@@ -16,7 +16,7 @@ test('o Hub nasce na aula de agora, e Enter abre a aula na Mesa', async ({ page 
   await page.keyboard.press('Enter');
   await expect(tela(page)).toHaveText('mesa');
   await expect(page.getByRole('textbox', { name: 'Anotações' })).toBeFocused();
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Resposta inflamatória aguda');
+  await expect(page.locator('nav h1')).toHaveText('Resposta inflamatória aguda');
 });
 
 test('Acervo: a 3ª aula do 2º bimestre custa as teclas previstas', async ({ page }) => {
@@ -33,7 +33,7 @@ test('Acervo: a 3ª aula do 2º bimestre custa as teclas previstas', async ({ pa
   await expect(page.getByRole('heading', { level: 2, name: 'Tolerância' })).toBeVisible();
   await page.keyboard.press('Enter');
   await expect(tela(page)).toHaveText('mesa');
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Tolerância e autoimunidade');
+  await expect(page.locator('nav h1')).toHaveText('Tolerância e autoimunidade');
 });
 
 test('Acervo: filtro na régua, bordas e volta com Esc', async ({ page }) => {
@@ -140,10 +140,105 @@ test('Configs: a seção comanda o detalhe, e Enter executa', async ({ page }) =
 test('janela de consulta abre pela Paleta e devolve o lugar', async ({ page }) => {
   await page.keyboard.press('Alt+KeyP');
   await page.keyboard.type('provas');
-  await page.keyboard.press('ArrowDown');
   await page.keyboard.press('Enter');
   await expect(page.getByTestId('consulta-provas')).toBeVisible();
   await page.keyboard.press('Escape');
   await expect(page.getByTestId('consulta-provas')).toBeHidden();
   await expect(bloco(page)).toHaveText('hub.agenda');
+});
+
+const editor = (page: Page) => page.getByRole('textbox', { name: 'Anotações' });
+
+test('Anotações: teclas de formatação passam pela tabela', async ({ page }) => {
+  await page.keyboard.press('Alt+Digit2');
+  await expect(editor(page)).toBeFocused();
+  await editor(page).fill('');
+  await page.keyboard.press('Control+KeyB');
+  await page.keyboard.type('forte');
+  await expect(editor(page).locator('strong')).toHaveText('forte');
+  await page.keyboard.press('Control+KeyB');
+  await page.keyboard.press('Enter');
+  await page.keyboard.press('Control+Alt+Digit1');
+  await page.keyboard.type('Título');
+  await expect(editor(page).locator('h1')).toHaveText('Título');
+});
+
+test('Anotações: o texto sobrevive à troca de tela', async ({ page }) => {
+  await page.keyboard.press('Alt+Digit2');
+  await editor(page).fill('guardado');
+  await page.keyboard.press('Alt+Digit1');
+  await page.keyboard.press('Alt+Digit2');
+  await expect(editor(page)).toHaveText('guardado');
+});
+
+test('Acervo: a busca acha sem acento, e Enter vai aos resultados', async ({ page }) => {
+  await page.keyboard.press('Alt+Digit3');
+  await page.keyboard.press('Alt+KeyF');
+  await expect(bloco(page)).toHaveText('acervo.busca');
+  await page.keyboard.type('atencao');
+  await expect(page.locator('[data-block="acervo.resultados"]')).toContainText('Atenção Primária');
+  await page.keyboard.press('Enter');
+  await expect(bloco(page)).toHaveText('acervo.resultados');
+  await page.keyboard.press('Enter');
+  await expect(bloco(page)).toHaveText('acervo.pastas');
+});
+
+test('Acervo: Alt N cria matéria, pasta e aula', async ({ page }) => {
+  const pergunta = page.getByTestId('pergunta');
+  await page.keyboard.press('Alt+Digit3');
+  await expect(bloco(page)).toHaveText('acervo.materias');
+  await page.keyboard.press('Alt+KeyN');
+  await expect(pergunta).toBeVisible();
+  await page.keyboard.type('Saúde Coletiva');
+  await page.keyboard.press('Enter');
+  await expect(pergunta).toBeHidden();
+  const card = page.getByRole('button', { name: /Saúde Coletiva/ });
+  await expect(card).toBeVisible();
+  await card.click();
+  await expect(bloco(page)).toHaveText('acervo.pastas');
+
+  await page.keyboard.press('Alt+KeyN');
+  await page.keyboard.type('Módulo extra');
+  await page.keyboard.press('Enter');
+  await expect(page.locator('[data-block="acervo.pastas"]')).toContainText('Módulo extra');
+
+  await page.keyboard.press('ArrowDown');
+  await page.keyboard.press('Alt+KeyN');
+  await page.keyboard.type('Aula nova');
+  await page.keyboard.press('Enter');
+  await expect(page.locator('[data-block="acervo.aulas"]')).toContainText('Aula nova');
+});
+
+test('Acervo: Alt C alterna entre aulas e cartões', async ({ page }) => {
+  await page.keyboard.press('Alt+Digit3');
+  await page.keyboard.press('ArrowRight');
+  await page.keyboard.press('Enter');
+  await page.keyboard.press('Alt+KeyC');
+  await expect(page.locator('[data-block="acervo.aulas"]')).toContainText('Qual receptor');
+  await page.keyboard.press('Alt+KeyC');
+  await expect(page.locator('[data-block="acervo.aulas"]')).toContainText('Sistema complemento');
+});
+
+test('a Paleta abre matéria e aula pelo nome', async ({ page }) => {
+  await page.keyboard.press('Alt+KeyP');
+  await page.keyboard.type('Farmacocin');
+  await page.keyboard.press('Enter');
+  await expect(tela(page)).toHaveText('mesa');
+  await expect(page.locator('nav h1')).toHaveText('Farmacocinética');
+  await page.keyboard.press('Alt+KeyP');
+  await page.keyboard.type('Imunologia');
+  await page.keyboard.press('Enter');
+  await expect(bloco(page)).toHaveText('acervo.pastas');
+});
+
+test('Anotações: o histórico restaura a versão anterior', async ({ page }) => {
+  await page.keyboard.press('Alt+Digit2');
+  await expect(editor(page)).toContainText('TLR4');
+  await editor(page).fill('apagado sem querer');
+  await page.keyboard.press('Alt+KeyO');
+  await page.getByRole('menuitem', { name: 'Histórico de versões' }).click();
+  await expect(page.getByTestId('historico')).toBeVisible();
+  await page.keyboard.press('Enter');
+  await expect(page.getByTestId('historico')).toBeHidden();
+  await expect(editor(page)).toContainText('TLR4');
 });

@@ -28,7 +28,7 @@
 | D08 | **React Aria Components** só para menus, diálogos, janelas de consulta e réguas. **Navegação entre blocos e Esc pertencem ao núcleo próprio** | Aproveita foco preso e acessibilidade prontos, sem dividir a autoridade sobre o teclado | Decidida |
 | D09 | **CSS Modules** + variáveis CSS num arquivo único. Sem Tailwind | Simplicidade e tema por variáveis | Decidida |
 | D10 | **Mosaico próprio** em grid CSS, estilo dwindle, como **motor genérico** (serve à Mesa e ao Hub) | Um motor, duas telas | Decidida |
-| D11 | Editor de Anotações: **Tiptap 3** | | A VERIFICAR |
+| D11 | Editor de Anotações: **Tiptap 3** (3.33, com `extension-highlight`, `task-list` e `task-item`) | Verificado na Etapa 8: teclas passam pela tabela, Alt e AltGr intactos | Decidida |
 | D12 | PWA com **vite-plugin-pwa 1.3+**, com aviso de nova versão | Critério "pouca manutenção": atualiza com um toque | A VERIFICAR |
 | D13 | Componente da Paleta: **React Aria** (Autocomplete com Menu), sem o cmdk | Já está no app e filtra bem. Dependência a menos | Decidida (Etapa 3) |
 

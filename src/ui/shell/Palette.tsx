@@ -1,6 +1,7 @@
 import { Autocomplete, Input, Menu, MenuItem, SearchField, useFilter } from 'react-aria-components';
 import { Window } from '../components/Window';
 import { dispatch } from '../keyboard/store';
+import { useStudy } from '../study/study';
 import { commands } from './commands';
 import styles from './Palette.module.css';
 
@@ -8,7 +9,7 @@ import styles from './Palette.module.css';
 // está aberta (D65); o Esc continua sendo do listener.
 export function Palette() {
   const { contains } = useFilter({ sensitivity: 'base' });
-  const list = commands();
+  const list = commands(useStudy());
 
   function run(id: React.Key) {
     dispatch({ type: 'escape' });
@@ -19,7 +20,7 @@ export function Palette() {
     <Window id="palette" title="Ir para" testId="paleta">
       <Autocomplete filter={contains}>
         <SearchField aria-label="Ir para" autoFocus>
-          <Input className={styles.busca} placeholder="Tela, comando…" />
+          <Input className={styles.busca} placeholder="Tela, matéria, aula, comando…" />
         </SearchField>
         <Menu
           className={styles.lista}

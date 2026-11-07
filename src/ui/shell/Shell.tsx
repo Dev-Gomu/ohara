@@ -14,6 +14,7 @@ import { ConsultWindows } from './ConsultWindows';
 import { HelpWindow } from './HelpWindow';
 import { OptionsWindow } from './OptionsWindow';
 import { Palette } from './Palette';
+import { PromptWindow } from './PromptWindow';
 import { ReminderWindow } from './ReminderWindow';
 import styles from './Shell.module.css';
 
@@ -75,6 +76,7 @@ export function Shell() {
       <ReminderWindow />
       <OptionsWindow />
       <ConsultWindows />
+      <PromptWindow />
     </>
   );
 }

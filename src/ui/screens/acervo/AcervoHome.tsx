@@ -1,18 +1,32 @@
 import { shortDate } from '../../../core/study/dates';
+import { lessonsOf } from '../../../core/study/queries';
+import { addSubject } from '../../../core/study/create';
+import { search, type SearchResult } from '../../../core/study/search';
 import type { StudyData, Subject } from '../../../core/study/types';
 import { Block } from '../../components/Block';
 import { NavItem, useSelectedIndex } from '../../components/NavItem';
 import { Ruler } from '../../components/Ruler';
-import { getKeyboardState } from '../../keyboard/store';
+import { dispatch, getKeyboardState } from '../../keyboard/store';
 import { useBlocks } from '../../keyboard/useBlocks';
+import { ask } from '../../shell/PromptWindow';
 import { ScreenFrame } from '../../shell/ScreenFrame';
-import { useStudy } from '../../study/study';
-import { lessonsOf } from '../../../core/study/queries';
+import { openLesson } from '../../study/navigation';
+import { useScreenMemory } from '../../study/screenMemory';
+import { storage, useStudy } from '../../study/study';
 import styles from './Acervo.module.css';
 
 const YEARS = 'acervo.anos';
+const SEARCH = 'acervo.busca';
 const SUBJECTS = 'acervo.materias';
+const RESULTS = 'acervo.resultados';
 const COLUMNS = 4;
+
+interface CardProps {
+  data: StudyData;
+  subject: Subject;
+  index: number;
+  onOpen: (id: string) => void;
+}
 
 function SubjectCard({ data, subject, index, onOpen }: CardProps) {
   const lessons = lessonsOf(data, subject.id).length;
@@ -40,20 +54,37 @@ function SubjectCard({ data, subject, index, onOpen }: CardProps) {
   );
 }
 
-interface CardProps {
-  data: StudyData;
-  subject: Subject;
-  index: number;
-  onOpen: (id: string) => void;
+function askSubject(yearId: string) {
+  ask({
+    title: 'Nova matéria',
+    action: 'Criar',
+    fields: [{ id: 'name', label: 'Nome' }],
+    onSubmit: ({ name }) => {
+      if (name) storage.write((data) => addSubject(data, crypto.randomUUID(), yearId, name));
+    },
+  });
 }
 
 export function AcervoHome({ onOpen }: { onOpen: (id: string) => void }) {
   const data = useStudy();
+  const [query, setQuery] = useScreenMemory('acervo.termo', '');
   const current = data.years.findIndex((year) => !year.archived);
   const yearIndex = useSelectedIndex(YEARS, data.years.length);
   const chosen = getKeyboardState().focus.items[YEARS] === undefined ? current : yearIndex;
   const year = data.years[chosen];
   const subjects = data.subjects.filter((subject) => subject.yearId === year?.id);
+  const results = search(data, query);
+  const searching = query.trim() !== '';
+  const content = searching ? RESULTS : SUBJECTS;
+
+  function openResult(result: SearchResult | undefined) {
+    if (result?.kind === 'materia') onOpen(result.target);
+    else if (result) openLesson(result.target);
+  }
+
+  const newSubject = () => {
+    if (year && !year.archived) askSubject(year.id);
+  };
 
   useBlocks({
     blocks: [
@@ -61,22 +92,35 @@ export function AcervoHome({ onOpen }: { onOpen: (id: string) => void }) {
         id: YEARS,
         kind: 'nav',
         nav: { axis: 'x', count: data.years.length },
-        neighbors: { down: SUBJECTS },
+        neighbors: { down: content, right: SEARCH },
         resets: [SUBJECTS],
-        enterGoesTo: SUBJECTS,
+        enterGoesTo: content,
       },
-      {
-        id: SUBJECTS,
-        kind: 'nav',
-        nav: { axis: 'grid', count: subjects.length, columns: COLUMNS },
-        neighbors: { up: YEARS },
-        onActivate: (index) => {
-          const subject = subjects[index];
-          if (subject) onOpen(subject.id);
-        },
-      },
+      { id: SEARCH, kind: 'text', neighbors: { left: YEARS, down: content } },
+      searching
+        ? {
+            id: RESULTS,
+            kind: 'nav',
+            nav: { axis: 'y', count: results.length },
+            neighbors: { up: SEARCH },
+            onActivate: (index) => openResult(results[index]),
+          }
+        : {
+            id: SUBJECTS,
+            kind: 'nav',
+            nav: { axis: 'grid', count: subjects.length, columns: COLUMNS },
+            neighbors: { up: YEARS },
+            onActivate: (index) => {
+              const subject = subjects[index];
+              if (subject) onOpen(subject.id);
+            },
+          },
     ],
-    arrival: { block: SUBJECTS, level: 'nav', items: { [YEARS]: chosen } },
+    arrival: { block: content, level: 'nav', items: { [YEARS]: chosen } },
+    actions: {
+      newItem: newSubject,
+      goToField: () => dispatch({ type: 'jump', block: SEARCH, level: 'field' }),
+    },
   });
 
   return (
@@ -92,22 +136,71 @@ export function AcervoHome({ onOpen }: { onOpen: (id: string) => void }) {
                 ? 'arquivado · só consulta'
                 : `${data.subjects.filter((one) => one.yearId === item.id).length} matérias`,
             }))}
+            createLabel={year?.archived ? undefined : 'Nova matéria'}
+            onCreate={newSubject}
           />
         </Block>
-        <Block id={SUBJECTS} className={styles.semFundo}>
-          <div className={styles.grade}>
-            {subjects.length === 0 && <p className={styles.vazio}>Nenhuma matéria neste ano.</p>}
-            {subjects.map((subject, index) => (
-              <SubjectCard
-                key={subject.id}
-                data={data}
-                subject={subject}
-                index={index}
-                onOpen={onOpen}
-              />
-            ))}
-          </div>
+        <Block id={SEARCH}>
+          <form
+            className={styles.busca}
+            role="search"
+            onSubmit={(event) => {
+              event.preventDefault();
+              if (results.length > 0) {
+                dispatch({ type: 'jump', block: RESULTS, level: 'nav', items: { [RESULTS]: 0 } });
+              }
+            }}
+          >
+            <input
+              className={styles.buscaCampo}
+              data-field
+              aria-label="Buscar"
+              placeholder="Buscar matéria, aula ou cartão"
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+            />
+            <kbd className={styles.tecla}>Alt F</kbd>
+          </form>
         </Block>
+        {searching ? (
+          <Block
+            id={RESULTS}
+            title="Resultados"
+            count={String(results.length)}
+            className={styles.largo}
+          >
+            <div className={styles.lista}>
+              {results.length === 0 && <p className={styles.vazio}>Nada encontrado.</p>}
+              {results.map((result, index) => (
+                <NavItem
+                  key={`${result.kind}-${result.id}`}
+                  block={RESULTS}
+                  index={index}
+                  className={styles.aula}
+                  onOpen={() => openResult(result)}
+                >
+                  <b className={styles.aulaNome}>{result.title}</b>
+                  <span className={styles.aulaDados}>{result.detail}</span>
+                </NavItem>
+              ))}
+            </div>
+          </Block>
+        ) : (
+          <Block id={SUBJECTS} className={`${styles.semFundo} ${styles.largo}`}>
+            <div className={styles.grade}>
+              {subjects.length === 0 && <p className={styles.vazio}>Nenhuma matéria neste ano.</p>}
+              {subjects.map((subject, index) => (
+                <SubjectCard
+                  key={subject.id}
+                  data={data}
+                  subject={subject}
+                  index={index}
+                  onOpen={onOpen}
+                />
+              ))}
+            </div>
+          </Block>
+        )}
       </div>
     </ScreenFrame>
   );

@@ -63,6 +63,12 @@ export interface Reminder {
   done: boolean;
 }
 
+export interface NoteVersion {
+  lessonId: string;
+  at: number;
+  html: string;
+}
+
 export interface StudyData {
   years: Year[];
   subjects: Subject[];
@@ -72,4 +78,5 @@ export interface StudyData {
   exams: Exam[];
   events: ClassEvent[];
   reminders: Reminder[];
+  noteVersions: readonly NoteVersion[];
 }

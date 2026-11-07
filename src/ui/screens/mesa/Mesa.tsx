@@ -10,8 +10,10 @@ import { useMosaic } from '../../mosaic/useMosaic';
 import { ScreenFrame } from '../../shell/ScreenFrame';
 import { MESA_LESSON } from '../../study/navigation';
 import { useScreenMemory } from '../../study/screenMemory';
-import { nowTime, storage, today, useStudy } from '../../study/study';
+import { nowTime, today, useStudy } from '../../study/study';
 import styles from './Mesa.module.css';
+import { HistoryWindow, NotesBlock } from './NotesBlock';
+import { editorActions, useNotesEditor } from './useNotesEditor';
 
 const SLIDES = 'mesa.slides';
 const NOTES = 'mesa.notes';
@@ -47,12 +49,7 @@ function LessonDesk({ data, lessonId }: { data: StudyData; lessonId: string }) {
   const mosaic = useMosaic(`aula-${lessonId}`, INITIAL, ALL);
   const [page, setPage] = useScreenMemory(`mesa.pagina.${lessonId}`, 1);
 
-  function writeNotes(notes: string) {
-    storage.write((current) => ({
-      ...current,
-      lessons: current.lessons.map((item) => (item.id === lessonId ? { ...item, notes } : item)),
-    }));
-  }
+  const editor = useNotesEditor(lessonId, lesson?.notes ?? '');
 
   useBlocks({
     blocks: [
@@ -67,9 +64,21 @@ function LessonDesk({ data, lessonId }: { data: StudyData; lessonId: string }) {
     arrival: mosaic.isOpen(NOTES)
       ? { block: NOTES, level: 'field' }
       : { block: leaves(mosaic.tree)[0] ?? '', level: 'block' },
-    options: mosaic.options,
+    options: (block) => [
+      ...mosaic.options(block),
+      ...(block === NOTES
+        ? [
+            {
+              id: 'historico',
+              label: 'Histórico de versões',
+              run: () => dispatch({ type: 'openWindow', window: 'historico' }),
+            },
+          ]
+        : []),
+    ],
     actions: {
       ...mosaic.actions,
+      ...editorActions(editor, page),
       changePage: (change) => {
         if (change.type !== 'changePage') return false;
         setPage(Math.min(pages, Math.max(1, page + change.step)));
@@ -88,17 +97,7 @@ function LessonDesk({ data, lessonId }: { data: StudyData; lessonId: string }) {
       );
     }
     if (id === NOTES) {
-      return (
-        <Block id={id} title="Anotações" shortcut="Alt A" menu>
-          <textarea
-            className={styles.texto}
-            data-field
-            aria-label="Anotações"
-            value={lesson?.notes ?? ''}
-            onChange={(event) => writeNotes(event.target.value)}
-          />
-        </Block>
-      );
+      return <NotesBlock id={id} editor={editor} />;
     }
     return (
       <Block id={id} title="Cartões" count={`${cards.length} nesta aula`} shortcut="Alt C" menu>
@@ -154,6 +153,7 @@ function LessonDesk({ data, lessonId }: { data: StudyData; lessonId: string }) {
         render={render}
         onChange={mosaic.setTree}
       />
+      <HistoryWindow lessonId={lessonId} editor={editor} />
       {mosaic.resizing && (
         <div className={styles.aviso} role="status">
           Redimensionar: setas ajustam, Enter ou Esc termina

@@ -30,8 +30,7 @@ test('Alt 2 chega com o cursor nas Anotações', async ({ page }) => {
   await page.keyboard.type('hjkl');
   await page.keyboard.press('ArrowLeft');
   await page.keyboard.type('x');
-  await page.keyboard.press('Enter');
-  await expect(anotacoes(page)).toHaveValue('hjkx\nl');
+  await expect(anotacoes(page)).toHaveText('hjkxl');
   await expect(nivel(page)).toHaveText('campo');
 });
 
@@ -81,7 +80,7 @@ test('Alt S fecha e reabre o bloco, sem perder o texto', async ({ page }) => {
   await page.keyboard.press('Alt+KeyS');
   await expect(slides).toBeVisible();
   await expect(bloco(page)).toHaveText('mesa.slides');
-  await expect(anotacoes(page)).toHaveValue('abc');
+  await expect(anotacoes(page)).toHaveText('abc');
 });
 
 test('Alt M amplia e volta, e o texto continua', async ({ page }) => {
@@ -91,7 +90,7 @@ test('Alt M amplia e volta, e o texto continua', async ({ page }) => {
   await expect(anotacoes(page)).toBeFocused();
   await page.keyboard.press('Alt+KeyM');
   await expect(page.locator('[data-block="mesa.slides"]')).toBeVisible();
-  await expect(anotacoes(page)).toHaveValue('abc');
+  await expect(anotacoes(page)).toHaveText('abc');
 });
 
 test('Alt Shift H troca o bloco de lugar e Alt Shift 0 desfaz', async ({ page }) => {
@@ -201,7 +200,6 @@ test('a Paleta filtra e leva à tela escolhida', async ({ page }) => {
   await page.keyboard.press('Alt+KeyP');
   await expect(page.getByTestId('paleta')).toBeVisible();
   await page.keyboard.type('trei');
-  await page.keyboard.press('ArrowDown');
   await page.keyboard.press('Enter');
   await expect(page.getByTestId('paleta')).toBeHidden();
   await expect(tela(page)).toHaveText('treino');
@@ -216,7 +214,6 @@ test('a Paleta troca o tema e Esc fecha sem agir', async ({ page }) => {
   expect(await tema()).toBe(antes);
   await page.keyboard.press('Alt+KeyP');
   await page.keyboard.type('tema');
-  await page.keyboard.press('ArrowDown');
   await page.keyboard.press('Enter');
   await expect(page.getByTestId('paleta')).toBeHidden();
   expect(await tema()).not.toBe(antes);

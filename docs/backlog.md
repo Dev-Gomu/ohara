@@ -45,3 +45,5 @@ Lista curta do que foi **adiado ou ainda não decidido**. O que está no plano d
 - 2026-11-05: Ideias que sobraram do legado, sem decisão: cloze nos cartões, suspender cartão, estudar só uma prova, limite de novos por dia, pomodoro, paleta de comandos no gerenciador de cartões, escolha do ícone de atalhos (o "?" do legado não agradou).
 - 2026-11-05: Manter o app antigo no ar até o novo ter tudo o que o usuário usa.
 - 2026-11-07: **Antes da Etapa 3:** aprovar D70 a D74 e passar as regras de `diretrizes-visuais.md` (2.2 a 2.5) para `teclado.md` e para o resolvedor.
+- 2026-11-07: **Barra do bloco por teclado:** Alt T, Alt B, Alt , e Alt . existem na tabela, mas ainda não movem o foco para a barra de formatação.
+- 2026-11-07: **Renomear e excluir** matéria, pasta e aula, com Lixeira. Não entrou nas telas da Etapa 8.

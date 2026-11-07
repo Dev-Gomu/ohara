@@ -59,11 +59,13 @@ const IMU_CARDS: [string, string][] = [
   ['Mediador da febre no hipotálamo', 'PGE₂'],
 ];
 
-const NOTES = `Resposta inflamatória aguda
-
-O macrófago reconhece o LPS pelo TLR4. A via segue por NF-κB e libera IL-1β, IL-6 e TNF-α.
-
-Entre 6 e 24 horas predominam neutrófilos; entre 24 e 48 horas, monócitos.`;
+const NOTES = [
+  '<h1>Resposta inflamatória aguda</h1>',
+  '<p>O macrófago reconhece o LPS pelo <mark>TLR4</mark>. A via segue por NF-κB e libera IL-1β, IL-6 e TNF-α.</p>',
+  '<h2>Mediadores</h2>',
+  '<ul><li><p>IL-1β e TNF-α: febre, via PGE₂ no hipotálamo.</p></li><li><p>IL-6: age no fígado, ↑ PCR e fibrinogênio.</p></li></ul>',
+  '<p>Entre 6 e 24 horas predominam neutrófilos; entre 24 e 48 horas, monócitos. <mark>Cai na prova.</mark></p>',
+].join('');
 
 function foldersFor(subjectId: string): Folder[] {
   return [1, 2, 3].map((number) => ({
@@ -202,5 +204,6 @@ export function createFixtures(today: string): StudyData {
       'Revisar IL-6 e TNF-α antes da prova de Imunologia.',
       'Confirmar a sala do laboratório de Genética.',
     ].map((text, index) => ({ id: `l-${index}`, text, date: today, done: false })),
+    noteVersions: [],
   };
 }

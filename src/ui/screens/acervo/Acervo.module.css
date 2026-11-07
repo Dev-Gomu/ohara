@@ -2,7 +2,44 @@
   height: 100%;
   display: grid;
   grid-template-rows: 76px minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) 380px;
   gap: var(--vao-mosaico);
+}
+
+.largo {
+  grid-column: 1 / -1;
+}
+
+.busca {
+  display: flex;
+  align-items: center;
+  gap: var(--e2);
+  height: 100%;
+  padding: 0 var(--e4);
+}
+
+.buscaCampo {
+  flex: 1;
+  min-width: 0;
+  height: 48px;
+  border: 0;
+  background: transparent;
+  font: var(--leitura-campo);
+}
+
+.modo {
+  display: flex;
+  align-items: center;
+  gap: var(--e2);
+  height: var(--alvo);
+  padding: 0 14px;
+  border-radius: var(--raio-pilula);
+  background: var(--cor-cartao);
+  font: var(--ui-item);
+}
+
+.modo[data-sel='true'] {
+  background: var(--cor-marca);
 }
 
 .semFundo {
@@ -14,7 +51,7 @@
   min-height: 0;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  grid-auto-rows: minmax(200px, 1fr);
+  grid-auto-rows: minmax(220px, 1fr);
   gap: var(--vao-mosaico);
   padding: 6px;
   overflow: auto;
@@ -61,8 +98,6 @@
 }
 
 .total small {
-  align-self: flex-end;
-  margin-bottom: 40%;
   font: var(--ui-botao);
 }
 

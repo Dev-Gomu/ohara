@@ -1,6 +1,8 @@
 import { SCREENS } from '../../core/keyboard/actions';
 import { SCREEN_NAMES } from '../../core/keyboard/keys';
+import type { StudyData } from '../../core/study/types';
 import { dispatch } from '../keyboard/store';
+import { openLesson, openSubject } from '../study/navigation';
 import { toggleTheme } from '../theme';
 
 export const CONSULT_WINDOWS = [
@@ -17,7 +19,7 @@ export interface Command {
   run: () => void;
 }
 
-export function commands(): Command[] {
+export function commands(data: StudyData): Command[] {
   return [
     ...SCREENS.map((screen, index) => ({
       id: `tela-${screen}`,
@@ -38,5 +40,16 @@ export function commands(): Command[] {
       run: () => dispatch({ type: 'quickReminder' }),
     },
     { id: 'ajuda', label: 'Atalhos', keys: 'Alt /', run: () => dispatch({ type: 'openHelp' }) },
+    ...data.subjects.map((subject) => ({
+      id: `materia-${subject.id}`,
+      label: subject.name,
+      keys: subject.code,
+      run: () => openSubject(subject.id),
+    })),
+    ...data.lessons.map((lesson) => ({
+      id: `aula-${lesson.id}`,
+      label: lesson.title,
+      run: () => openLesson(lesson.id),
+    })),
   ];
 }

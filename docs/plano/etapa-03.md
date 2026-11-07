@@ -15,7 +15,7 @@
 ## Roteiro de 5 minutos
 1. Aperte Alt 1 a Alt 6 e confira o título de cada tela.
 2. Aperte Esc até o foco chegar à barra de números. Use ← → e Enter para abrir outra tela.
-3. Aperte Alt P, digite "trei", aperte ↓ e Enter: abre o Treino.
-4. Aperte Alt P, digite "tema", aperte ↓ e Enter: o tema troca.
+3. Aperte Alt P, digite "trei" e aperte Enter: abre o Treino.
+4. Aperte Alt P, digite "tema" e aperte Enter: o tema troca.
 5. Feche e abra o app: o tema continua o mesmo.
 6. Aperte Alt / e confira a lista de atalhos. Esc fecha.
