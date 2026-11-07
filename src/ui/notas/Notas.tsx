@@ -185,6 +185,30 @@ function Open(props: { data: StudyData; items: readonly Item[]; unreadable: numb
   const bimesters = BIMESTERS.map((number) => bimesterResult(mine, scheme, number));
   const year = yearResult(mine, scheme);
   const needed = neededInSecondSemester(mine, scheme);
+  // Só aparece o que ainda falta: a meta some quando o bimestre (ou semestre) alvo já tem nota.
+  const open = (result: Result) => result.value === null || result.partial;
+  const goals = [
+    {
+      label: '1º semestre, no 2º bimestre',
+      show: open(bimesters[1] ?? { value: null, partial: true }),
+      value: neededForSemester(mine, scheme, 1),
+    },
+    {
+      label: '2º semestre, no 4º bimestre',
+      show: open(bimesters[3] ?? { value: null, partial: true }),
+      value: neededForSemester(mine, scheme, 2),
+    },
+    {
+      label: 'Ano, no 4º bimestre',
+      show: open(bimesters[3] ?? { value: null, partial: true }),
+      value: neededInFourthForYear(mine, scheme),
+    },
+    {
+      label: 'Ano, média do 2º semestre',
+      show: open(semesterResult(mine, scheme, 2)),
+      value: needed,
+    },
+  ].filter((goal) => goal.show);
   const inItems = () => getKeyboardState().focus.block === ITEMS;
 
   const options = (): BlockOption[] => {
@@ -343,17 +367,19 @@ function Open(props: { data: StudyData; items: readonly Item[]; unreadable: numb
               <p className={styles.destaque}>
                 {STATUS[statusOf(year, scheme.min)]} · mínimo {formatGrade(scheme.min)}
               </p>
-              <p className={styles.destaque}>Quanto preciso para fechar</p>
-              <dl className={styles.quadro}>
-                <dt>1º semestre, no 2º bimestre</dt>
-                <dd>{need(neededForSemester(mine, scheme, 1))}</dd>
-                <dt>2º semestre, no 4º bimestre</dt>
-                <dd>{need(neededForSemester(mine, scheme, 2))}</dd>
-                <dt>Ano, no 4º bimestre</dt>
-                <dd>{need(neededInFourthForYear(mine, scheme))}</dd>
-                <dt>Ano, média do 2º semestre</dt>
-                <dd>{need(needed)}</dd>
-              </dl>
+              {goals.length > 0 && (
+                <>
+                  <p className={styles.destaque}>Quanto preciso para fechar</p>
+                  <dl className={styles.quadro}>
+                    {goals.map((goal) => (
+                      <div key={goal.label} style={{ display: 'contents' }}>
+                        <dt>{goal.label}</dt>
+                        <dd>{need(goal.value)}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                </>
+              )}
             </>
           )}
         </div>
