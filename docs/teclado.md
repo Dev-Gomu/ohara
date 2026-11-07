@@ -10,6 +10,9 @@ Esta é a tabela de atalhos que a Etapa 2 implementa. Cada linha vira um teste (
 - **Alt** é o modificador do sistema e vale até dentro dos campos de texto.
 - **Tecla solta** (H J K L, setas, Tab, Enter) só age fora de campos de texto. Digitar nunca dispara atalho.
 - **Enter** desce um nível, **Esc** sobe um: menu → bloco → campo.
+- **Dois tipos de campo (D70):** no campo de texto, setas e Enter são do texto. No campo navegável (lista, régua, grade), setas e H J K L andam entre os itens e Enter faz a ação principal.
+- **Setas no campo navegável (D71):** cada controle usa um eixo. A seta do outro eixo e a seta na borda saem para o vizinho. Segurar a tecla não atravessa a borda. Só a barra de telas dá a volta.
+- **Esc (D72):** janela → menu ⋮ → campo → bloco → tela-mãe → barra de telas.
 - **Ctrl** fica para o editor (negrito, títulos, listas) e para a Paleta alternativa.
 - Teclas do ABNT2 são lidas pelo código físico (`e.code`), não pelo caractere. Por isso `Alt /` é a tecla `IntlRo`, e `Alt ]` é `Backslash`.
 
@@ -25,7 +28,7 @@ Esta é a tabela de atalhos que a Etapa 2 implementa. Cada linha vira um teste (
 |---|---|
 | Alt H J K L · Alt ← ↓ ↑ → | Foco para o vizinho (menu, bloco e campo) |
 | Alt Shift H J K L | Troca o bloco em foco de lugar com o vizinho |
-| H J K L · ← ↓ ↑ → (sem Alt) | No nível bloco: vai ao bloco vizinho |
+| H J K L · ← ↓ ↑ → (sem Alt) | No bloco: vai ao vizinho. No campo navegável: próximo item. No menu: próxima tela |
 | Enter | Desce um nível |
 | Esc | Sobe um nível (ou fecha janela) |
 | Tab · Shift Tab | Próximo e anterior bloco |
@@ -40,7 +43,7 @@ Esta é a tabela de atalhos que a Etapa 2 implementa. Cada linha vira um teste (
 | Alt O | Opções (⋮) do bloco |
 | Alt T · Alt F · Alt B | Vai à barra de cima · ao campo · à barra de baixo |
 | Alt , · Alt . | Controle anterior e próximo na barra |
-| Alt N | Cartão novo |
+| Alt N | Novo item no bloco em foco (D78) |
 | Alt 0 · Alt Shift 0 | Tamanhos padrão · ordem padrão |
 
 ### Sistema

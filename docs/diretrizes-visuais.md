@@ -3,7 +3,7 @@
 **Status:** versão 2, em vigor. Data: 07/11/2026.
 **Papel:** define como cada tela é pensada, navegada e desenhada. Vale para toda proposta de layout, em qualquer tela.
 **Fontes:** `visao.md`, `teclado.md`, `decisoes.md`, código de `src/core/keyboard/`, biblioteca de elementos e Acervo do ClaudeWeb, capturas da Rodada 2 e gostos registrados do legado.
-**Valores exatos:** `tokens-visuais.css`. **Para testar o fluxo com as mãos:** `diretrizes-visuais-demo.html`.
+**Valores exatos:** `src/ui/styles/tokens.css`. **Para testar o fluxo com as mãos:** `diretrizes-visuais-demo.html`.
 
 As regras marcadas com **[proposta]** estão decididas (D70 a D74), mas ainda não existem em `teclado.md` nem no código. A Etapa 3 as implementa.
 
@@ -228,7 +228,7 @@ A aula 3 do 2º bimestre custa 6 teclas, saindo de "Todas": → → Enter ↓ �
 | Leitura | Source Sans 3 400, 600, itálico | Texto corrido, respostas, lembretes, tudo que se digita |
 | Título de nota | Source Sans 3 600, 700 | Títulos 1, 2 e 3 dentro das Anotações |
 
-A escala tem 18 degraus fechados em `tokens-visuais.css`. Não use tamanho fora dela. Os HTML do ClaudeWeb somam mais de 30 combinações, com vizinhos como 15 e 15,5 px que não criam hierarquia.
+A escala tem 18 degraus fechados em `src/ui/styles/tokens.css`. Não use tamanho fora dela. Os HTML do ClaudeWeb somam mais de 30 combinações, com vizinhos como 15 e 15,5 px que não criam hierarquia.
 
 **Caixa-alta só em texto escrito pelo app e em nome de matéria.** Título de aula, pergunta de cartão e título de nota ficam exatamente como foram digitados. O motivo é funcional: em caixa-alta, `TNF-α` vira `TNF-Α`, `IL-1β` vira `IL-1Β`, `pH` vira `PH` e `mRNA` vira `MRNA`.
 
@@ -364,6 +364,6 @@ Antes de virar tela real:
 - **Alt N:** cria novo item no bloco em foco. Entra em `teclado.md` na Etapa 6.
 
 **Técnicas (entram nas etapas):**
-- Etapa 3: `telas.md`, troca de `variables.css` por `tokens-visuais.css`, fontes em woff2 (D68), teclas das regras 2.2 a 2.5 em `teclado.md`.
+- Etapa 3: `telas.md`, fontes em woff2 (D68), teclas das regras 2.2 a 2.5 em `teclado.md`.
 - Etapa 4: vizinhos declarados e revisão do `neighbor` (já no backlog).
 - Validar a tela renderizada de Treino, Agenda e Configs antes de implementar.

@@ -1,6 +1,6 @@
 # Loop das telas: etapas 3, 4, 5, 6, 8 e 9
 
-**Pedido do usuário (07/11/2026):** fazer as etapas em sequência, sem esperar testes dele, com foco nas telas. Uma sessão nova por etapa, todas em Opus. A Etapa 7 (banco) fica para depois.
+**Pedido do usuário (07/11/2026):** fazer as etapas em sequência, sem esperar testes dele, com foco nas telas. Todas em Opus. Abrir uma sessão por etapa falhou pelo Remote Control, então seguem na mesma sessão. A Etapa 7 (banco) fica para depois.
 
 ## Regras para cada sessão
 
@@ -26,7 +26,7 @@ Sem a Etapa 7, as duas fazem **só a parte de tela**, com dados fictícios. Isso
 
 | Ordem | Etapa | Situação | Commit |
 |---|---|---|---|
-| 1 | 3 Casca de navegação | A fazer | |
+| 1 | 3 Casca de navegação | Pronta | ver `git log` |
 | 2 | 4 Mosaico e Mesa | A fazer | |
 | 3 | 5 Fixtures e telas de leitura | A fazer | |
 | 4 | 6 Treino, Agenda, Configs e janelas | A fazer | |
@@ -39,3 +39,6 @@ Ele revisa esta lista no fim. Uma linha por escolha: etapa, o que foi escolhido,
 
 | Etapa | Escolha | Motivo |
 |---|---|---|
+| 3 | Fontes em 9 arquivos, 236 KB no total | Subconjunto com latim, grego, setas e símbolos |
+| 3 | Clicar no número da tela atual volta ao bloco | Evita ficar preso no nível menu com o dedo |
+| 3 | Tema: preferência do aparelho em `localStorage`, começa no tema do sistema | Não é dado do estudo |

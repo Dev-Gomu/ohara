@@ -1,11 +1,14 @@
-export type Level = 'menu' | 'block' | 'field';
+// 'field' é o campo de texto; 'nav' é o campo navegável: lista, régua ou grade (D70).
+export type Level = 'menu' | 'block' | 'field' | 'nav';
 export type Direction = 'left' | 'down' | 'up' | 'right';
-export type Screen = 'hub' | 'mesa' | 'acervo' | 'treino' | 'agenda' | 'configs';
+export const SCREENS = ['hub', 'mesa', 'acervo', 'treino', 'agenda', 'configs'] as const;
+export type Screen = (typeof SCREENS)[number];
 export type BlockKind = 'slides' | 'notes' | 'cards';
 
 export type KeyAction =
   | { type: 'goToScreen'; screen: Screen }
-  | { type: 'moveFocus'; direction: Direction }
+  // step: tecla solta. No campo navegável anda entre os itens; com Alt, sempre vai ao vizinho.
+  | { type: 'moveFocus'; direction: Direction; step?: true }
   | { type: 'swapBlock'; direction: Direction }
   | { type: 'enter' }
   | { type: 'escape' }
@@ -22,7 +25,7 @@ export type KeyAction =
   | { type: 'goToBottomBar' }
   | { type: 'previousControl' }
   | { type: 'nextControl' }
-  | { type: 'newCard' }
+  | { type: 'newItem' }
   | { type: 'defaultSizes' }
   | { type: 'defaultOrder' }
   | { type: 'openPalette' }

@@ -17,7 +17,9 @@ async function pressAltSlash(page: Page) {
 
 test.beforeEach(async ({ page }) => {
   await page.goto('./');
-  await expect(nivel(page)).toHaveText('bloco');
+  await expect(bloco(page)).toHaveText('hub.provas');
+  await page.keyboard.press('Alt+Digit2');
+  await expect(bloco(page)).toHaveText('mesa.slides');
 });
 
 test('Enter desce e Esc sobe, sem passar do menu', async ({ page }) => {
@@ -37,30 +39,31 @@ test('Enter desce e Esc sobe, sem passar do menu', async ({ page }) => {
 
   await page.keyboard.press('Enter');
   await expect(nivel(page)).toHaveText('bloco');
+  await expect(page.getByTestId('tela')).toHaveText('mesa');
 });
 
 test('Alt H J K L andam pelos blocos e mantêm o nível campo', async ({ page }) => {
   await page.keyboard.press('Alt+KeyL');
-  await expect(bloco(page)).toHaveText('Anotações');
-  await page.keyboard.press('Alt+KeyJ');
-  await expect(bloco(page)).toHaveText('Cartões');
-  await page.keyboard.press('Alt+KeyK');
-  await expect(bloco(page)).toHaveText('Anotações');
+  await expect(bloco(page)).toHaveText('mesa.notes');
+  await page.keyboard.press('Alt+KeyL');
+  await expect(bloco(page)).toHaveText('mesa.cards');
   await page.keyboard.press('Alt+KeyH');
-  await expect(bloco(page)).toHaveText('Slides');
+  await expect(bloco(page)).toHaveText('mesa.notes');
+  await page.keyboard.press('Alt+KeyH');
+  await expect(bloco(page)).toHaveText('mesa.slides');
 
   await page.keyboard.press('Enter');
   await page.keyboard.press('Alt+KeyL');
-  await expect(bloco(page)).toHaveText('Anotações');
+  await expect(bloco(page)).toHaveText('mesa.notes');
   await expect(nivel(page)).toHaveText('campo');
   await expect(campo(page, 'Anotações')).toBeFocused();
 });
 
 test('sem Alt, H J K L e setas movem no bloco e são texto no campo', async ({ page }) => {
   await page.keyboard.press('KeyL');
-  await expect(bloco(page)).toHaveText('Anotações');
-  await page.keyboard.press('ArrowDown');
-  await expect(bloco(page)).toHaveText('Cartões');
+  await expect(bloco(page)).toHaveText('mesa.notes');
+  await page.keyboard.press('ArrowRight');
+  await expect(bloco(page)).toHaveText('mesa.cards');
 
   await page.keyboard.press('Enter');
   await page.keyboard.type('hjkl');
@@ -68,7 +71,7 @@ test('sem Alt, H J K L e setas movem no bloco e são texto no campo', async ({ p
   await page.keyboard.type('x');
   await page.keyboard.press('Enter');
   await expect(campo(page, 'Cartões')).toHaveValue('hjkx\nl');
-  await expect(bloco(page)).toHaveText('Cartões');
+  await expect(bloco(page)).toHaveText('mesa.cards');
   await expect(nivel(page)).toHaveText('campo');
 });
 
@@ -142,15 +145,14 @@ test('Esc fecha o menu ⋮ antes de subir de nível', async ({ page }) => {
 test('tocar num campo põe o nível em campo, e tocar no bloco sai dele', async ({ page }) => {
   await campo(page, 'Cartões').click();
   await expect(nivel(page)).toHaveText('campo');
-  await expect(bloco(page)).toHaveText('Cartões');
+  await expect(bloco(page)).toHaveText('mesa.cards');
 
   await page.getByRole('heading', { name: 'Anotações' }).click();
   await expect(nivel(page)).toHaveText('bloco');
-  await expect(bloco(page)).toHaveText('Anotações');
+  await expect(bloco(page)).toHaveText('mesa.notes');
 
-  await page.getByRole('button', { name: 'Mesa' }).click();
-  await expect(nivel(page)).toHaveText('menu');
-  await expect(ultimaAcao(page)).toContainText('Mesa');
+  await page.getByRole('button', { name: 'Acervo' }).click();
+  await expect(page.getByTestId('tela')).toHaveText('acervo');
 });
 
 test('ações ainda sem tela aparecem como última ação', async ({ page }) => {
@@ -158,7 +160,52 @@ test('ações ainda sem tela aparecem como última ação', async ({ page }) => 
   await expect(ultimaAcao(page)).toHaveText('Alt 3 · Acervo');
   await page.keyboard.press('Control+KeyP');
   await expect(ultimaAcao(page)).toHaveText('Ctrl P · Paleta: ir para…');
+  await page.keyboard.press('Escape');
+  await page.keyboard.press('Alt+Digit2');
   await page.keyboard.press('Enter');
   await page.keyboard.press('Control+KeyK');
   await expect(ultimaAcao(page)).toHaveText('Ctrl K · Link');
+});
+
+test('Alt 1 a 6 trocam de tela e a tela lembra o foco', async ({ page }) => {
+  await page.keyboard.press('KeyL');
+  await expect(bloco(page)).toHaveText('mesa.notes');
+  await page.keyboard.press('Alt+Digit3');
+  await expect(page.getByTestId('tela')).toHaveText('acervo');
+  await page.keyboard.press('Alt+Digit2');
+  await expect(bloco(page)).toHaveText('mesa.notes');
+});
+
+test('no menu, setas escolhem a tela e Enter abre', async ({ page }) => {
+  await page.keyboard.press('Escape');
+  await expect(nivel(page)).toHaveText('menu');
+  await page.keyboard.press('ArrowRight');
+  await page.keyboard.press('Enter');
+  await expect(page.getByTestId('tela')).toHaveText('acervo');
+  await expect(nivel(page)).not.toHaveText('menu');
+});
+
+test('a Paleta filtra e leva à tela escolhida', async ({ page }) => {
+  await page.keyboard.press('Alt+KeyP');
+  await expect(page.getByTestId('paleta')).toBeVisible();
+  await page.keyboard.type('trei');
+  await page.keyboard.press('ArrowDown');
+  await page.keyboard.press('Enter');
+  await expect(page.getByTestId('paleta')).toBeHidden();
+  await expect(page.getByTestId('tela')).toHaveText('treino');
+});
+
+test('a Paleta troca o tema e Esc fecha sem agir', async ({ page }) => {
+  const tema = () => page.evaluate(() => document.documentElement.dataset.tema);
+  const antes = await tema();
+  await page.keyboard.press('Alt+KeyP');
+  await page.keyboard.press('Escape');
+  await expect(page.getByTestId('paleta')).toBeHidden();
+  expect(await tema()).toBe(antes);
+  await page.keyboard.press('Alt+KeyP');
+  await page.keyboard.type('tema');
+  await page.keyboard.press('ArrowDown');
+  await page.keyboard.press('Enter');
+  await expect(page.getByTestId('paleta')).toBeHidden();
+  expect(await tema()).not.toBe(antes);
 });

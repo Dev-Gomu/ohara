@@ -1,0 +1,89 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  background: var(--cor-fundo);
+  color: var(--cor-texto);
+  font: var(--ui-apoio);
+  font-variant-numeric: tabular-nums;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+/* O app desenha o próprio foco: o anel fica onde as teclas agem, não onde o navegador acha. */
+:focus {
+  outline: none;
+}
+
+.anel {
+  outline: var(--anel-traco) solid var(--cor-foco);
+  outline-offset: var(--anel-afastamento);
+}
+
+/* Dentro de área que rola, o anel encosta no item para não ser cortado. */
+.anel-interno {
+  outline: var(--anel-traco) solid var(--cor-foco);
+  outline-offset: 0;
+}
+
+:root[data-entrada='toque'] .anel,
+:root[data-entrada='toque'] .anel-interno {
+  outline: none;
+}
+
+/* Barra de rolagem em pílula solta, nunca a do sistema */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 3px solid transparent;
+  border-radius: var(--raio-pilula);
+  background: var(--cor-cartao-2);
+  background-clip: padding-box;
+}
+
+.so-leitor {
+  position: fixed;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { overlayOf, reduceFocus, type FocusLayout, type FocusState } from './focus';
+import { escapeGoesBack, overlayOf, reduceFocus, type FocusLayout, type FocusState } from './focus';
 
 // a à esquerda, ocupando a altura; b em cima e c embaixo, à direita.
 const layout: FocusLayout = {
@@ -16,8 +16,9 @@ const state = (extra: Partial<FocusState> = {}): FocusState => ({
   level: 'block',
   block: 'a',
   menuIndex: 0,
-  windowOpen: false,
+  window: null,
   optionsOpen: false,
+  items: {},
   ...extra,
 });
 
@@ -34,9 +35,9 @@ describe('Enter', () => {
 
 describe('Esc (D18)', () => {
   it('fecha a janela antes de tudo', () => {
-    const before = state({ level: 'field', windowOpen: true, optionsOpen: true });
+    const before = state({ level: 'field', window: 'help', optionsOpen: true });
     const after = reduceFocus(before, { type: 'escape' }, layout);
-    expect(after).toEqual({ ...before, windowOpen: false });
+    expect(after).toEqual({ ...before, window: null });
   });
 
   it('depois fecha o menu ⋮', () => {
@@ -151,7 +152,7 @@ describe('toque', () => {
 
   it('com janela ou menu ⋮ aberto, não muda nada', () => {
     const target = { kind: 'field', block: 'b' } as const;
-    const window = state({ windowOpen: true });
+    const window = state({ window: 'help' });
     expect(reduceFocus(window, { type: 'touch', target }, layout)).toBe(window);
     const options = state({ optionsOpen: true });
     expect(reduceFocus(options, { type: 'touch', target }, layout)).toBe(options);
@@ -163,5 +164,114 @@ describe('ações que ainda não mexem no foco', () => {
     const before = state();
     expect(reduceFocus(before, { type: 'bold' }, layout)).toBe(before);
     expect(reduceFocus(before, { type: 'goToScreen', screen: 'hub' }, layout)).toBe(before);
+  });
+});
+
+describe('campo navegável (D70, D71)', () => {
+  const rects = {
+    regua: { x: 0, y: 0, w: 400, h: 50 },
+    aulas: { x: 0, y: 60, w: 150, h: 300 },
+    previa: { x: 160, y: 60, w: 240, h: 300 },
+  };
+  const nav: FocusLayout = {
+    rects,
+    blocks: ['regua', 'aulas', 'previa'],
+    menuItems: 3,
+    hasParent: true,
+    specs: {
+      regua: {
+        kind: 'nav',
+        nav: { axis: 'x', count: 3 },
+        neighbors: { down: 'aulas' },
+        resets: ['aulas'],
+        enterGoesTo: 'aulas',
+      },
+      aulas: {
+        kind: 'nav',
+        nav: { axis: 'y', count: 4 },
+        neighbors: { up: 'regua', right: 'previa' },
+      },
+      previa: { kind: 'none', neighbors: { left: 'aulas', up: 'regua' } },
+    },
+  };
+  const step = (direction: 'left' | 'down' | 'up' | 'right') =>
+    ({ type: 'moveFocus', direction, step: true }) as const;
+  const inNav = (extra: Partial<FocusState> = {}) =>
+    state({ level: 'nav', block: 'regua', ...extra });
+
+  it('Enter no bloco entra no campo navegável', () => {
+    const after = reduceFocus(state({ block: 'aulas' }), { type: 'enter' }, nav);
+    expect(after.level).toBe('nav');
+  });
+
+  it('bloco sem interior não desce', () => {
+    const before = state({ block: 'previa' });
+    expect(reduceFocus(before, { type: 'enter' }, nav).level).toBe('block');
+  });
+
+  it('a seta anda na régua e zera a lista filtrada', () => {
+    const after = reduceFocus(inNav({ items: { aulas: 2 } }), step('right'), nav);
+    expect(after.items).toEqual({ aulas: 0, regua: 1 });
+  });
+
+  it('a seta do outro eixo vai ao vizinho declarado', () => {
+    const after = reduceFocus(inNav(), step('down'), nav);
+    expect(after).toMatchObject({ block: 'aulas', level: 'nav' });
+  });
+
+  it('a borda de cima da lista volta à régua', () => {
+    const after = reduceFocus(inNav({ block: 'aulas' }), step('up'), nav);
+    expect(after.block).toBe('regua');
+  });
+
+  it('segurar a tecla não atravessa a borda', () => {
+    const before = inNav({ block: 'aulas' });
+    expect(reduceFocus(before, step('up'), nav, true)).toBe(before);
+  });
+
+  it('segurar a tecla anda dentro do controle', () => {
+    const after = reduceFocus(inNav({ block: 'aulas' }), step('down'), nav, true);
+    expect(after.items.aulas).toBe(1);
+  });
+
+  it('entrar em bloco sem interior cai no nível bloco', () => {
+    const after = reduceFocus(inNav({ block: 'aulas' }), step('right'), nav);
+    expect(after).toMatchObject({ block: 'previa', level: 'block' });
+  });
+
+  it('com Alt, sempre vai ao vizinho', () => {
+    const after = reduceFocus(inNav({ block: 'aulas' }), move('up'), nav);
+    expect(after.block).toBe('regua');
+  });
+
+  it('Enter na régua entra no primeiro item do conteúdo', () => {
+    const after = reduceFocus(inNav({ items: { aulas: 3 } }), { type: 'enter' }, nav);
+    expect(after).toMatchObject({ block: 'aulas', level: 'nav', items: { aulas: 0 } });
+  });
+
+  it('Enter na régua com lista vazia não sai do lugar', () => {
+    const empty: FocusLayout = {
+      ...nav,
+      specs: { ...nav.specs, aulas: { kind: 'nav', nav: { axis: 'y', count: 0 } } },
+    };
+    const before = inNav();
+    expect(reduceFocus(before, { type: 'enter' }, empty)).toBe(before);
+  });
+
+  it('Esc sobe do campo navegável ao bloco', () => {
+    expect(reduceFocus(inNav(), { type: 'escape' }, nav).level).toBe('block');
+  });
+
+  it('o toque escolhe o item e entra no campo', () => {
+    const target = { kind: 'item', block: 'aulas', index: 2 } as const;
+    const after = reduceFocus(state(), { type: 'touch', target }, nav);
+    expect(after).toMatchObject({ block: 'aulas', level: 'nav', items: { aulas: 2 } });
+  });
+
+  it('Esc no bloco de subtela pede a tela-mãe (D72)', () => {
+    expect(escapeGoesBack(state({ block: 'aulas' }), nav)).toBe(true);
+    expect(escapeGoesBack(inNav(), nav)).toBe(false);
+    expect(escapeGoesBack(state({ block: 'aulas', window: 'help' }), nav)).toBe(false);
+    expect(escapeGoesBack(state(), layout)).toBe(false);
   });
 });

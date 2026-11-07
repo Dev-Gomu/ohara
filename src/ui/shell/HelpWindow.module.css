@@ -1,0 +1,34 @@
+.grupo {
+  margin: var(--e4) 0 var(--e2);
+  font: var(--ui-rotulo);
+  color: var(--cor-texto-2);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.lista {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--e1) var(--e5);
+  margin: 0;
+}
+
+.linha {
+  display: flex;
+  align-items: center;
+  gap: var(--e3);
+  min-width: 0;
+}
+
+.tecla {
+  flex: none;
+  padding: 1px 9px;
+  border-radius: var(--raio-pilula);
+  background: var(--cor-cartao-2);
+  font: var(--ui-tecla);
+}
+
+.texto {
+  margin: 0;
+  color: var(--cor-texto-2);
+}

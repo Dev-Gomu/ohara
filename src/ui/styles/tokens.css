@@ -1,0 +1,119 @@
+/* Tokens do Ohara: docs/diretrizes-visuais.md explica cada regra.
+   Tela nenhuma usa valor solto: só estas variáveis. */
+
+:root {
+  /* Cores de matéria e destaque: iguais nos dois temas, sempre com --cor-tinta por cima */
+  --cor-destaque: #9178e6;
+  --cor-destaque-forte: #8872d8; /* só em texto grande ou estado tocado: 4,49:1 com a tinta */
+  --cor-rosa: #e879c0;
+  --cor-azul: #5fa0fc;
+  --cor-laranja: #fb7e5b;
+  --cor-verde: #00c386;
+  --cor-tinta: #101d1b;
+  --cor-sobre-tinta: #f4f2ff;
+  --cor-amarelo: #f2c14e;
+  --cor-ciano: #35c7d1;
+  --cor-cinza-lavanda: #a7aec4;
+
+  /* Fontes (D67) */
+  --fonte-voz: 'Nunito', system-ui, sans-serif;
+  --fonte-interface: 'Inter', system-ui, sans-serif;
+  --fonte-leitura: 'Source Sans 3', 'Inter', system-ui, sans-serif;
+
+  /* Escala de texto: peso, tamanho/linha */
+  --voz-numero: 800 66px/54px var(--fonte-voz);
+  --voz-numero-mini: 800 48px/40px var(--fonte-voz);
+  --voz-tela: 800 30px/32px var(--fonte-voz);
+  --voz-titulo: 800 22px/24px var(--fonte-voz);
+  --voz-item: 800 20px/22px var(--fonte-voz);
+  --voz-mini: 800 17px/20px var(--fonte-voz);
+  --ui-botao: 700 15px/20px var(--fonte-interface);
+  --ui-item: 600 15px/20px var(--fonte-interface);
+  --ui-apoio: 500 14px/20px var(--fonte-interface);
+  --ui-rotulo: 700 13px/20px var(--fonte-interface); /* caixa-alta, espaçamento .06em */
+  --ui-sigla: 700 12.5px/16px var(--fonte-interface);
+  --ui-tecla: 600 12px/18px var(--fonte-interface);
+  --leitura-texto: 400 16.5px/25px var(--fonte-leitura);
+  --leitura-compacta: 400 15.5px/23px var(--fonte-leitura);
+  --leitura-campo: 400 16px/24px var(--fonte-leitura);
+  --nota-t1: 700 22px/28px var(--fonte-leitura);
+  --nota-t2: 700 18px/24px var(--fonte-leitura);
+  --nota-t3: 600 16.5px/25px var(--fonte-leitura);
+
+  /* Espaços: grade de 4 px */
+  --e1: 4px;
+  --e2: 8px;
+  --e3: 12px;
+  --e4: 16px;
+  --e5: 24px;
+  --e6: 32px;
+  --vao-mosaico: 8px; /* cabe o anel: 3 de traço + 3 de afastamento */
+  --margem-tela: 8px;
+  --barra-topo: 48px;
+  --bloco-pad-y: 14px;
+  --bloco-pad-x: 18px;
+  --bloco-min-largura: 300px;
+  --bloco-min-altura: 200px;
+  --texto-max: 72ch;
+
+  /* Raios */
+  --raio-bloco: 24px;
+  --raio-item: 18px;
+  --raio-botao: 18px;
+  --raio-campo: 16px;
+  --raio-minimo: 8px;
+  --raio-pilula: 999px;
+
+  /* Toque e foco */
+  --alvo: 44px;
+  --item-lista: 56px;
+  --anel-traco: 3px;
+  --anel-afastamento: 3px;
+  --borda-bloco: 2px;
+
+  /* Movimento */
+  --tempo-borda: 200ms;
+  --tempo-toque: 120ms;
+  --abrir-escala: 0.87;
+}
+
+:root,
+:root[data-tema='claro'] {
+  --cor-fundo: #ece8fb;
+  --cor-cartao: #ffffff;
+  --cor-cartao-2: #eae6fc;
+  --cor-texto: #14122b;
+  --cor-texto-2: #5c5878;
+  --cor-botao: #14122b;
+  --cor-sobre-botao: #f4f2ff;
+  --cor-marca: #d9ceff;
+  --cor-foco: #14122b;
+  --cor-bloco-ativo: #8872d8; /* 3,2:1 com o fundo; o --cor-destaque daria 2,9:1 */
+  --cor-nota-titulo: #14122b;
+  --cor-veu: rgb(20 18 43 / 40%);
+  color-scheme: light;
+}
+
+:root[data-tema='escuro'] {
+  --cor-fundo: #090c18;
+  --cor-cartao: #14172a;
+  --cor-cartao-2: #22242f;
+  --cor-texto: #f4f2ff;
+  --cor-texto-2: #a9a6c6;
+  --cor-botao: #f4f2ff;
+  --cor-sobre-botao: #090c18;
+  --cor-marca: #5b4ba6;
+  --cor-foco: #f4f2ff;
+  --cor-bloco-ativo: #9178e6;
+  --cor-nota-titulo: #9178e6;
+  --cor-veu: rgb(9 12 24 / 60%);
+  color-scheme: dark;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --tempo-borda: 0ms;
+    --tempo-toque: 0ms;
+    --abrir-escala: 1;
+  }
+}

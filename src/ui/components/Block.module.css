@@ -1,0 +1,44 @@
+.bloco {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  border: var(--borda-bloco) solid transparent;
+  border-radius: var(--raio-bloco);
+  background: var(--cor-cartao);
+  transition: border-color var(--tempo-borda);
+}
+
+.bloco[data-foco='dentro'],
+:global(:root[data-entrada='toque']) .bloco[data-foco='bloco'] {
+  border-color: var(--cor-bloco-ativo);
+}
+
+.titulo {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--e2);
+  padding: var(--bloco-pad-y) var(--bloco-pad-x) 6px;
+}
+
+.nome {
+  font: var(--ui-rotulo);
+  color: var(--cor-texto-2);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.conta {
+  color: var(--cor-texto-2);
+}
+
+.tecla {
+  margin-left: auto;
+  padding: 1px 9px;
+  border-radius: var(--raio-pilula);
+  background: var(--cor-cartao-2);
+  color: var(--cor-texto-2);
+  font: var(--ui-tecla);
+  white-space: nowrap;
+}

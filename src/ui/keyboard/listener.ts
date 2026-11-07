@@ -23,13 +23,15 @@ function onKeyDown(event: KeyboardEvent): void {
   if (!resolved) return;
   event.preventDefault();
   event.stopPropagation();
-  if (resolved.type !== 'swallow') dispatch(resolved);
+  if (resolved.type !== 'swallow') dispatch(resolved, event.repeat);
 }
 
 function touchTargetOf(target: EventTarget | null): TouchTarget {
   if (!(target instanceof Element)) return { kind: 'outside' };
   const block = target.closest<HTMLElement>('[data-block]')?.dataset.block;
   if (block !== undefined) {
+    const item = target.closest<HTMLElement>('[data-nav-index]')?.dataset.navIndex;
+    if (item !== undefined) return { kind: 'item', block, index: Number(item) };
     return target.closest('[data-field]') ? { kind: 'field', block } : { kind: 'block', block };
   }
   return target.closest('[data-menu]') ? { kind: 'menu' } : { kind: 'outside' };

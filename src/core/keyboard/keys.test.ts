@@ -4,7 +4,7 @@ import { KEYS, type KeyRow } from './keys';
 import { findConflicts, helpSections } from './keyTools';
 import { resolve, type KeyInput } from './resolve';
 
-const LEVELS: readonly Level[] = ['menu', 'block', 'field'];
+const LEVELS: readonly Level[] = ['menu', 'block', 'field', 'nav'];
 
 // Transcrito de docs/teclado.md: a tabela não pode perder nem ganhar tecla em silêncio.
 const LABELS_IN_DOC = [

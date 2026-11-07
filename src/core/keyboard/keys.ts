@@ -1,3 +1,4 @@
+import { SCREENS as SCREEN_IDS } from './actions';
 import type { BlockKind, Direction, KeyAction, Level, Screen } from './actions';
 
 // a = Alt, c = Ctrl, s = Shift
@@ -15,10 +16,9 @@ export interface KeyRow {
   repeats: boolean; // age ao segurar a tecla
 }
 
-const ALL: readonly Level[] = ['menu', 'block', 'field'];
-const MENU_BLOCK: readonly Level[] = ['menu', 'block'];
-const BLOCK_FIELD: readonly Level[] = ['block', 'field'];
-const BLOCK: readonly Level[] = ['block'];
+const ALL: readonly Level[] = ['menu', 'block', 'field', 'nav'];
+const OUTSIDE_TEXT: readonly Level[] = ['menu', 'block', 'nav'];
+const BLOCK_FIELD: readonly Level[] = ['block', 'field', 'nav'];
 const FIELD: readonly Level[] = ['field'];
 
 const row = (
@@ -32,14 +32,14 @@ const row = (
   repeats = false,
 ): KeyRow => ({ group, label, code, mods, levels, action, text, repeats });
 
-const SCREENS: readonly [Screen, string][] = [
-  ['hub', 'Hub'],
-  ['mesa', 'Mesa'],
-  ['acervo', 'Acervo'],
-  ['treino', 'Treino'],
-  ['agenda', 'Agenda'],
-  ['configs', 'Configs'],
-];
+export const SCREEN_NAMES: Readonly<Record<Screen, string>> = {
+  hub: 'Hub',
+  mesa: 'Mesa',
+  acervo: 'Acervo',
+  treino: 'Treino',
+  agenda: 'Agenda',
+  configs: 'Configs',
+};
 
 type DirectionKey = readonly [string, string, Direction, string];
 
@@ -66,8 +66,16 @@ const TOGGLES: readonly [string, string, BlockKind, string][] = [
 const HEADINGS = [1, 2, 3] as const;
 
 export const KEYS: readonly KeyRow[] = [
-  ...SCREENS.map(([screen, name], i) =>
-    row('Telas', `Alt ${i + 1}`, `Digit${i + 1}`, 'a', ALL, { type: 'goToScreen', screen }, name),
+  ...SCREEN_IDS.map((screen, i) =>
+    row(
+      'Telas',
+      `Alt ${i + 1}`,
+      `Digit${i + 1}`,
+      'a',
+      ALL,
+      { type: 'goToScreen', screen },
+      SCREEN_NAMES[screen],
+    ),
   ),
 
   ...[...LETTERS, ...ARROWS].map(([label, code, direction, text]) =>
@@ -99,20 +107,20 @@ export const KEYS: readonly KeyRow[] = [
       label,
       code,
       '',
-      BLOCK,
-      { type: 'moveFocus', direction },
-      `Bloco vizinho: ${text}`,
+      OUTSIDE_TEXT,
+      { type: 'moveFocus', direction, step: true },
+      `Bloco vizinho ou próximo item: ${text}`,
       true,
     ),
   ),
-  row('Foco e movimento', 'Enter', 'Enter', '', MENU_BLOCK, { type: 'enter' }, 'Desce um nível'),
+  row('Foco e movimento', 'Enter', 'Enter', '', OUTSIDE_TEXT, { type: 'enter' }, 'Desce um nível'),
   row('Foco e movimento', 'Esc', 'Escape', '', ALL, { type: 'escape' }, 'Fecha ou sobe um nível'),
   row(
     'Foco e movimento',
     'Tab',
     'Tab',
     '',
-    MENU_BLOCK,
+    OUTSIDE_TEXT,
     { type: 'nextBlock' },
     'Próximo bloco',
     true,
@@ -122,7 +130,7 @@ export const KEYS: readonly KeyRow[] = [
     'Shift Tab',
     'Tab',
     's',
-    MENU_BLOCK,
+    OUTSIDE_TEXT,
     { type: 'previousBlock' },
     'Bloco anterior',
     true,
@@ -183,7 +191,7 @@ export const KEYS: readonly KeyRow[] = [
     'Próximo controle na barra',
     true,
   ),
-  row('Blocos', 'Alt N', 'KeyN', 'a', BLOCK_FIELD, { type: 'newCard' }, 'Cartão novo'),
+  row('Blocos', 'Alt N', 'KeyN', 'a', BLOCK_FIELD, { type: 'newItem' }, 'Novo item no bloco'),
   row('Blocos', 'Alt 0', 'Digit0', 'a', BLOCK_FIELD, { type: 'defaultSizes' }, 'Tamanhos padrão'),
   row(
     'Blocos',

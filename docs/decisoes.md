@@ -30,7 +30,7 @@
 | D10 | **Mosaico próprio** em grid CSS, estilo dwindle, como **motor genérico** (serve à Mesa e ao Hub) | Um motor, duas telas | Decidida |
 | D11 | Editor de Anotações: **Tiptap 3** | | A VERIFICAR |
 | D12 | PWA com **vite-plugin-pwa 1.3+**, com aviso de nova versão | Critério "pouca manutenção": atualiza com um toque | A VERIFICAR |
-| D13 | Componente da Paleta: React Aria ou cmdk | Decidir na Etapa 3, com a Paleta na mão | **PENDENTE** |
+| D13 | Componente da Paleta: **React Aria** (Autocomplete com Menu), sem o cmdk | Já está no app e filtra bem. Dependência a menos | Decidida (Etapa 3) |
 
 ## 3. Teclado
 
@@ -142,7 +142,7 @@ Aqui "Notas" são as do boletim (média, pesos, itens), **não** as Anotações.
 | D71 | **Regras das setas:** cada controle usa um eixo; a seta do outro eixo e a seta na borda saem para o vizinho; segurar a tecla não atravessa a borda; controle interno não dá a volta | Liga régua, lista e prévia sem subir de nível. Complementa a D64 | Decidida (delegada pelo usuário em 07/11/2026) |
 | D72 | **Esc com tela-mãe:** janela → menu ⋮ → campo → bloco → tela-mãe → menu de telas. O foco volta ao item de origem. Amplia a D18 | Matéria aberta precisa voltar à lista de matérias | Decidida (delegada pelo usuário em 07/11/2026) |
 | D73 | **Mosaico livre** (Mesa, Hub; dwindle, D10) e **mosaico fixo** (Acervo, Treino, Agenda, Configs; grade CSS, mesmo foco, **vizinhos declarados**). A proibição de novos blocos vale para a Mesa | Teste no `neighbor`: com a lista mais estreita que a prévia, ↓ na régua cai na prévia | Decidida (delegada pelo usuário em 07/11/2026) |
-| D74 | **Diretrizes visuais:** `diretrizes-visuais.md` e `tokens-visuais.css` valem para toda tela. Um só anel forte mostra onde as teclas agem; seleção é preenchimento; caixa-alta só em texto do app e nome de matéria | Caixa-alta troca `TNF-α` por `TNF-Α`. Ajusta a regra de texto do usuário da D67 | Decidida (delegada pelo usuário em 07/11/2026) |
+| D74 | **Diretrizes visuais:** `diretrizes-visuais.md` e `src/ui/styles/tokens.css` valem para toda tela. Um só anel forte mostra onde as teclas agem; seleção é preenchimento; caixa-alta só em texto do app e nome de matéria | Caixa-alta troca `TNF-α` por `TNF-Α`. Ajusta a regra de texto do usuário da D67 | Decidida (delegada pelo usuário em 07/11/2026) |
 
 ---
 
@@ -150,8 +150,7 @@ Aqui "Notas" são as do boletim (média, pesos, itens), **não** as Anotações.
 
 | Item | Quando |
 |---|---|
-| D13: React Aria ou cmdk para a Paleta | Etapa 3 |
-| Atualizar `teclado.md` com D77 (Treino) e D78 (Alt N) | Etapa 6, junto do checkpoint de atalhos |
+| Atualizar `teclado.md` com D77 (Treino) | Etapa 6, junto do checkpoint de atalhos |
 | D33: conta Dropbox | Etapa 12, se o teste favorecer |
 | D37: Argon2 ou PBKDF2 | Etapa 13 |
 | D44: otimizador do FSRS no navegador | Etapa 11 |
