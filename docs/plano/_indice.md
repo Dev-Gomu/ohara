@@ -51,6 +51,8 @@ Em paralelo, a qualquer momento antes da Etapa 8: sessão separada extrai `regra
 
 Cada sessão do Sonnet: lê `CLAUDE.md`, este índice e o arquivo da etapa; não refaz o desenho; roda `check` e `e2e`; commita em `telas-3-a-9`; atualiza esta fila; entrega o roteiro de 5 minutos.
 
+**Fora da fila, feitos em 07/11/2026:** Faltas (D100, D101), importar banco e limpar bytes órfãos (D97), duas paletas frias de teste (A e B, `src/ui/styles/paletas.css`; o usuário ainda escolhe). Identidade visual nova em andamento no ClaudeWeb (`identidade-nova-claudeweb/`).
+
 **Regra de troca:** se uma etapa de Sonnet encontrar decisão de produto ou de segurança, para e pergunta. Não decide sozinha.
 
 ## Fase A: interface com dados fictícios (sem banco)
