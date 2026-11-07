@@ -70,3 +70,16 @@ Feita em Opus, no mesmo branch. Também corrigido: Alt M ampliava só até a met
 5. **Alt 2** (Mesa). Com o cursor nas Anotações, aperte **Alt N**: abre um cartão no bloco Cartões. Digite a frente, Enter, o verso; teste `# Seção`, `- item`, `+ a favor`, `-- contra`, `? dúvida`, `**negrito**` e `==destaque==`. A prévia ao lado mostra o cartão pronto.
 6. **Alt N** de novo abre outro cartão. Deixe este sem verso e aperte **Ctrl Enter**: salva o completo, o incompleto fica no editor. Toque em "Salvos" para ver a lista.
 7. **Alt M** no bloco Cartões: ele ocupa a tela inteira. Alt M de novo volta.
+
+## Etapa 7 (07/11/2026, Sonnet): banco
+
+Os dados agora ficam no SQLite (OPFS, em Worker); as telas não mudaram. `?exemplo` na URL mantém os dados fictícios. Configs tem Exportar banco (Backup) e diagnóstico (Sobre). Sem teste do usuário.
+
+**Roteiro de 5 minutos** (Chrome do PC e do tablet)
+1. `npm run dev`, abra http://localhost:5173/ohara/. Está vazio, sem o aviso "Dados de exemplo".
+2. **Alt 3**, **Alt N**: crie uma matéria; entre nela, crie uma pasta (Alt N) e uma aula.
+3. **Alt 2**: escreva duas linhas nas Anotações e feche a aba na hora.
+4. Abra de novo: matéria, aula e texto continuam lá.
+5. Abra o app numa segunda aba: aparece "já está aberto em outra aba".
+6. **Alt 6**, desça até Backup, Enter, Enter: baixa um `.sqlite3`.
+7. **Alt 6**, desça até Sobre: "Armazenamento persistente" mostra sim ou não.

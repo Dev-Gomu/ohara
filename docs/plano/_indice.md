@@ -42,7 +42,7 @@ Em paralelo, a qualquer momento antes da Etapa 8: sessão separada extrai `regra
 **Planos do Opus (07/11/2026):** as Etapas 7, 10, 11, 12 e 13 estão detalhadas em `etapa-XX.md`, com decisões D84 a D88. Nesta etapa da Fase B, essas cinco são exceção à regra de ouro. **Aprovados pelo usuário em 07/11/2026.** Só sobra com o Opus: **cores** (adiado; pedir referências ao usuário antes de prototipar) e a revisão final de cada etapa, se o usuário quiser.
 
 **Fila do Sonnet (uma por sessão, `/clear` entre elas, nesta ordem):**
-1. **Etapa 7**, banco (`etapa-07.md`).
+1. ~~**Etapa 7**, banco (`etapa-07.md`).~~ **Feita em 07/11/2026**, sem teste do usuário (D89 a D91).
 2. **Pendências pequenas:** renomear e excluir matéria, pasta e aula, com Lixeira (exclusão lógica da Etapa 7); editar e excluir cartões salvos; Alt T, Alt B, Alt , e Alt . levando o foco à barra de formatação. Itens no `backlog.md`, sem arquivo de etapa: o Sonnet escreve os critérios no começo.
 3. **Etapa 10**, slides e livros em PDF (`etapa-10.md`).
 4. **Etapa 11**, FSRS (`etapa-11.md`).

@@ -79,7 +79,9 @@ test('nos Cartões salvos, setas andam na grade e saem pela borda', async ({ pag
   await page.keyboard.press('Enter');
   await expect(nivel(page)).toHaveText('campo navegável');
   await page.keyboard.press('ArrowRight');
-  await expect(page.locator('[data-block="mesa.cards"] [data-nav-index][data-sel="true"]')).toContainText('PCR');
+  await expect(
+    page.locator('[data-block="mesa.cards"] [data-nav-index][data-sel="true"]'),
+  ).toContainText('PCR');
   await page.keyboard.press('ArrowRight');
   await expect(bloco(page)).toHaveText('mesa.notes');
   await expect(anotacoes(page)).toBeFocused();

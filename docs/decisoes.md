@@ -158,6 +158,9 @@ Aqui "Notas" são as do boletim (média, pesos, itens), **não** as Anotações.
 | D86 | **Exceção de camada:** só `src/core/study/fsrs.ts` importa `ts-fsrs` | Biblioteca pura, sem E/S. Mantém a D43 (função fina) sem mover regra para `data/` | Decidida |
 | D87 | **Derivação da chave das Notas: PBKDF2-SHA256 com 600 000 iterações** (gravadas na `vault`) e frase de pelo menos 12 caracteres. **Fecha a D37** | Nativo no navegador e no Node dos testes, sem dependência. A frase própria (D36) compensa a vantagem do Argon2 | Decidida |
 | D88 | **Formato da sincronização:** cada aparelho só grava os próprios arquivos (`log` numerado e `base` compactada) na pasta do app. Os PDFs vão em `blob.<sha256>` | Nenhum aparelho sobrescreve o de outro, então não há corrida de gravação no Drive. A junção pela D29 dá o mesmo resultado em qualquer ordem | Decidida |
+| D89 | **Banco (Etapa 7):** `@sqlite.org/sqlite-wasm` 3.54.1 (SQLite 3.54.1), com `opfs-sahpool` num Worker. Colunas `order`, `start` e `end` viram `sort_order`, `start_time` e `end_time` (palavras do SQL). Sem chaves estrangeiras: a exclusão é lógica e a ordem de chegada na sincronização não é garantida | Confirma D21 (sahpool funciona no Chrome; `.wasm` no precache) | Decidida (Claude, 07/11/2026) |
+| D90 | **Fila e falhas:** a gravação sai 300 ms depois da primeira mudança da fila, ou na hora ao trocar de tela, ocultar (`visibilitychange`, `pagehide`) e exportar. Erro de gravação abre a tela de erro; nunca cai em memória. Uma aba só (Web Locks). `?exemplo` usa outro banco e outra trava | Segue D22 a D25 e D84. `?erro=<código>` força cada tela de erro, só no dev | Decidida (Claude, 07/11/2026) |
+| D91 | **SQL testado em Node:** o `@sqlite.org/sqlite-wasm` roda em Node, em memória; `src/data/sql.test.ts` aplica a migração 001 e faz ida e volta de todas as tabelas | Fecha o "A VERIFICAR" do plano da Etapa 7 | Decidida (Claude, 07/11/2026) |
 
 ---
 

@@ -1,44 +1,22 @@
+import { useEffect, useMemo, useState } from 'react';
+import type { Diagnostics } from '../../../core/db/protocol';
 import { Block } from '../../components/Block';
 import { NavItem, useSelectedIndex } from '../../components/NavItem';
-import { dispatch } from '../../keyboard/store';
 import { useBlocks } from '../../keyboard/useBlocks';
 import { ScreenFrame } from '../../shell/ScreenFrame';
-import { toggleTheme } from '../../theme';
+import { storage } from '../../study/study';
+import { buildSections } from './configsData';
 import styles from './Configs.module.css';
 
 const SECTIONS = 'configs.secoes';
 const DETAIL = 'configs.detalhe';
 
-interface Row {
-  label: string;
-  detail: string;
-  run?: () => void;
-}
-
-const LATER = 'Disponível quando os dados reais chegarem.';
-
-const SECTION_LIST: readonly { name: string; rows: readonly Row[] }[] = [
-  {
-    name: 'Aparência',
-    rows: [{ label: 'Trocar tema', detail: 'Claro ou escuro, neste aparelho.', run: toggleTheme }],
-  },
-  {
-    name: 'Atalhos',
-    rows: [
-      {
-        label: 'Ver todos os atalhos',
-        detail: 'Abre a lista gerada da tabela de teclas.',
-        run: () => dispatch({ type: 'openHelp' }),
-      },
-    ],
-  },
-  { name: 'Sincronização', rows: [{ label: 'Google Drive', detail: LATER }] },
-  { name: 'Backup', rows: [{ label: 'Exportar e restaurar', detail: LATER }] },
-  { name: 'Segurança', rows: [{ label: 'Frase de acesso das Notas', detail: LATER }] },
-  { name: 'Sobre', rows: [{ label: 'Ohara', detail: `Versão ${__APP_VERSION__}` }] },
-];
-
 export function Configs() {
+  const [diag, setDiag] = useState<Diagnostics | null>(null);
+  useEffect(() => {
+    void storage.diagnose().then(setDiag);
+  }, []);
+  const SECTION_LIST = useMemo(() => buildSections(diag), [diag]);
   const index = useSelectedIndex(SECTIONS, SECTION_LIST.length);
   const section = SECTION_LIST[index];
   const rows = section?.rows ?? [];

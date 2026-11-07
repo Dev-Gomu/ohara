@@ -6,7 +6,7 @@
 ## Comum a todas
 - Barra do topo: números 1 a 6, título da tela e ajuda (?). A página nunca rola.
 - Alt P abre a Paleta em qualquer tela. Alt I abre o lembrete rápido.
-- Enquanto não houver banco, toda tela com dado fictício mostra aviso de que nada fica salvo.
+- Os dados ficam no banco do aparelho. Só o modo exemplo (`?exemplo` na URL, para testes e dev) usa dados fictícios e mostra o aviso "Dados de exemplo".
 
 ## 1. Hub (Alt 1)
 Visão do dia. Título: data de hoje.
