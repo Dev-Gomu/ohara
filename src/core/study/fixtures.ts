@@ -87,7 +87,6 @@ function lessonsFor(
     folderId: folder === 0 ? null : `${subjectId}-b${folder}`,
     title,
     date: addDays(today, -daysAgo),
-    slides: 20 + ((index * 7) % 30),
     notes: title === 'Resposta inflamatória aguda' ? NOTES : '',
   }));
 }
@@ -214,6 +213,7 @@ export function createFixtures(today: string): StudyData {
       'Revisar IL-6 e TNF-α antes da prova de Imunologia.',
       'Confirmar a sala do laboratório de Genética.',
     ].map((text, index) => ({ id: `l-${index}`, text, date: today, done: false })),
+    files: [],
     noteVersions: [],
   };
 }

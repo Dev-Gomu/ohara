@@ -1,3 +1,5 @@
+import { clampPage, devicePageKey, slidesOf } from '../../../core/study/files';
+import { useState } from 'react';
 import { leaf, leaves, split } from '../../../core/mosaic/tree';
 import { currentEventIndex, eventsOn, subjectOf } from '../../../core/study/queries';
 import type { StudyData } from '../../../core/study/types';
@@ -11,7 +13,9 @@ import { notesBarVisible, setNotesBar } from '../../study/notesBar';
 import { cardOptions } from '../../study/editOptions';
 import { MESA_LESSON } from '../../study/navigation';
 import { useScreenMemory } from '../../study/screenMemory';
-import { nowTime, today, useStudy } from '../../study/study';
+import { attach, detach, pickFile } from '../../study/attach';
+import { nowTime, storage, today, useStudy } from '../../study/study';
+import { SlidesViewer } from './SlidesViewer';
 import { CardsBlock, useCardsEditor } from './CardsBlock';
 import styles from './Mesa.module.css';
 import { focusToolbar, HistoryWindow, NotesBlock, stepToolbar } from './NotesBlock';
@@ -47,9 +51,20 @@ function LessonDesk({ data, lessonId }: { data: StudyData; lessonId: string }) {
   const lesson = data.lessons.find((item) => item.id === lessonId);
   const subject = lesson && subjectOf(data, lesson.subjectId);
   const cards = data.cards.filter((card) => card.lessonId === lessonId);
-  const pages = lesson?.slides ?? 1;
+  const slides = slidesOf(data, lessonId);
+  const pages = slides?.pages ?? 1;
   const mosaic = useMosaic(`aula-${lessonId}`, INITIAL, ALL);
-  const [page, setPage] = useScreenMemory(`mesa.pagina.${lessonId}`, 1);
+  const [stored, setStored] = useScreenMemory(
+    `mesa.pagina.${lessonId}`,
+    Number(storage.getDeviceState(devicePageKey(lessonId)) ?? 1),
+  );
+  const page = clampPage(stored, pages);
+  const setPage = (next: number) => {
+    setStored(next);
+    storage.setDeviceState(devicePageKey(lessonId), String(next));
+  };
+  const [dropping, setDropping] = useState(false);
+  const attachSlides = (file: File) => void attach(file, 'slides', { lessonId });
 
   const editor = useNotesEditor(lessonId, lesson?.notes ?? '');
   const cardsEditor = useCardsEditor(CARDS, lessonId);
@@ -73,6 +88,18 @@ function LessonDesk({ data, lessonId }: { data: StudyData; lessonId: string }) {
       : { block: leaves(mosaic.tree)[0] ?? '', level: 'block' },
     options: (block) => [
       ...mosaic.options(block),
+      ...(block === SLIDES
+        ? [
+            {
+              id: 'anexar',
+              label: slides ? 'Trocar PDF dos slides' : 'Anexar PDF',
+              run: () => pickFile(attachSlides),
+            },
+            ...(slides
+              ? [{ id: 'remover', label: 'Remover slides', run: () => void detach(slides) }]
+              : []),
+          ]
+        : []),
       ...(block === NOTES
         ? [
             {
@@ -129,7 +156,7 @@ function LessonDesk({ data, lessonId }: { data: StudyData; lessonId: string }) {
       nextControl: () => stepToolbar(1),
       changePage: (change) => {
         if (change.type !== 'changePage') return false;
-        setPage(Math.min(pages, Math.max(1, page + change.step)));
+        setPage(clampPage(page + change.step, pages));
       },
     },
   });
@@ -137,9 +164,41 @@ function LessonDesk({ data, lessonId }: { data: StudyData; lessonId: string }) {
   function render(id: string) {
     if (id === SLIDES) {
       return (
-        <Block id={id} title="Slides" count={`${page} de ${pages}`} shortcut="Alt S" menu>
-          <div className={styles.folha}>
-            <p className={styles.slide}>Página {page}</p>
+        <Block
+          id={id}
+          title="Slides"
+          count={slides ? `${page} de ${pages}` : undefined}
+          shortcut="Alt S"
+          menu
+        >
+          <div
+            className={`${styles.zona} ${dropping ? styles.soltar : ''}`}
+            onDragOver={(event) => {
+              event.preventDefault();
+              setDropping(true);
+            }}
+            onDragLeave={() => setDropping(false)}
+            onDrop={(event) => {
+              event.preventDefault();
+              setDropping(false);
+              const file = event.dataTransfer.files[0];
+              if (file) attachSlides(file);
+            }}
+          >
+            {slides ? (
+              <SlidesViewer file={slides} page={page} />
+            ) : (
+              <div className={styles.vazio}>
+                <p>Esta aula ainda não tem slides.</p>
+                <button
+                  type="button"
+                  className={styles.pilula}
+                  onClick={() => pickFile(attachSlides)}
+                >
+                  Anexar PDF
+                </button>
+              </div>
+            )}
           </div>
         </Block>
       );

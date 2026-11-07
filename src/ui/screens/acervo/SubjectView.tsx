@@ -213,7 +213,7 @@ export function SubjectView({ subjectId, onBack }: SubjectViewProps) {
               <p className={styles.aulaDados}>
                 {card
                   ? `${card.answer} · aula: ${lesson.title}`
-                  : `${shortDate(lesson.date)} · ${folderName(data, lesson)} · ${lesson.slides} slides · ${cardCount(data, lesson.id)} cartões`}
+                  : `${shortDate(lesson.date)} · ${folderName(data, lesson)} · ${cardCount(data, lesson.id)} cartões`}
               </p>
               <NavItem block={PREVIEW} index={0} className={styles.abrir} ring="anel" onOpen={open}>
                 Abrir na Mesa <kbd className={styles.teclaAbrir}>Enter</kbd>

@@ -9,6 +9,17 @@ import { fromRow, toRow } from './rows';
 import { SPECS } from './specs';
 
 const base = createFixtures('2026-11-07');
+const file = {
+  id: 'f',
+  sha256: 'abc',
+  name: 'aula.pdf',
+  mime: 'application/pdf',
+  size: 10,
+  pages: 3,
+  kind: 'slides' as const,
+  lessonId: 'a',
+  subjectId: null,
+};
 
 describe('toRow e fromRow', () => {
   it.each(SPECS.map((spec) => [spec.table, spec]))('ida e volta em %s', (_name, spec) => {
@@ -16,7 +27,9 @@ describe('toRow e fromRow', () => {
     const sample =
       spec.table === 'note_versions'
         ? [{ id: 'n', lessonId: 'a', at: 5, html: '<p>x</p>' }]
-        : items;
+        : spec.table === 'files'
+          ? [file]
+          : items;
     expect(sample.length).toBeGreaterThan(0);
     for (const item of sample) {
       expect(fromRow(spec.table, toRow(spec.table, item))).toEqual(item);
@@ -76,11 +89,12 @@ describe('diffStudy', () => {
       events: add(base.events),
       slots: add(base.slots),
       reminders: add(base.reminders),
+      files: [file],
       noteVersions: [{ id: 'v', lessonId: 'a', at: 1, html: 'h' }],
     };
     const changes = diffStudy(base, after);
-    expect(changes).toHaveLength(10);
-    expect(new Set(changes.map((item) => ('table' in item ? item.table : ''))).size).toBe(10);
+    expect(changes).toHaveLength(11);
+    expect(new Set(changes.map((item) => ('table' in item ? item.table : ''))).size).toBe(11);
   });
 });
 

@@ -23,6 +23,7 @@ export const EMPTY_STUDY: StudyData = {
   events: [],
   slots: [],
   reminders: [],
+  files: [],
   noteVersions: [],
 };
 
@@ -70,7 +71,7 @@ export function addLesson(
   title: string,
   date: string,
 ): StudyData {
-  const lesson: Lesson = { id, subjectId, folderId, title, date, slides: 0, notes: '' };
+  const lesson: Lesson = { id, subjectId, folderId, title, date, notes: '' };
   return { ...data, lessons: [...data.lessons, lesson] };
 }
 

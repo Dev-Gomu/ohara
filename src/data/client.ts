@@ -18,9 +18,12 @@ export class DbError extends Error {
 }
 
 export interface DbClient {
-  open(pool: string, file: string): Promise<OpenResult>;
+  open(pool: string, file: string, filesDir: string): Promise<OpenResult>;
   apply(changes: Change[]): Promise<void>;
   loadVersions(lessonId: string): Promise<Row[]>;
+  putFile(sha256: string, bytes: ArrayBuffer): Promise<void>;
+  getFile(sha256: string): Promise<ArrayBuffer | null>;
+  removeFile(sha256: string): Promise<void>;
   exportFile(): Promise<Uint8Array>;
   diagnose(): Promise<Diagnostics>;
 }
@@ -55,9 +58,12 @@ export function createClient(): DbClient {
   }
 
   return {
-    open: (pool, file) => send({ type: 'open', pool, file }),
+    open: (pool, file, filesDir) => send({ type: 'open', pool, file, filesDir }),
     apply: async (changes) => void (await send({ type: 'apply', changes })),
     loadVersions: (lessonId) => send({ type: 'loadVersions', lessonId }),
+    putFile: async (sha256, bytes) => void (await send({ type: 'putFile', sha256, bytes })),
+    getFile: (sha256) => send({ type: 'getFile', sha256 }),
+    removeFile: async (sha256) => void (await send({ type: 'removeFile', sha256 })),
     exportFile: () => send({ type: 'export' }),
     diagnose: () => send({ type: 'diagnose' }),
   };

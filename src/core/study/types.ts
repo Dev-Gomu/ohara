@@ -27,7 +27,6 @@ export interface Lesson {
   folderId: string | null;
   title: string;
   date: string;
-  slides: number;
   notes: string;
 }
 
@@ -89,6 +88,22 @@ export interface NoteVersion {
   html: string;
 }
 
+// Anexo: os bytes ficam no OPFS, fora do banco, com o hash como nome (D31).
+export type FileKind = 'slides' | 'livro';
+
+export interface StudyFile {
+  id: string;
+  sha256: string;
+  name: string;
+  mime: string;
+  size: number;
+  pages: number;
+  kind: FileKind;
+  // Slides pertencem a uma aula; livro, a uma matéria (ou a uma aula, quando é capítulo).
+  lessonId: string | null;
+  subjectId: string | null;
+}
+
 export interface StudyData {
   years: Year[];
   subjects: Subject[];
@@ -99,5 +114,6 @@ export interface StudyData {
   events: ClassEvent[];
   slots: Slot[];
   reminders: Reminder[];
+  files: StudyFile[];
   noteVersions: readonly NoteVersion[];
 }

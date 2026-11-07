@@ -82,6 +82,13 @@ export function applyChanges(
         writeMeta(db, change.key, change.value);
         continue;
       }
+      if (change.op === 'device') {
+        db.run(
+          'INSERT INTO device_state (key, value) VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET value = ?',
+          [change.key, change.value, change.value],
+        );
+        continue;
+      }
       const spec = specOf(change.table);
       if (change.op === 'put') {
         const columns = ['id', ...spec.columns.map((column) => column.column)];
@@ -113,6 +120,14 @@ export function loadSnapshot(db: SqlDb): Snapshot {
     snapshot[spec.table] = db.all(`SELECT * FROM ${spec.table} WHERE deleted = 0 ORDER BY rowid`);
   }
   return snapshot;
+}
+
+export function loadDeviceState(db: SqlDb): Record<string, string> {
+  const state: Record<string, string> = {};
+  for (const row of db.all('SELECT key, value FROM device_state')) {
+    state[String(row.key)] = String(row.value);
+  }
+  return state;
 }
 
 export function loadVersions(db: SqlDb, lessonId: string): Row[] {
@@ -150,6 +165,7 @@ export function openState(
   return {
     snapshot: loadSnapshot(db),
     fresh: readMeta(db, 'seeded') === null,
+    deviceState: loadDeviceState(db),
     diagnostics: diagnose(db, sqliteVersion, device),
     device,
   };

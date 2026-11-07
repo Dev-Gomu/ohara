@@ -12,17 +12,31 @@ export interface Storage {
   flush(): Promise<void>;
   // Traz para o espelho as versões das Anotações da aula aberta.
   loadLesson(lessonId: string): Promise<void>;
+  // Bytes dos anexos (PDF e imagem), fora do banco. Falha de gravação abre a tela de erro.
+  putBlob(sha256: string, bytes: ArrayBuffer): Promise<void>;
+  getBlob(sha256: string): Promise<ArrayBuffer | null>;
+  removeBlob(sha256: string): Promise<void>;
+  // Estado só deste aparelho (D28), como a página atual de cada aula.
+  getDeviceState(key: string): string | undefined;
+  setDeviceState(key: string, value: string): void;
   exportDatabase(): Promise<Uint8Array | null>;
   diagnose(): Promise<Diagnostics | null>;
 }
 
 export function createMemoryStorage(initial: StudyData): Storage {
   let data = initial;
+  const blobs = new Map<string, ArrayBuffer>();
+  const device = new Map<string, string>();
   const listeners = new Set<() => void>();
   return {
     persistent: false,
     flush: () => Promise.resolve(),
     loadLesson: () => Promise.resolve(),
+    putBlob: (sha256, bytes) => Promise.resolve(void blobs.set(sha256, bytes)),
+    getBlob: (sha256) => Promise.resolve(blobs.get(sha256) ?? null),
+    removeBlob: (sha256) => Promise.resolve(void blobs.delete(sha256)),
+    getDeviceState: (key) => device.get(key),
+    setDeviceState: (key, value) => void device.set(key, value),
     exportDatabase: () => Promise.resolve(null),
     diagnose: () => Promise.resolve(null),
     read: () => data,

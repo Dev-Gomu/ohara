@@ -18,6 +18,7 @@ export type TableName =
   | 'events'
   | 'slots'
   | 'reminders'
+  | 'files'
   | 'note_versions';
 
 export interface TableSpec {
@@ -61,14 +62,7 @@ export const SPECS: readonly TableSpec[] = [
     table: 'lessons',
     collection: 'lessons',
     sync: true,
-    columns: [
-      text('subjectId'),
-      optional('folderId'),
-      text('title'),
-      text('date'),
-      num('slides'),
-      text('notes'),
-    ],
+    columns: [text('subjectId'), optional('folderId'), text('title'), text('date'), text('notes')],
   },
   {
     table: 'cards',
@@ -116,6 +110,21 @@ export const SPECS: readonly TableSpec[] = [
     collection: 'reminders',
     sync: true,
     columns: [text('text'), text('date'), bool('done')],
+  },
+  {
+    table: 'files',
+    collection: 'files',
+    sync: true,
+    columns: [
+      text('sha256'),
+      text('name'),
+      text('mime'),
+      num('size'),
+      num('pages'),
+      text('kind'),
+      optional('lessonId'),
+      optional('subjectId'),
+    ],
   },
   {
     table: 'note_versions',

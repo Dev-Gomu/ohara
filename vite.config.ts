@@ -47,7 +47,7 @@ export default defineConfig({
         navigateFallbackDenylist: [/\/prototipo-teclado\//],
         globIgnores: ['prototipo-teclado/**'],
         // O SQLite em WebAssembly precisa estar no cache para o app abrir offline
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2,wasm}'],
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2,wasm,mjs}'],
         maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
         cleanupOutdatedCaches: true,
       },

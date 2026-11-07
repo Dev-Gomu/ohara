@@ -2,6 +2,7 @@ import { StrictMode, type ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import type { DbErrorCode } from './core/db/protocol';
 import { EMPTY_STUDY } from './core/study/create';
+import { FILE_DIR } from './core/study/files';
 import { createFixtures } from './core/study/fixtures';
 import type { StudyData } from './core/study/types';
 import { createClient, DbError, type DbClient } from './data/client';
@@ -35,8 +36,14 @@ const NAMES = sample
       pool: prefixed('exemplo-pool'),
       file: `${DB_NAME}-exemplo.sqlite3`,
       lock: prefixed('trava-exemplo'),
+      filesDir: `${FILE_DIR}-exemplo`,
     }
-  : { pool: prefixed('pool'), file: `${DB_NAME}.sqlite3`, lock: prefixed('trava') };
+  : {
+      pool: prefixed('pool'),
+      file: `${DB_NAME}.sqlite3`,
+      lock: prefixed('trava'),
+      filesDir: FILE_DIR,
+    };
 
 function initialData(): StudyData {
   if (sample) return createFixtures(today);
@@ -71,6 +78,7 @@ async function boot() {
       await createDbStorage(client, {
         pool: NAMES.pool,
         file: NAMES.file,
+        filesDir: NAMES.filesDir,
         persistent: !sample,
         initial: initialData,
         onFatal: (error) => fail(error.code ?? 'gravacao', error.message, client),

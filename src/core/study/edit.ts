@@ -43,6 +43,7 @@ export function removeLesson(data: StudyData, id: string): StudyData {
     ...data,
     lessons: data.lessons.filter((item) => item.id !== id),
     cards: data.cards.filter((item) => item.lessonId !== id),
+    files: data.files.filter((item) => item.lessonId !== id),
     events: data.events.map((item) => (item.lessonId === id ? { ...item, lessonId: null } : item)),
   };
 }
@@ -73,6 +74,9 @@ export function removeSubject(data: StudyData, id: string): StudyData {
       (item) => item.subjectId !== id && !lessonIds.has(item.lessonId ?? ''),
     ),
     slots: data.slots.filter((item) => item.subjectId !== id),
+    files: data.files.filter(
+      (item) => item.subjectId !== id && !lessonIds.has(item.lessonId ?? ''),
+    ),
   };
 }
 
@@ -86,6 +90,7 @@ const COLLECTIONS = [
   'events',
   'slots',
   'reminders',
+  'files',
 ] as const;
 
 // Desfazer uma ação: `before` e `after` são os dados antes e logo depois dela. Volta o que a ação

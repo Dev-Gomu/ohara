@@ -49,3 +49,4 @@ Lista curta do que foi **adiado ou ainda não decidido**. O que está no plano d
 - 2026-11-07: **Importar banco** (restaurar o `.sqlite3` exportado) e **busca FTS** do SQLite quando a busca em memória ficar lenta. Fora da Etapa 7.
 - 2026-11-07: **Anotar sobre o PDF** e **busca dentro do PDF**. Fora da Etapa 10.
 - 2026-11-07: **Lixeira visível:** hoje o que se exclui some da tela e fica marcado no banco (`deleted = 1`), com Desfazer por 10 s (Alt Z). Falta uma tela para ver e restaurar depois disso. Também falta o ⋮ por toque na régua de pastas (hoje só Alt O).
+- 2026-11-07: **Livros (Etapa 10):** hoje só dá para anexar e remover o livro pelo ⋮ da matéria; falta abrir e ler o livro numa tela. Também falta varrer bytes órfãos no OPFS (aula ou matéria excluída) e anexar capítulo a uma aula.

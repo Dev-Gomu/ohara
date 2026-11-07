@@ -1,4 +1,6 @@
 import { shortDate } from '../../../core/study/dates';
+import { booksOf } from '../../../core/study/files';
+import { attach, detach, pickFile } from '../../study/attach';
 import { lessonsOf } from '../../../core/study/queries';
 import { addSubject } from '../../../core/study/create';
 import { removeSubject, renameSubject } from '../../../core/study/edit';
@@ -69,7 +71,18 @@ function askSubject(yearId: string) {
 
 function subjectOptions(subject: Subject | undefined) {
   if (!subject) return [];
+  const books = booksOf(storage.read(), subject.id);
   return [
+    {
+      id: 'livro',
+      label: 'Anexar livro',
+      run: () => pickFile((file) => void attach(file, 'livro', { subjectId: subject.id })),
+    },
+    ...books.map((book) => ({
+      id: `tirar-${book.id}`,
+      label: `Remover livro "${book.name}"`,
+      run: () => void detach(book),
+    })),
     {
       id: 'renomear',
       label: 'Renomear matéria',

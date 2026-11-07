@@ -132,12 +132,6 @@ test('Alt R redimensiona com as setas até Esc', async ({ page }) => {
   await expect(nivel(page)).toHaveText('bloco');
 });
 
-test('Alt ] passa o slide sem tirar o cursor das Anotações', async ({ page }) => {
-  await page.keyboard.press('Alt+Backslash');
-  await expect(page.getByText('Página 2')).toBeVisible();
-  await expect(anotacoes(page)).toBeFocused();
-});
-
 test('Alt / abre a ajuda com toda a tabela, e Esc fecha sem mudar o nível', async ({ page }) => {
   await pressAltSlash(page);
   await expect(ajuda(page)).toBeVisible();

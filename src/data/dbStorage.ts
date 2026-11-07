@@ -12,6 +12,7 @@ export const WRITE_DELAY = 300;
 export interface DbStorageOptions {
   pool: string;
   file: string;
+  filesDir: string;
   persistent: boolean;
   // Chamado só em banco novo; no modo exemplo devolve os dados fictícios.
   initial: () => StudyData;
@@ -20,6 +21,7 @@ export interface DbStorageOptions {
 
 function keyOf(change: Change): string {
   if (change.op === 'meta') return `meta:${change.key}`;
+  if (change.op === 'device') return `device:${change.key}`;
   return `${change.table}:${change.op === 'put' ? String(change.row.id) : change.id}`;
 }
 
@@ -37,7 +39,8 @@ export async function createDbStorage(
   client: DbClient,
   options: DbStorageOptions,
 ): Promise<Storage> {
-  const opened = await client.open(options.pool, options.file);
+  const opened = await client.open(options.pool, options.file, options.filesDir);
+  const device = new Map(Object.entries(opened.deviceState));
   let mirror: StudyData = { ...EMPTY_STUDY };
   for (const spec of SPECS) {
     if (!spec.sync) continue;
@@ -106,6 +109,24 @@ export async function createDbStorage(
       notify();
     },
     flush,
+    async putBlob(sha256, bytes) {
+      try {
+        await client.putFile(sha256, bytes);
+      } catch (error) {
+        fail(error);
+        throw error;
+      }
+    },
+    getBlob: (sha256) => client.getFile(sha256),
+    removeBlob: (sha256) => client.removeFile(sha256),
+    getDeviceState: (key) => device.get(key),
+    setDeviceState(key, value) {
+      if (device.get(key) === value) return;
+      device.set(key, value);
+      const item: Change = { op: 'device', key, value };
+      queue.set(keyOf(item), item);
+      if (timer === undefined) timer = setTimeout(() => void flush(), WRITE_DELAY);
+    },
     async loadLesson(lessonId) {
       await flush();
       const rows = await client.loadVersions(lessonId);

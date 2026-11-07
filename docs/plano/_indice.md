@@ -44,7 +44,7 @@ Em paralelo, a qualquer momento antes da Etapa 8: sessão separada extrai `regra
 **Fila do Sonnet (uma por sessão, `/clear` entre elas, nesta ordem):**
 1. ~~**Etapa 7**, banco (`etapa-07.md`).~~ **Feita em 07/11/2026**, sem teste do usuário (D89 a D91).
 2. ~~**Pendências pequenas:** renomear e excluir matéria, pasta e aula, com Lixeira (exclusão lógica da Etapa 7); editar e excluir cartões salvos; Alt T, Alt B, Alt , e Alt . levando o foco à barra de formatação. Itens no `backlog.md`, sem arquivo de etapa: o Sonnet escreve os critérios no começo.~~ **Feitas em 07/11/2026**, sem teste do usuário (D92 e D93).
-3. **Etapa 10**, slides e livros em PDF (`etapa-10.md`).
+3. ~~**Etapa 10**, slides e livros em PDF (`etapa-10.md`).~~ **Feita em 07/11/2026**, sem teste do usuário (D95 e D96).
 4. **Etapa 11**, FSRS (`etapa-11.md`).
 5. **Etapa 12**, sincronização (`etapa-12.md`). O usuário acrescenta as origens no Google Cloud antes.
 6. **Etapa 13**, notas cifradas (`etapa-13.md`). Começa perguntando onde fica a tela.
