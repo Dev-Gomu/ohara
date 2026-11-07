@@ -3,6 +3,7 @@ import { SCREENS } from '../../core/keyboard/actions';
 import { SCREEN_NAMES } from '../../core/keyboard/keys';
 import { PhoneBlock } from '../components/Block';
 import { dispatch, useKeyboardState } from '../keyboard/store';
+import { openNotes } from '../study/navigation';
 import { storage } from '../study/study';
 import styles from './ScreenFrame.module.css';
 
@@ -82,7 +83,15 @@ export function ScreenFrame({ title, caps = true, bar, end, children }: ScreenFr
           {!storage.persistent && <span className={styles.aviso}>Dados de exemplo</span>}
           <button
             type="button"
-            className={`${styles.numero} ${ringAt(SCREENS.length)}`}
+            className={`${styles.notas} ${ringAt(SCREENS.length)}`}
+            data-menu-item
+            onClick={openNotes}
+          >
+            Notas
+          </button>
+          <button
+            type="button"
+            className={`${styles.numero} ${ringAt(SCREENS.length + 1)}`}
             data-menu-item
             aria-label="Ajuda"
             onClick={() => dispatch({ type: 'openHelp' })}

@@ -17,7 +17,7 @@ import { Ruler } from '../../components/Ruler';
 import { dispatch } from '../../keyboard/store';
 import { useBlocks } from '../../keyboard/useBlocks';
 import { ScreenFrame } from '../../shell/ScreenFrame';
-import { AGENDA_MONTH, AGENDA_DAY, AGENDA_VIEWS } from '../../study/navigation';
+import { AGENDA_MONTH, AGENDA_DAY, AGENDA_VIEWS, NOTES_OPEN } from '../../study/navigation';
 import { useScreenMemory } from '../../study/screenMemory';
 import { nowTime, today, useStudy } from '../../study/study';
 import styles from './Agenda.module.css';
@@ -75,22 +75,19 @@ function DayCell({ column, list }: { column: AgendaColumn; list: boolean }) {
   );
 }
 
-const NOTES_VIEW = 4;
-
-// Notas é a quinta visão da régua (D41): fica na Agenda, mas só com a frase.
 function viewItems(month: string) {
   return [
     { id: 'semana', title: 'Semana', detail: 'dias e horas' },
     { id: 'mes', title: 'Mês', detail: month },
     { id: 'lista', title: 'Lista', detail: `${LIST_DAYS} dias` },
     { id: 'grade', title: 'Grade', detail: 'horário fixo' },
-    { id: 'notas', title: 'Notas', detail: 'boletim' },
   ];
 }
 
 export function Agenda() {
-  const view = useSelectedIndex(AGENDA_VIEWS, 5);
-  if (view === NOTES_VIEW) return <Notas rulerItems={viewItems('')} />;
+  const view = useSelectedIndex(AGENDA_VIEWS, 4);
+  const [notes] = useScreenMemory(NOTES_OPEN, false);
+  if (notes) return <Notas />;
   return <AgendaMain view={view} />;
 }
 
@@ -133,7 +130,7 @@ function AgendaMain({ view }: { view: number }) {
       {
         id: AGENDA_VIEWS,
         kind: 'nav',
-        nav: { axis: 'x', count: 5 },
+        nav: { axis: 'x', count: 4 },
         neighbors: { down: content },
         enterGoesTo: content,
         enterKeepsItem: true,

@@ -122,7 +122,7 @@ function goToScreen(screen: Screen): void {
 function runMenuItem(): void {
   const screen = SCREENS[state.focus.menuIndex];
   if (screen) goToScreen(screen);
-  else dispatch({ type: 'openHelp' });
+  else document.querySelectorAll<HTMLElement>('[data-menu-item]')[state.focus.menuIndex]?.click();
 }
 
 // Tudo que depende da tela atual. Devolve verdadeiro se a tecla já foi tratada.

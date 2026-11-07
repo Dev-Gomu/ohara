@@ -113,3 +113,13 @@
     color: var(--cor-texto);
   }
 }
+
+.notas {
+  flex: none;
+  height: var(--alvo);
+  padding: 0 var(--e3);
+  border-radius: var(--raio-pilula);
+  background: var(--cor-cartao);
+  color: var(--cor-texto-2);
+  font: var(--ui-botao);
+}

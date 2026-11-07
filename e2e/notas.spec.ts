@@ -15,8 +15,7 @@ async function criarMateria(page: Page, name: string) {
 }
 
 async function abrirNotas(page: Page) {
-  await page.keyboard.press('Alt+Digit5');
-  await page.getByRole('button', { name: /Notas/ }).first().click();
+  await page.getByRole('button', { name: 'Notas', exact: true }).click();
 }
 
 async function preencher(page: Page, valores: string[]) {

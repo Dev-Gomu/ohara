@@ -2,7 +2,6 @@
   height: 100%;
   display: grid;
   grid-template:
-    'regua regua regua' 76px
     'materias itens resumo' minmax(0, 1fr)
     / 260px minmax(0, 1fr) 340px;
   gap: var(--vao-mosaico);
@@ -10,7 +9,6 @@
 
 .cofreGrade {
   grid-template:
-    'regua' 76px
     'cofre' minmax(0, 1fr)
     / minmax(0, 1fr);
 }
@@ -142,4 +140,12 @@
 .destaque {
   margin: var(--e3) 0 0;
   font: var(--ui-item);
+}
+
+.voltar {
+  height: var(--alvo);
+  padding: 0 var(--e3);
+  border-radius: var(--raio-pilula);
+  background: var(--cor-cartao);
+  font: var(--ui-botao);
 }

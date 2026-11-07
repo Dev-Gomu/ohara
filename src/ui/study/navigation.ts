@@ -23,10 +23,18 @@ export const AGENDA_VIEWS = 'agenda.visao';
 // Dia que a Agenda mostra; semana, mês e lista partem dele.
 export const AGENDA_DAY = 'agenda.dia';
 
-// Notas é a quinta visão da régua da Agenda; a Paleta chega nela direto (D41).
+// A tela de Notas vive dentro da Agenda, mas só se chega a ela pelo botão do topo ou pela Paleta (D41).
+export const NOTES_OPEN = 'agenda.notas';
+
 export function openNotes(): void {
+  setScreenMemory(NOTES_OPEN, true);
   dispatch({ type: 'goToScreen', screen: 'agenda' });
-  dispatch({ type: 'jump', block: AGENDA_VIEWS, level: 'nav', items: { [AGENDA_VIEWS]: 4 } });
+  dispatch({ type: 'jump', block: '', level: 'block' });
+}
+
+export function closeNotes(): void {
+  setScreenMemory(NOTES_OPEN, false);
+  dispatch({ type: 'jump', block: '', level: 'block' });
 }
 
 // Abre o Mês já no dia pedido.

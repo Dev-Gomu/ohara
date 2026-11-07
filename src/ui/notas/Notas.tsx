@@ -14,11 +14,10 @@ import {
 import type { StudyData, Subject } from '../../core/study/types';
 import { Block } from '../components/Block';
 import { NavItem, useSelectedIndex } from '../components/NavItem';
-import { Ruler, type RulerItem } from '../components/Ruler';
 import { getKeyboardState, type BlockOption } from '../keyboard/store';
 import { useBlocks } from '../keyboard/useBlocks';
 import { ScreenFrame } from '../shell/ScreenFrame';
-import { AGENDA_VIEWS } from '../study/navigation';
+import { closeNotes } from '../study/navigation';
 import { useStudy } from '../study/study';
 import {
   askChangePass,
@@ -76,7 +75,7 @@ function vaultActions(hasVault: boolean, draftCode: string | null): Action[] {
   ];
 }
 
-export function Notas({ rulerItems }: { rulerItems: readonly RulerItem[] }) {
+export function Notas() {
   const secret = useSecretView();
   const data = useStudy();
   const open = secret.key !== null;
@@ -86,61 +85,43 @@ export function Notas({ rulerItems }: { rulerItems: readonly RulerItem[] }) {
   useEffect(() => lock, []);
 
   return (
-    <ScreenFrame title="Agenda">
+    <ScreenFrame
+      title="Notas do boletim"
+      caps={false}
+      end={
+        <button type="button" className={styles.voltar} onClick={closeNotes}>
+          ← Agenda <kbd>Esc</kbd>
+        </button>
+      }
+    >
       {open ? (
-        <Open
-          data={data}
-          items={secret.items}
-          unreadable={secret.unreadable}
-          rulerItems={rulerItems}
-        />
+        <Open data={data} items={secret.items} unreadable={secret.unreadable} />
       ) : (
-        <Closed hasVault={hasVault} code={secret.draft?.code ?? null} rulerItems={rulerItems} />
+        <Closed hasVault={hasVault} code={secret.draft?.code ?? null} />
       )}
     </ScreenFrame>
   );
 }
 
-function RulerBlock({ rulerItems }: { rulerItems: readonly RulerItem[] }) {
-  return (
-    <Block id={AGENDA_VIEWS} className={styles.regua}>
-      <Ruler block={AGENDA_VIEWS} items={rulerItems} />
-    </Block>
-  );
-}
-
-function Closed(props: {
-  hasVault: boolean;
-  code: string | null;
-  rulerItems: readonly RulerItem[];
-}) {
-  const { hasVault, code, rulerItems } = props;
+function Closed(props: { hasVault: boolean; code: string | null }) {
+  const { hasVault, code } = props;
   const actions = vaultActions(hasVault, code);
   useBlocks({
     blocks: [
       {
-        id: AGENDA_VIEWS,
-        kind: 'nav',
-        nav: { axis: 'x', count: 5 },
-        neighbors: { down: VAULT },
-        enterGoesTo: VAULT,
-        enterKeepsItem: true,
-      },
-      {
         id: VAULT,
         kind: 'nav',
         nav: { axis: 'y', count: actions.length },
-        neighbors: { up: AGENDA_VIEWS },
         onActivate: (index) => actions[index]?.run(),
       },
     ],
     arrival: { block: VAULT, level: 'nav', items: { [VAULT]: 0 } },
+    back: closeNotes,
     actions: { newItem: () => actions[0]?.run() },
   });
 
   return (
     <div className={`${styles.notas} ${styles.cofreGrade}`}>
-      <RulerBlock rulerItems={rulerItems} />
       <Block id={VAULT} title="Notas do boletim" className={styles.cofre}>
         <div className={styles.corpo}>
           {code ? (
@@ -184,13 +165,8 @@ function subjectsOf(data: StudyData): Subject[] {
   return data.subjects.filter((subject) => years.has(subject.yearId));
 }
 
-function Open(props: {
-  data: StudyData;
-  items: readonly Item[];
-  unreadable: number;
-  rulerItems: readonly RulerItem[];
-}) {
-  const { data, items, unreadable, rulerItems } = props;
+function Open(props: { data: StudyData; items: readonly Item[]; unreadable: number }) {
+  const { data, items, unreadable } = props;
   const subjects = subjectsOf(data);
   const subject = subjects[useSelectedIndex(SUBJECTS, subjects.length)];
   const mine = items
@@ -234,18 +210,10 @@ function Open(props: {
   useBlocks({
     blocks: [
       {
-        id: AGENDA_VIEWS,
-        kind: 'nav',
-        nav: { axis: 'x', count: 5 },
-        neighbors: { down: ITEMS },
-        enterGoesTo: ITEMS,
-        enterKeepsItem: true,
-      },
-      {
         id: SUBJECTS,
         kind: 'nav',
         nav: { axis: 'y', count: subjects.length },
-        neighbors: { up: AGENDA_VIEWS, right: ITEMS },
+        neighbors: { right: ITEMS },
         resets: [ITEMS],
         enterGoesTo: ITEMS,
       },
@@ -253,12 +221,13 @@ function Open(props: {
         id: ITEMS,
         kind: 'nav',
         nav: { axis: 'y', count: mine.length },
-        neighbors: { up: AGENDA_VIEWS, left: SUBJECTS, right: SUMMARY },
+        neighbors: { left: SUBJECTS, right: SUMMARY },
         onActivate: () => subject && item && askItem(subject, mine, item),
       },
-      { id: SUMMARY, kind: 'none', neighbors: { left: ITEMS, up: AGENDA_VIEWS } },
+      { id: SUMMARY, kind: 'none', neighbors: { left: ITEMS } },
     ],
     arrival: { block: SUBJECTS, level: 'nav', items: { [SUBJECTS]: 0 } },
+    back: closeNotes,
     options,
     actions: {
       newItem: () => {
@@ -269,7 +238,6 @@ function Open(props: {
 
   return (
     <div className={styles.notas}>
-      <RulerBlock rulerItems={rulerItems} />
       <Block id={SUBJECTS} title="Matérias" className={styles.materias}>
         <div className={styles.corpo}>
           {subjects.length === 0 && <p className={styles.texto}>Crie uma matéria no Acervo.</p>}
