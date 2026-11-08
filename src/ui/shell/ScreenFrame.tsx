@@ -1,10 +1,11 @@
-import { useSyncExternalStore, type ReactNode } from 'react';
+import { useLayoutEffect, useRef, useSyncExternalStore, type ReactNode } from 'react';
 import { SCREENS } from '../../core/keyboard/actions';
 import { SCREEN_NAMES } from '../../core/keyboard/keys';
 import { PhoneBlock } from '../components/Block';
 import { dispatch, useKeyboardState } from '../keyboard/store';
 import { openFaults, openNotes } from '../study/navigation';
 import { storage } from '../study/study';
+import { placeTopBar } from './topAnimation';
 import styles from './ScreenFrame.module.css';
 
 interface ScreenFrameProps {
@@ -54,18 +55,37 @@ function usePhonePages(focusBlock: string) {
 export function ScreenFrame({ title, caps = true, bar, end, children }: ScreenFrameProps) {
   const { focus, screen } = useKeyboardState();
   const phone = usePhonePages(focus.block);
+  const nav = useRef<HTMLElement>(null);
+  const indicator = useRef<HTMLSpanElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+
+  // Cada tela desenha a própria barra; a animação parte de onde a tela anterior deixou o indicador.
+  useLayoutEffect(() => {
+    if (!nav.current || !indicator.current) return;
+    placeTopBar(
+      {
+        indicator: indicator.current,
+        numbers: [...nav.current.querySelectorAll<HTMLElement>('[data-aba]')],
+        title: titleRef.current,
+      },
+      SCREENS.indexOf(screen),
+    );
+  }, [screen]);
+
   const ringAt = (index: number) =>
     focus.level === 'menu' && focus.menuIndex === index ? 'anel' : '';
 
   return (
     <main className={styles.tela}>
-      <nav className={styles.topo} data-menu aria-label="Telas">
+      <nav ref={nav} className={styles.topo} data-menu aria-label="Telas">
+        <span ref={indicator} className={styles.indicador} aria-hidden="true" />
         {SCREENS.map((id, index) => (
           <button
             key={id}
             type="button"
             className={`${styles.numero} ${ringAt(index)}`}
             data-menu-item
+            data-aba
             data-sel={id === screen}
             aria-label={SCREEN_NAMES[id]}
             aria-current={id === screen ? 'page' : undefined}
@@ -75,7 +95,7 @@ export function ScreenFrame({ title, caps = true, bar, end, children }: ScreenFr
           </button>
         ))}
         {bar}
-        <h1 className={styles.titulo} data-caps={caps}>
+        <h1 ref={titleRef} className={styles.titulo} data-caps={caps}>
           {title}
         </h1>
         <div className={styles.fim}>

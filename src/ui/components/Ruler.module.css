@@ -40,12 +40,32 @@
   color: var(--cor-tinta);
 }
 
+/* Sem linha de detalhe a pílula fica de uma linha só, mais baixa. */
+.item:not(:has(.detalhe)),
+.regua:not(:has(.detalhe)) .criar {
+  min-width: 0;
+  height: 44px;
+}
+
+/* "+" desenhado com duas barras: o glifo de texto desalinhava dentro da pílula. */
 .criar {
   flex: none;
+  display: flex;
+  align-items: center;
+  gap: var(--e2);
   height: 56px;
   padding: 0 var(--e4);
-  border: 2px dashed var(--cor-texto-2);
   border-radius: var(--raio-item);
-  color: var(--cor-texto-2);
+  background: var(--cor-cartao-2);
   font: var(--ui-item);
+}
+
+.criar::before {
+  content: '';
+  flex: none;
+  width: 12px;
+  height: 12px;
+  background:
+    linear-gradient(currentColor, currentColor) center / 100% 2px no-repeat,
+    linear-gradient(currentColor, currentColor) center / 2px 100% no-repeat;
 }

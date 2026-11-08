@@ -1,7 +1,6 @@
-import { shortDate } from '../../../core/study/dates';
 import { booksOf } from '../../../core/study/files';
 import { attach, detach, pickFile } from '../../study/attach';
-import { lessonsOf } from '../../../core/study/queries';
+import { daysToNextExam, lessonsOf } from '../../../core/study/queries';
 import { addSubject } from '../../../core/study/create';
 import { removeSubject, renameSubject } from '../../../core/study/edit';
 import { search, type SearchResult } from '../../../core/study/search';
@@ -16,7 +15,7 @@ import { ScreenFrame } from '../../shell/ScreenFrame';
 import { openLesson } from '../../study/navigation';
 import { useScreenMemory } from '../../study/screenMemory';
 import { removeWithUndo } from '../../study/undo';
-import { storage, useStudy } from '../../study/study';
+import { storage, today, useStudy } from '../../study/study';
 import styles from './Acervo.module.css';
 
 const YEARS = 'acervo.anos';
@@ -34,24 +33,25 @@ interface CardProps {
 
 function SubjectCard({ data, subject, index, onOpen }: CardProps) {
   const lessons = lessonsOf(data, subject.id).length;
+  const exam = daysToNextExam(data, subject.id, today);
   return (
     <NavItem
       block={SUBJECTS}
       index={index}
       className={styles.materia}
-      ring="anel"
+      label={subject.name}
       onOpen={() => onOpen(subject.id)}
     >
       <span className={styles.materiaCorpo} data-materia={subject.color} data-vazia={lessons === 0}>
-        <span className={styles.sigla}>{subject.code}</span>
-        <span className={styles.total}>
-          {lessons} <small>{lessons === 1 ? 'aula' : 'aulas'}</small>
-        </span>
-        <b className={styles.materiaNome}>{subject.name}</b>
-        <span className={styles.acesso}>
-          {subject.lastAccess === null
-            ? 'Nenhuma aula ainda'
-            : `Último acesso: ${shortDate(subject.lastAccess)}`}
+        <b className={styles.siglaGrande}>{subject.code}</b>
+        <span className={styles.materiaNome}>{subject.name}</span>
+        <span className={styles.materiaRodape}>
+          <span>
+            {lessons} {lessons === 1 ? 'aula' : 'aulas'}
+          </span>
+          {exam !== null && (
+            <span className={styles.prova}>prova {exam === 0 ? 'hoje' : `${exam} d`}</span>
+          )}
         </span>
       </span>
     </NavItem>

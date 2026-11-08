@@ -51,7 +51,7 @@ Em paralelo, a qualquer momento antes da Etapa 8: sessão separada extrai `regra
 
 Cada sessão do Sonnet: lê `CLAUDE.md`, este índice e o arquivo da etapa; não refaz o desenho; roda `check` e `e2e`; commita em `telas-3-a-9`; atualiza esta fila; entrega o roteiro de 5 minutos.
 
-**Fora da fila, feitos em 07/11/2026:** Faltas (D100, D101), importar banco e limpar bytes órfãos (D97), duas paletas frias de teste (A e B, `src/ui/styles/paletas.css`; o usuário ainda escolhe). Identidade visual nova em andamento no ClaudeWeb (`identidade-nova-claudeweb/`).
+**Fora da fila, feitos em 07/11/2026:** Faltas (D100, D101), importar banco e limpar bytes órfãos (D97), duas paletas frias de teste (A e B, `src/ui/styles/paletas.css`; o usuário ainda escolhe). Identidade visual nova em andamento no ClaudeWeb (`identidade-nova-claudeweb/`). **Foco visual dos blocos (08/11/2026):** aplicado (D105), sem teste do usuário; plano em `foco-mosaico.md`. **Revisão visual do Acervo (08/11/2026):** plano de 6 etapas em `acervo-visual.md`; **aplicado em 08/11/2026 (D108)**, sem teste do usuário.
 
 **Regra de troca:** se uma etapa de Sonnet encontrar decisão de produto ou de segurança, para e pergunta. Não decide sozinha.
 

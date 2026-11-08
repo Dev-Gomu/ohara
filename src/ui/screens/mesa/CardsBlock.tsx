@@ -112,7 +112,7 @@ export function CardsBlock({ id, cards, editor }: CardsBlockProps) {
     </div>
   );
   return (
-    <Block id={id} title="Cartões" tools={tabs} shortcut="Alt C" menu>
+    <Block id={id} title="Cartões" icon="cartoes" tools={tabs} shortcut="Alt C" menu>
       {mode === 'novo' ? <Writer editor={editor} /> : <Saved id={id} cards={cards} />}
     </Block>
   );

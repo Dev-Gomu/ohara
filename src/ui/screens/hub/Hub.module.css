@@ -46,9 +46,22 @@
   white-space: nowrap;
 }
 
-.cartao[data-proximo='true'] .faixa {
-  background: var(--cor-destaque);
-  color: var(--cor-tinta);
+/* Foco das provas (D106): no nível bloco todas as faixas acendem; dentro, só a do cartão em foco,
+   com um fio de 2px. O contorno do bloco não vale aqui (o bloco não tem fundo). */
+.semFundo.semFundo[data-foco] {
+  outline: none;
+  border-color: transparent;
+}
+
+.semFundo[data-foco='bloco'] .faixa,
+.semFundo[data-foco='dentro'] .prova[data-sel='true'] .faixa {
+  background: var(--cor-bloco-ativo);
+  color: var(--cor-sobre-botao);
+}
+
+.semFundo[data-foco='dentro'] .prova[data-sel='true'] .cartao {
+  outline: 2px solid var(--cor-bloco-ativo);
+  outline-offset: -2px;
 }
 
 .prazo {

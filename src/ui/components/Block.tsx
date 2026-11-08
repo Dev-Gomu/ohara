@@ -1,5 +1,6 @@
 import { createContext, useContext, type ReactNode } from 'react';
 import { dispatch, useKeyboardState } from '../keyboard/store';
+import { BlockIcon, type IconName } from './BlockIcon';
 import styles from './Block.module.css';
 
 // Bloco que o celular mostra agora. As telas maiores ignoram (D79).
@@ -8,6 +9,8 @@ export const PhoneBlock = createContext('');
 interface BlockProps {
   id: string;
   title?: string;
+  // Só na Mesa: o ícone toma o lugar do nome escrito (o nome fica em aria-label e title).
+  icon?: IconName;
   // Nome na barra do celular, quando o título muda ou falta. Sem título nem rótulo, o bloco
   // é régua ou busca e fica sempre à vista no celular.
   label?: string;
@@ -20,7 +23,7 @@ interface BlockProps {
 }
 
 export function Block(props: BlockProps) {
-  const { id, title, label, count, shortcut, tools, menu, className, children } = props;
+  const { id, title, icon, label, count, shortcut, tools, menu, className, children } = props;
   const { focus } = useKeyboardState();
   const phone = useContext(PhoneBlock);
   const page = label ?? title;
@@ -31,7 +34,7 @@ export function Block(props: BlockProps) {
   const inside = here && (focus.level === 'field' || focus.level === 'nav');
   return (
     <section
-      className={`${styles.bloco} ${onBlock ? 'anel' : ''} ${className ?? ''}`}
+      className={`${styles.bloco} ${className ?? ''}`}
       data-block={id}
       data-foco={onBlock ? 'bloco' : inside ? 'dentro' : undefined}
       data-pagina={page}
@@ -40,7 +43,13 @@ export function Block(props: BlockProps) {
     >
       {title !== undefined && (
         <header className={styles.titulo}>
-          <h2 className={styles.nome}>{title}</h2>
+          {icon ? (
+            <h2 className={`${styles.nome} ${styles.icone}`} aria-label={title} title={title}>
+              <BlockIcon name={icon} />
+            </h2>
+          ) : (
+            <h2 className={styles.nome}>{title}</h2>
+          )}
           {count !== undefined && <span className={styles.conta}>{count}</span>}
           <div className={styles.fim}>
             {tools}

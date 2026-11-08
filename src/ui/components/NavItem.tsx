@@ -5,7 +5,9 @@ interface NavItemProps {
   block: string;
   index: number;
   className?: string;
-  ring?: 'anel' | 'anel-interno';
+  // 'anel' = controle pequeno (contorno fino de 2px); 'anel-interno' = item de lista (4px);
+  // 'nenhum': a tela desenha o próprio sinal de foco.
+  ring?: 'anel' | 'anel-interno' | 'nenhum';
   onOpen?: () => void;
   label?: string;
   color?: string;
@@ -34,7 +36,7 @@ export function NavItem(props: NavItemProps) {
       ref={element}
       type="button"
       tabIndex={-1}
-      className={`${className ?? ''} ${focused ? (ring ?? 'anel-interno') : ''}`}
+      className={`${className ?? ''} ${focused && ring !== 'nenhum' ? (ring === 'anel' ? 'anel-fino' : (ring ?? 'anel-interno')) : ''}`}
       data-nav-index={index}
       data-sel={selected}
       data-cor={color}

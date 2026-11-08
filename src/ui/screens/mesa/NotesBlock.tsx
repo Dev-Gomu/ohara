@@ -189,7 +189,7 @@ export function NotesBlock({ id, editor }: { id: string; editor: Editor | null }
   const barVisible = useNotesBar();
   const bubble = useBubble(editor, !barVisible);
   return (
-    <Block id={id} title="Anotações" shortcut="Alt A" menu>
+    <Block id={id} title="Anotações" icon="notas" shortcut="Alt A" menu>
       <EditorContent editor={editor} className={styles.editor} />
       {barVisible && <Tools editor={editor} className={styles.ferramentas ?? ''} />}
       {bubble &&

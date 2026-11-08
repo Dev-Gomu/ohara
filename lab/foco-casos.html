@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Foco: casos à parte</title>
+    <style>
+      /* Etapa 6 do foco, itens 3 a 5: cada versão põe lado a lado o jeito que quebra e o jeito escolhido. */
+      .par {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--e5);
+      }
+      .lado h3 {
+        margin-bottom: var(--e2);
+        font: var(--ui-botao);
+      }
+      .lado p {
+        margin-bottom: var(--e3);
+        color: var(--cor-texto-2);
+        font: var(--ui-apoio);
+      }
+      .moldura {
+        height: 300px;
+        padding: 0;
+        border-radius: var(--raio-bloco);
+        background: var(--cor-fundo);
+        overflow: hidden;
+      }
+      .bloco {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        border: var(--borda-bloco) solid transparent;
+        border-radius: var(--raio-bloco);
+        background: var(--cor-cartao);
+        color: var(--cor-texto);
+      }
+      .titulo {
+        padding: var(--bloco-pad-y) var(--bloco-pad-x) 6px;
+        color: var(--cor-texto-2);
+        font: var(--ui-rotulo);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+      .lista {
+        display: grid;
+        gap: var(--e2);
+        min-height: 0;
+        padding: var(--e2) var(--bloco-pad-x) var(--bloco-pad-y);
+        overflow: auto;
+      }
+      .cartao {
+        padding: var(--e2) var(--e3);
+        border-radius: var(--raio-item);
+        background: var(--cor-cartao-2);
+        font: var(--ui-item);
+      }
+
+      /* O bloco encosta no alto e à esquerda da área, como um bloco no canto da tela */
+      .moldura.encosta {
+        padding: 0 var(--e3) var(--e3) 0;
+      }
+      /* Lista que rola com pouca folga em volta dos itens */
+      .justa .lista {
+        padding: 2px;
+      }
+      /* Caso 3: anel por fora (antigo) contra contorno por dentro (F2 a 70%) */
+      .anel-fora {
+        outline: var(--anel-traco) solid var(--cor-foco);
+        outline-offset: var(--anel-afastamento);
+      }
+      .contorno-dentro {
+        outline: 4px solid color-mix(in srgb, var(--cor-bloco-ativo) 70%, transparent);
+        outline-offset: -4px;
+      }
+
+      /* Caso 4: anel do item afastado (corta na beira da rolagem) contra colado */
+      .dentro {
+        border-color: var(--cor-bloco-ativo);
+      }
+      .item-afastado {
+        outline: var(--anel-traco) solid var(--cor-foco);
+        outline-offset: var(--anel-afastamento);
+      }
+      .item-colado {
+        outline: var(--anel-traco) solid var(--cor-foco);
+        outline-offset: 0;
+      }
+
+      /* Caso 5: o foco pula entre dois blocos sozinho; à esquerda com esmaecimento, à direita na hora */
+      .dupla {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--vao-mosaico);
+        height: 200px;
+      }
+      .dupla .bloco {
+        transition: outline-color 200ms;
+        outline: 4px solid transparent;
+        outline-offset: -4px;
+      }
+      .dupla .bloco[data-foco] {
+        outline-color: color-mix(in srgb, var(--cor-bloco-ativo) 70%, transparent);
+      }
+      .sem-movimento .bloco {
+        transition: none;
+      }
+      .dupla .cartao {
+        margin: var(--e2) var(--bloco-pad-x);
+      }
+
+      /* ===== I1 a I4: como o cartão em foco aparece dentro da lista ===== */
+      .itens {
+        max-width: 560px;
+      }
+      .itens .cartao small {
+        display: block;
+        color: var(--cor-texto-2);
+        font: var(--ui-apoio);
+      }
+      .itens .cartao {
+        transition:
+          background-color 120ms,
+          color 120ms;
+      }
+      /* Selecionado, pelas diretrizes: item de lista com fundo de marca, mesmo sem foco */
+      .itens [data-sel] {
+        background: var(--cor-marca);
+      }
+      .i1 [data-item-foco] {
+        outline: 2px solid var(--cor-bloco-ativo);
+        outline-offset: 0;
+      }
+      .i2 [data-item-foco] {
+        background: color-mix(in srgb, var(--cor-bloco-ativo) 24%, var(--cor-cartao));
+        font-weight: 700;
+      }
+      .i2 [data-item-foco] small {
+        color: var(--cor-texto);
+      }
+      .i3 .lista {
+        padding-inline: var(--e3);
+      }
+      .i3 [data-item-foco] {
+        background: var(--cor-cartao);
+        outline: 2px solid var(--cor-bloco-ativo);
+        outline-offset: -2px;
+      }
+      /* Escolhida e em foco ao mesmo tempo: a I3 mantém o fundo de marca e soma o contorno */
+      .i3 [data-sel][data-item-foco] {
+        background: var(--cor-marca);
+      }
+      .i4 [data-item-foco] {
+        background: var(--cor-botao);
+        color: var(--cor-sobre-botao);
+      }
+      .i4 [data-item-foco] small {
+        color: color-mix(in srgb, var(--cor-sobre-botao) 70%, transparent);
+      }
+
+      /* ===== Versões da I3: todas sobem o cartão para o branco do bloco ===== */
+      .i3x {
+        max-width: 560px;
+      }
+      .i3x > p {
+        margin-bottom: var(--e3);
+        color: var(--cor-texto-2);
+        font: var(--ui-apoio);
+      }
+      .i3x .lista {
+        padding-inline: var(--e3);
+      }
+      .i3x [data-item-foco] {
+        position: relative;
+        background: var(--cor-cartao);
+      }
+      .i3x [data-sel][data-item-foco] {
+        background: var(--cor-marca);
+      }
+      .i3a [data-item-foco] {
+        outline: 4px solid color-mix(in srgb, var(--cor-bloco-ativo) 70%, transparent);
+        outline-offset: -4px;
+      }
+      .i3b [data-item-foco] {
+        outline: 2px solid var(--cor-texto);
+        outline-offset: -2px;
+      }
+      .i3c [data-item-foco]::after {
+        content: '›';
+        position: absolute;
+        top: 50%;
+        right: var(--e3);
+        color: var(--cor-bloco-ativo);
+        font: 700 22px/1 var(--fonte-interface);
+        transform: translateY(-55%);
+      }
+      .i3d [data-item-foco] {
+        outline: 1px solid var(--cor-bloco-ativo);
+        outline-offset: -1px;
+        color: var(--cor-bloco-ativo);
+      }
+      .i3e [data-item-foco] {
+        outline: 2px solid var(--cor-bloco-ativo);
+        outline-offset: -2px;
+      }
+    </style>
+  </head>
+  <body>
+    <script type="module">
+      import { Sala } from './_sala.js';
+
+      const TEXTOS = [
+        'Quem libera IL-6?',
+        'Efeito da IL-6 no fígado',
+        'Via do LPS',
+        'Neutrófilos: quando predominam?',
+        'Monócitos: quando predominam?',
+        'O que é PCR?',
+        'Fibrinogênio sobe por quê?',
+        'TNF-α: efeito no hipotálamo',
+      ];
+      // O primeiro cartão recebe a classe do item em foco (caso 4)
+      const bloco = (classe, itemClasse = '', moldura = '') =>
+        `<div class="moldura ${moldura}"><section class="bloco ${classe}"><div class="titulo">Cartões</div><div class="lista">${TEXTOS.map((t, k) => `<div class="cartao ${k === 0 ? itemClasse : ''}">${t}</div>`).join('')}</div></section></div>`;
+
+      // I1 a I4: o bloco Cartões no nível "dentro" (borda D1); ↑ ↓ andam pelos cartões nas duas listas
+      const listaItens = () =>
+        `<div class="lado"><p>↑ ↓ andam pelos cartões. D troca o tema.</p><div class="moldura"><section class="bloco dentro"><div class="titulo">Cartões</div><div class="lista" data-lista>${TEXTOS.map((t, k) => `<div class="cartao" ${k === 1 ? 'data-item-foco' : ''}>${t}<small>${k % 2 ? 'Macrófago ativado' : '↑ PCR e fibrinogênio'}</small></div>`).join('')}</div></section></div></div>`;
+
+      const AULAS = ['Resposta inflamatória aguda', 'Citocinas', 'Inflamação crônica', 'Reparo tecidual', 'Febre', 'Sepse', 'Choque', 'Revisão'];
+      const listaAulas = () =>
+        `<div class="moldura"><section class="bloco dentro"><div class="titulo">Aulas</div><div class="lista" data-lista>${AULAS.map((t, k) => `<div class="cartao" ${k === 1 ? 'data-item-foco' : ''} ${k === 3 ? 'data-sel' : ''}>${t}<small>${['seg', 'qua', 'sex'][k % 3]} · ${k + 3} nov</small></div>`).join('')}</div></section></div>`;
+
+      Sala.montar({
+        titulo: 'Foco: casos à parte',
+        dados: null,
+        variantes: [
+          {
+            id: 'c3',
+            nome: 'Caso 3 · o contorno do bloco não é cortado',
+            html: () => `<div class="par">
+              <div class="lado"><h3>Antes: anel por fora</h3><p>O bloco encosta no alto e à esquerda da área. O anel fica do lado de fora: em cima e à esquerda ele some, só sobra embaixo e à direita.</p>${bloco('anel-fora', '', 'encosta')}</div>
+              <div class="lado"><h3>Agora: contorno por dentro (F2)</h3><p>O contorno fica do lado de dentro do bloco, então aparece inteiro, encostado ou não.</p>${bloco('contorno-dentro', '', 'encosta')}</div>
+            </div>`,
+          },
+          {
+            id: 'c4',
+            nome: 'Caso 4 · o anel do item não é cortado na lista que rola',
+            html: () => `<div class="par">
+              <div class="lado"><h3>Se o anel fosse afastado do item</h3><p>O primeiro cartão está em foco numa lista que rola com pouca folga. O anel afastado passa da beira e é cortado em cima e dos lados.</p>${bloco('dentro justa', 'item-afastado')}</div>
+              <div class="lado"><h3>Como é: anel colado no item</h3><p>O anel encosta no cartão e fica inteiro, mesmo na beirada. É o que o app já faz hoje.</p>${bloco('dentro justa', 'item-colado')}</div>
+            </div>`,
+          },
+          {
+            id: 'c5',
+            nome: 'Caso 5 · com e sem a opção "reduzir movimento" do sistema',
+            html: () => `<div class="par">
+              <div class="lado"><h3>Normal: esmaece em 200 ms</h3><p>O foco pula sozinho entre os dois blocos. O contorno aparece e some num esmaecimento rápido.</p>
+                <div class="dupla" data-pisca><section class="bloco" data-foco><div class="titulo">Slides</div><div class="cartao">p. 1</div></section><section class="bloco"><div class="titulo">Cartões</div><div class="cartao">Quem libera IL-6?</div></section></div></div>
+              <div class="lado"><h3>Com "reduzir movimento": na hora</h3><p>Mesma troca, sem esmaecer: o contorno simplesmente aparece e some. Só vale se a opção estiver ligada no aparelho.</p>
+                <div class="dupla sem-movimento" data-pisca><section class="bloco" data-foco><div class="titulo">Slides</div><div class="cartao">p. 1</div></section><section class="bloco"><div class="titulo">Cartões</div><div class="cartao">Quem libera IL-6?</div></section></div></div>
+            </div>`,
+          },
+          {
+            id: 'i1',
+            nome: 'I1 · anel fino (2 px) na cor ativa, colado no cartão',
+            html: () => `<div class="itens i1">${listaItens()}</div>`,
+          },
+          {
+            id: 'i2',
+            nome: 'I2 · sem anel: o cartão ganha fundo tonal da cor ativa e texto mais forte',
+            html: () => `<div class="itens i2">${listaItens()}</div>`,
+          },
+          {
+            id: 'i3',
+            nome: 'I3 · o cartão "sobe": fundo branco do bloco e contorno interno fino na cor ativa',
+            html: () => `<div class="itens i3">${listaItens()}</div>`,
+          },
+          {
+            id: 'i4',
+            nome: 'I4 · invertido: o cartão fica escuro com texto claro, como um botão',
+            html: () => `<div class="itens i4">${listaItens()}</div>`,
+          },
+          {
+            id: 'sel',
+            nome: 'I2 × I3 numa lista com seleção (lista de aulas do Acervo: a aula escolhida comanda a prévia)',
+            html: () => `<div class="par">
+              <div class="lado itens i2"><h3>I2 · foco em fundo tonal</h3><p>↑ ↓ movem o foco, Enter escolhe a aula. A aula escolhida (fundo de marca) e a aula em foco (fundo tonal) ficam quase iguais: qual é qual?</p>${listaAulas()}</div>
+              <div class="lado itens i3"><h3>I3 · foco em cartão que sobe</h3><p>Mesma lista. A escolhida tem fundo; a em foco tem contorno. Quando as duas coincidem, os sinais se somam e continuam legíveis.</p>${listaAulas()}</div>
+            </div>`,
+          },
+          {
+            id: 'i3a',
+            nome: 'I3a · contorno igual ao do bloco: 4 px na cor ativa a 70%',
+            html: () => `<div class="itens i3x i3a"><p>↑ ↓ movem o foco, Enter escolhe a aula (fundo de marca). D troca o tema.</p>${listaAulas()}</div>`,
+          },
+          {
+            id: 'i3b',
+            nome: 'I3b · contorno neutro: 2 px na cor do texto, sem azul',
+            html: () => `<div class="itens i3x i3b"><p>↑ ↓ movem o foco, Enter escolhe a aula (fundo de marca). D troca o tema.</p>${listaAulas()}</div>`,
+          },
+          {
+            id: 'i3c',
+            nome: 'I3c · sem contorno: cartão branco e uma seta › na cor ativa à direita',
+            html: () => `<div class="itens i3x i3c"><p>↑ ↓ movem o foco, Enter escolhe a aula (fundo de marca). D troca o tema.</p>${listaAulas()}</div>`,
+          },
+          {
+            id: 'i3d',
+            nome: 'I3d · contorno de 1 px e o título do cartão na cor ativa',
+            html: () => `<div class="itens i3x i3d"><p>↑ ↓ movem o foco, Enter escolhe a aula (fundo de marca). D troca o tema.</p>${listaAulas()}</div>`,
+          },
+          {
+            id: 'i3e',
+            nome: 'I3e · entre a I3d e a I3a: contorno de 2 px na cor ativa e texto na cor normal',
+            html: () => `<div class="itens i3x i3e"><p>↑ ↓ movem o foco, Enter escolhe a aula (fundo de marca). D troca o tema.</p>${listaAulas()}</div>`,
+          },
+        ],
+      });
+
+      let itemFoco = 1;
+      document.addEventListener('keydown', (e) => {
+        if (e.code === 'Enter') {
+          for (const lista of document.querySelectorAll('[data-lista]')) {
+            lista.querySelectorAll('.cartao').forEach((c, k) => c.toggleAttribute('data-sel', k === itemFoco));
+          }
+          e.preventDefault();
+          return;
+        }
+        if (e.code !== 'ArrowDown' && e.code !== 'ArrowUp') return;
+        itemFoco = Math.min(TEXTOS.length - 1, Math.max(0, itemFoco + (e.code === 'ArrowDown' ? 1 : -1)));
+        for (const lista of document.querySelectorAll('[data-lista]')) {
+          lista.querySelectorAll('.cartao').forEach((c, k) => c.toggleAttribute('data-item-foco', k === itemFoco));
+          lista.querySelector('[data-item-foco]')?.scrollIntoView({ block: 'nearest' });
+        }
+        e.preventDefault();
+      });
+
+      // Caso 5: troca o bloco em foco a cada 1,2 s nas duas duplas ao mesmo tempo
+      setInterval(() => {
+        for (const dupla of document.querySelectorAll('[data-pisca]')) {
+          for (const b of dupla.querySelectorAll('.bloco')) b.toggleAttribute('data-foco');
+        }
+      }, 1200);
+    </script>
+  </body>
+</html>

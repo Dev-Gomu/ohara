@@ -89,7 +89,7 @@ Uma ação frequente sobre outro bloco não deve exigir sair de onde se está. E
 
 ## 3. Foco e estados
 
-### 3.1 Um único anel forte
+### 3.1 Um único anel forte (blocos e itens: contorno de 4px por dentro, D105; o anel escuro fica no menu e nos botões)
 
 **Só existe um anel forte na tela, e ele mostra onde as teclas estão agindo agora.** Essa é a regra visual mais importante do app.
 

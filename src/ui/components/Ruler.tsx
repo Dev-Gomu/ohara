@@ -4,7 +4,7 @@ import styles from './Ruler.module.css';
 export interface RulerItem {
   id: string;
   title: string;
-  detail: string;
+  detail?: string | undefined;
 }
 
 interface RulerProps {
@@ -21,12 +21,12 @@ export function Ruler({ block, items, createLabel, onCreate }: RulerProps) {
       {items.map((item, index) => (
         <NavItem key={item.id} block={block} index={index} className={styles.item} ring="anel">
           <b className={styles.titulo}>{item.title}</b>
-          <span className={styles.detalhe}>{item.detail}</span>
+          {item.detail !== undefined && <span className={styles.detalhe}>{item.detail}</span>}
         </NavItem>
       ))}
       {createLabel !== undefined && (
         <button type="button" className={styles.criar} onClick={onCreate}>
-          + {createLabel}
+          {createLabel}
         </button>
       )}
     </div>

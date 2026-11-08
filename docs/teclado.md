@@ -51,6 +51,7 @@ Esta é a tabela de atalhos que a Etapa 2 implementa. Cada linha vira um teste (
 |---|---|
 | Alt P · Ctrl P | Paleta: ir para… |
 | Alt I | Lembrete rápido, em qualquer tela |
+| Alt D | Troca o tema (claro ou escuro) |
 | Alt Z | Desfaz a última exclusão (vale por 10 segundos) |
 | Alt / · F1 | Ajuda |
 

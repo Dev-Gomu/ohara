@@ -13,7 +13,7 @@ const LABELS_IN_DOC = [
   ...['H', 'J', 'K', 'L'].map((k) => `Alt Shift ${k}`),
   ...['H', 'J', 'K', 'L', '←', '↓', '↑', '→'],
   ...['Enter', 'Esc', 'Tab', 'Shift Tab'],
-  ...['S', 'A', 'C', 'M', 'W', 'R', 'X', 'O', 'T', 'F', 'B', ',', '.', 'N', '0'].map(
+  ...['S', 'A', 'C', 'D', 'M', 'W', 'R', 'X', 'O', 'T', 'F', 'B', ',', '.', 'N', '0'].map(
     (k) => `Alt ${k}`,
   ),
   'Alt Shift 0',
@@ -42,8 +42,8 @@ function pressOf(key: KeyRow): KeyInput {
 }
 
 describe('tabela de teclas', () => {
-  it('tem as 76 teclas de teclado.md', () => {
-    expect(KEYS).toHaveLength(76);
+  it('tem as 77 teclas de teclado.md', () => {
+    expect(KEYS).toHaveLength(77);
     expect(KEYS.map((key) => key.label).sort()).toEqual([...LABELS_IN_DOC].sort());
   });
 

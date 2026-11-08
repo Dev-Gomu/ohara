@@ -22,6 +22,15 @@ Estudante de medicina, **não programa**, é o Product Owner. Responda em **port
 - Prefixo de tudo que fica no navegador: **`ohara2-`** (`src/core/appInfo.ts`). Base do site: `/ohara/`. Node: `.nvmrc`.
 - Rode `npm run check` antes de declarar qualquer etapa pronta. Saída curta: não cole logs longos.
 
+## Economia de créditos (obrigatório)
+- **Conferir visual:** `npm run tela -- [caminho] --teclas "Alt+3,Enter" --sel "[data-block='x']"` (precisa do `npm run dev`). Gera `.telas/<saida>.jpg` com claro e escuro lado a lado, pequeno; leia só esse arquivo. Bancada: `npm run tela -- "lab/x.html?v=a"`. Use o navegador do app só se o usuário pedir ou para algo que o script não faz.
+- **Sempre os dois temas desde a primeira versão.** Nunca julgue só o claro.
+- **Bancadas com no máximo 3 versões.** Teste o estado de foco antes de recomendar.
+- **Testes:** `npm run check` ao fim de cada mudança; `npm run e2e:curto` só ao fim da etapa (a falha "Agenda: prova nova aparece no Hub" já existe e não é sua).
+- **Commit:** `npm run salvar -- "mensagem" "Co-Authored-By: ..."` roda o check e commita só as pastas do app. Só quando o usuário pedir.
+- **Edição:** prefira Edit em arquivo já lido. Script Python de substituição só com `assert` em cada troca (falha silenciosa custou retrabalho).
+- **Sessão curta:** uma etapa por sessão; ao fechar uma, sugira `/clear`. Não releia docs que já estão no contexto.
+
 ## Camadas (o lint falha o CI se violadas)
 ```
 src/core/  TypeScript puro, SEM imports: teclado, mosaico, notas, agenda, sync, FSRS

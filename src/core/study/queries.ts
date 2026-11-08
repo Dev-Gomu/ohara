@@ -71,6 +71,12 @@ export function upcomingExams(data: StudyData, today: string): Exam[] {
     .sort((a, b) => a.date.localeCompare(b.date));
 }
 
+// Dias até a próxima prova da matéria; null quando não há prova marcada.
+export function daysToNextExam(data: StudyData, subjectId: string, today: string): number | null {
+  const next = upcomingExams(data, today).find((exam) => exam.subjectId === subjectId);
+  return next ? daysBetween(today, next.date) : null;
+}
+
 export interface ExamDay {
   date: string;
   exams: Exam[];

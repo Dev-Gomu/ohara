@@ -9,9 +9,45 @@
   transition: border-color var(--tempo-borda);
 }
 
+.bloco[data-foco='bloco'] {
+  outline: var(--contorno-foco) solid var(--cor-contorno-foco);
+  outline-offset: calc(var(--contorno-foco) * -1);
+}
+
+.bloco[data-foco='dentro'] {
+  outline: none;
+}
+
 .bloco[data-foco='dentro'],
 :global(:root[data-entrada='toque']) .bloco[data-foco='bloco'] {
   border-color: var(--cor-bloco-ativo);
+}
+
+:global(:root[data-entrada='toque']) .bloco[data-foco='bloco'] {
+  outline: none;
+}
+
+.bloco[data-foco] .nome {
+  color: var(--cor-bloco-ativo);
+}
+
+.icone {
+  display: inline-flex;
+  width: 20px;
+  height: 20px;
+  color: var(--cor-texto-2);
+  opacity: 0.45;
+  transition: color var(--tempo-borda), opacity var(--tempo-borda);
+}
+
+.icone svg {
+  width: 100%;
+  height: 100%;
+}
+
+.bloco[data-foco] .icone {
+  color: var(--cor-bloco-ativo);
+  opacity: 1;
 }
 
 .titulo {

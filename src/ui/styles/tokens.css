@@ -71,6 +71,7 @@
   --item-lista: 56px;
   --anel-traco: 3px;
   --anel-afastamento: 3px;
+  --contorno-foco: 4px; /* bloco e item em foco: por dentro, sem cortar na rolagem */
   --borda-bloco: 2px;
 
   /* Movimento */
@@ -112,6 +113,11 @@
   --cor-nota-titulo: #9178e6;
   --cor-veu: rgb(9 12 24 / 60%);
   color-scheme: dark;
+}
+
+/* Cor sólida (70% da ativa sobre o cartão): resolvida aqui vale para toda paleta e tema. */
+:root {
+  --cor-contorno-foco: color-mix(in srgb, var(--cor-bloco-ativo) 70%, var(--cor-cartao));
 }
 
 @media (prefers-reduced-motion: reduce) {

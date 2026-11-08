@@ -7,13 +7,26 @@
 }
 
 .topo {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 6px;
   min-width: 0;
 }
 
+.indicador {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--alvo);
+  height: var(--alvo);
+  border-radius: var(--raio-pilula);
+  background: var(--cor-destaque);
+}
+
 .numero {
+  position: relative;
+  z-index: 1;
   flex: none;
   width: var(--alvo);
   height: var(--alvo);
@@ -24,7 +37,7 @@
 }
 
 .numero[data-sel='true'] {
-  background: var(--cor-destaque);
+  background: transparent;
   color: var(--cor-tinta);
 }
 

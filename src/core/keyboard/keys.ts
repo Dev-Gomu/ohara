@@ -223,6 +223,7 @@ export const KEYS: readonly KeyRow[] = [
   row('Sistema', 'Alt P', 'KeyP', 'a', ALL, { type: 'openPalette' }, 'Paleta: ir para…'),
   row('Sistema', 'Ctrl P', 'KeyP', 'c', ALL, { type: 'openPalette' }, 'Paleta: ir para…'),
   row('Sistema', 'Alt I', 'KeyI', 'a', ALL, { type: 'quickReminder' }, 'Lembrete rápido'),
+  row('Sistema', 'Alt D', 'KeyD', 'a', ALL, { type: 'toggleTheme' }, 'Troca o tema (claro ou escuro)'),
   row('Sistema', 'Alt Z', 'KeyZ', 'a', ALL, { type: 'undo' }, 'Desfaz a última exclusão'),
   row('Sistema', 'Alt /', 'IntlRo', 'a', ALL, { type: 'openHelp' }, 'Ajuda'),
   row('Sistema', 'F1', 'F1', '', ALL, { type: 'openHelp' }, 'Ajuda'),

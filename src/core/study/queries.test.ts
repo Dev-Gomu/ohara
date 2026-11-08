@@ -3,6 +3,7 @@ import { createFixtures } from './fixtures';
 import {
   ALL_FOLDERS,
   currentEventIndex,
+  daysToNextExam,
   eventsOn,
   examSlots,
   filterLessons,
@@ -122,5 +123,19 @@ describe('Grade', () => {
     const late = { ...slot, id: 't', start: '09:00' };
     const next = { ...data, slots: [late, slot] };
     expect(slotsOn(next, 1).map((item) => item.start)).toEqual(['07:00', '09:00']);
+  });
+});
+
+describe('próxima prova da matéria', () => {
+  const exam = { id: 'e', subjectId: 'm', date: '2026-11-17', time: '08:00' };
+  const old = { ...exam, id: 'o', date: '2026-11-01' };
+
+  it('conta os dias até a primeira prova que ainda não passou', () => {
+    expect(daysToNextExam({ ...data, exams: [old, exam] }, 'm', today)).toBe(10);
+  });
+
+  it('é null sem prova futura', () => {
+    expect(daysToNextExam({ ...data, exams: [old] }, 'm', today)).toBeNull();
+    expect(daysToNextExam({ ...data, exams: [exam] }, 'outra', today)).toBeNull();
   });
 });

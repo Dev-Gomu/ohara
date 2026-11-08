@@ -12,7 +12,10 @@
     "test": "vitest run --silent=passed-only",
     "format": "prettier --write .",
     "check": "npm run typecheck && npm run lint && npm run test",
-    "e2e": "npm run build && playwright test"
+    "e2e": "npm run build && playwright test",
+    "tela": "node scripts/tela.mjs",
+    "salvar": "bash scripts/salvar.sh",
+    "e2e:curto": "npm run build --silent >/dev/null && playwright test --reporter=dot"
   },
   "dependencies": {
     "@sqlite.org/sqlite-wasm": "^3.54.1-build1",

@@ -51,13 +51,20 @@ p {
   outline-offset: var(--anel-afastamento);
 }
 
-/* Dentro de área que rola, o anel encosta no item para não ser cortado. */
+/* Item de lista em foco: 2px por dentro (itens de 56px não comportam mais); o fundo (marca ao
+   selecionar) continua com a tela de cada lista. Os 4px ficam para blocos e cartões de matéria. */
 .anel-interno {
-  outline: var(--anel-traco) solid var(--cor-foco);
-  outline-offset: 0;
+  outline: 2px solid var(--cor-contorno-foco);
+  outline-offset: -2px;
+}
+
+.anel-fino {
+  outline: 2px solid var(--cor-contorno-foco);
+  outline-offset: -2px;
 }
 
 :root[data-entrada='toque'] .anel,
+:root[data-entrada='toque'] .anel-fino,
 :root[data-entrada='toque'] .anel-interno {
   outline: none;
 }

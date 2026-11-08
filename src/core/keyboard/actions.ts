@@ -31,6 +31,7 @@ export type KeyAction =
   | { type: 'openPalette' }
   | { type: 'quickReminder' }
   | { type: 'undo' }
+  | { type: 'toggleTheme' }
   | { type: 'openHelp' }
   | { type: 'changePage'; step: -1 | 1 }
   | { type: 'bold' }

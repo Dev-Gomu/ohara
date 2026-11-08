@@ -167,6 +167,7 @@ function LessonDesk({ data, lessonId }: { data: StudyData; lessonId: string }) {
         <Block
           id={id}
           title="Slides"
+          icon="slides"
           count={slides ? `${page} de ${pages}` : undefined}
           shortcut="Alt S"
           menu

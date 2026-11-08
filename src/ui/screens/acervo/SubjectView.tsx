@@ -165,7 +165,6 @@ export function SubjectView({ subjectId, onBack }: SubjectViewProps) {
             items={tabs.map((item) => ({
               id: item.id,
               title: item.name,
-              detail: `${item.count} ${item.count === 1 ? 'aula' : 'aulas'}`,
             }))}
             createLabel="Nova pasta"
             onCreate={() => askFolder(subjectId)}
@@ -208,6 +207,13 @@ export function SubjectView({ subjectId, onBack }: SubjectViewProps) {
             <div className={styles.previa}>
               <div className={styles.capa} data-materia={subject?.color}>
                 <span className={styles.sigla}>{subject?.code}</span>
+                <span className={styles.capaIcone}>
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <rect x="3" y="4" width="18" height="12" rx="2" />
+                    <path d="M12 16v4M8 20h8" />
+                  </svg>
+                  sem capa ainda
+                </span>
               </div>
               <h2 className={styles.previaTitulo}>{card?.question ?? lesson.title}</h2>
               <p className={styles.aulaDados}>

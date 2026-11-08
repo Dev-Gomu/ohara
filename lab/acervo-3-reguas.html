@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Acervo 3: réguas de anos e pastas</title>
+    <style>
+      .bloco { padding: 0 var(--bloco-pad-x); height: 76px; display: flex; align-items: center; gap: var(--e2); border-radius: var(--raio-bloco); background: var(--cor-cartao); margin-bottom: var(--e3); }
+      small { color: var(--cor-texto-2); font: var(--ui-apoio); }
+      .item { display: grid; align-content: center; height: 48px; padding: 0 var(--e4); border-radius: var(--raio-pilula); background: var(--cor-cartao-2); font: var(--ui-item); }
+      .item small { display: block; }
+      .item[data-sel='true'] { background: var(--cor-marca); }
+      .foco { outline: 2px solid var(--cor-contorno-foco); outline-offset: -2px; }
+      .nova { display: grid; align-content: center; height: 48px; padding: 0 var(--e4); border-radius: var(--raio-pilula); color: var(--cor-texto-2); font: var(--ui-item); }
+      /* Hoje */
+      .v-atual .nova { border: 2px dashed var(--cor-texto-2); }
+      .v-atual .nova { display: flex; align-items: center; }
+      .v-atual .nova::before { content: '+\00a0'; }
+      /* A: "+ Nova" vira ícone redondo cheio no fim */
+      .v-a .nova { width: 48px; padding: 0; place-items: center; background: var(--cor-botao); color: var(--cor-sobre-botao); font-size: 0; }
+      .v-a .nova::before { content: ''; width: 18px; height: 18px; background: linear-gradient(var(--cor-sobre-botao), var(--cor-sobre-botao)) center / 100% 2px no-repeat, linear-gradient(var(--cor-sobre-botao), var(--cor-sobre-botao)) center / 2px 100% no-repeat; }
+      /* N1: pílula tonal igual aos chips, com ícone "+" e o rótulo; sem contagem */
+      .v-n1 .nova { display: flex; align-items: center; gap: var(--e2); background: var(--cor-cartao-2); color: var(--cor-texto); }
+      /* "+" desenhado (duas barras), não texto: o glifo desalinhava dentro do círculo */
+      .v-n1 .nova::before { content: ''; flex: none; width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(var(--cor-cartao), var(--cor-cartao)) center / 10px 2px no-repeat, linear-gradient(var(--cor-cartao), var(--cor-cartao)) center / 2px 10px no-repeat, var(--cor-texto); }
+      /* N1b: a N1 sem o disco; pílula tonal com só o "+" desenhado */
+      .v-n1b .nova { display: flex; align-items: center; gap: var(--e2); background: var(--cor-cartao-2); color: var(--cor-texto); }
+      .v-n1b .nova::before { content: ''; flex: none; width: 12px; height: 12px; background: linear-gradient(currentColor, currentColor) center / 100% 2px no-repeat, linear-gradient(currentColor, currentColor) center / 2px 100% no-repeat; }
+      /* N2: texto discreto empurrado para o fim da régua, só ícone e rótulo, sem fundo */
+      .v-n2 .nova { margin-left: auto; display: flex; align-items: center; gap: var(--e2); color: var(--cor-texto-2); }
+      .v-n2 .nova::before { content: ''; flex: none; width: 14px; height: 14px; background: linear-gradient(currentColor, currentColor) center / 100% 2px no-repeat, linear-gradient(currentColor, currentColor) center / 2px 100% no-repeat; }
+      /* N3: pílula com contorno fino sólido (1.5px, não tracejado), no fim da fila */
+      .v-n3 .nova { border: 1.5px solid color-mix(in srgb, var(--cor-texto) 35%, transparent); color: var(--cor-texto); display: flex; align-items: center; gap: var(--e2); }
+      .v-n3 .nova::before { content: ''; flex: none; width: 12px; height: 12px; background: linear-gradient(currentColor, currentColor) center / 100% 2px no-repeat, linear-gradient(currentColor, currentColor) center / 2px 100% no-repeat; }
+      .sep { flex: 1; }
+      .busca { padding: 0 var(--e4); color: var(--cor-texto-2); font: var(--ui-item); }
+    </style>
+  </head>
+  <body>
+    <script type="module">
+      import { Sala } from './_sala.js';
+      const anos = `<span class="item"><span>1º ano<small>arquivado</small></span></span><span class="item" data-sel="true"><span>2º ano<small>8 matérias</small></span></span><span class="item"><span>3º ano<small>0 matérias</small></span></span><span class="nova">Nova matéria</span>`;
+      const pastas = `<span class="item"><span>Todas<small>3 aulas</small></span></span><span class="item"><span>1º bimestre<small>1 aula</small></span></span><span class="item" data-sel="true"><span>2º bimestre<small>2 aulas</small></span></span><span class="item"><span>3º bimestre<small>0 aulas</small></span></span><span class="item"><span>Sem bimestre<small>0 aulas</small></span></span><span class="nova foco">Nova pasta</span>`;
+      const v = (id, nome) => ({ id, nome, html: () => `<div class="v-${id}"><small>Régua de anos</small><div class="bloco">${anos}</div><small>Régua de pastas (+ Nova pasta em foco)</small><div class="bloco">${pastas}</div></div>` });
+      Sala.montar({
+        titulo: 'Acervo 3: réguas e "+ Nova"',
+        dados: {},
+        variantes: [v('atual', 'Hoje (com foco fino)'), v('a', 'A. "+" redondo cheio (recusada: foco some)'), v('n1', 'N1. Pílula tonal com ícone'), v('n1b', 'N1b. Tonal, só o + (sem círculo)'), v('n2', 'N2. Texto discreto no fim da régua'), v('n3', 'N3. Contorno fino sólido')],
+      });
+    </script>
+  </body>
+</html>

@@ -4,6 +4,7 @@ import type { StudyData } from '../../core/study/types';
 import { dispatch } from '../keyboard/store';
 import { openFaults, openLesson, openNotes, openSubject } from '../study/navigation';
 import { cyclePalette, toggleTheme } from '../theme';
+import { cycleTopAnimation } from './topAnimation';
 
 export const CONSULT_WINDOWS = [
   { id: 'consulta-lembretes', title: 'Lembretes' },
@@ -34,8 +35,9 @@ export function commands(data: StudyData): Command[] {
     })),
     { id: 'faltas', label: 'Faltas e presença', run: openFaults },
     { id: 'notas', label: 'Notas do boletim', run: openNotes },
-    { id: 'tema', label: 'Trocar tema', run: toggleTheme },
+    { id: 'tema', label: 'Trocar tema', keys: 'Alt D', run: toggleTheme },
     { id: 'paleta', label: 'Trocar paleta de cores', run: cyclePalette },
+    { id: 'animacao-topo', label: 'Trocar animação da barra do topo', run: cycleTopAnimation },
     {
       id: 'lembrete',
       label: 'Lembrete rápido',

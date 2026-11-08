@@ -35,10 +35,10 @@ export function ExamsBlock({ id, days }: { id: string; days: readonly ExamDay[] 
               block={id}
               index={index}
               className={styles.prova}
-              ring="anel"
+              ring="nenhum"
               label={`${shortDate(day.date)}, ${remaining(day.date)}: ${codes.join(', ')}`}
             >
-              <span className={styles.cartao} data-proximo={index === 0}>
+              <span className={styles.cartao}>
                 <span className={styles.faixa}>
                   <span>
                     {weekdayShort(day.date)} · {monthShort(day.date)}

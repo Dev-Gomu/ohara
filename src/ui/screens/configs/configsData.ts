@@ -7,6 +7,11 @@ import { downloadBytes } from '../../study/download';
 import { showNotice } from '../../study/notice';
 import { ask } from '../../shell/PromptWindow';
 import { storage } from '../../study/study';
+import {
+  currentTopAnimation,
+  cycleTopAnimation,
+  TOP_ANIMATION_NAMES,
+} from '../../shell/topAnimation';
 import { currentPalette, cyclePalette, PALETTE_NAMES, toggleTheme } from '../../theme';
 
 export interface Row {
@@ -99,6 +104,11 @@ export function buildSections(diag: Diagnostics | null): readonly Section[] {
           label: 'Trocar paleta de cores',
           detail: `Original, A (azul-gelo) ou B (cinza-índigo). Agora: ${PALETTE_NAMES[currentPalette()]}.`,
           run: () => showNotice(`Paleta: ${PALETTE_NAMES[cyclePalette()]}.`),
+        },
+        {
+          label: 'Animação da barra do topo',
+          detail: `Troca de tela: Deslizar, Gelatina ou Nenhuma. Agora: ${TOP_ANIMATION_NAMES[currentTopAnimation()]}.`,
+          run: () => showNotice(`Animação: ${TOP_ANIMATION_NAMES[cycleTopAnimation()]}.`),
         },
       ],
     },

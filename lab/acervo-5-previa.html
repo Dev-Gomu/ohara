@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Acervo 5: prévia da aula</title>
+    <style>
+      .bloco { width: 640px; padding: var(--bloco-pad-y) var(--bloco-pad-x); border-radius: var(--raio-bloco); background: var(--cor-cartao); display: grid; gap: var(--e3); }
+      .titulo { color: var(--cor-texto-2); font: var(--ui-rotulo); letter-spacing: .06em; text-transform: uppercase; }
+      .capa { position: relative; aspect-ratio: 16 / 9; border-radius: var(--raio-item); background: var(--cor-materia); display: grid; place-items: center; color: var(--cor-tinta); }
+      .sigla { position: absolute; top: var(--e3); left: var(--e3); padding: 2px 10px; border-radius: var(--raio-pilula); background: var(--cor-tinta); color: var(--cor-sobre-tinta); font: var(--ui-sigla); }
+      h3 { font: var(--voz-titulo); }
+      .meta { color: var(--cor-texto-2); font: var(--ui-item); }
+      .nums { display: flex; gap: var(--e2); }
+      .nums span { padding: 2px 10px; border-radius: var(--raio-pilula); background: var(--cor-cartao-2); font: var(--ui-apoio); }
+      .abrir { display: flex; align-items: center; justify-content: center; gap: var(--e2); height: var(--alvo); border-radius: var(--raio-pilula); background: var(--cor-botao); color: var(--cor-sobre-botao); font: var(--ui-botao); }
+      .abrir kbd { font: var(--ui-tecla); opacity: .7; }
+      svg { width: 44px; height: 44px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+      /* Hoje: capa chapada, grande */
+      .v-atual .capa { aspect-ratio: 16 / 9; }
+      .v-atual svg { display: none; }
+      /* Os placeholders são suaves nos dois temas, então o ícone e o texto seguem o texto do tema (a tinta escura sumia no escuro) */
+      .v-a .capa, .v-b .capa, .v-c .capa { color: var(--cor-texto-2); }
+      /* A: placeholder suave: cor da matéria a 35%, ícone de slide e o texto "sem capa" */
+      .v-a .capa { background: color-mix(in srgb, var(--cor-materia) 35%, var(--cor-cartao-2)); }
+      .v-a .capa small { position: absolute; bottom: var(--e3); font: var(--ui-apoio); opacity: .8; }
+      /* B: miniatura de slide à esquerda e dados ao lado (menos altura) */
+      .v-b .corpo { display: grid; grid-template-columns: 220px 1fr; gap: var(--e4); align-items: start; }
+      .v-b .capa { background: color-mix(in srgb, var(--cor-materia) 35%, var(--cor-cartao-2)); }
+      .v-b svg { width: 32px; height: 32px; }
+      /* C: capa pequena sobre fundo suave com moldura de slide (borda branca) */
+      .v-c .capa { background: color-mix(in srgb, var(--cor-materia) 35%, var(--cor-cartao-2)); width: 72%; margin: 0 auto; box-shadow: 0 0 0 6px var(--cor-cartao-2) inset; }
+    </style>
+  </head>
+  <body>
+    <script type="module">
+      import { Sala } from './_sala.js';
+      const slide = '<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M12 16v4M8 20h8"/></svg>';
+      const dados = `<h3>Mutações e reparo do DNA</h3><div class="meta">27 out · 2º bimestre</div>
+        <div class="nums"><span>12 slides</span><span>3 anotações</span><span>0 cartões</span></div>`;
+      const abrir = '<div class="abrir">Abrir na Mesa <kbd>Enter</kbd></div>';
+      const capa = (txt) => `<div class="capa" data-materia="3"><span class="sigla">GEN</span>${slide}${txt}</div>`;
+      const v = (id, nome) => ({ id, nome, html: () => {
+        if (id === 'b') return `<div class="v-b"><div class="bloco"><div class="titulo">Prévia</div><div class="corpo">${capa('')}<div style="display:grid;gap:var(--e3)">${dados}</div></div>${abrir}</div></div>`;
+        return `<div class="v-${id}"><div class="bloco"><div class="titulo">Prévia</div>${capa(id === 'a' ? '<small>sem capa ainda</small>' : '')}${dados}${abrir}</div></div>`;
+      } });
+      Sala.montar({
+        titulo: 'Acervo 5: prévia da aula',
+        dados: {},
+        variantes: [v('atual', 'Hoje (capa chapada)'), v('a', 'A. Placeholder suave com ícone'), v('b', 'B. Miniatura ao lado dos dados'), v('c', 'C. Capa menor com moldura')],
+      });
+    </script>
+  </body>
+</html>
