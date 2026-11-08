@@ -108,6 +108,11 @@ function uniqueFolderNames(data: StudyData): { id: string; label: string }[] {
   return [...seen].map(([id, label]) => ({ id, label }));
 }
 
+// Bimestres (pastas) que a régua de período oferece, na ordem da matéria.
+export function scopePeriods(data: StudyData, subjectId: string | null): { id: string; label: string }[] {
+  return groups(data, fullScope(subjectId)).map(({ id, label }) => ({ id, label }));
+}
+
 export function scopeRows(data: StudyData, scope: Scope, today: string): ScopeRow[] {
   const all = lessonsInScope(data, scope.subjectId);
   const rows: ScopeRow[] = [

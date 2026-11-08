@@ -107,17 +107,22 @@ test('Treino: Espaço vira, número responde, Errei volta para a fila', async ({
 
 test('Treino: escolher uma aula só treina os cartões dela', async ({ page }) => {
   await page.keyboard.press('Alt+Digit4');
-  await page.keyboard.press('ArrowUp');
-  await expect(bloco(page)).toHaveText('treino.materias');
-  await page.keyboard.press('ArrowRight');
-  await page.keyboard.press('ArrowRight');
+  await page.keyboard.press('Alt+KeyF');
+  await page.keyboard.type('imunologia');
   await page.keyboard.press('Enter');
+  await expect(bloco(page)).toHaveText('treino.materias');
+  await page.keyboard.press('Enter');
+  await expect(bloco(page)).toHaveText('treino.resumo');
+  await page.keyboard.press('ArrowDown');
+  await page.keyboard.press('Enter');
+  await page.keyboard.press('ArrowRight');
   await expect(bloco(page)).toHaveText('treino.escolha');
   for (let step = 0; step < 9; step += 1) await page.keyboard.press('ArrowDown');
   await page.keyboard.press('Enter');
   const resumo = page.locator('[data-block="treino.resumo"]');
   await expect(resumo).toContainText('Imunologia · 1 aula');
-  await page.keyboard.press('ArrowRight');
+  await page.keyboard.press('ArrowLeft');
+  await page.keyboard.press('ArrowUp');
   await page.keyboard.press('Enter');
   await expect(page.getByText(/^0 de 6$/)).toBeVisible();
 });

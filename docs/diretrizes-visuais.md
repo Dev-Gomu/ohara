@@ -187,7 +187,7 @@ Mapa de foco de cada tela. O detalhe funcional fica em `telas.md`, quando existi
 | **Mesa** | Mosaico | Slides, Anotações, Cartões | Cursor nas Anotações da aula atual | Escrever |
 | **Acervo, início** | Régua + grade | Anos, Matérias | Grade, na última matéria aberta | Abre a matéria |
 | **Acervo, matéria** | Régua + lista + prévia | Pastas, Aulas, Prévia | Régua, na última pasta usada | Régua: entra nas aulas. Aula: abre na Mesa |
-| **Treino** | Régua + lista + foco único | Matérias, O que treinar, Resumo; depois o cartão ampliado | Iniciar, com a última escolha | Lista: marca ou desmarca. Iniciar: começa a sessão |
+| **Treino** | Coluna de blocos + foco único | Resumo, Estudar (período), Disciplina (busca e grade), O que treinar (só aberto por "Ajustar"); depois o cartão ampliado | Iniciar, com a última escolha | Grade e período: Enter volta ao Iniciar. Iniciar: começa a sessão |
 | **Agenda** | Régua + conteúdo + prévia (D82) | Visão (Semana, Mês, Lista, Grade), Conteúdo, Prévia, Matérias, A completar | Semana, na aula de agora ou no dia de hoje | Ação principal da Prévia (aula: abre na Mesa) |
 | **Configs** | Lista + prévia | Seções, Detalhe | Última seção | Entra na seção |
 

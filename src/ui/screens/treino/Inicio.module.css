@@ -1,0 +1,208 @@
+/* Tela inicial do Treino: uma coluna de blocos no centro; "Ajustar" abre a lista ao lado. */
+.tela {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: var(--vao-mosaico);
+  min-height: 0;
+  overflow: auto;
+}
+
+.coluna {
+  flex: none;
+  width: 760px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--vao-mosaico);
+}
+
+.lista {
+  flex: none;
+  width: 420px;
+  align-self: stretch;
+}
+
+.rotulo {
+  color: var(--cor-texto-2);
+  font: var(--ui-rotulo);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.tecla {
+  color: var(--cor-texto-2);
+  font: var(--ui-tecla);
+}
+
+.resumo {
+  align-items: center;
+  gap: var(--e1);
+  padding: var(--e4) var(--e6);
+}
+
+.numero {
+  font: var(--voz-numero);
+}
+
+.legenda {
+  color: var(--cor-texto-2);
+  font: var(--leitura-texto);
+}
+
+.recorte {
+  margin-top: var(--e2);
+  font: var(--voz-item);
+}
+
+.info {
+  margin: var(--e1) 0 var(--e2);
+  padding: 0 var(--e4);
+  display: grid;
+  align-content: center;
+  height: 36px;
+  border-radius: var(--raio-pilula);
+  background: var(--cor-cartao-2);
+  font: var(--ui-item);
+}
+
+.iniciar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 var(--e6);
+  border-radius: var(--raio-botao);
+  background: var(--cor-botao);
+  color: var(--cor-sobre-botao);
+  font: var(--ui-botao);
+}
+
+.iniciar .tecla {
+  color: inherit;
+  opacity: 0.75;
+}
+
+.ajustar {
+  padding: var(--e1) var(--e4);
+  border-radius: var(--raio-pilula);
+  font: var(--ui-item);
+}
+
+.periodo {
+  gap: var(--e2);
+  padding: var(--e3) var(--bloco-pad-x);
+}
+
+.regua {
+  display: flex;
+  gap: var(--e1);
+  padding: var(--e1);
+  border-radius: var(--raio-pilula);
+  background: var(--cor-cartao-2);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.periodoItem {
+  flex: 1 0 auto;
+  height: 36px;
+  padding: 0 var(--e4);
+  border-radius: var(--raio-pilula);
+  font: var(--ui-item);
+}
+
+.periodoItem[data-sel='true'] {
+  background: var(--cor-marca);
+}
+
+.busca {
+  padding: var(--e2) var(--bloco-pad-x);
+}
+
+.buscaForm {
+  display: flex;
+  align-items: center;
+  gap: var(--e4);
+}
+
+.campo {
+  flex: 1;
+  min-width: 0;
+  height: 40px;
+  padding: 0 var(--e4);
+  border: 0;
+  border-radius: var(--raio-pilula);
+  background: var(--cor-cartao-2);
+  color: var(--cor-texto);
+  font: var(--ui-item);
+}
+
+.campo::placeholder {
+  color: var(--cor-texto-2);
+  font-weight: 500;
+}
+
+.materias {
+  padding: var(--e3) var(--bloco-pad-x);
+  gap: var(--e2);
+}
+
+.grade {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: var(--e2);
+}
+
+.peca {
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 2px;
+  min-height: 64px;
+  padding: var(--e2) var(--e1);
+  border-radius: var(--raio-item);
+  background: var(--cor-cartao-2);
+}
+
+.peca[data-sel='true'] {
+  background: var(--cor-marca);
+}
+
+.sigla {
+  display: grid;
+  align-content: center;
+  height: 24px;
+  padding: 0 var(--e3);
+  border-radius: var(--raio-pilula);
+  background: var(--cor-materia);
+  color: var(--cor-tinta);
+  font: var(--ui-sigla);
+}
+
+.todas {
+  display: grid;
+  align-content: center;
+  height: 24px;
+  font: var(--ui-item);
+}
+
+.contagem {
+  min-height: 20px;
+  font: var(--voz-mini);
+}
+
+.situacao {
+  color: var(--cor-texto-2);
+  font: var(--ui-apoio);
+}
+
+.mais {
+  display: grid;
+  place-items: center;
+  height: 40px;
+  border-radius: var(--raio-pilula);
+  background: var(--cor-cartao-2);
+  color: var(--cor-texto-2);
+  font: var(--ui-item);
+}
