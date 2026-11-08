@@ -41,6 +41,11 @@
   color: var(--cor-tinta);
 }
 
+/* A aba atual é preenchida pelo indicador: o contorno claro (escuro no tema escuro) se vê nela. */
+.numero[data-sel='true']:global(.anel-fino) {
+  outline-color: var(--cor-cartao);
+}
+
 .titulo {
   min-width: 0;
   margin-left: var(--e3);

@@ -1,5 +1,6 @@
 import { overlayOf, type TouchTarget } from '../../core/keyboard/focus';
 import { resolve, type KeyInput } from '../../core/keyboard/resolve';
+import { disarmBar } from './bars';
 import { dispatch, getKeyboardState } from './store';
 
 function inputOf(event: KeyboardEvent): KeyInput {
@@ -41,6 +42,7 @@ function touchTargetOf(target: EventTarget | null): TouchTarget {
 }
 
 function onPointerDown(event: PointerEvent): void {
+  disarmBar();
   dispatch({ type: 'touch', target: touchTargetOf(event.target) });
 }
 

@@ -127,6 +127,21 @@ test('Treino: escolher uma aula só treina os cartões dela', async ({ page }) =
   await expect(page.getByText(/^0 de 6$/)).toBeVisible();
 });
 
+test('Mesa: Alt T vai às abas dos cartões e as setas e H L trocam entre Novo e Salvos', async ({ page }) => {
+  await page.keyboard.press('Alt+Digit2');
+  await page.keyboard.press('Alt+KeyN');
+  await expect(bloco(page)).toHaveText('mesa.cards');
+  await page.keyboard.press('Alt+KeyT');
+  await expect(page.getByRole('button', { name: 'Novo' })).toBeFocused();
+  await page.keyboard.press('ArrowRight');
+  await expect(page.getByRole('button', { name: /^Salvos/ })).toHaveAttribute('data-sel', 'true');
+  await page.keyboard.press('KeyH');
+  await expect(page.getByRole('button', { name: 'Novo' })).toHaveAttribute('data-sel', 'true');
+  await page.keyboard.press('Escape');
+  await expect(page.getByRole('button', { name: 'Novo' })).not.toBeFocused();
+  await expect(nivel(page)).toHaveText('bloco');
+});
+
 test('Mesa: Alt N abre um cartão, Ctrl Enter salva os completos', async ({ page }) => {
   await page.keyboard.press('Alt+Digit2');
   await page.keyboard.press('Alt+KeyN');

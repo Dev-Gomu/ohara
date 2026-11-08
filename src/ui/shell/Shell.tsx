@@ -65,6 +65,8 @@ export function Shell() {
     } else if (document.activeElement?.matches('[data-field]')) {
       (document.activeElement as HTMLElement).blur();
     }
+    const bar = document.activeElement?.closest('[data-bar]');
+    if (bar && !bar.closest(`[data-block="${focus.block}"]`)) (document.activeElement as HTMLElement).blur();
   }, [focus.level, focus.block, overlay]);
 
   return (

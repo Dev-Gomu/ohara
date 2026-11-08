@@ -92,7 +92,7 @@ interface CardsBlockProps {
 export function CardsBlock({ id, cards, editor }: CardsBlockProps) {
   const { mode, setMode } = editor;
   const tabs = (
-    <div className={styles.abas} role="group" aria-label="Cartões">
+    <div className={styles.abas} role="group" aria-label="Cartões" data-bar="top" data-bar-follow>
       <button
         type="button"
         className={styles.aba}
@@ -153,7 +153,7 @@ function Writer({ editor }: { editor: CardsEditor }) {
           ))}
         </div>
       </div>
-      <footer className={styles.rodape}>
+      <footer className={styles.rodape} data-bar="bottom">
         <p className={styles.dica}>
           {saved !== null ? `${saved} ${saved === 1 ? 'cartão salvo' : 'cartões salvos'}.` : HINT}
         </p>

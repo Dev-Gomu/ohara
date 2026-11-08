@@ -73,7 +73,7 @@ export function ScreenFrame({ title, caps = true, bar, end, children }: ScreenFr
   }, [screen]);
 
   const ringAt = (index: number) =>
-    focus.level === 'menu' && focus.menuIndex === index ? 'anel' : '';
+    focus.level === 'menu' && focus.menuIndex === index ? 'anel-fino' : '';
 
   return (
     <main className={styles.tela}>

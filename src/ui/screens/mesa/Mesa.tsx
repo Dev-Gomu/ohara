@@ -18,7 +18,8 @@ import { nowTime, storage, today, useStudy } from '../../study/study';
 import { SlidesViewer } from './SlidesViewer';
 import { CardsBlock, useCardsEditor } from './CardsBlock';
 import styles from './Mesa.module.css';
-import { focusToolbar, HistoryWindow, NotesBlock, stepToolbar } from './NotesBlock';
+import { focusBar, stepBar, withBarActions } from '../../keyboard/bars';
+import { HistoryWindow, NotesBlock } from './NotesBlock';
 import { editorActions, useNotesEditor } from './useNotesEditor';
 
 const SLIDES = 'mesa.slides';
@@ -132,7 +133,7 @@ function LessonDesk({ data, lessonId }: { data: StudyData; lessonId: string }) {
           ]
         : []),
     ],
-    actions: {
+    actions: withBarActions({
       ...mosaic.actions,
       ...editorActions(editor, page),
       saveCards: () => {
@@ -144,21 +145,25 @@ function LessonDesk({ data, lessonId }: { data: StudyData; lessonId: string }) {
         if (!mosaic.isOpen(CARDS)) mosaic.toggle(CARDS);
         cardsEditor.newCard();
       },
-      // Alt T mostra ou oculta a barra (modo fantasma); Alt B vai a ela, mostrando-a se preciso.
-      goToTopBar: () => inNotes() && toggleBar(),
-      goToBottomBar: () => {
-        if (!inNotes()) return false;
-        if (notesBarVisible()) return focusToolbar();
-        setNotesBar(true);
-        setTimeout(focusToolbar, 0);
+      // Nas Anotações, Alt T mostra ou oculta a barra (modo fantasma) e Alt B vai a ela,
+      // mostrando-a se preciso. Nos outros blocos, vão ao cabeçalho e ao rodapé.
+      goToTopBar: () => {
+        if (!inNotes()) return focusBar(getKeyboardState().focus.block, 'top');
+        toggleBar();
       },
-      previousControl: () => stepToolbar(-1),
-      nextControl: () => stepToolbar(1),
+      goToBottomBar: () => {
+        if (!inNotes()) return focusBar(getKeyboardState().focus.block, 'bottom');
+        if (notesBarVisible()) return focusBar(NOTES, 'bottom');
+        setNotesBar(true);
+        setTimeout(() => focusBar(NOTES, 'bottom'), 0);
+      },
+      previousControl: () => stepBar(-1),
+      nextControl: () => stepBar(1),
       changePage: (change) => {
         if (change.type !== 'changePage') return false;
         setPage(clampPage(page + change.step, pages));
       },
-    },
+    }),
   });
 
   function render(id: string) {

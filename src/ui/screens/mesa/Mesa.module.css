@@ -125,8 +125,8 @@
 }
 
 .ferramenta:focus-visible {
-  outline: var(--anel-traco) solid var(--cor-foco);
-  outline-offset: var(--anel-afastamento);
+  outline: 2px solid var(--cor-contorno-foco);
+  outline-offset: -2px;
 }
 
 .ferramenta[data-sel='true'] {

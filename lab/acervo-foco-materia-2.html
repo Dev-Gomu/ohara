@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Acervo: foco do cartão de matéria, rodada 2</title>
+    <style>
+      .grade {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-auto-rows: 200px;
+        gap: var(--vao-mosaico);
+        padding: 14px;
+      }
+      .materia {
+        position: relative;
+        display: grid;
+        border-radius: var(--raio-bloco);
+        transition:
+          transform 160ms cubic-bezier(0.2, 0.8, 0.2, 1),
+          box-shadow 160ms,
+          opacity 160ms,
+          filter 160ms;
+      }
+      .corpo {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        padding: var(--bloco-pad-y) var(--bloco-pad-x);
+        border-radius: var(--raio-bloco);
+        background: var(--cor-materia);
+        color: var(--cor-tinta);
+        text-align: left;
+      }
+      :root[data-tema='escuro'] .corpo {
+        background: color-mix(in srgb, var(--cor-materia) 62%, var(--cor-tinta));
+        color: var(--cor-sobre-tinta);
+      }
+      .sigla {
+        font: var(--voz-numero);
+        font-size: 64px;
+        line-height: 1;
+        font-weight: 300;
+        letter-spacing: -0.02em;
+      }
+      .nome {
+        margin-top: var(--e1);
+        font: var(--ui-rotulo);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      .rodape {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--e2);
+        margin-top: auto;
+        font: var(--ui-item);
+      }
+      .prova {
+        padding: 1px 9px;
+        border-radius: var(--raio-pilula);
+        background: color-mix(in srgb, currentColor 16%, transparent);
+        font: var(--ui-sigla);
+        white-space: nowrap;
+      }
+
+      /* Tom do foco: derivado da cor da matéria */
+      .materia {
+        --tom: color-mix(in srgb, var(--cor-materia) 55%, var(--cor-tinta));
+        --brilho: color-mix(in srgb, var(--cor-materia) 75%, transparent);
+      }
+      :root[data-tema='escuro'] .materia {
+        --tom: var(--cor-materia);
+        --brilho: color-mix(in srgb, var(--cor-materia) 55%, transparent);
+      }
+
+      /* A. tvOS: o cartão cresce 4% e ganha uma sombra com a cor dele, que o descola do fundo */
+      .v-a .foco {
+        transform: scale(1.04);
+        z-index: 2;
+        box-shadow: 0 16px 28px -12px var(--brilho);
+      }
+
+      /* B. Hyprland: borda viva de 2px que vai da cor da matéria a um tom claro dela, brilho suave
+            em volta, e os outros cartões recuam um pouco (menos cor e menos opacidade) */
+      .v-b .corpo {
+        position: relative;
+      }
+      .v-b .foco::before {
+        content: '';
+        position: absolute;
+        inset: -2px;
+        border-radius: calc(var(--raio-bloco) + 2px);
+        padding: 2px;
+        background: linear-gradient(
+          135deg,
+          var(--tom),
+          color-mix(in srgb, var(--cor-materia) 40%, white)
+        );
+        -webkit-mask:
+          linear-gradient(#000 0 0) content-box,
+          linear-gradient(#000 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        pointer-events: none;
+      }
+      .v-b .foco {
+        box-shadow: 0 0 22px -2px var(--brilho);
+        z-index: 2;
+      }
+      .v-b .grade:has(.foco) .materia:not(.foco) {
+        opacity: 0.8;
+        filter: saturate(0.8);
+      }
+
+      /* C. macOS: anel de acento de 3px afastado do cartão mais um halo suave de 4px, como o anel
+            de foco do sistema; o cartão sobe 2px */
+      .v-c .foco {
+        transform: translateY(-2px);
+        z-index: 2;
+        box-shadow:
+          0 0 0 3px var(--cor-fundo),
+          0 0 0 6px var(--tom),
+          0 0 0 10px color-mix(in srgb, var(--tom) 25%, transparent);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .materia {
+          transition: none;
+        }
+        .v-a .foco,
+        .v-c .foco {
+          transform: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <script type="module">
+      import { Sala } from './_sala.js';
+      const D = [
+        ['GEN', 'Genética', 3, 'prova 1 d'],
+        ['IMU', 'Imunologia', 9, 'prova 36 d'],
+        ['PRO', 'Propedêutica', 2, 'prova 15 d'],
+        ['APS', 'Atenção primária', 1, 'prova 15 d'],
+        ['FAR', 'Farmacologia', 2, 'prova 8 d'],
+        ['FIS', 'Fisiologia', 42, 'prova 8 d'],
+        ['PAT', 'Patologia geral e bases moleculares', 1, 'prova 22 d'],
+        ['BIO', 'Bioética', 0, 'prova 15 d'],
+      ];
+      const cor = [1, 2, 3, 0, 4, 5, 6, 7];
+      const v = (id, nome) => ({
+        id,
+        nome,
+        html: () =>
+          `<div class="grade v-${id}">${D.map(
+            ([s, n, q, p], i) =>
+              `<div class="materia ${i === 1 ? 'foco' : ''}" data-materia="${cor[i]}"><span class="corpo"><b class="sigla">${s}</b><span class="nome">${n}</span><span class="rodape"><span>${q} aulas</span><span class="prova">${p}</span></span></span></div>`,
+          ).join('')}</div>`,
+      });
+      Sala.montar({
+        titulo: 'Acervo: foco do cartão, rodada 2 (IMU em foco)',
+        dados: {},
+        variantes: [
+          v('a', 'A. tvOS: cresce e ganha sombra da própria cor'),
+          v('b', 'B. Hyprland: borda viva, brilho e os outros recuam'),
+          v('c', 'C. macOS: anel de acento com halo suave'),
+        ],
+      });
+    </script>
+  </body>
+</html>

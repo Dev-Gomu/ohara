@@ -41,7 +41,7 @@ Esta é a tabela de atalhos que a Etapa 2 implementa. Cada linha vira um teste (
 | Alt R | Modo de redimensionar |
 | Alt X | Troca pelo bloco escondido |
 | Alt O | Opções (⋮) do bloco |
-| Alt T · Alt F · Alt B | Barra de cima (nas Anotações: mostra ou oculta a barra de formatação) · campo · barra de baixo (nas Anotações: vai à barra de formatação, mostrando-a se estiver oculta) |
+| Alt T · Alt F · Alt B | Barra de cima (nas Anotações: mostra ou oculta a barra de formatação; nos Cartões: vai às abas Novo e Salvos) · campo · barra de baixo (nas Anotações: vai à barra de formatação, mostrando-a se estiver oculta; nos Cartões: vai ao Salvar). Na barra, setas, H e L (ou Alt , e Alt .) andam entre os controles, Enter aperta e Esc volta ao bloco. Nas abas dos Cartões, o foco já escolhe |
 | Alt , · Alt . | Controle anterior e próximo na barra |
 | Alt N | Novo item no bloco em foco (D78). Na Mesa, sempre um cartão novo, de qualquer bloco |
 | Alt 0 · Alt Shift 0 | Tamanhos padrão · ordem padrão |

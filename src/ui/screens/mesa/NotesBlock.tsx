@@ -40,26 +40,6 @@ const TOOLS: readonly Tool[] = [
   { label: 'Tarefas', name: 'taskList', run: (e) => e.chain().focus().toggleTaskList().run() },
 ];
 
-const TOOLBAR = '[data-block="mesa.notes"] [role="toolbar"] button';
-
-const toolbarButtons = () => [...document.querySelectorAll<HTMLButtonElement>(TOOLBAR)];
-
-// Devolve falso fora das Anotações, para a tecla seguir o caminho normal.
-export function focusToolbar(): boolean {
-  const first = toolbarButtons()[0];
-  if (!first) return false;
-  first.focus();
-  return true;
-}
-
-export function stepToolbar(step: -1 | 1): boolean {
-  const buttons = toolbarButtons();
-  const at = buttons.findIndex((button) => button === document.activeElement);
-  if (at < 0) return false;
-  buttons[(at + step + buttons.length) % buttons.length]?.focus();
-  return true;
-}
-
 interface Bubble {
   // Centro da seleção e a borda onde a bolha encosta.
   x: number;
@@ -104,6 +84,7 @@ function Tools({
       className={className}
       style={style}
       data-keep-field={keepField}
+      data-bar={keepField === undefined ? 'bottom' : undefined}
       role="toolbar"
       aria-label="Formatação"
     >
