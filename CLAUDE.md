@@ -18,6 +18,7 @@ Estudante de medicina, **não programa**, é o Product Owner. Responda em **port
 - `npm run check`: tipos (`tsc --noEmit`), lint e testes. **Portão único**, igual no CI e no hook.
 - `npm run e2e`: build e roteiros do Playwright. Fora do `check`, roda no CI antes do deploy (D66).
 - `npm run dev`: servidor local (http://localhost:5173/ohara/). `npm run build`: build de produção.
+- Sala de protótipos: `npm run dev` e abrir http://localhost:5173/ohara/lab/. Um HTML por experimento em `lab/`, usando os CSS reais do app; fora do build e do `check`. Teste visual antes de mexer em `src/`: veja `lab/_sala.js` (barra de tema, paleta, largura) e copie `lab/provas-dias.html`.
 - Prefixo de tudo que fica no navegador: **`ohara2-`** (`src/core/appInfo.ts`). Base do site: `/ohara/`. Node: `.nvmrc`.
 - Rode `npm run check` antes de declarar qualquer etapa pronta. Saída curta: não cole logs longos.
 

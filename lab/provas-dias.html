@@ -1,0 +1,839 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cartões de dia de prova</title>
+    <style>
+      /* Mesmos nomes de classe do Hub.module.css: aplicar no app é copiar. */
+      .provas {
+        display: grid;
+        grid-auto-flow: column;
+        grid-auto-columns: minmax(0, 1fr);
+        gap: var(--vao-mosaico);
+        height: var(--lab-altura);
+      }
+      .prova {
+        display: grid;
+        min-width: 0;
+        border-radius: var(--raio-bloco);
+        overflow: hidden;
+      }
+      .preenche {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        min-height: 0;
+        padding: var(--bloco-pad-y) var(--bloco-pad-x);
+        background: var(--cor-materia);
+        color: var(--cor-tinta);
+        text-align: left;
+      }
+      .dias {
+        flex: 1;
+        min-height: 0;
+        font: var(--voz-numero);
+        letter-spacing: -0.03em;
+      }
+      .dias small {
+        font: var(--ui-botao);
+        letter-spacing: 0;
+      }
+      .provaData {
+        font: var(--ui-item);
+      }
+      .provaNome {
+        overflow: hidden;
+        font: var(--voz-titulo);
+        text-overflow: ellipsis;
+        text-transform: uppercase;
+        white-space: nowrap;
+      }
+      .provaNome small {
+        font: var(--ui-item);
+        text-transform: none;
+      }
+
+      /* O CSS do app é só a base (tokens, fontes). O cartão é redesenhado por versão. */
+      .preenche {
+        gap: var(--e2);
+        padding: var(--e4) var(--e4);
+        background: var(--cor-cartao);
+        color: var(--cor-texto);
+      }
+      .siglas {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--e1) var(--e2);
+      }
+      .sigla {
+        padding: 2px var(--e3);
+        border-radius: var(--raio-pilula);
+        background: var(--cor-materia);
+        color: var(--cor-tinta);
+        font: var(--voz-mini);
+      }
+
+      .prova:first-child .preenche {
+        background: var(--cor-marca);
+      }
+      .folha {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 78px;
+        height: 78px;
+        border-radius: var(--raio-item);
+        background: var(--cor-materia);
+        color: var(--cor-tinta);
+      }
+      .folha small {
+        font: var(--ui-rotulo);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+      .folha b {
+        font: var(--voz-numero-mini);
+      }
+      .sigla i {
+        display: inline-block;
+        width: 26px;
+        height: 10px;
+        border-radius: var(--raio-pilula);
+        background: var(--cor-materia);
+      }
+      .sigla.barra {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--e2);
+        padding: 0;
+        background: none;
+      }
+      .siglas.barras {
+        gap: var(--e2) var(--e3);
+      }
+
+      /* G: herdeiro do app antigo (restaurado) */
+      [data-v='g'] .topo {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      [data-v='g'] .provaData {
+        font: var(--voz-titulo);
+      }
+      [data-v='g'] .pilula {
+        padding: 2px var(--e3);
+        border-radius: var(--raio-pilula);
+        background: var(--cor-cartao-2);
+        font: var(--ui-botao);
+      }
+      [data-v='g'] .prova:first-child .pilula {
+        background: var(--cor-botao);
+        color: var(--cor-sobre-botao);
+      }
+      [data-v='g'] .siglas {
+        margin-top: auto;
+      }
+
+      /* I: folha de calendário (restaurado) */
+      [data-v='i'] .preenche {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        column-gap: var(--e4);
+        align-items: center;
+      }
+      [data-v='i'] .em {
+        font: var(--voz-titulo);
+      }
+      [data-v='i'] .em small {
+        display: block;
+        color: var(--cor-texto-2);
+        font: var(--ui-apoio);
+      }
+      [data-v='i'] .direita {
+        display: flex;
+        flex-direction: column;
+        gap: var(--e2);
+      }
+      [data-v='i'] .sigla {
+        padding: 0 var(--e2);
+        font: var(--ui-sigla);
+        font-weight: 700;
+      }
+
+      /* Variações do I. Mesma ideia (folha à esquerda, contagem e siglas à direita) */
+      [data-v='m'] .preenche,
+      [data-v='n'] .preenche,
+      [data-v='o'] .preenche {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        column-gap: var(--e4);
+        align-items: center;
+        padding: var(--e4) var(--e5);
+      }
+      [data-v='m'] .direita,
+      [data-v='n'] .direita,
+      [data-v='o'] .direita {
+        display: flex;
+        flex-direction: column;
+        gap: var(--e2);
+      }
+      [data-v='m'] .em,
+      [data-v='n'] .em,
+      [data-v='o'] .em {
+        font: var(--voz-titulo);
+      }
+      [data-v='m'] .em small,
+      [data-v='n'] .em small,
+      [data-v='o'] .em small {
+        display: block;
+        color: var(--cor-texto-2);
+        font: var(--ui-apoio);
+      }
+      [data-v='m'] .sigla,
+      [data-v='n'] .sigla {
+        padding: 0 var(--e2);
+        font: var(--ui-sigla);
+        font-weight: 700;
+      }
+
+      /* M: a folha ganha o dia da semana, como uma folhinha de verdade */
+      [data-v='m'] .folha {
+        width: 84px;
+        height: 92px;
+        gap: 2px;
+      }
+      [data-v='m'] .folha .sem {
+        font: var(--ui-rotulo);
+        text-transform: uppercase;
+        opacity: 0.75;
+      }
+
+      /* N: dia com várias provas vira pilha de folhas, uma na cor de cada matéria */
+      [data-v='n'] .pilha {
+        position: relative;
+        width: 78px;
+        height: 78px;
+        margin: var(--e4) var(--e4) 0 0;
+      }
+      [data-v='n'] .pilha .folha {
+        position: relative;
+        z-index: 3;
+      }
+      [data-v='n'] .atras {
+        position: absolute;
+        inset: 0;
+        border-radius: var(--raio-item);
+        background: var(--cor-materia);
+        transform: translate(calc(var(--n) * 9px), calc(var(--n) * -9px));
+        z-index: calc(3 - var(--n));
+      }
+
+      /* O: folha suave (cor diluída) e siglas só com bolinha, para a cor não brigar */
+      [data-v='o'] .folha {
+        background: color-mix(in srgb, var(--cor-materia) 38%, var(--cor-cartao));
+        color: var(--cor-texto);
+      }
+      [data-v='o'] .sigla {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--e1);
+        padding: 0;
+        background: none;
+        color: var(--cor-texto);
+        font: var(--ui-sigla);
+        font-weight: 700;
+      }
+      [data-v='o'] .sigla::before {
+        content: '';
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--cor-materia);
+      }
+
+      /* P, Q e R mantêm: dia da semana, dia + mês, siglas e "em X dias" */
+      [data-v='p'] .preenche,
+      [data-v='q'] .preenche {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        column-gap: var(--e4);
+        align-items: center;
+        padding: var(--e4) var(--e5);
+      }
+      [data-v='p'] .direita,
+      [data-v='q'] .direita {
+        display: flex;
+        flex-direction: column;
+        gap: var(--e3);
+      }
+      [data-v='p'] .folha,
+      [data-v='q'] .folha {
+        width: 84px;
+        height: 96px;
+        gap: 0;
+      }
+      .folha .sem {
+        font: var(--ui-rotulo);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+      .folha .mes {
+        font: var(--ui-rotulo);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+      .em b {
+        font: var(--voz-pergunta);
+      }
+      [data-v='p'] .em,
+      [data-v='q'] .em {
+        font: var(--voz-titulo);
+      }
+      [data-v='p'] .sigla,
+      [data-v='q'] .sigla {
+        padding: 0 var(--e2);
+        font: var(--ui-sigla);
+        font-weight: 700;
+      }
+
+      /* Q: pilha de folhas quando há várias provas, siglas com bolinha */
+      [data-v='q'] .pilha {
+        position: relative;
+        width: 84px;
+        height: 96px;
+        margin: var(--e4) var(--e4) 0 0;
+      }
+      [data-v='q'] .pilha .folha {
+        position: relative;
+        z-index: 3;
+      }
+      [data-v='q'] .atras {
+        position: absolute;
+        inset: 0;
+        border-radius: var(--raio-item);
+        background: var(--cor-materia);
+        transform: translate(calc(var(--n) * 9px), calc(var(--n) * -9px));
+        z-index: calc(3 - var(--n));
+      }
+      [data-v='q'] .sigla {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--e1);
+        padding: 0;
+        background: none;
+        color: var(--cor-texto);
+      }
+      [data-v='q'] .sigla::before {
+        content: '';
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--cor-materia);
+      }
+
+      /* R: sem folha. Dia da semana em chip, data enorme, contagem à direita */
+      [data-v='r'] .preenche {
+        justify-content: space-between;
+      }
+      [data-v='r'] .topo {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      [data-v='r'] .semChip {
+        padding: 2px var(--e3);
+        border-radius: var(--raio-pilula);
+        background: var(--cor-materia);
+        color: var(--cor-tinta);
+        font: var(--ui-rotulo);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+      [data-v='r'] .em {
+        color: var(--cor-texto-2);
+        font: var(--voz-mini);
+      }
+      [data-v='r'] .em b {
+        color: var(--cor-texto);
+        font: var(--voz-item);
+      }
+      [data-v='r'] .dataGrande {
+        font: var(--voz-numero);
+        text-transform: uppercase;
+      }
+      [data-v='r'] .dataGrande small {
+        margin-left: var(--e2);
+        font: var(--voz-item);
+      }
+      [data-v='r'] .sigla {
+        padding: 0 var(--e2);
+        font: var(--ui-sigla);
+        font-weight: 700;
+      }
+
+      /* S e T: folha preta (inverte no tema escuro, como o botão do app) */
+      [data-v='s'] .preenche,
+      [data-v='t'] .preenche {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        column-gap: var(--e4);
+        align-items: center;
+        padding: var(--e4) var(--e5);
+      }
+      [data-v='s'] .direita,
+      [data-v='t'] .direita {
+        display: flex;
+        flex-direction: column;
+        gap: var(--e3);
+      }
+      [data-v='s'] .folha,
+      [data-v='t'] .folha {
+        width: 84px;
+        height: 96px;
+        gap: 0;
+        background: var(--cor-botao);
+        color: var(--cor-sobre-botao);
+      }
+      [data-v='s'] .em,
+      [data-v='t'] .em {
+        font: var(--voz-titulo);
+      }
+      [data-v='s'] .sigla,
+      [data-v='t'] .sigla {
+        padding: 0 var(--e2);
+        font: var(--ui-sigla);
+        font-weight: 700;
+      }
+      [data-v='t'] .pilha {
+        position: relative;
+        width: 84px;
+        height: 96px;
+        margin: var(--e4) var(--e4) 0 0;
+      }
+      [data-v='t'] .pilha .folha {
+        position: relative;
+        z-index: 3;
+      }
+      [data-v='t'] .atras {
+        position: absolute;
+        inset: 0;
+        border-radius: var(--raio-item);
+        background: var(--cor-materia);
+        transform: translate(calc(var(--n) * 9px), calc(var(--n) * -9px));
+        z-index: calc(3 - var(--n));
+      }
+
+      /* U, V e W: composição da referência do Paint. Painel de data em altura total, contagem e matérias à direita */
+      [data-v='u'] .preenche,
+      [data-v='v'] .preenche,
+      [data-v='x'] .preenche,
+      [data-v='y'] .preenche,
+      [data-v='z'] .preenche,
+      [data-v='w'] .preenche {
+        display: grid;
+        grid-template-columns: minmax(96px, 38%) minmax(0, 1fr);
+        gap: 0;
+        padding: 0;
+      }
+      .painel {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: var(--cor-botao);
+        color: var(--cor-sobre-botao);
+      }
+      .painel small {
+        font: var(--ui-rotulo);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+      .painel b {
+        font: var(--voz-numero);
+        letter-spacing: -0.03em;
+      }
+      .lado {
+        display: flex;
+        flex-direction: column;
+        gap: var(--e2);
+        min-height: 0;
+        padding: var(--e4);
+      }
+      .lado .em {
+        font: var(--voz-titulo);
+      }
+      .lado .em b {
+        font: var(--voz-pergunta);
+      }
+      .barras2 {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        gap: var(--e1);
+        min-height: 0;
+      }
+      .barra2 {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: 1;
+        min-height: 0;
+        max-height: 34px;
+        border-radius: var(--raio-minimo);
+        background: var(--cor-materia);
+        color: var(--cor-tinta);
+        font: var(--voz-mini);
+      }
+
+      /* V: barrinhas finas com a sigla ao lado, mais leve */
+      :is([data-v='v'], [data-v='x'], [data-v='y'], [data-v='z']) .barras2 {
+        flex: none;
+        gap: var(--e1);
+      }
+      :is([data-v='v'], [data-v='x'], [data-v='y'], [data-v='z']) .barra2 {
+        justify-content: flex-start;
+        flex: none;
+        gap: var(--e2);
+        background: none;
+        color: var(--cor-texto);
+      }
+      :is([data-v='v'], [data-v='x'], [data-v='y'], [data-v='z']) .barra2::before {
+        content: '';
+        width: 30px;
+        height: 12px;
+        border-radius: var(--raio-pilula);
+        background: var(--cor-materia);
+      }
+
+      /* W: as barras dividem a altura do cartão; uma prova ocupa tudo */
+      [data-v='w'] .barra2 {
+        max-height: none;
+        border-radius: var(--raio-item);
+      }
+
+      /* X: contagem com número gigante e painel de data mais estreito */
+      [data-v='x'] .preenche {
+        grid-template-columns: minmax(84px, 30%) minmax(0, 1fr);
+      }
+      [data-v='x'] .painel b {
+        font: var(--voz-numero-mini);
+      }
+      [data-v='x'] .lado .em {
+        display: flex;
+        align-items: baseline;
+        gap: var(--e2);
+        color: var(--cor-texto-2);
+      }
+      [data-v='x'] .lado .em b {
+        color: var(--cor-texto);
+        font: var(--voz-numero);
+      }
+
+      /* Y: painel de data à direita, conteúdo à esquerda */
+      [data-v='y'] .preenche {
+        grid-template-columns: minmax(0, 1fr) minmax(96px, 38%);
+      }
+      [data-v='y'] .painel {
+        order: 2;
+      }
+
+      /* Z: painel com os cantos da direita arredondados, num só desenho com o cartão */
+      [data-v='z'] .painel {
+        border-radius: 0 var(--raio-bloco) var(--raio-bloco) 0;
+      }
+      [data-v='z'] .preenche {
+        grid-template-columns: minmax(96px, 36%) minmax(0, 1fr);
+      }
+      [data-v='z'] .lado {
+        padding-left: var(--e5);
+      }
+
+      /* J: o I refinado. Contagem em destaque, siglas com barrinha, mais respiro */
+      [data-v='j'] .preenche {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        column-gap: var(--e4);
+        align-items: center;
+        padding: var(--e4) var(--e5);
+      }
+      [data-v='j'] .direita {
+        display: flex;
+        flex-direction: column;
+        gap: var(--e3);
+      }
+      [data-v='j'] .em {
+        font: var(--voz-titulo);
+        color: var(--cor-texto-2);
+      }
+      [data-v='j'] .em b {
+        color: var(--cor-texto);
+        font: var(--voz-pergunta);
+      }
+
+      /* K: a estrutura do G com a folha no lugar da data */
+      [data-v='k'] .preenche {
+        justify-content: space-between;
+      }
+      [data-v='k'] .topo {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+      }
+      [data-v='k'] .folha {
+        width: 64px;
+        height: 64px;
+      }
+      [data-v='k'] .pilula {
+        padding: 2px var(--e3);
+        border-radius: var(--raio-pilula);
+        background: var(--cor-cartao-2);
+        font: var(--ui-botao);
+      }
+      [data-v='k'] .prova:first-child .pilula {
+        background: var(--cor-botao);
+        color: var(--cor-sobre-botao);
+      }
+
+      /* L: folha e número de dias grande, siglas em chips de cor */
+      [data-v='l'] .preenche {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        grid-template-rows: 1fr auto;
+        column-gap: var(--e4);
+        row-gap: var(--e3);
+      }
+      [data-v='l'] .folha {
+        grid-row: 1;
+      }
+      [data-v='l'] .dias {
+        align-self: center;
+        font: var(--voz-numero);
+      }
+      [data-v='l'] .siglas {
+        grid-column: 1 / 3;
+        grid-row: 2;
+      }
+    </style>
+  </head>
+  <body>
+    <script type="module">
+      import { Sala } from './_sala.js';
+
+      const DIAS = [
+        { dias: 7, data: '14 nov', sem: 'sáb', provas: [{ nome: 'Genética', sigla: 'GEN', cor: 0, hora: '08:00' }] },
+        {
+          dias: 11,
+          data: '18 nov',
+          sem: 'qua',
+          provas: [
+            { nome: 'Imunologia', sigla: 'IMU', cor: 1, hora: '10:00' },
+            { nome: 'Propedêutica', sigla: 'PRO', cor: 6, hora: '14:00' },
+          ],
+        },
+        {
+          dias: 14,
+          data: '21 nov',
+          sem: 'sáb',
+          provas: [
+            { nome: 'Farmacologia', sigla: 'FAR', cor: 4, hora: '08:00' },
+            { nome: 'Atenção Primária', sigla: 'APS', cor: 3, hora: '10:00' },
+            { nome: 'Patologia', sigla: 'PAT', cor: 2, hora: '13:00' },
+          ],
+        },
+      ];
+
+      const numero = (d) => `<span class="dias">${d.dias} <small>dias</small></span>`;
+      const folha = (d) => {
+        const [dia, mes] = d.data.split(' ');
+        return `<span class="folha"><small>${mes}</small><b>${dia}</b></span>`;
+      };
+      const siglas = (d, barra) =>
+        `<span class="siglas ${barra ? 'barras' : ''}">${d.provas
+          .map((p) =>
+            barra
+              ? `<b class="sigla barra" data-materia="${p.cor}"><i></i>${p.sigla}</b>`
+              : `<b class="sigla" data-materia="${p.cor}">${p.sigla}</b>`,
+          )
+          .join('')}</span>`;
+      const folhaSem = (d) => {
+        const [dia, mes] = d.data.split(' ');
+        return `<span class="folha"><small class="sem">${d.sem}</small><b>${dia}</b><small class="mes">${mes}</small></span>`;
+      };
+      const direitaNova = (d) =>
+        `<span class="direita"><span class="em">em <b>${d.dias}</b> dias</span>${siglas(d, false)}</span>`;
+      const painelCartao = (d) => {
+        const [dia, mes] = d.data.split(' ');
+        return `<span class="painel"><small>${d.sem}</small><b>${dia}</b><small>${mes}</small></span><span class="lado"><span class="em">em <b>${d.dias}</b> dias</span><span class="barras2">${d.provas
+          .map((p) => `<b class="barra2" data-materia="${p.cor}">${p.sigla}</b>`)
+          .join('')}</span></span>`;
+      };
+      const direita = (d) =>
+        `<span class="direita"><span class="em">em ${d.dias} dias<small>${d.provas.length} ${d.provas.length > 1 ? 'provas' : 'prova'}</small></span>${siglas(d, false)}</span>`;
+      const cartoes = (dados, corpo) =>
+        `<div class="provas">${dados
+          .map(
+            (d) =>
+              `<div class="prova"><span class="preenche" data-materia="${d.provas[0].cor}">${corpo(d)}</span></div>`,
+          )
+          .join('')}</div>`;
+
+      Sala.montar({
+        titulo: 'Cartões de dia de prova',
+        dados: DIAS,
+        variantes: [
+          {
+            id: 'x',
+            nome: 'X · V com contagem em número gigante e painel estreito',
+            html: (dados) => cartoes(dados, (d) => painelCartao(d)),
+          },
+          {
+            id: 'y',
+            nome: 'Y · V com painel de data à direita',
+            html: (dados) => cartoes(dados, (d) => painelCartao(d)),
+          },
+          {
+            id: 'z',
+            nome: 'Z · V com painel de cantos arredondados',
+            html: (dados) => cartoes(dados, (d) => painelCartao(d)),
+          },
+          {
+            id: 'u',
+            nome: 'U · referência: painel preto, barras empilhadas com a sigla dentro',
+            html: (dados) => cartoes(dados, (d) => painelCartao(d)),
+          },
+          {
+            id: 'v',
+            nome: 'V · painel preto, barrinhas finas com a sigla ao lado',
+            html: (dados) => cartoes(dados, (d) => painelCartao(d)),
+          },
+          {
+            id: 'w',
+            nome: 'W · painel preto, barras dividem a altura do cartão',
+            html: (dados) => cartoes(dados, (d) => painelCartao(d)),
+          },
+          {
+            id: 's',
+            nome: 'S · folha preta, cor só nas siglas',
+            html: (dados) => cartoes(dados, (d) => `${folhaSem(d)}${direitaNova(d)}`),
+          },
+          {
+            id: 't',
+            nome: 'T · folha preta com pilha colorida atrás',
+            html: (dados) =>
+              cartoes(
+                dados,
+                (d) =>
+                  `<span class="pilha">${d.provas
+                    .slice(1)
+                    .map((p, i) => `<span class="atras" style="--n:${i + 1}" data-materia="${p.cor}"></span>`)
+                    .join('')}${folhaSem(d)}</span>${direitaNova(d)}`,
+              ),
+          },
+          {
+            id: 'p',
+            nome: 'P · folha com dia da semana, dia e mês; "em X dias" e siglas',
+            html: (dados) => cartoes(dados, (d) => `${folhaSem(d)}${direitaNova(d)}`),
+          },
+          {
+            id: 'q',
+            nome: 'Q · P com pilha de folhas e siglas com bolinha',
+            html: (dados) =>
+              cartoes(
+                dados,
+                (d) =>
+                  `<span class="pilha">${d.provas
+                    .slice(1)
+                    .map((p, i) => `<span class="atras" style="--n:${i + 1}" data-materia="${p.cor}"></span>`)
+                    .join('')}${folhaSem(d)}</span>${direitaNova(d)}`,
+              ),
+          },
+          {
+            id: 'r',
+            nome: 'R · sem folha: dia da semana em chip, data enorme, contagem ao lado',
+            html: (dados) =>
+              cartoes(dados, (d) => {
+                const [dia, mes] = d.data.split(' ');
+                return `<span class="topo"><span class="semChip">${d.sem}</span><span class="em">em <b>${d.dias}</b> dias</span></span><span class="dataGrande">${dia}<small>${mes}</small></span>${siglas(d, false)}`;
+              }),
+          },
+          {
+            id: 'm',
+            nome: 'M · I com dia da semana na folha',
+            html: (dados) =>
+              cartoes(
+                dados,
+                (d) =>
+                  `<span class="folha"><small class="sem">${d.sem}</small><small>${d.data.split(' ')[1]}</small><b>${d.data.split(' ')[0]}</b></span>${direita(d)}`,
+              ),
+          },
+          {
+            id: 'n',
+            nome: 'N · I com pilha de folhas quando há várias provas',
+            html: (dados) =>
+              cartoes(
+                dados,
+                (d) =>
+                  `<span class="pilha">${d.provas
+                    .slice(1)
+                    .map((p, i) => `<span class="atras" style="--n:${i + 1}" data-materia="${p.cor}"></span>`)
+                    .join('')}${folha(d)}</span>${direita(d)}`,
+              ),
+          },
+          {
+            id: 'o',
+            nome: 'O · I suave: folha diluída e siglas com bolinha',
+            html: (dados) => cartoes(dados, (d) => `${folha(d)}${direita(d)}`),
+          },
+          {
+            id: 'g',
+            nome: 'G · herdeiro do app antigo: data, pílula de dias e barrinhas de cor',
+            html: (dados) =>
+              cartoes(
+                dados,
+                (d) =>
+                  `<span class="topo"><span class="provaData">${d.data}</span><span class="pilula">${d.dias}d</span></span>${siglas(d, true)}`,
+              ),
+          },
+          {
+            id: 'i',
+            nome: 'I · folha de calendário e contagem em texto',
+            html: (dados) =>
+              cartoes(
+                dados,
+                (d) =>
+                  `${folha(d)}<span class="direita"><span class="em">em ${d.dias} dias<small>${d.provas.length} ${d.provas.length > 1 ? 'provas' : 'prova'}</small></span>${siglas(d, false)}</span>`,
+              ),
+          },
+          {
+            id: 'j',
+            nome: 'J · o I refinado: contagem em destaque e siglas com barrinha',
+            html: (dados) =>
+              cartoes(
+                dados,
+                (d) =>
+                  `${folha(d)}<span class="direita"><span class="em">em <b>${d.dias}</b> dias</span>${siglas(d, true)}</span>`,
+              ),
+          },
+          {
+            id: 'k',
+            nome: 'K · estrutura do G com a folha de calendário',
+            html: (dados) =>
+              cartoes(
+                dados,
+                (d) =>
+                  `<span class="topo">${folha(d)}<span class="pilula">${d.dias}d</span></span>${siglas(d, true)}`,
+              ),
+          },
+          {
+            id: 'l',
+            nome: 'L · folha, número de dias grande e siglas em chips',
+            html: (dados) => cartoes(dados, (d) => `${folha(d)}${numero(d)}${siglas(d, false)}`),
+          },
+        ],
+      });
+    </script>
+  </body>
+</html>

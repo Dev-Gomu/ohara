@@ -1,0 +1,1255 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hub completo</title>
+    <style>
+      /* Hub inteiro nas proporções reais: faixa de provas em cima, calendário, agenda e lembretes embaixo. */
+      .hub {
+        display: grid;
+        grid-template-rows: 26% minmax(0, 1fr);
+        gap: var(--vao-mosaico);
+        height: calc(var(--lab-w) * 0.5625px);
+      }
+      .bloco {
+        min-width: 0;
+        min-height: 0;
+        padding: var(--bloco-pad-y) var(--bloco-pad-x);
+        border-radius: var(--raio-bloco);
+        background: var(--cor-cartao);
+        overflow: hidden;
+      }
+      .bloco h3 {
+        margin-bottom: var(--e3);
+        color: var(--cor-texto-2);
+        font: var(--ui-rotulo);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+      .baixo {
+        display: grid;
+        grid-template-columns: 30fr 40fr 30fr;
+        gap: var(--vao-mosaico);
+        min-height: 0;
+      }
+      .cal {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: var(--e2) 0;
+        justify-items: center;
+        font: var(--ui-botao);
+      }
+      .cal span.p {
+        border-radius: 50%;
+        background: var(--cor-cartao-2);
+        width: 30px;
+        text-align: center;
+      }
+      .cal span.h {
+        border-radius: 50%;
+        background: var(--cor-botao);
+        color: var(--cor-sobre-botao);
+        width: 30px;
+        text-align: center;
+      }
+      .linha {
+        display: flex;
+        justify-content: space-between;
+        padding: var(--e2) 0;
+        font: var(--voz-mini);
+      }
+      .linha small {
+        color: var(--cor-texto-2);
+        font: var(--ui-apoio);
+      }
+      .lembra {
+        padding: var(--e2) 0;
+        font: var(--ui-item);
+      }
+
+      /* Faixa de provas: colunas com largura mínima; passam do limite, rola na horizontal */
+      .provas {
+        display: grid;
+        grid-auto-flow: column;
+        grid-auto-columns: minmax(220px, 1fr);
+        gap: var(--vao-mosaico);
+        min-height: 0;
+        overflow-x: auto;
+      }
+      .prova {
+        display: grid;
+        min-width: 0;
+        min-height: 0;
+        border-radius: var(--raio-bloco);
+        overflow: hidden;
+      }
+      .preenche {
+        min-width: 0;
+        min-height: 0;
+        padding: var(--bloco-pad-y) var(--bloco-pad-x);
+        background: var(--cor-cartao);
+        color: var(--cor-texto);
+      }
+      /* Dia mais próximo em destaque, como a aula "agora" da Agenda; siglas invertidas */
+      .prova:first-child .preenche {
+        background: var(--cor-destaque);
+        color: var(--cor-tinta);
+      }
+      .prova:first-child .pilula {
+        background: var(--cor-tinta);
+        color: var(--cor-sobre-tinta);
+      }
+      .rotulo {
+        font: var(--ui-rotulo);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+      .falta {
+        color: var(--cor-texto-2);
+        font: var(--ui-apoio);
+      }
+      .prova:first-child .falta {
+        color: color-mix(in srgb, var(--cor-tinta) 70%, transparent);
+      }
+      .pilula {
+        padding: 4px 11px;
+        border-radius: var(--raio-pilula);
+        background: var(--cor-materia);
+        color: var(--cor-tinta);
+        font: var(--ui-sigla);
+      }
+      /* Fila de 4 vagas iguais: com 1 ou 4 provas, as siglas ficam no mesmo lugar */
+      .fila {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: var(--e1);
+      }
+      .fila .pilula {
+        padding: 4px 0;
+        text-align: center;
+      }
+
+      /* D: tipográfico. Dia enorme, preto só na prova mais próxima, siglas em chips cheios */
+      [data-v='d'] .preenche {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: var(--e3) var(--e4);
+      }
+      [data-v='d'] .prova:first-child .preenche {
+        background: var(--cor-botao);
+        color: var(--cor-sobre-botao);
+      }
+      [data-v='d'] .linhaTopo {
+        display: flex;
+        justify-content: space-between;
+        font: var(--ui-rotulo);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+      [data-v='d'] .em {
+        font: var(--ui-botao);
+        letter-spacing: 0;
+        text-transform: none;
+      }
+      [data-v='d'] .em b {
+        font: var(--voz-mini);
+      }
+      [data-v='d'] .diaGrande {
+        display: flex;
+        align-items: baseline;
+        gap: var(--e2);
+        font: var(--voz-numero);
+        letter-spacing: -0.03em;
+      }
+      [data-v='d'] .diaGrande small {
+        font: var(--voz-item);
+        letter-spacing: 0;
+        text-transform: uppercase;
+      }
+      [data-v='d'] .sigla-chip {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--e1) var(--e2);
+      }
+      [data-v='d'] .chip {
+        padding: 1px var(--e3);
+        border-radius: var(--raio-pilula);
+        background: var(--cor-materia);
+        color: var(--cor-tinta);
+        font: var(--ui-sigla);
+        font-weight: 800;
+      }
+
+      /* P, Q e T: data em cima, fila de siglas no pé */
+      :is([data-v='p'], [data-v='q'], [data-v='t']) .preenche {
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+      }
+      :is([data-v='q'], [data-v='t']) .preenche {
+        grid-template-rows: 1fr auto;
+      }
+
+      /* P: dia grande, semana e mês empilhados ao lado, "em X d" no canto */
+      [data-v='p'] .topoP {
+        display: flex;
+        justify-content: flex-end;
+      }
+      [data-v='p'] .dataP {
+        display: flex;
+        align-items: center;
+        gap: var(--e3);
+        margin-top: calc(-1 * var(--e3));
+      }
+      :is([data-v='p'], [data-v='t']) .dataP b {
+        font: var(--voz-numero);
+        letter-spacing: -0.03em;
+      }
+      [data-v='p'] .dataP > span {
+        display: flex;
+        flex-direction: column;
+        gap: var(--e1);
+      }
+
+      /* Q: data como título, "em X d" discreto embaixo */
+      [data-v='q'] .dataQ {
+        display: flex;
+        flex-direction: column;
+        gap: var(--e1);
+      }
+      [data-v='q'] .dataQ .titulo {
+        font: var(--voz-pergunta);
+        text-transform: uppercase;
+      }
+      [data-v='q'] .dataQ .rotulo {
+        margin-bottom: var(--e1);
+      }
+
+      /* T: como P, com "em X d" na linha do mês, encostado à direita */
+      [data-v='t'] .dataP {
+        display: flex;
+        align-items: center;
+        gap: var(--e3);
+      }
+      [data-v='t'] .pilha {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        gap: var(--e1);
+      }
+      [data-v='t'] .linhaMes {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+      }
+
+      /* X: lista. A data por extenso é o título; cada prova numa linha, com sigla e nome inteiro */
+      [data-v='x'] .preenche {
+        display: flex;
+        flex-direction: column;
+        gap: var(--e2);
+      }
+      [data-v='x'] .cabeca {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+      }
+      [data-v='x'] .cabeca b {
+        font: var(--voz-mini);
+        white-space: nowrap;
+      }
+      [data-v='x'] .cabeca .falta {
+        white-space: nowrap;
+      }
+      [data-v='x'] .lista {
+        display: flex;
+        flex-direction: column;
+        gap: var(--e1);
+      }
+      [data-v='x'] .item {
+        display: grid;
+        grid-template-columns: 48px minmax(0, 1fr);
+        align-items: center;
+        gap: var(--e2);
+      }
+      [data-v='x'] .item .pilula {
+        padding: 4px 0;
+        text-align: center;
+      }
+      [data-v='x'] .item span {
+        overflow: hidden;
+        font: var(--ui-item);
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      /* Y: folha de calendário à esquerda (o formato que todo mundo reconhece), siglas em coluna */
+      [data-v='y'] .preenche {
+        display: grid;
+        grid-template-columns: 76px minmax(0, 1fr);
+        column-gap: var(--e4);
+      }
+      [data-v='y'] .folha {
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        overflow: hidden;
+        border-radius: var(--raio-item);
+        background: var(--cor-cartao-2);
+        text-align: center;
+      }
+      [data-v='y'] .prova:first-child .folha {
+        background: var(--cor-cartao);
+        color: var(--cor-texto);
+      }
+      [data-v='y'] .folha .rotulo {
+        padding: var(--e1) 0;
+        background: var(--cor-tinta);
+        color: var(--cor-sobre-tinta);
+      }
+      [data-v='y'] .folha b {
+        align-self: center;
+        font: var(--voz-numero-mini);
+        letter-spacing: -0.03em;
+      }
+      [data-v='y'] .folha .sem {
+        padding-bottom: var(--e2);
+        font: var(--ui-rotulo);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+      [data-v='y'] .coluna {
+        display: grid;
+        grid-template-rows: repeat(4, 24px) auto;
+        align-content: center;
+        gap: var(--e1);
+      }
+      [data-v='y'] .coluna .falta {
+        grid-row: 5;
+        margin-top: var(--e1);
+        text-align: center;
+      }
+      [data-v='y'] .coluna .pilula {
+        padding: 4px 0;
+        text-align: center;
+      }
+
+      /* Z: as provas são o herói. Data numa linha no topo; cada matéria vira um ladrilho */
+      [data-v='z'] .preenche {
+        display: grid;
+        grid-template-rows: auto 1fr;
+        gap: var(--e2);
+        padding: var(--e3);
+      }
+      [data-v='z'] .cabeca {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        padding: 0 var(--e1);
+      }
+      [data-v='z'] .cabeca b {
+        font: var(--voz-item);
+        text-transform: uppercase;
+      }
+      /* Até 3 provas: uma por linha, com o nome inteiro. Com 4: grade 2×2, só a sigla */
+      [data-v='z'] .ladrilhos {
+        display: grid;
+        grid-auto-rows: 1fr;
+        gap: var(--e1);
+      }
+      [data-v='z'] .ladrilhos[data-n='4'] {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      [data-v='z'] .ladrilhos:not([data-n='4']) .ladrilho {
+        flex-direction: row;
+        align-items: baseline;
+        justify-content: flex-start;
+        gap: var(--e2);
+        align-content: center;
+        flex-wrap: wrap;
+      }
+      [data-v='z'] .ladrilho {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-width: 0;
+        padding: 0 var(--e3);
+        border-radius: var(--raio-item);
+        background: var(--cor-materia);
+        color: var(--cor-tinta);
+      }
+      [data-v='z'] .ladrilho b {
+        font: var(--ui-sigla);
+      }
+      [data-v='z'] .ladrilho span {
+        overflow: hidden;
+        font: var(--ui-apoio);
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      [data-v='z'] .ladrilhos[data-n='4'] .ladrilho span {
+        display: none;
+      }
+      /* U, V e W: a lista do X (nome inteiro de cada prova) com a folha de calendário do Y */
+      :is([data-v='u'], [data-v='v'], [data-v='w']) .lista {
+        display: flex;
+        flex-direction: column;
+        gap: var(--e1);
+        min-width: 0;
+      }
+      :is([data-v='v'], [data-v='w']) .item {
+        display: grid;
+        grid-template-columns: 44px minmax(0, 1fr);
+        align-items: center;
+        gap: var(--e2);
+      }
+      :is([data-v='v'], [data-v='w']) .item .pilula {
+        padding: 3px 0;
+        text-align: center;
+      }
+      :is([data-v='u'], [data-v='v'], [data-v='w']) .item > span {
+        overflow: hidden;
+        font: var(--ui-item);
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      /* A folha: mês numa tira escura em cima, dia grande, dia da semana embaixo */
+      .folhinha {
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        overflow: hidden;
+        border-radius: var(--raio-item);
+        background: var(--cor-cartao-2);
+        color: var(--cor-texto);
+        text-align: center;
+      }
+      .prova:first-child .folhinha {
+        background: var(--cor-cartao);
+      }
+      .folhinha .mes {
+        padding: 2px 0;
+        background: var(--cor-tinta);
+        color: var(--cor-sobre-tinta);
+      }
+      .folhinha b {
+        align-self: center;
+        font: var(--voz-numero-mini);
+        letter-spacing: -0.03em;
+      }
+
+      /* U: folha na altura toda à esquerda; à direita, uma linha por prova com ponto de cor e nome */
+      [data-v='u'] .preenche {
+        display: grid;
+        grid-template-columns: 64px minmax(0, 1fr);
+        column-gap: var(--e3);
+        padding: var(--bloco-pad-y) var(--e3) var(--bloco-pad-y) var(--bloco-pad-y);
+      }
+      [data-v='u'] .folhinha .sem {
+        padding-bottom: var(--e2);
+      }
+      [data-v='u'] .direita {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-width: 0;
+      }
+      [data-v='u'] .item {
+        display: flex;
+        align-items: center;
+        gap: var(--e2);
+        min-height: 22px;
+      }
+      /* X e U: só a sigla, com um ponto da cor da matéria ao lado */
+      :is([data-v='x'], [data-v='u']) .item > span {
+        font: var(--ui-sigla);
+        letter-spacing: 0.04em;
+      }
+      [data-v='x'] .item {
+        display: flex;
+        align-items: center;
+        gap: var(--e2);
+        min-height: 22px;
+      }
+      :is([data-v='x'], [data-v='u']) .ponto {
+        flex: none;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--cor-materia);
+      }
+      :is([data-v='x'], [data-v='u']) .prova:first-child .ponto {
+        background: var(--cor-tinta);
+      }
+
+      /* V: folhinha pequena no cabeçalho, ao lado do dia da semana; lista do X embaixo */
+      [data-v='v'] .preenche {
+        display: flex;
+        flex-direction: column;
+        gap: var(--e2);
+        padding: var(--e3) var(--bloco-pad-x);
+      }
+      [data-v='v'] .cabeca {
+        display: flex;
+        align-items: center;
+        gap: var(--e3);
+      }
+      [data-v='v'] .folhinha {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+      }
+      [data-v='v'] .folhinha .mes {
+        font-size: 9px;
+        line-height: 12px;
+      }
+      [data-v='v'] .folhinha b {
+        font: var(--voz-item);
+      }
+      [data-v='v'] .cabeca .textos {
+        display: flex;
+        flex-direction: column;
+      }
+      [data-v='v'] .cabeca .textos b {
+        font: var(--voz-mini);
+      }
+      [data-v='v'] .lista {
+        gap: 2px;
+      }
+
+      /* W: a folha deitada, como uma etiqueta de data no topo; lista do X embaixo */
+      [data-v='w'] .preenche {
+        display: flex;
+        flex-direction: column;
+        gap: var(--e2);
+        padding: var(--e3);
+      }
+      [data-v='w'] .folhaDeitada {
+        display: grid;
+        grid-template-columns: auto auto minmax(0, 1fr) auto;
+        align-items: center;
+        gap: var(--e2);
+        overflow: hidden;
+        padding-right: var(--e3);
+        border-radius: 12px;
+        background: var(--cor-cartao-2);
+      }
+      .prova:first-child [data-x] {
+        background: var(--cor-cartao);
+        color: var(--cor-texto);
+      }
+      [data-v='w'] .folhaDeitada .mes {
+        align-self: stretch;
+        display: flex;
+        align-items: center;
+        padding: 0 var(--e2);
+        background: var(--cor-tinta);
+        color: var(--cor-sobre-tinta);
+      }
+      [data-v='w'] .folhaDeitada b {
+        font: var(--voz-item);
+        letter-spacing: -0.02em;
+      }
+      [data-v='w'] .lista {
+        padding: 0 var(--e1);
+      }
+      .prova:first-child [data-x] .falta {
+        color: var(--cor-texto-2);
+      }
+      /* E1 e E2: data à esquerda; à direita, a fita de 4 vagas de sigla saindo da lateral do cartão como um
+         marca-página (vaga vazia = fantasma). Respiro único (--inset) em cima, embaixo e à esquerda: o topo
+         e o pé da data coincidem com os da fita em todos os cartões. */
+      :is([data-v='e1'], [data-v='e2'], [data-v='e3']) .preenche {
+        --inset: var(--e4);
+        --vaga: 28px;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 76px;
+        column-gap: var(--e3);
+        padding: var(--inset) 0 var(--inset) var(--inset);
+      }
+      :is([data-v='e1'], [data-v='e2'], [data-v='e3']) .esq {
+        display: grid;
+        min-width: 0;
+        min-height: 0;
+      }
+      :is([data-v='e1'], [data-v='e2'], [data-v='e3']) .vagas {
+        display: grid;
+        grid-template-rows: repeat(4, var(--vaga));
+        align-content: space-between;
+      }
+      :is([data-v='e1'], [data-v='e2'], [data-v='e3']) .vaga {
+        display: grid;
+        place-items: center;
+        border-radius: var(--raio-pilula) 0 0 var(--raio-pilula);
+        background: var(--cor-cartao-2);
+      }
+      :is([data-v='e1'], [data-v='e2'], [data-v='e3']) .prova:first-child .vaga {
+        background: color-mix(in srgb, var(--cor-tinta) 14%, transparent);
+      }
+      :is([data-v='e1'], [data-v='e2'], [data-v='e3']) .vaga .pilula {
+        display: grid;
+        place-items: center;
+        width: 100%;
+        height: 100%;
+        padding: 0 var(--e2) 0 0;
+        border-radius: inherit;
+      }
+      :is([data-v='e1'], [data-v='e2'], [data-v='e3']) .num {
+        font: var(--voz-numero-mini);
+        letter-spacing: -0.03em;
+        font-variant-numeric: tabular-nums;
+      }
+      :is([data-v='e1'], [data-v='e2'], [data-v='e3']) .falta {
+        align-self: end;
+        line-height: 1;
+      }
+
+      /* E1: rótulo da data em cima, número embaixo dele, "em X d" no pé */
+      [data-v='e1'] .esq {
+        grid-template-rows: auto 1fr auto;
+      }
+      [data-v='e1'] .esq .rotulo {
+        display: flex;
+        gap: var(--e2);
+        line-height: 16px;
+      }
+      [data-v='e1'] .num {
+        align-self: center;
+      }
+
+      /* E2: número com semana e mês empilhados ao lado, centrado; "em X d" no pé */
+      [data-v='e2'] .esq {
+        grid-template-rows: 1fr auto;
+      }
+      [data-v='e2'] .dataLinha {
+        display: flex;
+        align-items: center;
+        gap: var(--e2);
+      }
+      [data-v='e2'] .pilhaData {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        line-height: 14px;
+      }
+      /* F1: cabeçalho escuro com semana e mês; corpo com o dia grande, "em X d" na mesma linha de base,
+         e a fila de 4 vagas de sigla no pé (vaga vazia = fantasma). Mesmo respiro de 16px nos lados. */
+      :is([data-v='f1'], [data-v='f2'], [data-v='f3'], [data-v='f4'], [data-v='f5'], [data-v='f6'], [data-v='k1'], [data-v='k2'], [data-v='k3'], [data-v='m1'], [data-v='m2'], [data-v='m3']) .preenche {
+        --inset: var(--e4);
+        display: grid;
+        grid-template-rows: minmax(0, 1fr) auto;
+        padding: 0;
+      }
+      :is([data-v='f1'], [data-v='f2'], [data-v='f3'], [data-v='f4'], [data-v='f5'], [data-v='f6'], [data-v='k1'], [data-v='k2'], [data-v='k3'], [data-v='m1'], [data-v='m2'], [data-v='m3']) .cab {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 var(--inset);
+        padding-bottom: 1px;
+        background: var(--cor-tinta);
+        color: var(--cor-sobre-tinta);
+        font: var(--ui-rotulo);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+      /* O corpo tem altura fixa e a faixa absorve a sobra: toda distância (lados, entre o número e as vagas,
+         vagas e base, faixa e número) é exatamente --inset. O número é medido pela tinta (text-box). */
+      :is([data-v='f1'], [data-v='f2'], [data-v='f3'], [data-v='f4'], [data-v='f5'], [data-v='f6'], [data-v='k1'], [data-v='k2'], [data-v='k3'], [data-v='m1'], [data-v='m2'], [data-v='m3']) .corpo {
+        display: grid;
+        grid-template-rows: auto auto;
+        row-gap: var(--inset);
+        padding: var(--inset);
+      }
+      :is([data-v='f1'], [data-v='f2'], [data-v='f3'], [data-v='f4'], [data-v='f5'], [data-v='f6'], [data-v='k1'], [data-v='k2'], [data-v='k3'], [data-v='m1'], [data-v='m2'], [data-v='m3']) .linhaDia {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+      }
+      :is([data-v='f1'], [data-v='f2'], [data-v='f3'], [data-v='f4'], [data-v='f5'], [data-v='f6'], [data-v='k1'], [data-v='k2'], [data-v='k3'], [data-v='m1'], [data-v='m2'], [data-v='m3']) .num {
+        font: var(--voz-numero);
+        letter-spacing: -0.03em;
+        font-variant-numeric: tabular-nums;
+        text-box: trim-both cap alphabetic;
+      }
+      /* Cada dígito tem um respiro de lado diferente na fonte: o puxão compensa para que a tinta do
+         número comece exatamente na mesma linha da semana e das vagas (16px da borda). */
+      :is([data-v='f1'], [data-v='f2'], [data-v='f3'], [data-v='f4'], [data-v='f5'], [data-v='f6'], [data-v='k1'], [data-v='k2'], [data-v='k3'], [data-v='m1'], [data-v='m2'], [data-v='m3']) .num[data-d='0'],
+      :is([data-v='f1'], [data-v='f2'], [data-v='f3'], [data-v='f4'], [data-v='f5'], [data-v='f6'], [data-v='k1'], [data-v='k2'], [data-v='k3'], [data-v='m1'], [data-v='m2'], [data-v='m3']) .num[data-d='3'] {
+        margin-left: -0.0303em;
+      }
+      :is([data-v='f1'], [data-v='f2'], [data-v='f3'], [data-v='f4'], [data-v='f5'], [data-v='f6'], [data-v='k1'], [data-v='k2'], [data-v='k3'], [data-v='m1'], [data-v='m2'], [data-v='m3']) .num[data-d='1'] {
+        margin-left: -0.0758em;
+      }
+      :is([data-v='f1'], [data-v='f2'], [data-v='f3'], [data-v='f4'], [data-v='f5'], [data-v='f6'], [data-v='k1'], [data-v='k2'], [data-v='k3'], [data-v='m1'], [data-v='m2'], [data-v='m3']) .num[data-d='2'] {
+        margin-left: -0.0455em;
+      }
+      /* O espaçamento entre letras também vai depois da última: tira para a tinta do mês encostar em 16px */
+      :is([data-v='f1'], [data-v='f2'], [data-v='f3'], [data-v='f4'], [data-v='f5'], [data-v='f6'], [data-v='k1'], [data-v='k2'], [data-v='k3'], [data-v='m1'], [data-v='m2'], [data-v='m3']) .cab > :last-child {
+        margin-right: -0.06em;
+      }
+      :is([data-v='f1'], [data-v='f2'], [data-v='f3'], [data-v='f4'], [data-v='f5'], [data-v='f6'], [data-v='k1'], [data-v='k2'], [data-v='k3'], [data-v='m1'], [data-v='m2'], [data-v='m3']) .falta {
+        line-height: 1;
+        text-box: trim-both cap alphabetic;
+      }
+      :is([data-v='f1'], [data-v='f2'], [data-v='f3'], [data-v='f4'], [data-v='f5'], [data-v='f6'], [data-v='k1'], [data-v='k2'], [data-v='k3'], [data-v='m1'], [data-v='m2'], [data-v='m3']) .vagas {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        grid-template-rows: 28px;
+        gap: var(--e1);
+      }
+      :is([data-v='f1'], [data-v='f2'], [data-v='f3'], [data-v='f4'], [data-v='f5'], [data-v='f6'], [data-v='k1'], [data-v='k2'], [data-v='k3'], [data-v='m1'], [data-v='m2'], [data-v='m3']) .vaga {
+        display: grid;
+        place-items: center;
+        border-radius: var(--raio-pilula);
+        background: var(--cor-cartao-2);
+      }
+      :is([data-v='f1'], [data-v='f2'], [data-v='f3'], [data-v='f4'], [data-v='f5'], [data-v='f6'], [data-v='k1'], [data-v='k2'], [data-v='k3'], [data-v='m1'], [data-v='m2'], [data-v='m3']) .prova:first-child .vaga {
+        background: color-mix(in srgb, var(--cor-tinta) 14%, transparent);
+      }
+      :is([data-v='f1'], [data-v='f2'], [data-v='f3'], [data-v='f4'], [data-v='f5'], [data-v='f6'], [data-v='k1'], [data-v='k2'], [data-v='k3'], [data-v='m1'], [data-v='m2'], [data-v='m3']) .vaga .pilula {
+        display: grid;
+        place-items: center;
+        width: 100%;
+        height: 100%;
+        padding: 0;
+      }
+      /* E3 (E2 refinada, mesmo rigor da F1): tudo medido pela tinta (text-box), 16px do topo, da esquerda e
+         da base; a fita encosta na direita. Semana e mês empilhados ocupam exatamente a altura do número
+         (a semana no topo dos algarismos, o mês na linha de base) e "em X d" fecha na base da última vaga. */
+      [data-v='e3'] .preenche {
+        grid-template-columns: minmax(0, 1fr) 68px;
+        column-gap: var(--e2);
+      }
+      [data-v='e3'] .esq {
+        grid-template-rows: auto auto;
+        align-content: space-between;
+      }
+      [data-v='e3'] .dataLinha {
+        display: flex;
+        align-items: stretch;
+        gap: var(--e2);
+      }
+      [data-v='e3'] .num {
+        font: var(--voz-numero);
+        letter-spacing: -0.03em;
+        text-box: trim-both cap alphabetic;
+      }
+      [data-v='e3'] .num[data-d='0'],
+      [data-v='e3'] .num[data-d='3'] {
+        margin-left: -0.0303em;
+      }
+      [data-v='e3'] .num[data-d='1'] {
+        margin-left: -0.0758em;
+      }
+      [data-v='e3'] .num[data-d='2'] {
+        margin-left: -0.0455em;
+      }
+      [data-v='e3'] .pilhaData {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        line-height: 1;
+      }
+      [data-v='e3'] .pilhaData > span {
+        text-box: trim-both cap alphabetic;
+      }
+      [data-v='e3'] .falta {
+        text-box: trim-both cap alphabetic;
+      }
+      /* G1, G2 e G3: a data e a fita nascem da MESMA grade de 4 linhas. Cada texto da esquerda é centrado
+         numa linha (ou num par de linhas) da fita, então os centros dos dois lados se alinham e o cartão lê
+         como uma peça só. Tudo medido pela tinta (text-box). */
+      :is([data-v='g1'], [data-v='g2'], [data-v='g3'], [data-v='h1'], [data-v='h3']) .preenche {
+        --inset: var(--e4);
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 68px;
+        grid-template-rows: repeat(4, minmax(0, 1fr));
+        column-gap: var(--e2);
+        row-gap: 6px;
+        padding: var(--inset) 0 var(--inset) var(--inset);
+      }
+      :is([data-v='g1'], [data-v='g2'], [data-v='g3'], [data-v='h1'], [data-v='h3']) .vagas {
+        display: contents;
+      }
+      :is([data-v='g1'], [data-v='g2'], [data-v='g3'], [data-v='h1'], [data-v='h3']) .vaga {
+        grid-column: 2;
+        display: grid;
+        place-items: center;
+        min-height: 0;
+        border-radius: var(--raio-pilula) 0 0 var(--raio-pilula);
+        background: var(--cor-cartao-2);
+      }
+      :is([data-v='g1'], [data-v='g2'], [data-v='g3'], [data-v='h1'], [data-v='h3']) .vaga:nth-child(1) { grid-row: 1; }
+      :is([data-v='g1'], [data-v='g2'], [data-v='g3'], [data-v='h1'], [data-v='h3']) .vaga:nth-child(2) { grid-row: 2; }
+      :is([data-v='g1'], [data-v='g2'], [data-v='g3'], [data-v='h1'], [data-v='h3']) .vaga:nth-child(3) { grid-row: 3; }
+      :is([data-v='g1'], [data-v='g2'], [data-v='g3'], [data-v='h1'], [data-v='h3']) .vaga:nth-child(4) { grid-row: 4; }
+      :is([data-v='g1'], [data-v='g2'], [data-v='g3'], [data-v='h1'], [data-v='h3']) .prova:first-child .vaga {
+        background: color-mix(in srgb, var(--cor-tinta) 14%, transparent);
+      }
+      :is([data-v='g1'], [data-v='g2'], [data-v='g3'], [data-v='h1'], [data-v='h3']) .vaga .pilula {
+        display: grid;
+        place-items: center;
+        width: 100%;
+        height: 100%;
+        padding: 0 var(--e2) 0 0;
+        border-radius: inherit;
+      }
+      :is([data-v='g1'], [data-v='g2'], [data-v='g3'], [data-v='h1'], [data-v='h3']) .l {
+        grid-column: 1;
+        display: flex;
+        align-items: center;
+        gap: var(--e2);
+        min-width: 0;
+      }
+      :is([data-v='g1'], [data-v='g2'], [data-v='g3'], [data-v='h1'], [data-v='h3']) .l > *,
+      :is([data-v='g1'], [data-v='g2'], [data-v='g3'], [data-v='h1'], [data-v='h3']) .num {
+        text-box: trim-both cap alphabetic;
+      }
+      :is([data-v='g1'], [data-v='g2'], [data-v='g3'], [data-v='h1'], [data-v='h3']) .l1 { grid-row: 1; }
+      :is([data-v='g1'], [data-v='g2'], [data-v='g3'], [data-v='h1'], [data-v='h3']) .l4 { grid-row: 4; }
+      :is([data-v='g1'], [data-v='g2'], [data-v='g3'], [data-v='h1'], [data-v='h3']) .falta {
+        line-height: 1;
+      }
+      :is([data-v='g1'], [data-v='g2'], [data-v='g3'], [data-v='h1'], [data-v='h3']) .num {
+        font: var(--voz-numero);
+        letter-spacing: -0.03em;
+        font-variant-numeric: tabular-nums;
+      }
+      :is([data-v='g1'], [data-v='g2'], [data-v='g3'], [data-v='h1'], [data-v='h3']) .num[data-d='0'],
+      :is([data-v='g1'], [data-v='g2'], [data-v='g3'], [data-v='h1'], [data-v='h3']) .num[data-d='3'] {
+        margin-left: -0.0303em;
+      }
+      :is([data-v='g1'], [data-v='g2'], [data-v='g3'], [data-v='h1'], [data-v='h3']) .num[data-d='1'] {
+        margin-left: -0.0758em;
+      }
+      :is([data-v='g1'], [data-v='g2'], [data-v='g3'], [data-v='h1'], [data-v='h3']) .num[data-d='2'] {
+        margin-left: -0.0455em;
+      }
+
+      /* G1: fita solta (16px de respiro em cima e embaixo); o número fica centrado entre as linhas 2 e 3 */
+      [data-v='g1'] .l23 {
+        grid-row: 2 / 4;
+      }
+
+      /* G3: o número tem exatamente a altura das linhas 2 e 3 da fita (altura dos algarismos = 2 vagas + 1 vão) */
+      [data-v='g3'] .preenche {
+        container-type: size;
+      }
+      [data-v='g3'] .l23 {
+        grid-row: 2 / 4;
+      }
+      [data-v='g3'] .num {
+        font-size: calc(((100cqh - 18px) / 2 + 6px) / 0.7055);
+        line-height: 1;
+      }
+
+      /* G2: fita de ponta a ponta, 4 faixas coladas de cima a baixo; número nas linhas 1 e 2,
+         data na 3 e contagem na 4, cada um centrado na sua faixa */
+      [data-v='g2'] .preenche {
+        padding: 0;
+        row-gap: 2px;
+      }
+      [data-v='g2'] .l {
+        padding-left: var(--inset);
+      }
+      [data-v='g2'] .l12 {
+        grid-row: 1 / 3;
+      }
+      [data-v='g2'] .l3 {
+        grid-row: 3;
+      }
+      /* H1 e H3 (G1 e G3 com a margem como regra): a borda de cima da primeira vaga É a margem de cima e a
+         borda de baixo da última vaga É a margem de baixo. Os textos da esquerda encostam nas mesmas
+         linhas: a semana começa na altura do topo da vaga 1 e "em X d" termina na base da vaga 4. */
+      :is([data-v='h1'], [data-v='h3']) .l1 {
+        align-self: start;
+      }
+      :is([data-v='h1'], [data-v='h3']) .l4 {
+        align-self: end;
+      }
+      :is([data-v='h1'], [data-v='h3']) .l23 {
+        grid-row: 2 / 4;
+      }
+      [data-v='h3'] .preenche {
+        container-type: size;
+      }
+      [data-v='h3'] .num {
+        font-size: calc(((100cqh - 18px) / 2 + 6px) / 0.7055);
+        line-height: 1;
+      }
+      /* Ajuste fino dos respiros de lado dos dígitos no tamanho grande da H3 */
+      [data-v='h3'] .num[data-d='0'] {
+        margin-left: -0.0292em;
+      }
+      [data-v='h3'] .num[data-d='1'] {
+        margin-left: -0.0822em;
+      }
+      [data-v='h3'] .num[data-d='2'] {
+        margin-left: -0.0413em;
+      }
+      /* F2: a faixa escura diz o TIPO do que está marcado (prova, trabalho, apresentação) à esquerda;
+         semana e mês, mais discretos, à direita. Dia com mais de um tipo mostra o primeiro e "+N". */
+      [data-v='f2'] .cab {
+        gap: var(--e3);
+        font-size: 12px;
+        letter-spacing: 0.04em;
+      }
+      [data-v='f2'] .cab > :first-child {
+        white-space: nowrap;
+      }
+      [data-v='f2'] .cab > :last-child {
+        white-space: nowrap;
+        margin-right: -0.04em;
+      }
+      [data-v='f2'] .cab > :last-child {
+        color: color-mix(in srgb, var(--cor-sobre-tinta) 72%, transparent);
+      }
+      /* F3 a F6: o tipo do que está marcado vira ícone no canto esquerdo da faixa. Cada ícone tem o
+         enquadramento justo no desenho, então a tinta começa exatamente a 16px da borda. */
+      :is([data-v='f3'], [data-v='f4'], [data-v='f5'], [data-v='f6']) .cab {
+        gap: var(--e3);
+        font-size: 12px;
+        letter-spacing: 0.04em;
+      }
+      :is([data-v='f3'], [data-v='f4'], [data-v='f5'], [data-v='f6']) .cab > :last-child {
+        white-space: nowrap;
+        margin-right: -0.04em;
+        color: color-mix(in srgb, var(--cor-sobre-tinta) 72%, transparent);
+      }
+      :is([data-v='f3'], [data-v='f4'], [data-v='f5'], [data-v='f6']) .tipos {
+        display: flex;
+        align-items: center;
+        gap: var(--e3);
+      }
+      :is([data-v='f3'], [data-v='f4'], [data-v='f5'], [data-v='f6']) .tp {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        white-space: nowrap;
+        font-weight: 700;
+      }
+      :is([data-v='f3'], [data-v='f4'], [data-v='f5'], [data-v='f6']) .tp b {
+        text-box: trim-both cap alphabetic;
+      }
+      :is([data-v='f3'], [data-v='f4'], [data-v='f5'], [data-v='f6']) .tp svg {
+        flex: none;
+        height: 18px;
+        width: auto;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.9;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      /* F6: o ícone numa pastilha clara, como um selo: pesa mais e se destaca na faixa */
+      [data-v='f6'] .tp {
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        border-radius: var(--raio-pilula);
+        background: var(--cor-sobre-tinta);
+        color: var(--cor-tinta);
+      }
+      [data-v='f6'] .tp svg {
+        height: 16px;
+      }
+      [data-v='f6'] .tipos {
+        gap: 6px;
+      }
+      /* K1 a K3 (letra única) e M1 a M3 (ícones Phosphor, licença MIT): mesmo cabeçalho da F2.
+         Os ícones têm o enquadramento justo, então a tinta começa a 16px da borda. */
+      :is([data-v='k1'], [data-v='k2'], [data-v='k3'], [data-v='m1'], [data-v='m2'], [data-v='m3']) .cab {
+        gap: var(--e3);
+        font-size: 12px;
+        letter-spacing: 0.04em;
+      }
+      :is([data-v='k1'], [data-v='k2'], [data-v='k3'], [data-v='m1'], [data-v='m2'], [data-v='m3']) .cab > :last-child {
+        white-space: nowrap;
+        margin-right: -0.04em;
+        color: color-mix(in srgb, var(--cor-sobre-tinta) 72%, transparent);
+      }
+      :is([data-v='k1'], [data-v='k2'], [data-v='k3'], [data-v='m1'], [data-v='m2'], [data-v='m3']) .tipos {
+        display: flex;
+        align-items: center;
+        gap: var(--e3);
+      }
+      :is([data-v='k1'], [data-v='k2'], [data-v='k3'], [data-v='m1'], [data-v='m2'], [data-v='m3']) .tp {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        white-space: nowrap;
+      }
+      :is([data-v='k1'], [data-v='k2'], [data-v='k3'], [data-v='m1'], [data-v='m2'], [data-v='m3']) .tp b {
+        font-weight: 700;
+        text-box: trim-both cap alphabetic;
+      }
+      :is([data-v='m1'], [data-v='m2'], [data-v='m3']) .tp svg {
+        flex: none;
+        height: 22px;
+        width: auto;
+        fill: currentColor;
+      }
+      /* M3: ícone preenchido numa pastilha clara */
+      [data-v='m3'] .tp {
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border-radius: var(--raio-pilula);
+        background: var(--cor-sobre-tinta);
+        color: var(--cor-tinta);
+      }
+      [data-v='m3'] .tp svg {
+        height: 17px;
+      }
+      [data-v='m3'] .tipos {
+        gap: 6px;
+      }
+      /* K1: a letra é a própria marca, em Nunito 800, sem caixa */
+      [data-v='k1'] .tp b {
+        font: 800 20px/1 var(--fonte-voz);
+        letter-spacing: 0;
+      }
+      [data-v='k1'] .tp b[data-l='P'] { margin-left: -0.05em; }
+      [data-v='k1'] .tp b[data-l='T'] { margin-left: 0.05em; }
+      [data-v='k1'] .tp b[data-l='A'] { margin-left: 0; }
+      /* K2: letra numa pastilha clara redonda, como um selo */
+      [data-v='k2'] .tp {
+        display: grid;
+        place-items: center;
+        width: 30px;
+        height: 30px;
+        border-radius: var(--raio-pilula);
+        background: var(--cor-sobre-tinta);
+        color: var(--cor-tinta);
+      }
+      [data-v='k2'] .tp b {
+        font: 800 15px/1 var(--fonte-voz);
+        letter-spacing: 0;
+        text-box: trim-both cap alphabetic;
+      }
+      [data-v='k2'] .tipos {
+        gap: 6px;
+      }
+      /* K3: letra num quadrado arredondado só de contorno */
+      [data-v='k3'] .tp {
+        display: grid;
+        place-items: center;
+        width: 30px;
+        height: 30px;
+        border-radius: 9px;
+        box-shadow: inset 0 0 0 2px var(--cor-sobre-tinta);
+      }
+      [data-v='k3'] .tp b {
+        font: 800 15px/1 var(--fonte-voz);
+        letter-spacing: 0;
+        text-box: trim-both cap alphabetic;
+      }
+      [data-v='k3'] .tipos {
+        gap: 6px;
+      }
+    </style>
+  </head>
+  <body>
+    <script type="module">
+      import { Sala } from './_sala.js';
+
+      const NOMES = {
+        GEN: 'Genética',
+        IMU: 'Imunologia',
+        PRO: 'Propedêutica',
+        FAR: 'Farmacologia',
+        APS: 'Atenção Primária',
+        PAT: 'Patologia',
+      };
+      const SEMANA = { dom: 'Domingo', seg: 'Segunda', ter: 'Terça', qua: 'Quarta', qui: 'Quinta', sex: 'Sexta', sáb: 'Sábado' };
+
+      const DIAS = [
+        { dias: 7, sem: 'sáb', dia: 14, mes: 'nov', tipos: ['prova'], provas: [['GEN', 0]] },
+        { dias: 11, sem: 'qua', dia: 18, mes: 'nov', tipos: ['trabalho'], provas: [['IMU', 1], ['PRO', 6]] },
+        { dias: 14, sem: 'sáb', dia: 21, mes: 'nov', tipos: ['apresentação'], provas: [['FAR', 4], ['APS', 3], ['PAT', 2]] },
+        { dias: 20, sem: 'sex', dia: 27, mes: 'nov', tipos: ['prova', 'trabalho'], provas: [['APS', 3], ['FAR', 4], ['PRO', 6], ['IMU', 1]] },
+        { dias: 25, sem: 'qua', dia: 2, mes: 'dez', tipos: ['trabalho'], provas: [['FAR', 4], ['GEN', 0]] },
+        { dias: 31, sem: 'ter', dia: 8, mes: 'dez', tipos: ['apresentação'], provas: [['PRO', 6]] },
+      ];
+
+      const fila = (d) =>
+        `<span class="fila">${d.provas.map(([s, c]) => `<b class="pilula" data-materia="${c}">${s}</b>`).join('')}</span>`;
+      const chips = (d) =>
+        `<span class="sigla-chip">${d.provas.map(([s, c]) => `<b class="chip" data-materia="${c}">${s}</b>`).join('')}</span>`;
+      const vagas = (d) =>
+        `<span class="vagas">${[0, 1, 2, 3]
+          .map((k) => {
+            const p = d.provas[k];
+            return `<span class="vaga">${p ? `<b class="pilula" data-materia="${p[1]}">${p[0]}</b>` : ''}</span>`;
+          })
+          .join('')}</span>`;
+      const falta = (d) => `<span class="falta">em ${d.dias} d</span>`;
+
+      const ICONES = {
+        prova:
+          '<svg viewBox="5.1 2.1 13.8 19.8"><path d="M6 3h8l4 4v14H6z"/><path d="M9 14l2.5 2.5L15.5 12"/></svg>',
+        trabalho:
+          '<svg viewBox="4.1 3.1 16.3 16.8"><path d="M5 19l1-4L16.5 4.5a2.1 2.1 0 0 1 3 3L9 18z"/><path d="M14.5 6.5l3 3"/></svg>',
+        apresentação:
+          '<svg viewBox="2.1 3.1 19.8 17.8"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M12 16v4M8 20h8"/></svg>',
+      };
+      const TIPO = {
+        prova: { sigla: 'PROVA', inicial: 'P' },
+        trabalho: { sigla: 'TRAB', inicial: 'T' },
+        apresentação: { sigla: 'APRES', inicial: 'A' },
+      };
+      const tp = (t, texto = '') =>
+        `<span class="tp" title="${t}" role="img" aria-label="${t}">${ICONES[t]}${texto ? `<b>${texto}</b>` : ''}</span>`;
+      const tiposF3 = (d) => d.tipos.map((t) => tp(t)).join('');
+      const tiposF4 = (d) =>
+        tp(d.tipos[0], TIPO[d.tipos[0]].sigla + (d.tipos.length > 1 ? ` +${d.tipos.length - 1}` : ''));
+      const tiposF5 = (d) => d.tipos.map((t) => tp(t, TIPO[t].inicial)).join('');
+      const cartaoTipo = (tipos) => (d) =>
+        `<span class="cab"><span class="tipos">${tipos(d)}</span><span>${d.sem} · ${d.mes}</span></span><span class="corpo"><span class="linhaDia"><b class="num" data-d="${DD(d)[0]}">${DD(d)}</b>${falta(d)}</span>${vagas(d)}</span>`;
+      const DD = (d) => String(d.dia).padStart(2, '0');
+
+      const PH_FILL = {"prova": "<svg viewBox=\"24 40 208 184.01\" aria-hidden=\"true\"><path d=\"M96,113.89,107.06,136H84.94ZM232,56V216a8,8,0,0,1-11.58,7.16L192,208.94l-28.42,14.22a8,8,0,0,1-7.16,0L128,208.94,99.58,223.16a8,8,0,0,1-7.16,0L64,208.94,35.58,223.16A8,8,0,0,1,24,216V56A16,16,0,0,1,40,40H216A16,16,0,0,1,232,56ZM135.16,156.42l-32-64a8,8,0,0,0-14.32,0l-32,64a8,8,0,0,0,14.32,7.16L76.94,152h38.12l5.78,11.58a8,8,0,1,0,14.32-7.16ZM208,128a8,8,0,0,0-8-8H184V104a8,8,0,0,0-16,0v16H152a8,8,0,0,0,0,16h16v16a8,8,0,0,0,16,0V136h16A8,8,0,0,0,208,128Z\"></path></svg>", "trabalho": "<svg viewBox=\"32 32 192 192\" aria-hidden=\"true\"><path d=\"M208,32H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM80,208H48V48H80Zm96-56H112a8,8,0,0,1,0-16h64a8,8,0,0,1,0,16Zm0-32H112a8,8,0,0,1,0-16h64a8,8,0,0,1,0,16Z\"></path></svg>", "apresentação": "<svg viewBox=\"24 16 208 216\" aria-hidden=\"true\"><path d=\"M216,40H136V24a8,8,0,0,0-16,0V40H40A16,16,0,0,0,24,56V176a16,16,0,0,0,16,16H79.36L57.75,219a8,8,0,0,0,12.5,10l29.59-37h56.32l29.59,37a8,8,0,1,0,12.5-10l-21.61-27H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40ZM104,144a8,8,0,0,1-16,0V120a8,8,0,0,1,16,0Zm32,0a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm32,0a8,8,0,0,1-16,0V88a8,8,0,0,1,16,0Z\"></path></svg>"};
+      const PH_BOLD = {"prova": "<svg viewBox=\"20 36 216 192\" aria-hidden=\"true\"><path d=\"M216,36H40A20,20,0,0,0,20,56V216a12,12,0,0,0,17.37,10.73L64,213.42l26.63,13.31a12,12,0,0,0,10.74,0L128,213.42l26.63,13.31a12,12,0,0,0,10.74,0L192,213.42l26.63,13.31A12,12,0,0,0,236,216V56A20,20,0,0,0,216,36Zm-4,160.58-14.63-7.31a12,12,0,0,0-10.74,0L160,202.58l-26.63-13.31a12,12,0,0,0-10.74,0L96,202.58,69.37,189.27a12,12,0,0,0-10.74,0L44,196.58V60H212ZM62.63,170.73a12,12,0,0,0,16.1-5.36L81.42,160h37.16l2.69,5.37a12,12,0,1,0,21.46-10.74l-32-64a12,12,0,0,0-21.46,0l-32,64A12,12,0,0,0,62.63,170.73ZM106.58,136H93.42L100,122.83ZM144,128a12,12,0,0,1,12-12h4v-4a12,12,0,0,1,24,0v4h4a12,12,0,0,1,0,24h-4v4a12,12,0,0,1-24,0v-4h-4A12,12,0,0,1,144,128Z\"></path></svg>", "trabalho": "<svg viewBox=\"28 28 200 200\" aria-hidden=\"true\"><path d=\"M108,108a12,12,0,0,1,12-12h56a12,12,0,0,1,0,24H120A12,12,0,0,1,108,108Zm68,28H120a12,12,0,0,0,0,24h56a12,12,0,0,0,0-24Zm52-88V208a20,20,0,0,1-20,20H48a20,20,0,0,1-20-20V48A20,20,0,0,1,48,28H208A20,20,0,0,1,228,48ZM52,204H68V52H52ZM204,52H92V204H204Z\"></path></svg>", "apresentação": "<svg viewBox=\"20 12 216 224\" aria-hidden=\"true\"><path d=\"M216,36H140V24a12,12,0,0,0-24,0V36H40A20,20,0,0,0,20,56V176a20,20,0,0,0,20,20H71l-16.4,20.5a12,12,0,0,0,18.74,15l28.4-35.5h52.46l28.4,35.5a12,12,0,0,0,18.74-15L185,196h31a20,20,0,0,0,20-20V56A20,20,0,0,0,216,36Zm-4,136H44V60H212ZM104,120v24a12,12,0,0,1-24,0V120a12,12,0,0,1,24,0Zm24-28a12,12,0,0,1,12,12v40a12,12,0,0,1-24,0V104A12,12,0,0,1,128,92Zm24,52V88a12,12,0,0,1,24,0v56a12,12,0,0,1-24,0Z\"></path></svg>"};
+      const LETRA = { prova: 'P', trabalho: 'T', apresentação: 'A' };
+      const tpLetra = (t) =>
+        `<span class="tp" title="${t}" role="img" aria-label="${t}"><b data-l="${LETRA[t]}">${LETRA[t]}</b></span>`;
+      const tpPh = (set, t, texto = '') =>
+        `<span class="tp" title="${t}" role="img" aria-label="${t}">${set[t]}${texto ? `<b>${texto}</b>` : ''}</span>`;
+      const tiposLetra = (d) => d.tipos.map(tpLetra).join('');
+      const tiposFill = (d) => d.tipos.map((t) => tpPh(PH_FILL, t)).join('');
+      const tiposBoldSigla = (d) =>
+        tpPh(PH_BOLD, d.tipos[0], TIPO[d.tipos[0]].sigla + (d.tipos.length > 1 ? ` +${d.tipos.length - 1}` : ''));
+
+      const CARTOES = {
+        k1: cartaoTipo(tiposLetra),
+        k2: cartaoTipo(tiposLetra),
+        k3: cartaoTipo(tiposLetra),
+        m1: cartaoTipo(tiposFill),
+        m2: cartaoTipo(tiposBoldSigla),
+        m3: cartaoTipo(tiposFill),
+        f3: cartaoTipo(tiposF3),
+        f4: cartaoTipo(tiposF4),
+        f5: cartaoTipo(tiposF5),
+        f6: cartaoTipo(tiposF3),
+        f2: (d) =>
+          `<span class="cab"><span>${d.tipos[0]}${d.tipos.length > 1 ? ` +${d.tipos.length - 1}` : ''}</span><span>${d.sem} · ${d.mes}</span></span><span class="corpo"><span class="linhaDia"><b class="num" data-d="${String(d.dia).padStart(2, '0')[0]}">${String(d.dia).padStart(2, '0')}</b>${falta(d)}</span>${vagas(d)}</span>`,
+        h1: (d) =>
+          `<span class="l l1 rotulo"><span>${d.sem}</span><span>${d.mes}</span></span><span class="l l23"><b class="num" data-d="${String(d.dia).padStart(2, '0')[0]}">${String(d.dia).padStart(2, '0')}</b></span><span class="l l4">${falta(d)}</span>${vagas(d)}`,
+        h3: (d) =>
+          `<span class="l l1 rotulo"><span>${d.sem}</span><span>${d.mes}</span></span><span class="l l23"><b class="num" data-d="${String(d.dia).padStart(2, '0')[0]}">${String(d.dia).padStart(2, '0')}</b></span><span class="l l4">${falta(d)}</span>${vagas(d)}`,
+        g1: (d) =>
+          `<span class="l l1 rotulo"><span>${d.sem}</span><span>${d.mes}</span></span><span class="l l23"><b class="num" data-d="${String(d.dia).padStart(2, '0')[0]}">${String(d.dia).padStart(2, '0')}</b></span><span class="l l4">${falta(d)}</span>${vagas(d)}`,
+        g3: (d) =>
+          `<span class="l l1 rotulo"><span>${d.sem}</span><span>${d.mes}</span></span><span class="l l23"><b class="num" data-d="${String(d.dia).padStart(2, '0')[0]}">${String(d.dia).padStart(2, '0')}</b></span><span class="l l4">${falta(d)}</span>${vagas(d)}`,
+        g2: (d) =>
+          `<span class="l l12"><b class="num" data-d="${String(d.dia).padStart(2, '0')[0]}">${String(d.dia).padStart(2, '0')}</b></span><span class="l l3 rotulo"><span>${d.sem}</span><span>${d.mes}</span></span><span class="l l4">${falta(d)}</span>${vagas(d)}`,
+        e3: (d) =>
+          `<span class="esq"><span class="dataLinha"><b class="num" data-d="${String(d.dia).padStart(2, '0')[0]}">${String(d.dia).padStart(2, '0')}</b><span class="pilhaData rotulo"><span>${d.sem}</span><span>${d.mes}</span></span></span>${falta(d)}</span>${vagas(d)}`,
+        f1: (d) =>
+          `<span class="cab"><span>${d.sem}</span><span>${d.mes}</span></span><span class="corpo"><span class="linhaDia"><b class="num" data-d="${String(d.dia).padStart(2, '0')[0]}">${String(d.dia).padStart(2, '0')}</b>${falta(d)}</span>${vagas(d)}</span>`,
+        e1: (d) =>
+          `<span class="esq"><span class="rotulo"><span>${d.sem}</span><span>${d.mes}</span></span><b class="num">${String(d.dia).padStart(2, '0')}</b>${falta(d)}</span>${vagas(d)}`,
+        e2: (d) =>
+          `<span class="esq"><span class="dataLinha"><b class="num">${String(d.dia).padStart(2, '0')}</b><span class="pilhaData rotulo"><span>${d.sem}</span><span>${d.mes}</span></span></span>${falta(d)}</span>${vagas(d)}`,
+        d: (d) =>
+          `<span class="linhaTopo"><span>${d.sem}</span><span class="em">em <b>${d.dias}</b> dias</span></span><span class="diaGrande">${d.dia}<small>${d.mes}</small></span>${chips(d)}`,
+        p: (d) =>
+          `<span class="topoP">${falta(d)}</span><span class="dataP"><b>${d.dia}</b><span><span class="rotulo">${d.sem}</span><span class="rotulo">${d.mes}</span></span></span>${fila(d)}`,
+        q: (d) =>
+          `<span class="dataQ"><span class="rotulo">${d.sem}</span><span class="titulo">${d.dia} ${d.mes}</span>${falta(d)}</span>${fila(d)}`,
+        t: (d) =>
+          `<span class="dataP"><b>${d.dia}</b><span class="pilha"><span class="rotulo">${d.sem}</span><span class="linhaMes"><span class="rotulo">${d.mes}</span>${falta(d)}</span></span></span>${fila(d)}`,
+        x: (d) =>
+          `<span class="cabeca"><b>${SEMANA[d.sem]}, ${d.dia} ${d.mes}</b>${falta(d)}</span><span class="lista">${d.provas
+            .map(([s, c]) => `<span class="item"><i class="ponto" data-materia="${c}"></i><span>${s}</span></span>`)
+            .join('')}</span>`,
+        u: (d) =>
+          `<span class="folhinha"><span class="rotulo mes">${d.mes}</span><b>${d.dia}</b><span class="rotulo sem">${d.sem}</span></span><span class="direita"><span class="lista">${d.provas
+            .map(([s, c]) => `<span class="item"><i class="ponto" data-materia="${c}"></i><span>${s}</span></span>`)
+            .join('')}</span>${falta(d)}</span>`,
+        v: (d) =>
+          `<span class="cabeca"><span class="folhinha"><span class="rotulo mes">${d.mes}</span><b>${d.dia}</b></span><span class="textos"><b>${SEMANA[d.sem]}</b>${falta(d)}</span></span><span class="lista">${d.provas
+            .map(([s, c]) => `<span class="item"><b class="pilula" data-materia="${c}">${s}</b><span>${NOMES[s]}</span></span>`)
+            .join('')}</span>`,
+        w: (d) =>
+          `<span class="folhaDeitada" data-x><span class="rotulo mes">${d.mes}</span><b>${d.dia}</b><span class="rotulo">${d.sem}</span>${falta(d)}</span><span class="lista">${d.provas
+            .map(([s, c]) => `<span class="item"><b class="pilula" data-materia="${c}">${s}</b><span>${NOMES[s]}</span></span>`)
+            .join('')}</span>`,
+        y: (d) =>
+          `<span class="folha"><span class="rotulo">${d.mes}</span><b>${d.dia}</b><span class="sem">${d.sem}</span></span><span class="coluna">${d.provas
+            .map(([s, c]) => `<b class="pilula" data-materia="${c}">${s}</b>`)
+            .join('')}${falta(d)}</span>`,
+        z: (d) =>
+          `<span class="cabeca"><b>${d.sem} ${d.dia} ${d.mes}</b>${falta(d)}</span><span class="ladrilhos" data-n="${d.provas.length}">${d.provas
+            .map(([s, c]) => `<span class="ladrilho" data-materia="${c}"><b>${s}</b><span>${NOMES[s]}</span></span>`)
+            .join('')}</span>`,
+      };
+
+      const dias = Array.from({ length: 35 }, (_, i) => i - 5);
+      const calendario = dias
+        .map((n) => {
+          const dia = ((n + 29) % 30) + 1;
+          const marca = n === 7 ? 'h' : [14, 18, 21, 27].includes(dia) && n > 0 ? 'p' : '';
+          return `<span class="${marca}">${dia}</span>`;
+        })
+        .join('');
+
+      const hub = (id, dados) => `
+        <div class="hub">
+          <div class="provas">${dados
+            .map((d) => `<div class="prova"><span class="preenche">${CARTOES[id](d)}</span></div>`)
+            .join('')}</div>
+          <div class="baixo">
+            <div class="bloco"><h3>Novembro 2026</h3><div class="cal">${calendario}</div></div>
+            <div class="bloco"><h3>Agenda de hoje</h3>
+              <div class="linha">Genética <small>08:00–09:30</small></div>
+              <div class="linha">Atenção Primária <small>10:00–11:00</small></div>
+              <div class="linha">Imunologia <small>13:00–15:00</small></div>
+              <div class="linha">Propedêutica <small>15:10–17:00</small></div>
+            </div>
+            <div class="bloco"><h3>Lembretes</h3>
+              <div class="lembra">Levar o jaleco para a Propedêutica.</div>
+              <div class="lembra">Revisar IL-6 e TNF-α antes da prova.</div>
+              <div class="lembra">Confirmar a sala de Genética.</div>
+            </div>
+          </div>
+        </div>`;
+
+      Sala.montar({
+        titulo: 'Hub completo',
+        dados: DIAS,
+        variantes: [
+          { id: 'k1', nome: 'K1 · letra única em Nunito 800, sem caixa', html: (d) => hub('k1', d) },
+          { id: 'k2', nome: 'K2 · letra única numa pastilha clara redonda', html: (d) => hub('k2', d) },
+          { id: 'k3', nome: 'K3 · letra única num quadrado arredondado de contorno', html: (d) => hub('k3', d) },
+          { id: 'm1', nome: 'M1 · ícone Phosphor preenchido (prova, trabalho, apresentação)', html: (d) => hub('m1', d) },
+          { id: 'm2', nome: 'M2 · ícone Phosphor de traço grosso + sigla', html: (d) => hub('m2', d) },
+          { id: 'm3', nome: 'M3 · ícone Phosphor preenchido numa pastilha clara', html: (d) => hub('m3', d) },
+          { id: 'f3', nome: 'F3 · só o ícone do tipo no canto esquerdo', html: (d) => hub('f3', d) },
+          { id: 'f4', nome: 'F4 · ícone + sigla (PROVA, TRAB, APRES)', html: (d) => hub('f4', d) },
+          { id: 'f5', nome: 'F5 · ícone + inicial (P, T, A)', html: (d) => hub('f5', d) },
+          { id: 'f6', nome: 'F6 · ícone numa pastilha clara, como selo', html: (d) => hub('f6', d) },
+          { id: 'f2', nome: 'F2 · F1 com o tipo (prova, trabalho, apresentação) no canto esquerdo da faixa', html: (d) => hub('f2', d) },
+          { id: 'h1', nome: 'H1 · G1 com margem de 16px: semana no topo da vaga 1, "em X d" na base da vaga 4', html: (d) => hub('h1', d) },
+          { id: 'h3', nome: 'H3 · G3 com margem de 16px: semana no topo da vaga 1, "em X d" na base da vaga 4', html: (d) => hub('h3', d) },
+          { id: 'g1', nome: 'G1 · data e fita na mesma grade de 4 linhas, número centrado nas linhas 2 e 3', html: (d) => hub('g1', d) },
+          { id: 'g2', nome: 'G2 · fita de ponta a ponta, número nas linhas 1 e 2, data e contagem nas outras', html: (d) => hub('g2', d) },
+          { id: 'g3', nome: 'G3 · número com exatamente a altura de duas vagas da fita', html: (d) => hub('g3', d) },
+          { id: 'e3', nome: 'E3 · E2 refinada: semana e mês na altura do número, 16px em tudo, fita na lateral', html: (d) => hub('e3', d) },
+          { id: 'f1', nome: 'F1 · cabeçalho escuro com semana e mês, dia grande, 4 vagas de sigla no pé', html: (d) => hub('f1', d) },
+          { id: 'e1', nome: 'E1 · rótulo em cima e número; fita de 4 vagas saindo da lateral', html: (d) => hub('e1', d) },
+          { id: 'e2', nome: 'E2 · número com semana e mês ao lado; fita de 4 vagas saindo da lateral', html: (d) => hub('e2', d) },
+          { id: 'd', nome: 'D · tipográfico: dia enorme, chips de cor', html: (d) => hub('d', d) },
+          { id: 'p', nome: 'P · dia grande, semana e mês ao lado, "em X d" no canto', html: (d) => hub('p', d) },
+          { id: 'q', nome: 'Q · data como título, "em X d" embaixo', html: (d) => hub('q', d) },
+          { id: 't', nome: 'T · "em X d" na linha do mês', html: (d) => hub('t', d) },
+          { id: 'x', nome: 'X · lista: data por extenso, ponto de cor e sigla', html: (d) => hub('x', d) },
+          { id: 'u', nome: 'U · folha à esquerda, ponto de cor e sigla', html: (d) => hub('u', d) },
+          { id: 'v', nome: 'V · folhinha no cabeçalho, lista do X embaixo', html: (d) => hub('v', d) },
+          { id: 'w', nome: 'W · folha deitada como etiqueta de data, lista do X embaixo', html: (d) => hub('w', d) },
+          { id: 'y', nome: 'Y · folha de calendário e siglas em coluna', html: (d) => hub('y', d) },
+          { id: 'z', nome: 'Z · as provas como ladrilhos, data numa linha', html: (d) => hub('z', d) },
+        ],
+      });
+    </script>
+  </body>
+</html>

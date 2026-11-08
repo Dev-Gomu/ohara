@@ -1,0 +1,124 @@
+/* Sala de protótipos: só a moldura. Cores, fontes e medidas vêm dos CSS reais do app. */
+html,
+body {
+  height: auto;
+}
+
+body {
+  overflow: auto;
+}
+
+.sala-barra {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--e2) var(--e4);
+  padding: var(--e2) var(--e4);
+  background: var(--cor-cartao);
+  color: var(--cor-texto);
+  font: var(--ui-item);
+}
+
+.sala-barra h1 {
+  font: var(--voz-titulo);
+}
+
+.sala-barra a {
+  color: var(--cor-texto-2);
+}
+
+.sala-barra label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e1);
+  color: var(--cor-texto-2);
+}
+
+.sala-barra select {
+  padding: var(--e1) var(--e2);
+  border: 1px solid var(--cor-texto-2);
+  border-radius: var(--raio-minimo);
+  background: var(--cor-cartao);
+}
+
+.sala-grupo {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--e3);
+  padding-left: var(--e3);
+  border-left: 1px solid var(--cor-cartao-2);
+}
+
+.sala-palco {
+  margin: var(--e4) auto;
+  padding: var(--margem-tela);
+  background: var(--lab-fundo, transparent);
+  border-radius: var(--raio-bloco);
+}
+
+.sala-variante[hidden] {
+  display: none;
+}
+
+.sala-variante {
+  margin-bottom: var(--e5);
+}
+
+.sala-variante > h2 {
+  margin-bottom: var(--e2);
+  color: var(--cor-texto-2);
+  font: var(--ui-rotulo);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.sala-indice {
+  display: grid;
+  gap: var(--e2);
+  max-width: 640px;
+  margin: var(--e5) auto;
+  padding: 0 var(--e4);
+}
+
+.sala-indice a {
+  padding: var(--e3) var(--e4);
+  border-radius: var(--raio-item);
+  background: var(--cor-cartao);
+  color: var(--cor-texto);
+  font: var(--ui-botao);
+  text-decoration: none;
+}
+
+.sala-indice small {
+  display: block;
+  color: var(--cor-texto-2);
+  font: var(--ui-apoio);
+}
+
+.sala-slides {
+  align-items: center;
+  gap: var(--e1);
+}
+
+.sala-botao {
+  min-width: var(--alvo);
+  min-height: 36px;
+  padding: 0 var(--e3);
+  border-radius: var(--raio-pilula);
+  background: var(--cor-cartao-2);
+  color: var(--cor-texto);
+  font: var(--ui-botao);
+}
+
+.sala-botao[aria-pressed='true'] {
+  background: var(--cor-botao);
+  color: var(--cor-sobre-botao);
+}
+
+.sala-dica {
+  color: var(--cor-texto-2);
+  font: var(--ui-apoio);
+}
