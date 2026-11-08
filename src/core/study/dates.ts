@@ -29,6 +29,10 @@ const MONTH_NAMES =
   );
 const WEEKDAYS = 'domingo segunda terça quarta quinta sexta sábado'.split(' ');
 
+export function monthShort(day: string): string {
+  return MONTHS[parseDay(day).getMonth()] ?? '';
+}
+
 export function shortDate(day: string): string {
   const date = parseDay(day);
   return `${String(date.getDate()).padStart(2, '0')} ${MONTHS[date.getMonth()]}`;

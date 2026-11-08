@@ -202,6 +202,7 @@ export function createFixtures(today: string): StudyData {
     exams: [
       ['gen', 7, '08:00'],
       ['imu', 11, '10:00'],
+      ['pro', 11, '14:00'],
       ['pro', 14, '13:00'],
       ['aps', 20, '08:00'],
     ]

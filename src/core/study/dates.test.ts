@@ -1,5 +1,13 @@
 import { describe, expect, it } from 'vitest';
-import { addDays, daysBetween, longDate, monthGrid, shortDate } from './dates';
+import {
+  addDays,
+  daysBetween,
+  longDate,
+  monthGrid,
+  monthShort,
+  shortDate,
+  weekdayShort,
+} from './dates';
 
 describe('datas', () => {
   it('soma dias atravessando o mês', () => {
@@ -13,6 +21,11 @@ describe('datas', () => {
   it('escreve em português', () => {
     expect(shortDate('2026-11-07')).toBe('07 nov');
     expect(longDate('2026-11-07')).toBe('sábado, 7 de novembro');
+  });
+
+  it('abrevia semana e mês em minúsculas', () => {
+    expect(weekdayShort('2026-11-07')).toBe('sáb');
+    expect(monthShort('2026-12-02')).toBe('dez');
   });
 
   it('a grade do mês tem semanas completas de domingo a sábado', () => {

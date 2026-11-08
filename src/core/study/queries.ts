@@ -71,6 +71,35 @@ export function upcomingExams(data: StudyData, today: string): Exam[] {
     .sort((a, b) => a.date.localeCompare(b.date));
 }
 
+export interface ExamDay {
+  date: string;
+  exams: Exam[];
+}
+
+export function upcomingExamDays(data: StudyData, today: string): ExamDay[] {
+  const days: ExamDay[] = [];
+  for (const exam of upcomingExams(data, today)) {
+    const last = days[days.length - 1];
+    if (last && last.date === exam.date) last.exams.push(exam);
+    else days.push({ date: exam.date, exams: [exam] });
+  }
+  for (const day of days) day.exams.sort((a, b) => a.time.localeCompare(b.time));
+  return days;
+}
+
+// Cartão do dia: 4 vagas fixas. Passou de 4, a última vira "+N" com as que não couberam.
+export const EXAM_SLOTS = 4;
+
+export interface ExamSlots {
+  shown: Exam[];
+  extra: number;
+}
+
+export function examSlots(exams: readonly Exam[], slots = EXAM_SLOTS): ExamSlots {
+  if (exams.length <= slots) return { shown: [...exams], extra: 0 };
+  return { shown: exams.slice(0, slots - 1), extra: exams.length - (slots - 1) };
+}
+
 function slotOccurs(slot: Slot, day: string): boolean {
   if (parseDay(day).getDay() !== slot.weekday) return false;
   if (slot.every === 1) return true;

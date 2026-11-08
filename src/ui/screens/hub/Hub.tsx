@@ -1,4 +1,4 @@
-import { currentEventIndex, eventsOn, upcomingExams } from '../../../core/study/queries';
+import { currentEventIndex, eventsOn, upcomingExamDays, upcomingExams } from '../../../core/study/queries';
 import { leaf, split } from '../../../core/mosaic/tree';
 import { longDate, monthGrid } from '../../../core/study/dates';
 import { dispatch, getKeyboardState } from '../../keyboard/store';
@@ -27,6 +27,7 @@ export function Hub() {
   const data = useStudy();
   const mosaic = useMosaic('hub', INITIAL, ALL);
   const exams = upcomingExams(data, today);
+  const examDays = upcomingExamDays(data, today);
   const events = eventsOn(data, today);
   const reminders = data.reminders.filter((item) => item.date === today);
   const days = monthGrid(today);
@@ -37,10 +38,10 @@ export function Hub() {
       {
         id: EXAMS,
         kind: 'nav',
-        nav: { axis: 'x', count: exams.length },
+        nav: { axis: 'x', count: examDays.length },
         onActivate: (index) => {
-          const exam = exams[index];
-          if (exam) openDay(exam.date);
+          const day = examDays[index];
+          if (day) openDay(day.date);
         },
       },
       {
@@ -84,7 +85,7 @@ export function Hub() {
   });
 
   function render(id: string) {
-    if (id === EXAMS) return <ExamsBlock id={id} exams={exams} />;
+    if (id === EXAMS) return <ExamsBlock id={id} days={examDays} />;
     if (id === CALENDAR) return <CalendarBlock id={id} days={days} exams={exams} />;
     if (id === TODAY) return <TodayBlock id={id} events={events} />;
     return <RemindersBlock id={id} reminders={reminders} onToggle={toggleReminder} />;

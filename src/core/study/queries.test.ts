@@ -4,12 +4,14 @@ import {
   ALL_FOLDERS,
   currentEventIndex,
   eventsOn,
+  examSlots,
   filterLessons,
   folderTabs,
   initialTabIndex,
   lessonsOf,
   NO_FOLDER,
   slotsOn,
+  upcomingExamDays,
   upcomingExams,
 } from './queries';
 
@@ -50,6 +52,21 @@ describe('dia', () => {
     const dates = upcomingExams(data, today).map((exam) => exam.date);
     expect(dates).toEqual([...dates].sort());
     expect(dates.every((date) => date >= today)).toBe(true);
+  });
+
+  it('agrupa as provas por dia, uma caixa por data', () => {
+    const days = upcomingExamDays(data, today);
+    expect(new Set(days.map((day) => day.date)).size).toBe(days.length);
+    const total = days.reduce((sum, day) => sum + day.exams.length, 0);
+    expect(total).toBe(upcomingExams(data, today).length);
+  });
+
+  it('as vagas do dia mostram até 4 provas e resumem o resto em +N', () => {
+    const exam = (id: string) => ({ id, subjectId: id, date: '2026-11-18', time: '08:00' });
+    const five = ['a', 'b', 'c', 'd', 'e'].map(exam);
+    expect(examSlots(five.slice(0, 4))).toEqual({ shown: five.slice(0, 4), extra: 0 });
+    expect(examSlots(five)).toEqual({ shown: five.slice(0, 3), extra: 2 });
+    expect(examSlots([])).toEqual({ shown: [], extra: 0 });
   });
 
   it('acha a aula de agora ou a próxima', () => {

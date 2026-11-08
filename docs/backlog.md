@@ -50,3 +50,4 @@ Lista curta do que foi **adiado ou ainda não decidido**. O que está no plano d
 - 2026-11-07: **Busca dentro do PDF.** Fora da Etapa 10. (Anotar sobre o PDF: descartado pelo usuário.)
 - 2026-11-07: **Lixeira visível:** hoje o que se exclui some da tela e fica marcado no banco (`deleted = 1`), com Desfazer por 10 s (Alt Z). Falta uma tela para ver e restaurar depois disso. Também falta o ⋮ por toque na régua de pastas (hoje só Alt O).
 - 2026-11-07: **Ler o livro numa tela (PENDENTE DE DECISÃO DO USUÁRIO, fora da fila):** hoje o livro só se anexa e remove pelo ⋮ da matéria. Recomendação: janela de consulta. Também: anexar capítulo a uma aula.
+- 2026-11-08: **Tipo no cartão de provas do Hub (T/A em pílula):** desenho pronto em `lab/provas-n.html` (S2, D103). Falta o dado: dar tipo às provas (ou trazer os eventos `trabalho` da Agenda para o bloco) e renomear o bloco.

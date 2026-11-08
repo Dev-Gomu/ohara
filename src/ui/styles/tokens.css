@@ -91,6 +91,7 @@
   --cor-marca: #d9ceff;
   --cor-foco: #14122b;
   --cor-bloco-ativo: #8872d8; /* 3,2:1 com o fundo; o --cor-destaque daria 2,9:1 */
+  --mistura-faixa: 40%; /* faixa do cartão de prova: a 22% quase igualava o fundo da tela */
   --cor-nota-titulo: #14122b;
   --cor-veu: rgb(20 18 43 / 40%);
   color-scheme: light;
@@ -107,6 +108,7 @@
   --cor-marca: #5b4ba6;
   --cor-foco: #f4f2ff;
   --cor-bloco-ativo: #9178e6;
+  --mistura-faixa: 30%;
   --cor-nota-titulo: #9178e6;
   --cor-veu: rgb(9 12 24 / 60%);
   color-scheme: dark;
