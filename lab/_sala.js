@@ -33,7 +33,7 @@ export const Sala = (() => {
 
   const OPCOES = {
     tema: ['claro', 'escuro'],
-    paleta: ['original', 'a', 'b'],
+    paleta: ['original', 'a', 'b', 'c'],
     largura: [
       ['768', 'Tablet retrato'],
       ['1280', 'Tablet'],

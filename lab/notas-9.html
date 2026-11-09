@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Notas: barra, pertencimento</title>
+    <style>
+      .tela {
+        height: auto;
+        display: grid;
+        grid-template-rows: auto minmax(0, 1fr);
+        gap: var(--vao-mosaico);
+        padding: var(--vao-mosaico);
+        background: var(--cor-fundo);
+        color: var(--cor-texto);
+      }
+      .barra {
+        display: flex;
+        align-items: center;
+        gap: var(--e3);
+        height: 40px;
+        padding-left: var(--e1);
+      }
+      .barra .num {
+        width: 40px;
+        height: 40px;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        background: var(--cor-cartao);
+        font: var(--ui-botao);
+        color: var(--cor-texto-2);
+      }
+      .barra .num[data-sel='true'] {
+        background: var(--cor-destaque);
+        color: var(--cor-tinta);
+      }
+      .barra h2 {
+        margin-left: var(--e2);
+        font: var(--voz-titulo);
+        letter-spacing: 0.02em;
+      }
+      .cartao {
+        background: var(--cor-cartao);
+        border-radius: var(--raio-bloco);
+        padding: var(--e5) var(--e6);
+        min-width: 0;
+        min-height: 0;
+      }
+      .cartao.ativo {
+        border: var(--borda-bloco) solid var(--cor-bloco-ativo);
+        padding: calc(var(--e5) - 2px) calc(var(--e6) - 2px);
+      }
+      .rotulo {
+        color: var(--cor-texto-2);
+        font: var(--ui-rotulo);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+      .apoio {
+        color: var(--cor-texto-2);
+        font: var(--ui-apoio);
+      }
+      kbd {
+        font: var(--ui-tecla);
+        color: var(--cor-texto-2);
+      }
+      .num-t {
+        font-family: var(--fonte-interface);
+        font-variant-numeric: tabular-nums;
+      }
+      .baixa {
+        background: color-mix(in srgb, var(--cor-laranja) 30%, var(--cor-cartao));
+      }
+
+      /* cabeçalho de tela */
+      .topo {
+        display: flex;
+        align-items: center;
+        gap: var(--e5);
+        padding: 0 var(--e2);
+        height: 48px;
+      }
+      .abas {
+        display: flex;
+        gap: var(--e5);
+      }
+      .abas span {
+        font: var(--ui-botao);
+        color: var(--cor-texto-2);
+        padding: var(--e2) 0;
+      }
+      .abas span[data-sel='true'] {
+        color: var(--cor-texto);
+        box-shadow: inset 0 -3px 0 var(--cor-bloco-ativo);
+      }
+      .topo .fim {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: var(--e4);
+        font: var(--ui-apoio);
+        color: var(--cor-texto-2);
+      }
+      .topo .ano {
+        font: var(--voz-item);
+        color: var(--cor-texto);
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--e2);
+        height: 40px;
+        padding: 0 var(--e4);
+        border-radius: var(--raio-pilula);
+        background: var(--cor-cartao);
+        font: var(--ui-botao);
+        color: var(--cor-texto);
+      }
+
+      .disc {
+        display: flex;
+        align-items: center;
+        gap: var(--e3);
+        min-width: 0;
+      }
+      .pt {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        flex: none;
+      }
+      .cod {
+        width: 36px;
+        color: var(--cor-texto-2);
+        font: var(--ui-sigla);
+        letter-spacing: 0.04em;
+      }
+      .nm {
+        font: var(--ui-botao);
+        font-weight: 600;
+        white-space: nowrap;
+      }
+      .sit {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--e2);
+        font: var(--ui-item);
+        white-space: nowrap;
+      }
+      .sit i {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        color: var(--cor-tinta);
+      }
+      .sit i svg {
+        width: 11px;
+        height: 11px;
+      }
+      .sit.ok i {
+        background: var(--cor-verde);
+      }
+      .sit.at i {
+        background: var(--cor-laranja);
+      }
+      .sit.nd {
+        color: var(--cor-texto-2);
+      }
+      .foco {
+        outline: var(--contorno-foco) solid var(--cor-contorno-foco);
+        outline-offset: -4px;
+      }
+      .sel {
+        background: var(--cor-marca);
+      }
+
+      
+      .quadro { display: grid; gap: var(--e5); padding: var(--e3); }
+      .quadro > .rotulo { margin-bottom: calc(var(--e3) * -1); }
+      .regua { display: flex; align-items: center; gap: var(--e1); padding: var(--e3) var(--e4); border-radius: var(--raio-bloco); background: var(--cor-cartao); overflow: hidden; }
+      .ri { display: flex; align-items: center; gap: var(--e2); height: 48px; padding: 0 var(--e4); border-radius: var(--raio-item); font: 700 15px/20px var(--fonte-interface); white-space: nowrap; flex: none; }
+      .ri .m { font-weight: 500; color: var(--cor-texto-2); font-variant-numeric: tabular-nums; }
+      .ri[data-sel='true'] { background: var(--cor-marca); }
+      .ri[data-sel='true'] .m { color: var(--cor-texto); }
+      .ri.foco { outline: var(--contorno-foco) solid var(--cor-contorno-foco); outline-offset: -4px; }
+      .ri svg { width: 20px; height: 20px; flex: none; }
+      .gap { flex: none; width: var(--e4); }
+      .lup { margin-left: auto; flex: none; display: flex; align-items: center; gap: var(--e2); color: var(--cor-texto-2); font: var(--ui-item); font-weight: 500; }
+      .lup.pil { height: 44px; padding: 0 var(--e4); border-radius: var(--raio-pilula); background: var(--cor-cartao-2); }
+      .lup.ico { width: 44px; height: 44px; justify-content: center; border-radius: 50%; background: var(--cor-cartao-2); }
+      .lup kbd { margin-left: var(--e4); }
+      .sg { display: inline-flex; align-items: center; height: 26px; padding: 0 var(--e3); border-radius: var(--raio-pilula); color: var(--cor-tinta); font: var(--ui-sigla); }
+      .seg { display: flex; padding: 4px; gap: 4px; border-radius: var(--raio-pilula); background: var(--cor-cartao-2); flex: none; margin-right: var(--e3); }
+      .seg span { height: 40px; display: flex; align-items: center; padding: 0 var(--e4); border-radius: var(--raio-pilula); font: var(--ui-botao); color: var(--cor-texto-2); white-space: nowrap; }
+      .seg span[data-sel='true'] { background: var(--cor-cartao); color: var(--cor-texto); }
+      .ri.s { padding: 0 var(--e3); }
+
+      /* peças: cada disciplina é uma peça fechada, a média pertence à peça */
+      .p { display: flex; align-items: center; gap: var(--e2); height: 52px; padding: 0 var(--e2) 0 var(--e2); border-radius: var(--raio-item); background: var(--cor-cartao-2); flex: none; font: 700 15px/20px var(--fonte-interface); }
+      .p .m { min-width: 36px; padding: 0 var(--e2); text-align: center; font: 700 16px/20px var(--fonte-interface); font-variant-numeric: tabular-nums; }
+      .p .m.vz { color: var(--cor-texto-2); font-weight: 400; }
+      .p[data-sel='true'] { background: var(--cor-marca); }
+      .p.foco { outline: var(--contorno-foco) solid var(--cor-contorno-foco); outline-offset: -4px; }
+      .regua { gap: var(--e2); }
+      /* 2: média embaixo da sigla */
+      .e { display: grid; justify-items: center; gap: 2px; height: 64px; align-content: center; width: 76px; border-radius: var(--raio-item); background: var(--cor-cartao-2); flex: none; }
+      .e .m { font: 700 17px/20px var(--fonte-interface); font-variant-numeric: tabular-nums; }
+      .e .m.vz { color: var(--cor-texto-2); font-weight: 400; }
+      .e[data-sel='true'] { background: var(--cor-marca); }
+      .e.foco { outline: var(--contorno-foco) solid var(--cor-contorno-foco); outline-offset: -4px; }
+      .e.g { width: auto; padding: 0 var(--e4); }
+      .e.g b { font: var(--ui-botao); }
+      /* 3: pílula única dividida: sigla na cor, média no segmento claro */
+      .d { display: flex; align-items: stretch; height: 44px; border-radius: var(--raio-pilula); overflow: hidden; flex: none; font: 700 14px/20px var(--fonte-interface); color: var(--cor-tinta); }
+      .d .a { display: flex; align-items: center; padding: 0 var(--e3) 0 var(--e4); }
+      .d .m { display: flex; align-items: center; padding: 0 var(--e4) 0 var(--e3); background: var(--cor-cartao-2); color: var(--cor-texto); font: 700 15px/20px var(--fonte-interface); font-variant-numeric: tabular-nums; }
+      .d .m.vz { color: var(--cor-texto-2); font-weight: 400; }
+      .d[data-sel='true'] .m { background: var(--cor-marca); }
+      .d[data-sel='true'] { outline: 3px solid var(--cor-marca); outline-offset: 0; }
+      .d.foco { outline: var(--contorno-foco) solid var(--cor-contorno-foco); outline-offset: 2px; }
+      .d.g { background: var(--cor-cartao-2); color: var(--cor-texto); padding: 0 var(--e4); align-items: center; gap: var(--e2); }
+    </style>
+  </head>
+  <body>
+    <script type="module">
+      import { Sala } from './_sala.js';
+      const L = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h10"/></svg>';
+      const LUPA = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6"/><path d="m20 20-4-4"/></svg>';
+      const CORES = ['rosa', 'destaque', 'azul', 'verde', 'ciano', 'laranja'];
+      const D = [['GEN', '7,8'], ['IMU', '6,5'], ['PRO', '6,7'], ['APS', '7,2'], ['MIC', '8,0'], ['PSI', '—']];
+      const cor = (i) => `var(--cor-${CORES[i]})`;
+      const SEL = 2;
+      const f = (i) => (i === SEL ? ' foco' : '');
+      const s = (i) => (i === SEL ? ' data-sel="true"' : '');
+      const sg = (d, i) => `<span class="sg" style="background:${cor(i)}">${d[0]}</span>`;
+      const vz = (d) => (d[1] === '—' ? ' vz' : '');
+      const busca = `<span class="lup pil">${LUPA} Buscar <kbd>/</kbd></span>`;
+      const tela = (conteudo) => `<div class="tela"><div class="quadro">${conteudo}</div></div>`;
+
+      // 1. peça fechada: sigla e média dentro da mesma cápsula
+      const r1 = () => `<div class="regua"><span class="p" style="padding:0 var(--e4);gap:var(--e3)">${L}Boletim geral</span><span class="gap"></span>${D.map((d, i) => `<span class="p${f(i)}"${s(i)}>${sg(d, i)}<span class="m${vz(d)}">${d[1]}</span></span>`).join('')}${busca}</div>`;
+      // 2. média embaixo da sigla
+      const r2 = () => `<div class="regua"><span class="e g"><b>${L}</b><b>Boletim geral</b></span><span class="gap"></span>${D.map((d, i) => `<span class="e${f(i)}"${s(i)}>${sg(d, i)}<span class="m${vz(d)}">${d[1]}</span></span>`).join('')}${busca}</div>`;
+      // 3. pílula única: sigla na cor da matéria e média no segmento claro
+      const r3 = () => `<div class="regua" style="gap:var(--e3)"><span class="d g">${L}Boletim geral</span><span class="gap"></span>${D.map((d, i) => `<span class="d${f(i)}"${s(i)}><span class="a" style="background:${cor(i)}">${d[0]}</span><span class="m${vz(d)}">${d[1]}</span></span>`).join('')}${busca}</div>`;
+
+      Sala.montar({
+        titulo: 'Notas: barra, pertencimento',
+        dados: null,
+        variantes: [
+          { id: 'a', nome: 'B1. Cápsula: sigla e média na mesma peça', html: () => tela(r1()) },
+          { id: 'b', nome: 'B2. Média embaixo da sigla', html: () => tela(r2()) },
+          { id: 'c', nome: 'B3. Pílula dividida: sigla colorida | média', html: () => tela(r3()) },
+        ],
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,701 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Notas: direção séria</title>
+    <style>
+      .tela {
+        height: 752px;
+        display: grid;
+        grid-template-rows: auto minmax(0, 1fr);
+        gap: var(--vao-mosaico);
+        padding: var(--vao-mosaico);
+        background: var(--cor-fundo);
+        color: var(--cor-texto);
+      }
+      .barra {
+        display: flex;
+        align-items: center;
+        gap: var(--e3);
+        height: 40px;
+        padding-left: var(--e1);
+      }
+      .barra .num {
+        width: 40px;
+        height: 40px;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        background: var(--cor-cartao);
+        font: var(--ui-botao);
+        color: var(--cor-texto-2);
+      }
+      .barra .num[data-sel='true'] {
+        background: var(--cor-destaque);
+        color: var(--cor-tinta);
+      }
+      .barra h2 {
+        margin-left: var(--e2);
+        font: var(--voz-titulo);
+        letter-spacing: 0.02em;
+      }
+      .cartao {
+        background: var(--cor-cartao);
+        border-radius: var(--raio-bloco);
+        padding: var(--e5) var(--e6);
+        min-width: 0;
+        min-height: 0;
+      }
+      .cartao.ativo {
+        border: var(--borda-bloco) solid var(--cor-bloco-ativo);
+        padding: calc(var(--e5) - 2px) calc(var(--e6) - 2px);
+      }
+      .rotulo {
+        color: var(--cor-texto-2);
+        font: var(--ui-rotulo);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+      .apoio {
+        color: var(--cor-texto-2);
+        font: var(--ui-apoio);
+      }
+      kbd {
+        font: var(--ui-tecla);
+        color: var(--cor-texto-2);
+      }
+      .num-t {
+        font-family: var(--fonte-interface);
+        font-variant-numeric: tabular-nums;
+      }
+      .baixa {
+        background: color-mix(in srgb, var(--cor-laranja) 30%, var(--cor-cartao));
+      }
+
+      /* cabeçalho de tela */
+      .topo {
+        display: flex;
+        align-items: center;
+        gap: var(--e5);
+        padding: 0 var(--e2);
+        height: 48px;
+      }
+      .abas {
+        display: flex;
+        gap: var(--e5);
+      }
+      .abas span {
+        font: var(--ui-botao);
+        color: var(--cor-texto-2);
+        padding: var(--e2) 0;
+      }
+      .abas span[data-sel='true'] {
+        color: var(--cor-texto);
+        box-shadow: inset 0 -3px 0 var(--cor-bloco-ativo);
+      }
+      .topo .fim {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: var(--e4);
+        font: var(--ui-apoio);
+        color: var(--cor-texto-2);
+      }
+      .topo .ano {
+        font: var(--voz-item);
+        color: var(--cor-texto);
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--e2);
+        height: 40px;
+        padding: 0 var(--e4);
+        border-radius: var(--raio-pilula);
+        background: var(--cor-cartao);
+        font: var(--ui-botao);
+        color: var(--cor-texto);
+      }
+
+      .disc {
+        display: flex;
+        align-items: center;
+        gap: var(--e3);
+        min-width: 0;
+      }
+      .pt {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        flex: none;
+      }
+      .cod {
+        width: 36px;
+        color: var(--cor-texto-2);
+        font: var(--ui-sigla);
+        letter-spacing: 0.04em;
+      }
+      .nm {
+        font: var(--ui-botao);
+        font-weight: 600;
+        white-space: nowrap;
+      }
+      .sit {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--e2);
+        font: var(--ui-item);
+        white-space: nowrap;
+      }
+      .sit i {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        color: var(--cor-tinta);
+      }
+      .sit i svg {
+        width: 11px;
+        height: 11px;
+      }
+      .sit.ok i {
+        background: var(--cor-verde);
+      }
+      .sit.at i {
+        background: var(--cor-laranja);
+      }
+      .sit.nd {
+        color: var(--cor-texto-2);
+      }
+      .foco {
+        outline: var(--contorno-foco) solid var(--cor-contorno-foco);
+        outline-offset: -4px;
+      }
+      .sel {
+        background: var(--cor-marca);
+      }
+
+      /* A. tipográfico */
+      .a .res {
+        display: flex;
+        align-items: flex-end;
+        gap: var(--e6);
+        padding-bottom: var(--e5);
+      }
+      .a .res .g {
+        font: var(--voz-numero);
+        font-size: 56px;
+        line-height: 48px;
+      }
+      .a .res .t {
+        display: grid;
+        gap: var(--e1);
+      }
+      .a .res .stats {
+        display: flex;
+        gap: var(--e5);
+        margin-left: auto;
+      }
+      .a .res .stats div {
+        display: grid;
+        gap: 2px;
+        justify-items: end;
+      }
+      .a .res .stats b {
+        font: var(--voz-titulo);
+      }
+      .a .tb {
+        display: grid;
+        grid-template-columns: 1fr repeat(2, 64px 64px 76px) 96px 130px;
+        grid-template-rows: auto;
+        align-items: center;
+        column-gap: 0;
+        row-gap: var(--e1);
+      }
+      .a .gcab {
+        padding: var(--e3) 0 var(--e2);
+        text-align: center;
+        grid-column: span 3;
+        font: var(--ui-rotulo);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--cor-texto);
+      }
+      .a .bcab {
+        text-align: center;
+        padding-bottom: var(--e2);
+      }
+      .a .c {
+        height: 52px;
+        display: grid;
+        place-items: center;
+        font: 500 17px/20px var(--fonte-interface);
+        font-variant-numeric: tabular-nums;
+        color: var(--cor-texto);
+      }
+      .a .c.s {
+        font-weight: 700;
+        font-size: 18px;
+      }
+      .a .c.ano {
+        font: var(--voz-item);
+        font-variant-numeric: tabular-nums;
+      }
+      .a .c.v {
+        color: var(--cor-texto-2);
+        font-weight: 400;
+      }
+      .a .c.band {
+        background: var(--cor-cartao-2);
+      }
+      .a .c.band.p {
+        border-radius: 0;
+      }
+      .a .c.r1 {
+        border-top-left-radius: var(--raio-item);
+        border-bottom-left-radius: var(--raio-item);
+      }
+      .a .c.r2 {
+        border-top-right-radius: var(--raio-item);
+        border-bottom-right-radius: var(--raio-item);
+      }
+      .a .c .in {
+        min-width: 48px;
+        padding: 4px 0;
+        text-align: center;
+        border-radius: var(--raio-minimo);
+      }
+      .a .nome {
+        height: 52px;
+        display: flex;
+        align-items: center;
+      }
+      .a .foot {
+        margin-top: var(--e4);
+        display: flex;
+        gap: var(--e2);
+        align-items: center;
+      }
+      .a .foot kbd {
+        padding: 0 var(--e2);
+        border-radius: var(--raio-minimo);
+        background: var(--cor-cartao-2);
+        color: var(--cor-texto);
+      }
+
+      /* B. trajetória */
+      .b .tb {
+        display: grid;
+        grid-template-columns: 1fr 220px 220px 100px 130px;
+        align-items: center;
+      }
+      .b .cab {
+        padding: 0 var(--e3) var(--e3);
+      }
+      .b .l {
+        height: 76px;
+        display: flex;
+        align-items: center;
+      }
+      .b .gr {
+        display: flex;
+        align-items: flex-end;
+        gap: var(--e3);
+        height: 76px;
+        padding: var(--e2) var(--e3);
+      }
+      .b .barras {
+        position: relative;
+        display: flex;
+        align-items: flex-end;
+        gap: var(--e2);
+        height: 56px;
+        flex: 1;
+      }
+      .b .barras::after {
+        content: '';
+        position: absolute;
+        left: -4px;
+        right: -4px;
+        bottom: 39px; /* meta 7,0 de 10 sobre 56 px */
+        height: 2px;
+        background: var(--cor-texto-2);
+        opacity: 0.5;
+        border-radius: 1px;
+      }
+      .b .bar {
+        flex: 1;
+        border-radius: var(--raio-minimo) var(--raio-minimo) 4px 4px;
+        background: var(--cor-destaque);
+      }
+      .b .bar.baixa {
+        background: var(--cor-laranja);
+      }
+      .b .bar.vz {
+        height: 4px !important;
+        background: var(--cor-cartao-2);
+      }
+      .b .bar.foco {
+        outline-offset: 2px;
+        outline-width: 3px;
+      }
+      .b .sm {
+        font: 700 18px/20px var(--fonte-interface);
+        font-variant-numeric: tabular-nums;
+        min-width: 40px;
+        text-align: right;
+        padding-bottom: var(--e1);
+      }
+      .b .sm.v {
+        color: var(--cor-texto-2);
+        font-weight: 400;
+      }
+      .b .an {
+        font: var(--voz-titulo);
+        font-variant-numeric: tabular-nums;
+        text-align: center;
+      }
+      .b .blk {
+        margin-top: var(--e2);
+        display: grid;
+        gap: 0;
+      }
+      .b .zebra {
+        background: var(--cor-cartao-2);
+        border-radius: var(--raio-item);
+      }
+      .b .leg {
+        margin-top: var(--e4);
+        display: flex;
+        gap: var(--e5);
+        align-items: center;
+      }
+      .b .leg span {
+        display: flex;
+        align-items: center;
+        gap: var(--e2);
+      }
+      .b .leg i {
+        width: 12px;
+        height: 12px;
+        border-radius: 3px;
+      }
+
+      /* C. extrato */
+      .c .grade {
+        display: grid;
+        grid-template-columns: 270px minmax(0, 1fr) 300px;
+        gap: var(--vao-mosaico);
+        min-height: 0;
+      }
+      .c .lst {
+        display: grid;
+        align-content: start;
+        gap: 2px;
+      }
+      .c .lst .it {
+        display: flex;
+        align-items: center;
+        gap: var(--e3);
+        min-height: var(--item-lista);
+        padding: 0 var(--e3);
+        border-radius: var(--raio-item);
+      }
+      .c .lst .it .nm {
+        flex: 1;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .c .lst .it b {
+        font: 700 16px/20px var(--fonte-interface);
+        font-variant-numeric: tabular-nums;
+      }
+      .c .lst .it b.v {
+        color: var(--cor-texto-2);
+        font-weight: 400;
+      }
+      .c h3 {
+        font: var(--voz-tela);
+      }
+      .c .cab {
+        display: flex;
+        align-items: flex-end;
+        gap: var(--e4);
+        margin-bottom: var(--e3);
+      }
+      .c .cab .md {
+        margin-left: auto;
+        text-align: right;
+        display: grid;
+        gap: 2px;
+      }
+      .c .cab .md b {
+        font: var(--voz-numero);
+        font-size: 48px;
+        line-height: 44px;
+      }
+      .c .ext {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 70px 90px;
+        align-items: center;
+      }
+      .c .ext .h {
+        padding-bottom: var(--e2);
+      }
+      .c .ext .h.r,
+      .c .ext .v {
+        text-align: right;
+      }
+      .c .ext > * {
+        height: 34px;
+        display: flex;
+        align-items: center;
+      }
+      .c .ext .v {
+        justify-content: flex-end;
+        font: 500 16px/20px var(--fonte-interface);
+        font-variant-numeric: tabular-nums;
+      }
+      .c .ext .a1 {
+        font: var(--voz-item);
+        height: 44px;
+      }
+      .c .ext .a1.v {
+        font: var(--voz-item);
+        font-variant-numeric: tabular-nums;
+      }
+      .c .ext .s1 {
+        font: var(--voz-mini);
+        height: 40px;
+        margin-top: var(--e1);
+      }
+      .c .ext .s1.v {
+        font: 700 18px/20px var(--fonte-interface);
+        font-variant-numeric: tabular-nums;
+      }
+      .c .ext .b1 {
+        padding-left: var(--e4);
+        font: var(--ui-botao);
+        font-weight: 600;
+      }
+      .c .ext .b1.v {
+        font-weight: 600;
+        padding-left: 0;
+      }
+      .c .ext .av {
+        padding-left: var(--e6);
+        color: var(--cor-texto-2);
+        font: var(--ui-apoio);
+        font-weight: 500;
+        height: 30px;
+      }
+      .c .ext .av.v {
+        padding-left: 0;
+        height: 30px;
+      }
+      .c .ext .pesoc {
+        justify-content: flex-end;
+        color: var(--cor-texto-2);
+        font: var(--ui-apoio);
+        font-variant-numeric: tabular-nums;
+        height: 30px;
+      }
+      .c .ext .pesoc.cab2 {
+        height: 40px;
+      }
+      .c .ext .b1.sel,
+      .c .ext .b1.v.sel,
+      .c .ext .pesoc.sel {
+        background: var(--cor-marca);
+      }
+      .c .ext .rl {
+        border-radius: var(--raio-item) 0 0 var(--raio-item);
+      }
+      .c .ext .rr {
+        border-radius: 0 var(--raio-item) var(--raio-item) 0;
+      }
+      .c .quad {
+        display: grid;
+        align-content: start;
+        gap: var(--e5);
+      }
+      .c .quad .bx {
+        display: grid;
+        gap: var(--e1);
+      }
+      .c .quad .bx b {
+        font: var(--voz-numero);
+        font-size: 40px;
+        line-height: 40px;
+        font-variant-numeric: tabular-nums;
+      }
+      .c .quad .bx p {
+        color: var(--cor-texto-2);
+        font: var(--leitura-compacta);
+      }
+    </style>
+  </head>
+  <body>
+    <script type="module">
+      import { Sala } from './_sala.js';
+      const META = 7;
+      const D = [
+        ['GEN', 'Genética', 'rosa', [8, 7.5, 8, null]],
+        ['IMU', 'Imunologia', 'destaque', [6, 6.5, 7, null]],
+        ['PRO', 'Propedêutica', 'azul', [7.5, 7, 6, null]],
+        ['APS', 'Atenção primária', 'verde', [7, 7.5, 7, null]],
+        ['MIC', 'Microbiologia', 'ciano', [7.5, 8, 8.5, null]],
+        ['PSI', 'Psicologia', 'laranja', [null, null, null, null]],
+      ];
+      const f = (n) => (n === null ? '—' : n.toFixed(1).replace('.', ','));
+      const par = (a, b) => (a !== null && b !== null ? (a + b) / 2 : null);
+      const calc = (g) => {
+        const s1 = par(g[0], g[1]);
+        const s2 = par(g[2], g[3]);
+        return { s1, s2, ano: par(s1, s2) };
+      };
+      const baixo = (v) => v !== null && v < META;
+      const ICO = {
+        ok: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg>',
+        at: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><path d="M12 5v9M12 19v.01"/></svg>',
+      };
+      const SIT = [
+        ['ok', 'Na meta', 'precisa 4,5 no 4º bim'],
+        ['at', 'Atenção', 'precisa 8,5 no 4º bim'],
+        ['at', 'Atenção', 'precisa 7,5 no 4º bim'],
+        ['ok', 'Na meta', 'precisa 6,5 no 4º bim'],
+        ['ok', 'Na meta', 'precisa 4,0 no 4º bim'],
+        ['nd', 'Sem notas', ''],
+      ];
+      const sit = (i) =>
+        `<span class="sit ${SIT[i][0]}">${SIT[i][0] === 'nd' ? '' : `<i>${ICO[SIT[i][0]]}</i>`}${SIT[i][1]}</span>`;
+      const dis = (d) =>
+        `<span class="disc"><span class="pt" style="background:var(--cor-${d[2]})"></span><span class="cod">${d[0]}</span><span class="nm">${d[1]}</span></span>`;
+      const barra = `<div class="barra">${[1, 2, 3, 4, 5, 6].map((n) => `<span class="num" ${n === 5 ? 'data-sel="true"' : ''}>${n}</span>`).join('')}<h2>NOTAS</h2></div>`;
+      const topo = (
+        modo,
+      ) => `<div class="topo"><div class="abas"><span ${modo === 0 ? 'data-sel="true"' : ''}>Boletim geral</span><span ${modo === 1 ? 'data-sel="true"' : ''}>Por disciplina</span></div>
+        <div class="fim"><span class="apoio">‹</span><span class="ano">2026</span><span class="apoio">›</span><span>Aberto</span><span class="btn">‹ Agenda <kbd>Esc</kbd></span></div></div>`;
+      const moldura = (corpo, modo) =>
+        `<div class="tela">${barra}<div style="display:grid;grid-template-rows:auto minmax(0,1fr);gap:var(--vao-mosaico);min-height:0">${topo(modo)}${corpo}</div></div>`;
+
+      // A. tipográfico
+      const A = () => {
+        const cel = (v, cls, i, k) => {
+          const base = `c ${cls}${v === null ? ' v' : ''}`;
+          const focado = i === 0 && k === 3;
+          const inner = baixo(v)
+            ? `<span class="in baixa">${f(v)}</span>`
+            : `<span class="in${focado ? ' sel foco' : ''}">${f(v)}</span>`;
+          return inner;
+        };
+        const linhas = D.map((d, i) => {
+          const g = d[3];
+          const c = calc(g);
+          const ult = i === D.length - 1;
+          const cc = (v, extra = '', k = -1) =>
+            `<span class="c${v === null ? ' v' : ''} ${extra}">${cel(v, '', i, k)}</span>`;
+          const band = (v, pos) =>
+            `<span class="c s band ${pos}${v === null ? ' v' : ''}"><span class="in${baixo(v) ? ' baixa' : ''}">${f(v)}</span></span>`;
+          return `<span class="nome">${dis(d)}</span>
+            ${cc(g[0], '', 0)}${cc(g[1], '', 1)}${band(c.s1, '')}
+            ${cc(g[2], '', 2)}${cc(g[3], '', 3)}${band(c.s2, '')}
+            <span class="c ano${c.ano === null ? ' v' : ''}">${f(c.ano)}</span>
+            <span style="padding-left:var(--e4)">${sit(i)}</span>`;
+        }).join('');
+        const corpo = `<div class="cartao ativo a">
+          <div class="res">
+            <div class="t"><span class="rotulo">Média geral</span><span class="g">7,3</span></div>
+            <div class="stats"><div><b>6</b><span class="apoio">disciplinas</span></div><div><b>3</b><span class="apoio">na meta</span></div><div><b>2</b><span class="apoio">em atenção</span></div><div><b>7,0</b><span class="apoio">meta · alterar</span></div></div>
+          </div>
+          <div class="tb">
+            <span></span><span class="gcab">1º semestre</span><span class="gcab">2º semestre</span><span class="gcab" style="grid-column:span 1">Ano</span><span></span>
+            <span></span>${['1º bim', '2º bim', 'Média', '3º bim', '4º bim', 'Média', 'Média'].map((t) => `<span class="bcab rotulo" style="text-align:center">${t}</span>`).join('')}<span class="bcab rotulo" style="text-align:left;padding-left:var(--e4)">Situação</span>
+            ${linhas}
+          </div>
+          <div class="foot apoio"><kbd>Enter</kbd> abre a disciplina · <kbd>← → ↑ ↓</kbd> andam · fundo laranja claro: abaixo da meta</div>
+        </div>`;
+        return moldura(corpo, 0);
+      };
+
+      // B. trajetória
+      const B = () => {
+        const bars = (g, a, i) =>
+          `<div class="barras">${[a, a + 1]
+            .map((k) => {
+              const v = g[k];
+              const h = v === null ? '' : `height:${(v / 10) * 56}px`;
+              return `<span class="bar${v === null ? ' vz' : baixo(v) ? ' baixa' : ''}${i === 0 && k === 3 ? ' foco' : ''}" style="${h}"></span>`;
+            })
+            .join('')}</div>`;
+        const linhas = D.map((d, i) => {
+          const g = d[3];
+          const c = calc(g);
+          const z = i % 2 === 0 ? ' zebra' : '';
+          return `<div class="l${z}" style="border-radius:var(--raio-item) 0 0 var(--raio-item);padding-left:var(--e3)">${dis(d)}</div>
+            <div class="gr${z}" style="border-radius:0">${bars(g, 0, i)}<span class="sm${c.s1 === null ? ' v' : ''}">${f(c.s1)}</span></div>
+            <div class="gr${z}" style="border-radius:0">${bars(g, 2, i)}<span class="sm${c.s2 === null ? ' v' : ''}">${f(c.s2)}</span></div>
+            <div class="l${z} an" style="justify-content:center;${c.ano === null ? 'color:var(--cor-texto-2)' : ''}">${f(c.ano)}</div>
+            <div class="l${z}" style="border-radius:0 var(--raio-item) var(--raio-item) 0">${sit(i)}</div>`;
+        }).join('');
+        const corpo = `<div class="cartao ativo b">
+          <div class="tb">
+            <span class="cab rotulo">Disciplina</span><span class="cab rotulo">1º semestre · 1º e 2º bim</span><span class="cab rotulo">2º semestre · 3º e 4º bim</span><span class="cab rotulo" style="text-align:center">Ano</span><span class="cab rotulo">Situação</span>
+            ${linhas}
+          </div>
+          <div class="leg apoio"><span><i style="background:var(--cor-destaque)"></i>bimestre</span><span><i style="background:var(--cor-laranja)"></i>abaixo da meta</span><span><i style="background:var(--cor-texto-2);opacity:.5;height:2px;width:18px"></i>meta 7,0</span><span style="margin-left:auto"><kbd>Enter</kbd> abre a disciplina</span></div>
+        </div>`;
+        return moldura(corpo, 0);
+      };
+
+      // C. extrato
+      const C = () => {
+        const lst = D.map((d, i) => {
+          const c = calc(d[3]);
+          const ms = d[3].filter((x) => x !== null);
+          const m = ms.length ? ms.reduce((s, x) => s + x, 0) / ms.length : null;
+          return `<div class="it${i === 1 ? ' sel' : ''}"><span class="pt" style="background:var(--cor-${d[2]})"></span><span class="nm">${d[1]}</span><b${m === null ? ' class="v"' : ''}>${f(m)}</b></div>`;
+        }).join('');
+        const ext = `
+          <span class="h rotulo">Período</span><span class="h r rotulo">Peso</span><span class="h r rotulo">Nota</span>
+          <span class="a1">Ano</span><span class="a1"></span><span class="a1 v">6,5</span>
+          <span class="s1">1º semestre</span><span class="s1"></span><span class="s1 v">6,3</span>
+          <span class="b1">1º bimestre</span><span class="pesoc"></span><span class="v">6,0</span>
+          <span class="av">Prova teórica</span><span class="pesoc">3</span><span class="v">5,5</span>
+          <span class="av">Prova prática</span><span class="pesoc">3</span><span class="v">6,5</span>
+          <span class="av">Seminário</span><span class="pesoc">2</span><span class="v">6,5</span>
+          <span class="b1">2º bimestre</span><span class="pesoc"></span><span class="v">6,5</span>
+          <span class="s1">2º semestre</span><span class="s1"></span><span class="s1 v" style="color:var(--cor-texto-2);font-weight:400">—</span>
+          <span class="b1">3º bimestre</span><span class="pesoc"></span><span class="v">7,0</span>
+          <span class="b1 sel rl foco">4º bimestre</span><span class="pesoc sel"></span><span class="v sel rr foco" style="color:var(--cor-texto-2)">—</span>`;
+        const corpo = `<div class="c" style="display:contents"><div class="grade">
+          <div class="cartao"><span class="rotulo">Disciplinas</span><div class="lst" style="margin-top:var(--e3)">${lst}</div></div>
+          <div class="cartao ativo">
+            <div class="cab"><div><h3>Imunologia</h3><div style="margin-top:var(--e2)">${sit(1)}</div></div><div class="md"><span class="rotulo">Média atual</span><b>6,5</b></div></div>
+            <div class="ext">${ext}</div>
+          </div>
+          <div class="cartao quad">
+            <span class="rotulo">Para fechar com meta 7,0</span>
+            <div class="bx"><span class="apoio">1º semestre</span><b>6,3</b><p>Encerrado, abaixo da meta.</p></div>
+            <div class="bx"><span class="apoio">2º semestre</span><b>7,0</b><p>Média 7,0 no 4º bimestre. Provisório.</p></div>
+            <div class="bx"><span class="apoio">Ano</span><b>8,5</b><p>Exige nota alta no 4º bimestre. Provisório.</p></div>
+          </div>
+        </div></div>`;
+        return moldura(corpo, 1);
+      };
+
+      Sala.montar({
+        titulo: 'Notas: direção séria',
+        dados: null,
+        variantes: [
+          { id: 'a', nome: 'A. Tipográfico: hierarquia por peso e fundo suave', html: A },
+          { id: 'b', nome: 'B. Trajetória: barras com a linha da meta', html: B },
+          { id: 'c', nome: 'C. Extrato: ano, semestre, bimestre e avaliação', html: C },
+        ],
+      });
+    </script>
+  </body>
+</html>

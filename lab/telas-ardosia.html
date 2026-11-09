@@ -1,0 +1,619 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mesa, Treino e Notas na Ardósia</title>
+    <style>
+/* ===== Tokens do app (nomes iguais aos de codigo-atual/tokens.css) ===== */
+.stage{
+  --cor-destaque:#8aa0f8; --cor-destaque-forte:#7389ea;
+  --cor-rosa:#e48ae8; --cor-azul:#5eb6ee; --cor-laranja:#f27a9f; --cor-verde:#7fdcb0;
+  --cor-tinta:#0e1428; --cor-sobre-tinta:#f3f5ff;
+  --cor-amarelo:#ab94f4; --cor-ciano:#3fd0c4; --cor-cinza-lavanda:#a3b0c4;
+  --fonte-voz:'Nunito',system-ui,sans-serif; --fonte-interface:'Inter',system-ui,sans-serif; --fonte-leitura:'Source Sans 3','Inter',system-ui,sans-serif;
+  --voz-numero:800 66px/54px var(--fonte-voz); --voz-numero-mini:800 48px/40px var(--fonte-voz);
+  --voz-pergunta:800 32px/40px var(--fonte-voz); --voz-tela:800 30px/32px var(--fonte-voz);
+  --voz-titulo:800 22px/24px var(--fonte-voz); --voz-item:800 20px/22px var(--fonte-voz); --voz-mini:800 17px/20px var(--fonte-voz);
+  --ui-botao:700 15px/20px var(--fonte-interface); --ui-item:600 15px/20px var(--fonte-interface);
+  --ui-apoio:500 14px/20px var(--fonte-interface); --ui-rotulo:700 13px/20px var(--fonte-interface);
+  --ui-sigla:700 12.5px/16px var(--fonte-interface); --ui-tecla:600 12px/18px var(--fonte-interface);
+  --leitura-texto:400 16.5px/25px var(--fonte-leitura); --leitura-compacta:400 15.5px/23px var(--fonte-leitura); --leitura-campo:400 16px/24px var(--fonte-leitura);
+  --nota-t1:700 22px/28px var(--fonte-leitura); --nota-t2:700 18px/24px var(--fonte-leitura);
+  --e1:4px; --e2:8px; --e3:12px; --e4:16px; --e5:24px; --e6:32px;
+  --vao-mosaico:8px; --margem-tela:8px; --barra-topo:48px; --bloco-pad-y:14px; --bloco-pad-x:18px;
+  --raio-bloco:24px; --raio-item:18px; --raio-botao:18px; --raio-campo:16px; --raio-minimo:8px; --raio-pilula:999px;
+  --alvo:44px; --item-lista:56px; --anel-traco:3px; --anel-afastamento:3px; --borda-bloco:2px;
+  --tempo-borda:200ms; --tempo-toque:120ms;
+  width:1280px;height:800px;overflow:hidden;background:var(--cor-fundo);color:var(--cor-texto);
+  font:var(--ui-apoio);font-variant-numeric:tabular-nums;font-synthesis:none;
+}
+/* Direção A · Papel Frio */
+.stage[data-dir="a"][data-tema="claro"]{
+  --cor-fundo:#eceff6; --cor-cartao:#ffffff; --cor-cartao-2:#e0e6f2; --cor-texto:#121830; --cor-texto-2:#525c78;
+  --cor-botao:#2f47c6; --cor-sobre-botao:#ffffff; --cor-marca:#d3dcf9; --cor-foco:#121830; --cor-bloco-ativo:#3a52d2; --cor-nota-titulo:#121830; --cor-veu:rgb(18 24 48/40%); color-scheme:light}
+.stage[data-dir="a"][data-tema="escuro"]{
+  --cor-fundo:#0c1022; --cor-cartao:#141a33; --cor-cartao-2:#222b4f; --cor-texto:#eef1fb; --cor-texto-2:#a0a9c8;
+  --cor-botao:#8ea4fa; --cor-sobre-botao:#0c1022; --cor-marca:#2a3770; --cor-foco:#eef1fb; --cor-bloco-ativo:#8ea4fa; --cor-nota-titulo:#aebcfc; --cor-veu:rgb(12 16 34/60%); color-scheme:dark}
+/* Direção B · Ardósia */
+.stage[data-dir="b"][data-tema="claro"]{
+  --cor-fundo:#dfe4ea; --cor-cartao:#f7f9fb; --cor-cartao-2:#e6ebf0; --cor-texto:#0f1e27; --cor-texto-2:#465a68;
+  --cor-botao:#14232d; --cor-sobre-botao:#f4f8fa; --cor-marca:#c9d3de; --cor-foco:#0f1e27; --cor-bloco-ativo:#4a62dc; --cor-nota-titulo:#0f1e27; --cor-veu:rgb(15 30 39/40%); color-scheme:light}
+.stage[data-dir="b"][data-tema="escuro"]{
+  --cor-fundo:#0e1519; --cor-cartao:#172026; --cor-cartao-2:#222e36; --cor-texto:#e8f0f4; --cor-texto-2:#93a7b3;
+  --cor-botao:#e8f0f4; --cor-sobre-botao:#0e1519; --cor-marca:#2c3b46; --cor-foco:#e8f0f4; --cor-bloco-ativo:#8ea4fa; --cor-nota-titulo:#e8f0f4; --cor-veu:rgb(14 21 25/60%); color-scheme:dark}
+
+[data-materia="0"]{--cor-materia:var(--cor-laranja)} [data-materia="1"]{--cor-materia:var(--cor-destaque)}
+[data-materia="2"]{--cor-materia:var(--cor-azul)}    [data-materia="3"]{--cor-materia:var(--cor-verde)}
+[data-materia="4"]{--cor-materia:var(--cor-rosa)}    [data-materia="5"]{--cor-materia:var(--cor-amarelo)}
+[data-materia="6"]{--cor-materia:var(--cor-ciano)}   [data-materia="7"]{--cor-materia:var(--cor-cinza-lavanda)}
+
+/* ===== base.css (trechos que mudam por direção) ===== */
+.stage *{box-sizing:border-box}
+.stage h1,.stage h2,.stage h3,.stage p{margin:0}
+.stage button{all:unset;box-sizing:border-box;cursor:default}
+.stage svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.anel{outline:var(--anel-traco) solid var(--cor-foco);outline-offset:var(--anel-afastamento)}
+.anel-i{outline:var(--anel-traco) solid var(--cor-foco);outline-offset:0}
+.stage[data-dir="a"] .peca{box-shadow:0 0 0 1px var(--cor-cartao-2)}
+.stage[data-dir="a"] .mono{border-radius:var(--raio-campo)}
+.stage[data-dir="b"] .mono{border-radius:var(--raio-pilula)}
+
+/* ===== Estrutura das telas ===== */
+.tela{position:absolute;inset:0;padding:var(--margem-tela);display:flex;flex-direction:column;gap:var(--vao-mosaico)}
+.barra{height:var(--barra-topo);display:flex;align-items:center;gap:var(--e2);flex:none}
+.barra .tit{font:var(--voz-tela);margin-left:var(--e2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.barra .fim{margin-left:auto;display:flex;gap:var(--e2);align-items:center;flex:none}
+.num{width:var(--alvo);height:var(--alvo);border-radius:var(--raio-pilula);display:grid;place-items:center;font:var(--ui-botao);background:var(--cor-cartao);color:var(--cor-texto-2);flex:none}
+.num.at{background:var(--cor-botao);color:var(--cor-sobre-botao)}
+.pil{height:var(--alvo);padding:0 var(--e4);border-radius:var(--raio-pilula);display:inline-flex;align-items:center;gap:var(--e2);background:var(--cor-cartao);font:var(--ui-botao);color:var(--cor-texto-2);flex:none;white-space:nowrap}
+.pil.on{background:var(--cor-marca);color:var(--cor-texto)}
+.pil.redondo{width:var(--alvo);padding:0;justify-content:center}
+.pil .tecla{margin-left:2px}
+.peca{background:var(--cor-cartao);border-radius:var(--raio-bloco)}
+.bloco{border:var(--borda-bloco) solid transparent;padding:var(--bloco-pad-y) var(--bloco-pad-x);display:flex;flex-direction:column;min-height:0;min-width:0;overflow:hidden;position:relative}
+.bloco.ativo{border-color:var(--cor-bloco-ativo)}
+.cab-b{display:flex;align-items:center;gap:var(--e2);height:28px;flex:none;margin-bottom:var(--e2)}
+.rot{font:var(--ui-rotulo);letter-spacing:.06em;text-transform:uppercase;color:var(--cor-texto-2)}
+.rot b{font-weight:700;color:var(--cor-texto);margin-left:6px;letter-spacing:0}
+.tecla{display:inline-flex;align-items:center;height:22px;padding:0 var(--e2);border-radius:var(--raio-pilula);background:var(--cor-cartao-2);color:var(--cor-texto-2);font:var(--ui-tecla);white-space:nowrap}
+.pil.on .tecla,.sel .tecla{background:var(--cor-cartao);}
+.dots{margin-left:auto;color:var(--cor-texto-2);display:grid;place-items:center;width:28px;height:28px}
+.cab-b .tecla{margin-left:auto}
+.cab-b .tecla + .dots{margin-left:0}
+.btn{height:52px;border-radius:var(--raio-botao);display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:0 var(--e5);font:var(--ui-botao);background:var(--cor-botao);color:var(--cor-sobre-botao);white-space:nowrap}
+.btn .tecla{background:transparent;color:inherit;opacity:.75;padding:0}
+.btn.sec{background:var(--cor-cartao-2);color:var(--cor-texto)}
+.btn.sec .tecla{background:transparent;color:var(--cor-texto-2);opacity:1}
+.btn.m{height:var(--alvo);border-radius:var(--raio-pilula)}
+/* monograma: a cor da matéria vive só aqui */
+.mono{display:grid;place-items:center;background:var(--cor-materia);color:var(--cor-tinta);font:var(--ui-sigla);flex:none}
+.mono.g{width:48px;height:48px;font-size:14px;letter-spacing:.02em}
+.mono.m{width:40px;height:40px}
+.sig{display:inline-grid;place-items:center;height:26px;min-width:46px;padding:0 10px;border-radius:var(--raio-pilula);background:var(--cor-materia);color:var(--cor-tinta);font:var(--ui-sigla);flex:none}
+.dot{width:10px;height:10px;border-radius:var(--raio-pilula);background:var(--cor-materia);flex:none}
+.sel{background:var(--cor-marca)}
+.vazio{border:2px dashed var(--cor-texto-2);background:transparent !important}
+.stage[data-dir="a"] .vazio{box-shadow:none}
+.scroll-fim{flex:1}
+
+/* Hub */
+.provas{display:grid;grid-template-columns:repeat(5,1fr);gap:var(--vao-mosaico);height:184px;flex:none}
+.prova{padding:var(--bloco-pad-y) var(--bloco-pad-x) 16px;display:flex;flex-direction:column;justify-content:space-between;border-radius:var(--raio-bloco);background:var(--cor-cartao);min-width:0}
+.prova .topo{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.prova .quando{font:var(--ui-apoio);color:var(--cor-texto-2)}
+.prova .n{font:var(--voz-numero);color:var(--cor-texto);display:flex;align-items:baseline;gap:8px}
+.prova .n small{font:var(--ui-botao);color:var(--cor-texto-2)}
+.prova .nome{margin-top:8px;font:var(--voz-titulo);text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stage[data-dir="a"] .prova.prox .n{color:var(--cor-bloco-ativo)}
+.prova .prox-tag{display:none}
+.stage[data-dir="b"] .prova.prox .prox-tag{display:inline-flex;background:var(--cor-botao);color:var(--cor-sobre-botao);height:22px;padding:0 10px;border-radius:var(--raio-pilula);font:var(--ui-tecla);align-items:center}
+.prova .quando{white-space:nowrap}.prova .prox-tag{margin-left:auto;align-self:center}
+.hub-baixo{flex:1;min-height:0;display:grid;grid-template-columns:1fr 1.31fr 1fr;gap:var(--vao-mosaico)}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);grid-auto-rows:50px;row-gap:2px;margin-top:2px}
+.cal .dw{font:var(--ui-rotulo);color:var(--cor-texto-2);display:grid;place-items:center;height:28px}
+.cal .d{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font:600 15px/18px var(--fonte-interface);color:var(--cor-texto)}
+.cal .d.fora{color:var(--cor-texto-2);font-weight:500}
+.cal .d.prv{font-weight:800}
+.cal .d .dot{width:8px;height:8px}
+.cal .d .dot.nada{background:transparent}
+.cal .d.hoje span{width:44px;height:44px;border-radius:var(--raio-pilula);display:grid;place-items:center;background:var(--cor-botao);color:var(--cor-sobre-botao);font-weight:700}
+.cal .d.hoje{gap:0}
+.linhas{display:flex;flex-direction:column;gap:4px;min-height:0;overflow:hidden}
+.aula{height:64px;border-radius:var(--raio-item);display:grid;grid-template-columns:100px 1fr auto;align-items:center;gap:8px;padding:0 12px 0 12px;flex:none}
+.aula .h{font:var(--ui-apoio);color:var(--cor-texto-2)}
+.aula .m{font:var(--voz-item);text-transform:uppercase;white-space:nowrap}
+.aula .s{font:var(--ui-apoio);color:var(--cor-texto-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.aula .dir{display:flex;gap:8px;align-items:center}
+.agora{display:inline-flex;align-items:center;height:22px;padding:0 9px;border-radius:var(--raio-pilula);background:var(--cor-destaque);color:var(--cor-tinta);font:var(--ui-tecla);letter-spacing:.04em;text-transform:uppercase}
+.lemb{display:flex;gap:12px;align-items:flex-start;padding:10px 0;font:var(--leitura-texto)}
+.lemb .ck{width:28px;height:28px;border-radius:var(--raio-pilula);border:2px solid var(--cor-texto-2);flex:none;margin-top:-1px}
+
+/* Mesa */
+.mesa{flex:1;min-height:0;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:418px 1fr;gap:var(--vao-mosaico)}
+.mesa .anot{grid-row:1/3;grid-column:2}
+.vazio-c{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;font:var(--ui-item);color:var(--cor-texto-2)}
+.nota h3.t1{font:var(--nota-t1);color:var(--cor-nota-titulo);margin:4px 0 8px}
+.nota h3.t2{font:var(--nota-t2);margin:12px 0 6px}
+.nota p{font:var(--leitura-texto);margin-bottom:8px}
+.nota ul{margin:0 0 8px;padding-left:22px;font:var(--leitura-texto)}
+.nota li{margin-bottom:6px}
+.mk{background:var(--cor-marca);font-style:italic;border-radius:6px;padding:0 4px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.abas{display:inline-flex;gap:4px;background:var(--cor-cartao-2);border-radius:var(--raio-pilula);padding:4px;height:44px;margin-left:auto}
+.abas span{display:inline-flex;align-items:center;padding:0 16px;border-radius:var(--raio-pilula);font:var(--ui-botao);color:var(--cor-texto-2)}
+.abas span.on{background:var(--cor-cartao);color:var(--cor-texto)}
+.cartoes-corpo{flex:1;min-height:0;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.editor{background:var(--cor-cartao-2);border-radius:var(--raio-item);padding:12px 14px;font:var(--leitura-campo);white-space:pre-line;color:var(--cor-texto)}
+.previa-vazia{font:var(--leitura-campo);color:var(--cor-texto-2);padding:12px 0}
+.rodape-c{display:flex;align-items:center;gap:16px;margin-top:8px;flex:none}
+.rodape-c .dica-c{flex:1;min-width:0;font:var(--leitura-compacta);color:var(--cor-texto-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* Acervo */
+.regua{display:flex;gap:8px;align-items:stretch;height:76px;flex:none}
+.regua .faixa{flex:1;min-width:0;display:flex;gap:8px;align-items:center;padding:8px 10px;border-radius:var(--raio-bloco)}
+.chip{height:56px;border-radius:var(--raio-item);padding:0 16px;display:flex;flex-direction:column;justify-content:center;background:var(--cor-cartao-2);color:var(--cor-texto);flex:none}
+.chip b{font:var(--voz-mini)}
+.chip small{font:var(--ui-apoio);font-size:12.5px;color:var(--cor-texto-2);line-height:16px}
+.chip.on{background:var(--cor-botao);color:var(--cor-sobre-botao)}
+.chip.on small{color:var(--cor-sobre-botao);opacity:.85}
+.chip.novo{border:2px dashed var(--cor-texto-2);background:transparent;font:var(--ui-botao);color:var(--cor-texto-2);flex-direction:row;align-items:center;gap:6px}
+.busca{width:380px;border-radius:var(--raio-bloco);display:flex;align-items:center;justify-content:space-between;padding:0 18px;color:var(--cor-texto-2);font:var(--ui-item);flex:none}
+.grade{flex:1;min-height:0;border:var(--borda-bloco) solid transparent;border-radius:var(--raio-bloco);padding:6px;display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:1fr 1fr;gap:var(--vao-mosaico)}
+.grade.ativo{border-color:var(--cor-bloco-ativo)}
+.mat{border-radius:var(--raio-bloco);background:var(--cor-cartao);padding:18px 20px 18px;display:flex;flex-direction:column;justify-content:space-between;min-width:0;min-height:0;overflow:hidden}
+.mat .topo{display:flex;justify-content:space-between;align-items:flex-start}
+.mat .n{font:var(--voz-numero);display:flex;align-items:baseline;gap:8px;margin-top:auto}
+.mat .n small{font:var(--ui-botao);color:var(--cor-texto-2)}
+.mat .nome{font:var(--voz-titulo);text-transform:uppercase;margin-top:8px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.mat .ult{font:var(--ui-apoio);color:var(--cor-texto-2);margin-top:4px}
+
+/* Treino */
+.treino-chips{display:flex;gap:8px;padding:8px 10px;overflow:hidden;flex:none;border-radius:var(--raio-bloco)}
+.treino-chips .chip{width:128px;flex:none;padding:0 14px}
+.treino-chips .chip .l{display:flex;align-items:center;gap:8px}
+.treino{flex:1;min-height:0;display:grid;grid-template-columns:1fr 420px;gap:var(--vao-mosaico)}
+.lin{height:60px;display:flex;align-items:center;gap:14px;padding:0 14px;border-radius:var(--raio-item);flex:none}
+.lin .t{font:var(--voz-mini);flex:1}
+.lin .c{font:var(--ui-apoio);color:var(--cor-texto-2)}
+.cx{width:28px;height:28px;border-radius:8px;border:2px solid var(--cor-texto-2);display:grid;place-items:center;flex:none}
+.cx.on{background:var(--cor-botao);border-color:var(--cor-botao);color:var(--cor-sobre-botao)}
+.cx svg.i{width:18px;height:18px;stroke-width:3}
+
+/* Agenda */
+.ag-barra{height:76px;flex:none;border-radius:var(--raio-bloco);display:flex;align-items:center;gap:8px;padding:0 10px}
+.ag-barra .esp{flex:1}
+.ag-corpo{flex:1;min-height:0;display:grid;grid-template-columns:1fr 340px;gap:var(--vao-mosaico)}
+.semana{padding:12px 12px 8px 8px}
+.sem-grade{flex:1;min-height:0;display:grid;grid-template-columns:44px repeat(7,1fr);column-gap:6px}
+.sem-dia{display:flex;flex-direction:column;min-width:0}
+.sem-dia .cabd{height:56px;flex:none;display:flex;flex-direction:column;align-items:center;justify-content:center;font:var(--ui-rotulo);letter-spacing:.06em;color:var(--cor-texto-2);gap:2px}
+.sem-dia .cabd b{font:var(--voz-mini);letter-spacing:0;color:var(--cor-texto);min-width:34px;height:26px;display:grid;place-items:center;border-radius:var(--raio-pilula)}
+.sem-dia .cabd b.hj{background:var(--cor-botao);color:var(--cor-sobre-botao)}
+.sem-col{position:relative;flex:1;background:var(--cor-cartao-2);border-radius:var(--raio-item)}
+.horas{position:relative}
+.horas span{position:absolute;right:4px;transform:translateY(-50%);font:var(--ui-rotulo);color:var(--cor-texto-2)}
+.ev{position:absolute;left:4px;right:4px;border-radius:14px;background:var(--cor-cartao);padding:3px 8px;overflow:hidden;display:flex;flex-direction:column;gap:1px}
+.ev .l1{display:flex;align-items:center;gap:6px;font:700 13px/22px var(--fonte-interface)}
+.ev .l2{font:var(--ui-apoio);color:var(--cor-texto-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:12.5px;line-height:16px}
+.ev .sig{height:22px;min-width:0;padding:0 8px;font-size:12px}
+.ev.sel{background:var(--cor-marca)}
+.ev.sel .l2{color:var(--cor-texto)}
+.ag-dir{display:flex;flex-direction:column;gap:var(--vao-mosaico);min-height:0}
+.prev h2{font:800 28px/32px var(--fonte-voz);margin:10px 0 6px}
+.prev .meta{font:var(--ui-apoio);color:var(--cor-texto-2);line-height:22px}
+.prev .btn{margin-top:auto;align-self:flex-start}
+.fil{display:flex;flex-wrap:wrap;gap:8px}
+.fil .pil{height:44px;padding:0 14px;background:var(--cor-cartao-2);color:var(--cor-texto)}
+.fil .pil.on{background:var(--cor-botao);color:var(--cor-sobre-botao)}
+.compl{display:flex;align-items:center;gap:10px;height:56px;padding:0 4px;font:var(--ui-botao)}
+.compl .f{margin-left:auto;font:var(--ui-apoio);color:var(--cor-texto-2)}
+
+/* Faltas */
+.falt{flex:1;min-height:0;display:grid;grid-template-columns:292px 1fr 340px;gap:var(--vao-mosaico)}
+.fm{height:56px;display:flex;align-items:center;gap:10px;padding:0 10px;border-radius:var(--raio-item);flex:none}
+.fm .s{font:var(--ui-sigla);width:34px;color:var(--cor-texto)}
+.fm .nm{font:var(--ui-item);flex:1;min-width:0;line-height:17px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.fm .pc{font:var(--ui-item);color:var(--cor-texto-2);flex:none}
+.fa{height:56px;display:flex;align-items:center;gap:16px;padding:0 14px;border-radius:var(--raio-item);flex:none}
+.fa .hr{font:var(--ui-item);color:var(--cor-texto-2);width:34px}
+.fa .dt{font:var(--ui-item);flex:1}
+.fa .st{font:var(--ui-item);display:flex;align-items:center;gap:6px}
+.fa .st.n{color:var(--cor-texto-2);font-weight:500}
+.kv{display:flex;justify-content:space-between;padding:5px 0;font:var(--ui-apoio);color:var(--cor-texto-2)}
+.kv b{color:var(--cor-texto);font-weight:700}
+.res-g{font:var(--voz-numero-mini);margin:4px 0 6px}
+.ok{display:flex;align-items:center;gap:8px;font:var(--ui-botao);margin-top:14px}
+.ok-t{font:var(--leitura-compacta);color:var(--cor-texto-2);margin-top:4px}
+
+/* Notas */
+.cofre{flex:1;min-height:0}
+.cofre p{font:var(--leitura-texto);max-width:60ch;margin-bottom:12px}
+.cofre .lin{width:480px}
+/* Notas v2 · menos poluída */
+.nb{flex:1;min-height:0;display:grid;grid-template-columns:104px minmax(0,1fr) 300px;gap:var(--vao-mosaico)}
+.nb.geral{grid-template-columns:minmax(0,1fr)}
+.nb-rail{padding:8px;gap:4px;display:flex;flex-direction:column;overflow:hidden}
+.nb-r{height:84px;border-radius:var(--raio-item);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;cursor:pointer;flex:none}
+.nb-r .v{font:800 16px/18px var(--fonte-voz);color:var(--cor-texto)}
+.nb-c{display:flex;flex-direction:column;gap:var(--vao-mosaico);min-height:0;min-width:0}
+.nb-res{padding:20px 26px 22px;flex:none}
+.nb-id{display:flex;align-items:center;gap:16px}
+.nb-id h2{font:800 32px/36px var(--fonte-voz);letter-spacing:-.01em}
+.nb-st{display:flex;align-items:center;gap:6px;font:var(--ui-item);color:var(--cor-texto-2);margin-top:2px}
+.nb-st svg.i{width:18px;height:18px}
+.nb-media{margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;gap:0}
+.nb-media b{font:800 60px/58px var(--fonte-voz);letter-spacing:-.02em}
+.nb-tira{display:flex;gap:44px;margin-top:22px}
+.nb-tira .g{display:flex;flex-direction:column;gap:10px}
+.nb-tira .row{display:flex;gap:6px}
+.nb-tira .c{width:78px;display:flex;flex-direction:column;align-items:center;gap:0;text-align:center}
+.nb-tira .l{font:var(--ui-rotulo);color:var(--cor-texto-2);text-transform:uppercase;letter-spacing:.05em}
+.nb-tira .sb{font:var(--ui-apoio);font-size:12.5px;color:var(--cor-texto-2);margin-bottom:6px}
+.nb-tira .vl{font:800 28px/30px var(--fonte-voz);min-width:64px;height:44px;display:grid;place-items:center;border-radius:var(--raio-pilula);padding:0 12px}
+.nb-tira .tot .vl{background:var(--cor-cartao-2)}
+.nb-tira .aberto .vl{box-shadow:inset 0 0 0 2px var(--cor-texto-2);border-radius:var(--raio-pilula);color:var(--cor-texto-2)}
+.nb-tira .nada .vl{color:var(--cor-texto-2);font-weight:700}
+.nb-bim{flex:1;padding:20px 26px 22px}
+.nb-bh{display:flex;align-items:center;gap:14px;margin-bottom:10px;flex:none}
+.nb-bh h3{font:800 24px/28px var(--fonte-voz)}
+.nb-soma{margin-right:auto;display:inline-flex;align-items:baseline;gap:6px;font:800 18px/22px var(--fonte-voz);background:var(--cor-cartao-2);border-radius:var(--raio-pilula);padding:6px 14px}
+.nb-soma small{font:var(--ui-apoio);color:var(--cor-texto-2);font-weight:500}
+.nb-t{grid-template-columns:minmax(0,1fr) 90px 160px}
+.nb-t.tab-r{height:56px}
+.nb-t .n{font:var(--voz-mini)}
+.nb-bim .inp{width:128px;height:44px;border-radius:var(--raio-pilula);text-align:center;padding:0 16px;background:var(--cor-cartao-2);font:800 17px/20px var(--fonte-voz)}
+.nb-bim .inp.pend{background:transparent;box-shadow:inset 0 0 0 2px var(--cor-texto-2);font:700 15px/20px var(--fonte-interface)}
+.nb-bim .inp.pend::placeholder{color:var(--cor-texto-2)}
+.nb-pre{padding:22px 24px;gap:0}
+.nb-meta{display:flex;align-items:center;gap:12px;margin:6px 0 18px}
+.nb-meta b{font:800 28px/32px var(--fonte-voz);min-width:56px;text-align:center}
+.nb-meta .rot{margin-right:auto}
+.nb-p{display:flex;flex-direction:column;padding:12px 0}
+.nb-p .l{font:var(--ui-item);color:var(--cor-texto-2)}
+.nb-p b{font:800 48px/52px var(--fonte-voz);letter-spacing:-.02em}
+.nb-p .s{font:var(--ui-apoio);color:var(--cor-texto-2)}
+.nb-p.dest{background:var(--cor-cartao-2);border-radius:var(--raio-item);padding:16px 18px;margin-top:6px}
+.nb-p.dest b{font-size:60px;line-height:62px}
+.nb-p.dest .l{color:var(--cor-texto);font-weight:700}
+.nb-g{padding:20px 26px 22px}
+.tab-gg{grid-template-columns:48px minmax(0,1fr) 90px 90px 110px 150px 170px}
+.tab-gg .r{text-align:right;justify-self:end}
+.tab-gg.tab-r{height:54px}
+
+/* Notas (desbloqueadas) */
+.nt{flex:1;min-height:0;display:grid;grid-template-columns:340px 1fr;gap:var(--vao-mosaico)}
+.nl{height:56px;display:flex;align-items:center;gap:12px;padding:0 12px;border-radius:var(--raio-item);flex:none;cursor:pointer}
+.nl .nm{flex:1;min-width:0;font:var(--ui-item);line-height:17px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.nl .md{font:800 17px/20px var(--fonte-voz);flex:none}
+.nl.geral{height:72px}
+.nl.geral .nm{font:var(--voz-mini)}
+.nl.geral .md{font:var(--voz-item)}
+.nl .gl{width:40px;height:40px;border-radius:var(--raio-pilula);background:var(--cor-botao);color:var(--cor-sobre-botao);display:grid;place-items:center;flex:none}
+.stage[data-dir="a"] .nl .gl{border-radius:var(--raio-campo)}
+.nt-rot{margin:12px 0 6px 12px;flex:none}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;flex:none;margin-bottom:10px}
+.stat{background:var(--cor-cartao-2);border-radius:var(--raio-item);padding:12px 16px}
+.stat .v{font:var(--voz-numero-mini);display:flex;align-items:baseline;gap:8px}
+.stat .v small{font:var(--ui-botao);color:var(--cor-texto-2)}
+.stat .l{font:var(--ui-apoio);color:var(--cor-texto-2);margin-top:6px}
+.tab-h,.tab-r{display:grid;align-items:center;column-gap:12px}
+.tab-h{height:28px;padding:0 10px;font:var(--ui-rotulo);letter-spacing:.06em;text-transform:uppercase;color:var(--cor-texto-2);flex:none}
+.tab-r{height:44px;padding:0 10px;border-radius:var(--raio-item);flex:none}
+.tab-r.cl{cursor:pointer}
+.tab-g{grid-template-columns:40px minmax(0,1fr) 84px 160px 210px}
+.tab-d{grid-template-columns:minmax(0,1fr) 80px 120px 90px}
+.tab-r .n{font:var(--ui-item)}
+.tab-r .n.m{font:var(--voz-mini)}
+.tab-r .c{font:var(--ui-item);color:var(--cor-texto-2)}
+.sit{display:flex;align-items:center;gap:8px;font:var(--ui-item)}
+.sit svg.i{width:18px;height:18px}
+.sit.n{color:var(--cor-texto-2);font-weight:500}
+.tab-h .r,.tab-r .r{text-align:right;justify-self:end}
+.inp{width:96px;height:36px;border-radius:12px;background:transparent;text-align:right;padding:0 12px;font:var(--ui-item);color:var(--cor-texto);border:0;outline:none;font-variant-numeric:tabular-nums}
+.inp.pend{background:var(--cor-cartao-2)}
+.inp::placeholder{color:var(--cor-texto-2)}
+.inp:focus{outline:var(--anel-traco) solid var(--cor-foco);outline-offset:0}
+.disc-h{display:flex;align-items:center;gap:14px;margin-bottom:12px;flex:none}
+.disc-h h2{font:800 28px/32px var(--fonte-voz);letter-spacing:-.01em}
+.disc-h .sub{font:var(--ui-apoio);color:var(--cor-texto-2)}
+.rolagem{display:flex;flex-direction:column;gap:2px;min-height:0;overflow:auto}
+.nota-rod{margin-top:auto;padding-top:10px;font:var(--leitura-compacta);color:var(--cor-texto-2);flex:none}
+.pil .peq{font:var(--ui-apoio);color:var(--cor-texto-2);font-weight:500}
+
+/* Moldura da bancada */
+body{margin:0;background:#888;font:500 14px/20px Inter,system-ui,sans-serif}
+.barra-lab{position:sticky;top:0;z-index:5;display:flex;gap:8px;padding:8px 12px;background:#222;color:#fff;align-items:center}
+.barra-lab button{all:unset;cursor:pointer;padding:6px 14px;border-radius:999px;background:#444;font-weight:600}
+.barra-lab button[aria-pressed="true"]{background:#fff;color:#111}
+.cena{position:relative;overflow:hidden;margin:12px auto;max-width:1280px;width:100%}
+.stage{position:absolute;left:0;top:0;transform-origin:0 0}
+    </style>
+  </head>
+  <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-dots" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="12" cy="19" r="1.4"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 4l9 16H3z"/><path d="M12 10v4.5M12 17.5v.01"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="3"/><path d="M8 11V8a4 4 0 018 0v3"/></symbol>
+  <symbol id="i-left" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></symbol>
+  <symbol id="i-chl" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></symbol>
+  <symbol id="i-chr" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+  <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></symbol>
+  <symbol id="i-unlock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="3"/><path d="M8 11V8a4 4 0 0 1 7.5-2"/></symbol>
+</svg>
+    <div class="barra-lab" id="bl"></div>
+    <div id="palcos"></div>
+    <script type="module">
+      import '../src/ui/styles/fonts.css';
+      const st = { tema: new URLSearchParams(location.search).get('tema') ?? 'claro', tela: new URLSearchParams(location.search).get('tela') ?? 'mesa', dir: new URLSearchParams(location.search).get('dir') ?? 'b' };
+      const T = {};
+      const MAT = {GEN:{n:'Genética',m:0},IMU:{n:'Imunologia',m:1},PRO:{n:'Propedêutica',m:2},APS:{n:'Atenção Primária',m:3},FAR:{n:'Farmacologia',m:4},FIS:{n:'Fisiologia',m:5},PAT:{n:'Patologia Geral e Bases Moleculares da Doença',m:6},BIO:{n:'Bioética',m:7}};
+const ic = (n,c)=>`<svg class="i ${c||''}" aria-hidden="true"><use href="#i-${n}"/></svg>`;
+const sig = s=>`<span class="sig" data-materia="${MAT[s].m}">${s}</span>`;
+const mono = (s,t)=>`<span class="mono ${t||'g'}" data-materia="${MAT[s].m}">${s}</span>`;
+const dot = s=>`<span class="dot" data-materia="${MAT[s].m}"></span>`;
+const tec = t=>`<span class="tecla">${t}</span>`;
+const dots = `<span class="dots">${ic('dots')}</span>`;
+
+function barra(at,titulo,opts){
+  opts=opts||{};
+  let nums='';for(let i=1;i<=6;i++)nums+=`<span class="num ${i===at?'at':''}">${i}</span>`;
+  const voltar = opts.voltar?`<span class="pil">${ic('left')} Agenda ${tec('Esc')}</span>`:'';
+  return `<div class="barra">${nums}<h1 class="tit">${titulo}</h1>${opts.meio||''}<div class="fim">${opts.antes||''}${voltar}<span class="pil">Faltas</span><span class="pil">Notas</span><span class="pil redondo" aria-label="Ajuda">?</span></div></div>`;
+}
+
+
+T.hub = ()=>{
+  const prov=[['GEN','7','14 nov, 08:00'],['IMU','11','18 nov, 10:00'],['PRO','14','21 nov, 13:00'],['APS','20','27 nov, 08:00'],['FAR','25','02 dez, 14:00']];
+  const cards=prov.map((p,i)=>`<div class="prova peca ${i===0?'prox':''}" data-materia="${MAT[p[0]].m}">
+    <div class="topo">${mono(p[0])}<span class="quando">${p[2]}</span></div>
+    <div><div class="n">${p[1]}<small>dias</small>${i===0?'<span class="prox-tag">Próxima</span>':''}</div><div class="nome">${MAT[p[0]].n}</div></div></div>`).join('');
+  const dias=[];const pf={14:'GEN',18:'IMU',21:'PRO',27:'APS'};
+  const grid=[...Array(30)].map((_,i)=>i+1);
+  let cal='';['D','S','T','Q','Q','S','S'].forEach(x=>cal+=`<span class="dw">${x}</span>`);
+  grid.forEach(d=>{
+    if(d===7){cal+=`<span class="d hoje"><span>7</span></span>`;return}
+    cal+=`<span class="d ${pf[d]?'prv':''}">${d}${pf[d]?dot(pf[d]).replace('class="dot"','class="dot"'):''}</span>`;
+  });
+  cal+=`<span class="d fora">1</span><span class="d fora prv" style="color:var(--cor-texto)">2${dot('FAR')}</span><span class="d fora">3</span><span class="d fora">4</span><span class="d fora">5</span>`;
+  // corrige: dots com data-materia
+  const ag=[['08:00–09:30','GEN','Expressão gênica'],['10:00–11:00','APS','Territorialização'],['13:00–15:00','IMU','Resposta inflamatória aguda',1],['15:10–17:00','PRO','Exame do abdome']];
+  const aulas=ag.map(a=>`<div class="aula ${a[3]?'sel anel-i':''}" data-materia="${MAT[a[1]].m}">
+    <span class="h">${a[0]}</span><div><div class="m">${MAT[a[1]].n}</div><div class="s">${a[2]}</div></div>
+    <span class="dir">${a[3]?'<span class="agora">Agora</span>':''}${sig(a[1])}</span></div>`).join('');
+  const lembs=['Levar o jaleco para a Propedêutica.','Revisar IL-6 e TNF-α antes da prova de Imunologia.','Confirmar a sala do laboratório de Genética.'].map(t=>`<div class="lemb"><span class="ck"></span><span>${t}</span></div>`).join('');
+  return `<div class="tela">${barra(1,'Sábado, 7 de novembro')}
+  <div class="provas">${cards}</div>
+  <div class="hub-baixo">
+    <div class="bloco peca"><div class="cab-b"><span class="rot">Novembro<b>2026</b></span>${dots}</div><div class="cal">${cal}</div></div>
+    <div class="bloco peca ativo"><div class="cab-b"><span class="rot">Agenda de hoje</span>${tec('Enter abre')}${dots}</div><div class="linhas">${aulas}</div></div>
+    <div class="bloco peca"><div class="cab-b"><span class="rot">Lembretes</span>${tec('Alt I')}${dots}</div><div class="linhas" style="flex:1">${lembs}</div><span class="btn" style="width:100%">Novo lembrete</span></div>
+  </div></div>`;
+};
+
+T.mesa = ()=>{
+  const meio=`${sig('IMU')}<span class="pil on">Slides</span><span class="pil on">Anotações</span><span class="pil on">Cartões</span>`;
+  const ed=`@ Quem libera IL-6?\nMacrófago ativado\n# Efeitos\n- Febre\n- ↑ PCR no fígado`;
+  return `<div class="tela">${barra(2,'Resposta inflamatória aguda',{meio:`<span style="margin-left:4px;display:flex;gap:8px;align-items:center">${sig('IMU')}</span>`.replace(sig('IMU'),sig('IMU')),antes:`<span class="pil on">Slides</span><span class="pil on">Anotações</span><span class="pil on">Cartões</span>`})}
+  <div class="mesa">
+    <div class="bloco peca"><div class="cab-b"><span class="rot">Slides</span>${tec('Alt S')}${dots}</div><div class="vazio-c"><span>Esta aula ainda não tem slides.</span><span class="btn sec m">Anexar PDF</span></div></div>
+    <div class="bloco peca"><div class="cab-b"><span class="rot">Cartões</span><span class="abas"><span class="on">Novo</span><span>Salvos 6</span></span>${tec('Alt C')}${dots}</div>
+      <div class="cartoes-corpo"><div class="editor">${ed}</div><div class="previa-vazia">A prévia dos cartões aparece aqui.</div></div>
+      <div class="rodape-c"><span class="dica-c">@ frente · # seção · - item · 1. número · + a favor · -- contra · ? dúvida</span><span class="btn sec">Salvar ${tec('Ctrl Enter')}</span></div></div>
+    <div class="bloco peca ativo anot"><div class="cab-b"><span class="rot">Anotações</span>${tec('Alt A')}${dots}</div>
+      <div class="nota"><h3 class="t1">Resposta inflamatória aguda</h3>
+      <p>O macrófago reconhece o LPS pelo <span class="mk">TLR4</span>. A via segue por NF-κB e libera IL-1β, IL-6 e TNF-α.</p>
+      <h3 class="t2">Mediadores</h3>
+      <ul><li>IL-1β e TNF-α: febre, via PGE₂ no hipotálamo.</li><li>IL-6: age no fígado, ↑ PCR e fibrinogênio.</li></ul>
+      <p>Entre 6 e 24 horas predominam neutrófilos; entre 24 e 48 horas, monócitos. <span class="mk">Cai na prova.</span></p></div></div>
+  </div></div>`;
+};
+
+T.acervo = ()=>{
+  const ms=[['GEN',3,'07 nov'],['IMU',9,'06 nov'],['PRO',2,'05 nov'],['APS',1,'04 nov'],['FAR',2,'03 nov'],['FIS',42,'02 nov'],['PAT',1,'01 nov'],['BIO',0,null]];
+  const cards=ms.map((m,i)=>`<div class="mat peca ${m[1]===0?'vazio':''} ${i===0?'anel-i':''}" data-materia="${MAT[m[0]].m}">
+    <div class="topo">${mono(m[0])}</div>
+    <div class="n">${m[1]}<small>${m[1]===1?'aula':'aulas'}</small></div>
+    <div class="nome">${MAT[m[0]].n}</div>
+    <div class="ult">${m[2]?'Último acesso: '+m[2]:'Nenhuma aula ainda'}</div></div>`).join('');
+  return `<div class="tela">${barra(3,'Acervo')}
+  <div class="regua"><div class="faixa peca">
+    <div class="chip"><b>1º ano</b><small>arquivado · só consulta</small></div>
+    <div class="chip on"><b>2º ano</b><small>8 matérias</small></div>
+    <div class="chip"><b>3º ano</b><small>0 matérias</small></div>
+    <div class="chip novo">${ic('plus')} Nova matéria</div></div>
+    <div class="busca peca"><span>Buscar matéria, aula ou cartão</span>${tec('Alt F')}</div></div>
+  <div class="grade ativo">${cards}</div></div>`;
+};
+
+T.treino = ()=>{
+  const ch=[['Todas','14 hoje',1],['GEN','1 hoje'],['IMU','11 hoje'],['PRO','1 hoje'],['APS','em dia'],['FAR','1 hoje'],['FIS','em dia'],['PAT','em dia'],['BIO','em dia']];
+  const chips=ch.map(c=>`<div class="chip ${c[2]?'on':''}" ${MAT[c[0]]?`data-materia="${MAT[c[0]].m}"`:''}><b class="l" style="display:flex;align-items:center;gap:8px;font:var(--voz-mini)">${MAT[c[0]]?dot(c[0]):''}${c[0]}</b><small>${c[1]}</small></div>`).join('');
+  const lin=[['Todos os cartões','14 hoje · 66 cartões',1],['1º bimestre','4 hoje · 26 cartões'],['2º bimestre','10 hoje · 40 cartões'],['Sem bimestre','0 cartões']].map((l,i)=>`<div class="lin ${i===0?'sel':''}"><span class="cx ${l[2]?'on':''}">${l[2]?ic('check'):''}</span><span class="t">${l[0]}</span><span class="c">${l[1]}</span></div>`).join('');
+  return `<div class="tela">${barra(4,'Treino')}
+  <div class="treino-chips peca">${chips}</div>
+  <div class="treino">
+    <div class="bloco peca"><div class="cab-b"><span class="rot">O que treinar<b>4</b></span></div><div class="linhas">${lin}</div></div>
+    <div class="bloco peca ativo"><div class="cab-b"><span class="rot">Resumo</span></div>
+      <div style="font:var(--voz-numero);margin-top:4px">14</div>
+      <div style="font:var(--leitura-texto);color:var(--cor-texto-2);margin-top:8px">cartões para hoje, de 66</div>
+      <div style="font:var(--ui-botao);margin-top:6px">Todas as matérias</div>
+      <span class="btn anel-i" style="margin-top:auto;width:100%;height:56px">Iniciar treino ${tec('Enter')}</span></div>
+  </div></div>`;
+};
+
+T.agenda = ()=>{
+  const H=48, T0=7;
+  const pos=(h,m)=>((h-T0)+m/60)*H;
+  const E=(s,h,m,dh,dm,l2,sel)=>({s,h,m,dur:dh*60+dm,l2,sel,t:(h<10?'0':'')+h+':'+(m<10?'0':'')+m});
+  const semana=[
+    [E('FAR',8,0,2,0,'Teoria'),E('FIS',10,15,1,45,'Teoria'),E('PAT',14,0,2,0,'Prática')],
+    [E('FAR',8,0,2,0,'Teoria'),E('FIS',10,15,1,45,'Teoria'),E('PAT',14,0,2,0,'Prática')],
+    [E('FAR',8,0,2,0,'Teoria'),E('FIS',10,15,1,45,'Teoria'),E('PAT',14,0,2,0,'Prática')],
+    [E('FAR',8,0,2,0,'Teoria'),E('FIS',10,15,1,45,'Teoria'),E('PAT',14,0,2,0,'Prática')],
+    [E('FAR',8,0,2,0,'Teoria'),E('FIS',10,15,1,45,'Teoria'),E('PAT',14,0,2,0,'Prática')],
+    [E('GEN',8,0,1,30,'Expressão gênica'),E('APS',10,0,1,0,'Territorialização'),E('IMU',13,0,2,0,'Resposta inflamatória aguda',1),E('PRO',15,10,1,50,'Exame do abdome')],
+    []];
+  const dn=['SEG','TER','QUA','QUI','SEX','SÁB','DOM'];
+  let horas='';for(let h=8;h<=18;h++)horas+=`<span style="top:${(h-T0)*H+56}px">${h}h</span>`;
+  const cols=semana.map((evs,i)=>`<div class="sem-dia"><div class="cabd">${dn[i]}<b class="${i===5?'hj':''}">${i+2}</b></div><div class="sem-col">${evs.map(e=>`<div class="ev ${e.sel?'sel anel-i':''}" data-materia="${MAT[e.s].m}" style="top:${pos(e.h,e.m)+2}px;height:${e.dur/60*H-4}px"><div class="l1">${sig(e.s)}${e.t}</div><div class="l2">${e.l2}</div></div>`).join('')}</div></div>`).join('');
+  const fil=['Todas','GEN','IMU','PRO','APS','FAR','FIS','PAT','BIO'].map((c,i)=>`<span class="pil ${i===0?'on':''}">${c}</span>`).join('');
+  return `<div class="tela">${barra(5,'Agenda')}
+  <div class="ag-barra peca">
+    <div class="chip on"><b>Semana</b><small>dias e horas</small></div><div class="chip"><b>Mês</b><small>novembro</small></div><div class="chip"><b>Lista</b><small>21 dias</small></div><div class="chip"><b>Grade</b><small>horário fixo</small></div>
+    <span class="esp"></span>
+    <span class="pil redondo" style="background:var(--cor-cartao-2)">${ic('chl')}</span><span class="pil" style="background:var(--cor-cartao-2);color:var(--cor-texto)">Hoje</span><span class="pil redondo" style="background:var(--cor-cartao-2)">${ic('chr')}</span>
+    <span style="font:var(--voz-mini);margin:0 8px">02 nov – 08 nov</span>${tec('Alt PgUp PgDn')}
+    <span class="btn m" style="margin-left:8px">${ic('plus')} Novo ${tec('Alt N')}</span></div>
+  <div class="ag-corpo">
+    <div class="bloco peca ativo semana"><div class="sem-grade"><div class="horas">${horas}</div>${cols}</div></div>
+    <div class="ag-dir">
+      <div class="bloco peca prev" style="flex:1"><div style="display:flex;align-items:center;gap:10px">${sig('IMU')}<span class="rot">Aula</span></div><h2>Imunologia</h2><div class="meta">sábado, 7 de novembro · 13:00 – 15:00<br>Resposta inflamatória aguda</div><span class="btn">Abrir na Mesa ${tec('Enter')}</span></div>
+      <div class="bloco peca" style="flex:none"><div class="cab-b" style="margin-bottom:4px"><span class="rot">Matérias</span></div><div class="fil">${fil}</div></div>
+      <div class="bloco peca" style="flex:none"><div class="cab-b" style="margin-bottom:0"><span class="rot">A completar<b>2</b></span></div>
+        <div class="compl">${sig('GEN')} Prova <span class="f">falta data e hora</span></div><div class="compl">${sig('FAR')} Prova <span class="f">falta hora</span></div></div>
+    </div></div></div>`;
+};
+
+T.faltas = ()=>{
+  const ms=[['GEN','—'],['IMU','—'],['PRO','—'],['APS','—'],['FAR','95,0%',1],['FIS','—'],['PAT','—'],['BIO','—']];
+  const lm=ms.map(m=>`<div class="fm ${m[2]?'sel anel-i':''}" data-materia="${MAT[m[0]].m}">${mono(m[0],'m').replace('mono m','mono m')}<span class="nm">${MAT[m[0]].n}</span><span class="pc">${m[1]}</span></div>`).join('');
+  const au=[['06 nov · 08:00–10:00','presente',1],['05 nov · 08:00–10:00','presente'],['04 nov · 08:00–10:00','faltou'],['03 nov · 08:00–10:00','cancelada'],['02 nov · 08:00–10:00','presente'],['30 out · 08:00–10:00','presente'],['29 out · 08:00–10:00','presente'],['28 out · 08:00–10:00','presente'],['27 out · 08:00–10:00','presente'],['26 out · 08:00–10:00','presente'],['23 out · 08:00–10:00','presente']];
+  const la=au.map(a=>`<div class="fa ${a[2]?'sel':''}"><span class="hr">2 h</span><span class="dt">${a[0]}</span>${a[1]==='faltou'?`<span class="st">${ic('alert')} faltou</span>`:a[1]==='cancelada'?`<span class="st n">cancelada · fora da conta</span>`:`<span class="st">presente</span>`}</div>`).join('');
+  return `<div class="tela">${barra(5,'Faltas',{voltar:1})}
+  <div class="falt">
+    <div class="bloco peca ativo"><div class="cab-b"><span class="rot">Matérias</span></div><div class="linhas">${lm}</div></div>
+    <div class="bloco peca"><div class="cab-b"><span class="rot">Aulas de FAR</span>${tec('Alt N')}${dots}</div><div class="linhas">${la}</div></div>
+    <div class="bloco peca"><div class="cab-b"><span class="rot">Resumo</span></div>
+      <div class="res-g">95,0%</div><div class="kv" style="margin-top:-4px"><span>Presença</span></div>
+      <div class="kv"><span>Aulas dadas</span><b>40 h</b></div><div class="kv"><span>Faltas</span><b>2 h</b></div><div class="kv"><span>Canceladas (fora da conta)</span><b>2 h</b></div><div class="kv"><span>Início da contagem</span><b>10 out</b></div>
+      <div class="ok">${ic('check')} dentro do limite</div><div class="ok-t">Ainda pode faltar 8 h sem cair de 75%.</div></div>
+  </div></div>`;
+};
+
+MAT.MIC={n:'Microbiologia',m:7};MAT.PSI={n:'Psicologia',m:6};
+const NT={tab:'disc',sel:'PRO',lock:false,meta:7,v:{}};
+const MX=[3,7,3,7];
+const AVS=[['Prova teórica',4],['Prova prática',2],['Seminário',1]];
+const ND=[
+ {s:'GEN',b:[2.5,5.4,2.3],a:[null,null,null]},
+ {s:'IMU',b:[2.0,4.6,1.9],a:[null,null,null]},
+ {s:'PRO',b:[2.4,4.9,1.8],a:[3.2,null,null]},
+ {s:'APS',b:[2.3,5.69,1.92],a:[null,null,null]},
+ {s:'MIC',b:[2.4,5.6,2.4],a:[3.6,null,null]},
+ {s:'PSI',b:[null,null,null],a:[null,null,null]}];
+const fm=n=>n==null?'—':(Math.round(n*100+1e-9)/100).toFixed(2).replace(/0$/,'').replace('.',',');
+const fm1=n=>n==null?'—':(Math.round(n*10+1e-9)/10).toFixed(1).replace('.',',');
+const av=(d,i)=>{const k=d.s+':'+i;return k in NT.v?NT.v[k]:d.a[i]};
+function nc(d){
+  const M=NT.meta,b=d.b.slice(),L=AVS.map((_,i)=>av(d,i));
+  const parcial=L.reduce((x,n)=>x+(n||0),0),nL=L.filter(n=>n!=null).length;
+  b[3]=nL===AVS.length?parcial:null;
+  const S1=b[0]!=null&&b[1]!=null?b[0]+b[1]:null, S2=b[2]!=null&&b[3]!=null?b[2]+b[3]:null;
+  const ano=S1!=null&&S2!=null?(S1+S2)/2:null;
+  const proj=(i,j)=>{let o=0,m=0;[i,j].forEach(k=>{if(b[k]!=null){o+=b[k];m+=MX[k]}});return m?o/m*10:null};
+  const ps=[proj(0,1),proj(2,3)].filter(x=>x!=null);
+  const media=ps.length?ps.reduce((x,y)=>x+y,0)/ps.length:null;
+  const r={b,L,S1,S2,ano,media,parcial,nL,M,st:'sem'};
+  const tem=b.some(x=>x!=null)||nL>0;
+  if(!tem)return r;
+  if(ano!=null){r.st=ano>=M?'fech':'abaixo';return r}
+  if(b[3]==null&&b[2]!=null){
+    r.n2=Math.round((M-b[2])*100)/100;
+    if(S1!=null)r.nA=Math.round((2*M-S1-b[2])*100)/100;
+  }
+  const n=r.nA;
+  if(n==null)r.st='ritmo';else if(n<=0)r.st='ok';else if(n>MX[3])r.st='fora';else r.st=n/MX[3]>=0.6?'atencao':'ritmo';
+  return r;
+}
+const ST={sem:['','Sem nota'],ok:['check','Garantida'],fech:['check','Aprovada'],ritmo:['check','No ritmo'],atencao:['alert','Atenção'],fora:['alert','Fora do alcance'],abaixo:['alert','Abaixo da meta']};
+const stH=c=>ST[c.st][0]?`${ic(ST[c.st][0])} ${ST[c.st][1]}`:ST[c.st][1];
+const cel=(l,sb,v,cls)=>`<div class="c ${cls||''}"><span class="l">${l}</span><span class="sb">${sb}</span><b class="vl">${v}</b></div>`;
+
+T.notas = ()=>{
+  let nums='';for(let i=1;i<=6;i++)nums+=`<span class="num ${i===5?'at':''}">${i}</span>`;
+  const barraN=`<div class="barra">${nums}<h1 class="tit">Notas</h1><span class="abas" style="margin-left:8px"><span class="${NT.tab==='geral'?'on':''}" data-nt-tab="geral">Boletim geral</span><span class="${NT.tab==='disc'?'on':''}" data-nt-tab="disc">Por disciplina</span></span>
+    <div class="fim"><span class="pil">${ic('chl')}<b style="color:var(--cor-texto)">2026</b>${ic('chr')}</span><span class="pil" data-nt-lock="1" title="Trava em 1:48">${ic(NT.lock?'lock':'unlock')} ${NT.lock?'Travado':'Aberto'}</span><span class="pil">${ic('left')} Agenda ${tec('Esc')}</span></div></div>`;
+  if(NT.lock)return `<div class="tela">${barraN}
+  <div class="bloco peca ativo cofre"><div class="cab-b"><span class="rot">Notas do boletim</span></div>
+    <p>As notas ficam cifradas: só abrem com a sua frase de acesso, e nunca aparecem na Agenda, no Hub nem na Mesa.</p>
+    <div class="lin sel anel" data-nt-lock="0" style="cursor:pointer"><span style="display:grid;place-items:center;color:var(--cor-texto-2)">${ic('lock')}</span><span class="t" style="font:var(--ui-botao)">Digitar a frase de acesso</span>${tec('Enter')}</div></div></div>`;
+  const C=ND.map(d=>({d,c:nc(d)}));
+  if(NT.tab==='geral'){
+    const com=C.filter(x=>x.c.media!=null);
+    const mg=com.length?com.reduce((a,x)=>a+x.c.media,0)/com.length:null;
+    const nr=C.filter(x=>x.c.st==='ritmo'||x.c.st==='ok').length, na=C.filter(x=>x.c.st==='atencao'||x.c.st==='fora'||x.c.st==='abaixo').length;
+    const rows=C.map(({d,c})=>`<div class="tab-r tab-gg cl" data-nt="${d.s}" data-materia="${MAT[d.s].m}">${mono(d.s,'m')}<span class="n m">${MAT[d.s].n}</span><span class="c r">${fm(c.S1)}</span><span class="c r">${fm(c.S2)}</span><span class="n r" style="font-weight:800">${fm1(c.media)}</span><span class="c r">${c.nA!=null?fm(Math.max(c.nA,0))+' de 7,0':'—'}</span><span class="sit ${c.st==='sem'?'n':''}">${stH(c)}</span></div>`).join('');
+    return `<div class="tela">${barraN}<div class="nb geral"><div class="bloco peca ativo nb-g">
+      <div class="stats" style="margin-top:0"><div class="stat"><div class="v">${fm1(mg)}</div><div class="l">Média geral até agora</div></div><div class="stat"><div class="v">${nr}<small>de ${C.length}</small></div><div class="l">No ritmo ou garantidas</div></div><div class="stat"><div class="v">${na}</div><div class="l">Pedem atenção</div></div></div>
+      <div class="tab-h tab-gg"><span></span><span>Disciplina</span><span class="r">1º sem.</span><span class="r">2º sem.</span><span class="r">Média atual</span><span class="r">Preciso no 4º bim.</span><span>Situação</span></div>
+      <div class="rolagem">${rows}</div>
+      <div class="nota-rod">“Preciso no 4º bim.” é o que falta para fechar o ano na meta de ${fm(NT.meta)}. Toque numa disciplina para lançar notas.</div></div></div></div>`;
+  }
+  const {d,c}=C.find(x=>x.d.s===NT.sel);
+  const rail=C.map(({d:dd,c:cc})=>`<div class="nb-r ${dd.s===NT.sel?'sel anel-i':''}" data-nt="${dd.s}" data-materia="${MAT[dd.s].m}" title="${MAT[dd.s].n}">${mono(dd.s,'g')}<span class="v">${fm1(cc.media)}</span></div>`).join('');
+  const b=c.b, aberto3=b[2]==null;
+  const tira=`<div class="g"><span class="rot">1º semestre</span><div class="row">${cel('1º bim','de 3',fm(b[0]),b[0]==null?'nada':'')}${cel('2º bim','de 7',fm(b[1]),b[1]==null?'nada':'')}${cel('Total','de 10',fm(c.S1),'tot'+(c.S1==null?' nada':''))}</div></div>
+   <div class="g"><span class="rot">2º semestre</span><div class="row">${cel('3º bim','de 3',fm(b[2]),b[2]==null?'nada':'')}${cel('4º bim','de 7',b[3]!=null?fm(b[3]):'—',b[3]!=null?'':'aberto')}${cel('Total','de 10',fm(c.S2),'tot'+(c.S2==null?' nada':''))}</div></div>
+   <div class="g"><span class="rot">Ano</span><div class="row">${cel('Média','de 10',fm1(c.ano),'tot'+(c.ano==null?' nada':''))}</div></div>`;
+  const linhas=AVS.map((x,i)=>{const n=c.L[i];return `<div class="tab-r nb-t"><span class="n">${x[0]}</span><span class="c r">${fm(x[1])}</span><span class="r"><input class="inp ${n==null?'pend':''}" data-ni="${d.s}:${i}" data-max="${x[1]}" inputmode="decimal" value="${n==null?'':fm(n)}" placeholder="lançar" aria-label="Nota de ${x[0]}"></span></div>`}).join('');
+  const f4=c.b[3]!=null;
+  const pre=(l,v,sub,dest)=>`<div class="nb-p ${dest?'dest':''}"><span class="l">${l}</span><b>${v}</b><span class="s">${sub}</span></div>`;
+  const p1=c.S1!=null?pre('Fechar o 1º semestre',fm(c.S1),'já fechado'):pre('Fechar o 1º semestre','—','faltam notas');
+  const p2=f4?pre('Fechar o 2º semestre',fm(c.S2),'já fechado'):c.n2==null?pre('Fechar o 2º semestre','—','faltam notas'):pre('Fechar o 2º semestre',fm(Math.max(c.n2,0)),c.n2<=0?'já garantido':`de 7,0 no 4º bim`);
+  const p3=c.ano!=null?pre('Fechar o ano',fm1(c.ano),'média final',1):c.nA==null?pre('Fechar o ano','—','faltam notas',1):pre('Fechar o ano',fm(Math.max(c.nA,0)),c.nA<=0?'já garantido':`de 7,0 no 4º bim`,1);
+  return `<div class="tela">${barraN}<div class="nb">
+    <div class="bloco peca ativo nb-rail" aria-label="Disciplinas">${rail}</div>
+    <div class="nb-c">
+      <div class="bloco peca nb-res"><div class="nb-id" data-materia="${MAT[d.s].m}">${mono(d.s,'g')}<div><h2>${MAT[d.s].n}</h2><div class="nb-st">${stH(c)}</div></div>
+        <div class="nb-media"><span class="rot">Média atual</span><b>${fm1(c.media)}</b></div><span class="pil redondo" title="Configurar pesos">${ic('sliders')}</span></div>
+        <div class="nb-tira">${tira}</div></div>
+      <div class="bloco peca nb-bim"><div class="nb-bh"><h3>4º bimestre</h3><span class="nb-soma">${fm(c.parcial)}<small>de 7,0</small></span><span class="btn m" role="button">${ic('plus')} Nova avaliação ${tec('Alt N')}</span></div>
+        <div class="tab-h nb-t"><span>Avaliação</span><span class="r">Vale</span><span class="r">Nota</span></div>${linhas}</div>
+    </div>
+    <div class="bloco peca nb-pre"><div class="rot">Quanto preciso tirar</div>
+      <div class="nb-meta"><span class="rot">Meta</span><span class="pil redondo" data-nt-meta="-1" aria-label="Diminuir meta">${ic('chl')}</span><b>${fm(NT.meta).includes(',')?fm(NT.meta):fm(NT.meta)+',0'}</b><span class="pil redondo" data-nt-meta="1" aria-label="Aumentar meta">${ic('chr')}</span></div>
+      ${p1}${p2}${p3}</div>
+  </div></div>`;
+};
+
+
+      const NOMES = [['mesa','Mesa'],['treino','Treino'],['notas','Notas']];
+      function build() {
+        const telas = st.tela === 'todas' ? NOMES.map((n) => n[0]) : [st.tela];
+        document.getElementById('palcos').innerHTML = telas
+          .map((t) => `<div class="cena"><div class="stage" data-dir="${st.dir}" data-tema="${st.tema}">${T[t]()}</div></div>`)
+          .join('');
+        document.documentElement.dataset.tema = st.tema;
+        fit();
+        const bl = document.getElementById('bl');
+        const mk = (k, v, r) => `<button data-k="${k}" data-v="${v}" aria-pressed="${st[k] === v}">${r}</button>`;
+        bl.innerHTML = mk('dir','a','Papel Frio') + mk('dir','b','Ardósia') + ' | ' + mk('tema','claro','Claro') + mk('tema','escuro','Escuro') + ' | ' + NOMES.map((n) => mk('tela', n[0], n[1])).join('');
+      }
+      function fit() {
+        document.querySelectorAll('.cena').forEach((c) => {
+          const s = c.clientWidth / 1280;
+          c.firstElementChild.style.transform = `scale(${s})`;
+          c.style.height = 800 * s + 'px';
+        });
+      }
+      document.getElementById('bl').addEventListener('click', (e) => {
+        const b = e.target.closest('button');
+        if (!b) return;
+        st[b.dataset.k] = b.dataset.v;
+        build();
+      });
+      addEventListener('resize', fit);
+      new MutationObserver(() => {
+        const t = document.documentElement.dataset.tema;
+        if (t && t !== st.tema) {
+          st.tema = t;
+          build();
+        }
+      }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-tema'] });
+      build();
+    </script>
+  </body>
+</html>

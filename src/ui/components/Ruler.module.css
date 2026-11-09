@@ -22,8 +22,8 @@
 }
 
 .item[data-sel='true'] {
-  background: var(--cor-destaque);
-  color: var(--cor-tinta);
+  background: var(--cor-aba-ativa, var(--cor-destaque));
+  color: var(--cor-sobre-aba-ativa, var(--cor-tinta));
 }
 
 .titulo {
@@ -37,7 +37,7 @@
 }
 
 .item[data-sel='true'] .detalhe {
-  color: var(--cor-tinta);
+  color: var(--cor-sobre-aba-ativa, var(--cor-tinta));
 }
 
 /* Sem linha de detalhe a pílula fica de uma linha só, mais baixa. */

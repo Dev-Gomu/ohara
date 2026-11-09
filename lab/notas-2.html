@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Notas: hierarquia de períodos</title>
+    <style>
+      .tela {
+        padding: var(--vao-mosaico);
+        background: var(--cor-fundo);
+        color: var(--cor-texto);
+      }
+      .cartao {
+        background: var(--cor-cartao);
+        border-radius: var(--raio-bloco);
+        padding: var(--e4) var(--e5);
+        display: grid;
+        gap: var(--e2);
+      }
+      .rotulo {
+        color: var(--cor-texto-2);
+        font: var(--ui-rotulo);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+      .sigla {
+        display: inline-flex;
+        align-items: center;
+        height: 26px;
+        padding: 0 var(--e3);
+        border-radius: var(--raio-pilula);
+        color: var(--cor-tinta);
+        font: var(--ui-sigla);
+      }
+      .nome {
+        font: var(--voz-mini);
+        white-space: nowrap;
+      }
+      .disc {
+        display: flex;
+        align-items: center;
+        gap: var(--e3);
+      }
+      .n {
+        display: grid;
+        place-items: center;
+        font: var(--voz-item);
+        font-variant-numeric: tabular-nums;
+        border-radius: var(--raio-item);
+      }
+      .n.v {
+        color: var(--cor-texto-2);
+        font-weight: 600;
+      }
+      .n.baixa {
+        background: var(--cor-laranja);
+        color: var(--cor-tinta);
+      }
+      .n.sel {
+        background: var(--cor-marca);
+      }
+      .n.foco {
+        outline: var(--contorno-foco) solid var(--cor-contorno-foco);
+        outline-offset: -4px;
+      }
+      .nota {
+        color: var(--cor-texto-2);
+        font: var(--ui-apoio);
+      }
+
+      /* A: grupos de coluna */
+      .a .linha {
+        display: grid;
+        grid-template-columns: 220px 1fr 1fr 150px;
+        gap: var(--e2);
+        align-items: stretch;
+      }
+      .a .grupo {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1.15fr;
+        gap: var(--e1);
+        padding: var(--e1);
+        border-radius: var(--raio-item);
+        background: var(--cor-cartao-2);
+      }
+      .a .linha:not(.cab) .grupo {
+        border-radius: var(--raio-item);
+      }
+      .a .grupo .n {
+        height: 44px;
+        border-radius: var(--raio-minimo);
+      }
+      .a .grupo .sem {
+        background: var(--cor-cartao);
+        font: var(--voz-titulo);
+        border-radius: var(--raio-campo);
+      }
+      .a .grupo .sem.baixa {
+        background: var(--cor-laranja);
+      }
+      .a .ano {
+        display: grid;
+        place-items: center;
+        background: var(--cor-marca);
+        border-radius: var(--raio-item);
+        font: var(--voz-numero-mini);
+        font-size: 28px;
+        line-height: 32px;
+      }
+      .a .ano.v {
+        background: var(--cor-cartao-2);
+        color: var(--cor-texto-2);
+        font-weight: 600;
+      }
+      .a .cab .tit {
+        display: grid;
+        gap: 2px;
+        padding: var(--e2) var(--e3) 0;
+        text-align: center;
+      }
+      .a .cab .sub {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1.15fr;
+        text-align: center;
+        padding: 0 var(--e1);
+      }
+      .a .cab .grupo {
+        background: none;
+        padding: 0;
+        display: block;
+      }
+      .a .cab .cx {
+        background: var(--cor-cartao-2);
+        border-radius: var(--raio-item) var(--raio-item) 0 0;
+        padding: var(--e2) 0;
+      }
+      .a .cab .cx b {
+        font: var(--voz-mini);
+      }
+      .a .cab .sub span {
+        padding: 0 0 var(--e2);
+      }
+      .a .cab .cx {
+        padding: var(--e2) 0 var(--e1);
+      }
+      .a .corpo {
+        display: grid;
+        gap: var(--e1);
+      }
+      .a .cab {
+        margin-bottom: calc(var(--e1) * -1);
+      }
+
+      /* B: cartão por disciplina com semestres dentro */
+      .b .linha {
+        display: grid;
+        grid-template-columns: 210px 1fr 1fr 130px;
+        gap: var(--e2);
+        align-items: center;
+        padding: var(--e2);
+        border-radius: var(--raio-item);
+        background: var(--cor-cartao-2);
+      }
+      .b .sem {
+        display: flex;
+        align-items: center;
+        gap: var(--e3);
+        padding: var(--e1) var(--e3) var(--e1) var(--e2);
+        border-radius: var(--raio-campo);
+        background: var(--cor-cartao);
+        min-height: 56px;
+      }
+      .b .bims {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--e1);
+        flex: 1;
+      }
+      .b .bims div {
+        display: grid;
+        justify-items: center;
+        gap: 0;
+        border-radius: var(--raio-minimo);
+        padding: 2px 0;
+      }
+      .b .bims small {
+        color: var(--cor-texto-2);
+        font: var(--ui-tecla);
+      }
+      .b .bims b {
+        font: var(--voz-item);
+        font-variant-numeric: tabular-nums;
+      }
+      .b .bims .baixa {
+        background: var(--cor-laranja);
+        color: var(--cor-tinta);
+      }
+      .b .bims .baixa small {
+        color: var(--cor-tinta);
+      }
+      .b .tot {
+        display: grid;
+        justify-items: center;
+        min-width: 52px;
+        font: var(--voz-titulo);
+      }
+      .b .tot small {
+        color: var(--cor-texto-2);
+        font: var(--ui-tecla);
+      }
+      .b .tot.baixa b {
+        background: var(--cor-laranja);
+        color: var(--cor-tinta);
+        padding: 0 var(--e2);
+        border-radius: var(--raio-minimo);
+      }
+      .b .ano {
+        display: grid;
+        justify-items: center;
+        gap: 0;
+        height: 56px;
+        align-content: center;
+        border-radius: var(--raio-campo);
+        background: var(--cor-marca);
+        font: var(--voz-titulo);
+      }
+      .b .ano small {
+        color: var(--cor-texto-2);
+        font: var(--ui-tecla);
+      }
+      .b .corpo {
+        display: grid;
+        gap: var(--e2);
+      }
+
+      /* C: árvore vertical, disciplinas nas colunas */
+      .c .tab {
+        display: grid;
+        grid-template-columns: 190px repeat(6, 1fr);
+        gap: var(--e1);
+        align-items: stretch;
+      }
+      .c .cabc {
+        display: grid;
+        justify-items: center;
+        padding-bottom: var(--e2);
+      }
+      .c .per {
+        display: flex;
+        align-items: center;
+        height: 44px;
+        padding-left: var(--e3);
+        border-radius: var(--raio-campo);
+        font: var(--ui-item);
+      }
+      .c .per.ano {
+        height: 52px;
+        background: var(--cor-marca);
+        font: var(--voz-mini);
+      }
+      .c .per.s {
+        background: var(--cor-cartao-2);
+        font: var(--voz-mini);
+        margin-top: var(--e1);
+      }
+      .c .per.b {
+        padding-left: var(--e6);
+        color: var(--cor-texto-2);
+        height: 40px;
+      }
+      .c .per.b::before {
+        content: '';
+        width: 10px;
+        height: 10px;
+        margin-right: var(--e2);
+        margin-left: calc(var(--e3) * -1);
+        border-left: 2px solid var(--cor-texto-2);
+        border-bottom: 2px solid var(--cor-texto-2);
+        border-radius: 0 0 0 4px;
+        align-self: flex-start;
+        margin-top: 8px;
+      }
+      .c .n {
+        height: 40px;
+        border-radius: var(--raio-campo);
+      }
+      .c .n.ano {
+        height: 52px;
+        background: var(--cor-marca);
+        font: var(--voz-titulo);
+      }
+      .c .n.s {
+        height: 44px;
+        margin-top: var(--e1);
+        background: var(--cor-cartao-2);
+        font: var(--voz-titulo);
+      }
+      .c .n.s.baixa {
+        background: var(--cor-laranja);
+      }
+      .c .n.ano.v {
+        background: var(--cor-cartao-2);
+      }
+      .c .n.b {
+        height: 40px;
+        font-size: 18px;
+      }
+    </style>
+  </head>
+  <body>
+    <script type="module">
+      import { Sala } from './_sala.js';
+      const META = 7;
+      // sigla, nome, cor, [1B,2B,3B,4B]
+      const D = [
+        ['GEN', 'Genética', 'rosa', [8, 7.5, 8, null]],
+        ['IMU', 'Imunologia', 'destaque', [6, 6.5, 7, null]],
+        ['PRO', 'Propedêutica', 'azul', [7.5, 7, 6, null]],
+        ['APS', 'Atenção primária', 'verde', [7, 7.5, 7, null]],
+        ['MIC', 'Microbiologia', 'ciano', [7.5, 8, 8.5, null]],
+        ['PSI', 'Psicologia', 'laranja', [null, null, null, null]],
+      ];
+      const f = (n) => (n === null ? '—' : n.toFixed(1).replace('.', ','));
+      const par = (a, b) => (a !== null && b !== null ? (a + b) / 2 : null);
+      const calc = (g) => {
+        const s1 = par(g[0], g[1]);
+        const s2 = par(g[2], g[3]);
+        return { s1, s2, ano: par(s1, s2) };
+      };
+      const baixa = (v) => (v !== null && v < META ? ' baixa' : '');
+      const vaz = (v) => (v === null ? ' v' : '');
+      const sig = (d) => `<span class="sigla" style="background:var(--cor-${d[2]})">${d[0]}</span>`;
+      const disc = (d) => `<span class="disc">${sig(d)}<span class="nome">${d[1]}</span></span>`;
+      // célula selecionada/foco de demonstração: GEN no 4º bimestre
+      const foco = (i, k) => (i === 0 && k === 3 ? ' sel foco' : '');
+
+      const A = () => {
+        const cab = `<div class="linha cab"><span></span>
+          <div class="grupo"><div class="cx"><div class="tit" style="padding:0"><b>1º semestre</b></div></div><div class="sub rotulo"><span>1º bim</span><span>2º bim</span><span>Média</span></div></div>
+          <div class="grupo"><div class="cx"><div class="tit" style="padding:0"><b>2º semestre</b></div></div><div class="sub rotulo"><span>3º bim</span><span>4º bim</span><span>Média</span></div></div>
+          <div class="grupo"><div class="cx" style="border-radius:var(--raio-item) var(--raio-item) 0 0;background:var(--cor-marca)"><div class="tit" style="padding:0"><b>Ano</b></div></div><div class="sub rotulo"><span style="grid-column:1/-1">Média</span></div></div></div>`;
+        const linhas = D.map((d, i) => {
+          const g = d[3];
+          const c = calc(g);
+          const b = (k) =>
+            `<span class="n${vaz(g[k])}${baixa(g[k])}${foco(i, k)}">${f(g[k])}</span>`;
+          const s = (v) => `<span class="n sem${vaz(v)}${baixa(v)}">${f(v)}</span>`;
+          return `<div class="linha">${disc(d)}<div class="grupo">${b(0)}${b(1)}${s(c.s1)}</div><div class="grupo">${b(2)}${b(3)}${s(c.s2)}</div><span class="ano${vaz(c.ano)}">${f(c.ano)}</span></div>`;
+        }).join('');
+        return `<div class="tela a"><div class="cartao"><div class="corpo">${cab}${linhas}</div></div></div>`;
+      };
+
+      const B = () => {
+        const linhas = D.map((d, i) => {
+          const g = d[3];
+          const c = calc(g);
+          const bim = (k) =>
+            `<div class="${baixa(g[k]).trim()}${foco(i, k)}"><small>${k + 1}º bim</small><b>${f(g[k])}</b></div>`;
+          const sem = (n, a, v) =>
+            `<div class="sem"><div class="bims">${bim(a)}${bim(a + 1)}</div><div class="tot${baixa(v)}"><small>${n}º sem</small><b>${f(v)}</b></div></div>`;
+          return `<div class="linha">${disc(d)}${sem(1, 0, c.s1)}${sem(2, 2, c.s2)}<div class="ano"><small>Ano</small>${f(c.ano)}</div></div>`;
+        }).join('');
+        return `<div class="tela b"><div class="cartao"><div class="corpo">${linhas}</div></div></div>`;
+      };
+
+      const C = () => {
+        const cs = D.map((d) => calc(d[3]));
+        const col = (fn) => D.map((d, i) => fn(d, i, cs[i])).join('');
+        const n = (v, cls, extra = '') =>
+          `<span class="n ${cls}${vaz(v)}${baixa(v)}${extra}">${f(v)}</span>`;
+        const bim = (k) =>
+          `<span class="per b">${k + 1}º bimestre</span>${col((d, i) => n(d[3][k], 'b', foco(i, k)))}`;
+        return `<div class="tela c"><div class="cartao"><div class="tab">
+          <span></span>${col((d) => `<span class="cabc">${sig(d)}</span>`)}
+          <span class="per ano">Ano</span>${col((d, i, c) => n(c.ano, 'ano'))}
+          <span class="per s">1º semestre</span>${col((d, i, c) => n(c.s1, 's'))}
+          ${bim(0)}${bim(1)}
+          <span class="per s">2º semestre</span>${col((d, i, c) => n(c.s2, 's'))}
+          ${bim(2)}${bim(3)}
+        </div></div></div>`;
+      };
+
+      Sala.montar({
+        titulo: 'Notas: hierarquia de períodos',
+        dados: null,
+        variantes: [
+          { id: 'a', nome: 'A. Colunas em grupos: semestre abraça seus bimestres', html: A },
+          { id: 'b', nome: 'B. Cartão por disciplina, semestres aninhados', html: B },
+          { id: 'c', nome: 'C. Árvore vertical: ano, semestre, bimestre', html: C },
+        ],
+      });
+    </script>
+  </body>
+</html>

@@ -21,7 +21,7 @@
   width: var(--alvo);
   height: var(--alvo);
   border-radius: var(--raio-pilula);
-  background: var(--cor-destaque);
+  background: var(--cor-aba-ativa, var(--cor-destaque));
 }
 
 .numero {
@@ -38,7 +38,7 @@
 
 .numero[data-sel='true'] {
   background: transparent;
-  color: var(--cor-tinta);
+  color: var(--cor-sobre-aba-ativa, var(--cor-tinta));
 }
 
 /* A aba atual é preenchida pelo indicador: o contorno claro (escuro no tema escuro) se vê nela. */

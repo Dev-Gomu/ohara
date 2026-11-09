@@ -102,7 +102,7 @@ export function buildSections(diag: Diagnostics | null): readonly Section[] {
         { label: 'Trocar tema', detail: 'Claro ou escuro, neste aparelho.', run: toggleTheme },
         {
           label: 'Trocar paleta de cores',
-          detail: `Original, A (azul-gelo) ou B (cinza-índigo). Agora: ${PALETTE_NAMES[currentPalette()]}.`,
+          detail: `Original, A (azul-gelo), B (cinza-índigo) ou C (ardósia). Agora: ${PALETTE_NAMES[currentPalette()]}.`,
           run: () => showNotice(`Paleta: ${PALETTE_NAMES[cyclePalette()]}.`),
         },
         {
