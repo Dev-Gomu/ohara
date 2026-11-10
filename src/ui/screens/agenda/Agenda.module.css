@@ -41,28 +41,6 @@
   padding-right: var(--e3);
 }
 
-.periodo button {
-  min-width: var(--alvo);
-  height: var(--alvo);
-  padding: 0 var(--e3);
-  border-radius: var(--raio-botao);
-  background: var(--cor-cartao-2);
-  font: var(--ui-botao);
-}
-
-.periodo .novo {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--e2);
-  background: var(--cor-botao);
-  color: var(--cor-sobre-botao);
-}
-
-.novo kbd {
-  opacity: 0.75;
-  font: var(--ui-tecla);
-}
-
 .datas {
   min-width: 128px;
   font: var(--ui-item);
@@ -70,43 +48,8 @@
   text-align: center;
 }
 
-.tecla {
-  padding: 0 var(--e2);
-  border-radius: var(--raio-pilula);
-  background: var(--cor-cartao-2);
-  color: var(--cor-texto-2);
-  font: var(--ui-tecla);
-  white-space: nowrap;
-}
-
 .filtro {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 6px;
   padding: 0 var(--bloco-pad-x) var(--bloco-pad-y);
-}
-
-.lugar {
-  display: contents;
-}
-
-.filtroItem {
-  height: 36px;
-  border-radius: var(--raio-pilula);
-  background: var(--cor-cartao-2);
-  color: var(--cor-texto-2);
-  font: var(--ui-sigla);
-}
-
-/* Filtro de uma escolha: só a matéria escolhida ganha a cor (seleção por preenchimento). */
-.filtroItem[data-sel='true'] {
-  background: var(--cor-materia, var(--cor-marca));
-  color: var(--cor-tinta);
-}
-
-.filtroItem[data-cor='todas'][data-sel='true'] {
-  background: var(--cor-marca);
-  color: var(--cor-texto);
 }
 
 .completar {
@@ -116,12 +59,6 @@
   max-height: 180px;
   padding: 0 var(--bloco-pad-x) var(--bloco-pad-y);
   overflow: auto;
-}
-
-.falta {
-  color: var(--cor-texto-2);
-  font: var(--ui-apoio);
-  white-space: nowrap;
 }
 
 .mes,
@@ -135,7 +72,8 @@
 .mes {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
-  grid-auto-rows: minmax(84px, 1fr);
+  grid-template-rows: auto;
+  grid-auto-rows: minmax(96px, 1fr);
   gap: var(--e1);
 }
 
@@ -149,92 +87,49 @@
   display: flex;
   flex-direction: column;
   flex: none;
-  gap: 2px;
+  gap: 3px;
   min-width: 0;
   padding: 6px;
+  background: var(--sup-peca);
   overflow: hidden;
   border-radius: var(--raio-item);
   text-align: left;
 }
 
 .lista .dia {
-  flex-flow: row wrap;
+  flex-direction: row;
   min-height: var(--item-lista);
   align-items: center;
-  gap: var(--e1);
+  gap: var(--e3);
+}
+
+.lista .dia > :first-child {
+  align-self: center;
+  min-width: 96px;
 }
 
 .dia[data-sel='true'] {
-  background: var(--cor-marca);
+  background: var(--cor-escolhido);
 }
 
-.cabeca {
-  margin-bottom: 2px;
-  padding: 2px 6px;
-  border-radius: var(--raio-pilula);
-  font: var(--ui-item);
+.eventos {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
 }
 
-.cabeca[data-hoje='true'] {
-  align-self: flex-start;
-  background: var(--cor-destaque);
-  color: var(--cor-tinta);
+.lista .eventos {
+  flex-flow: row wrap;
+  gap: var(--e1) var(--e3);
 }
 
-.evento {
-  padding: 1px 6px;
-  overflow: hidden;
-  border-radius: var(--raio-minimo);
-  background: var(--cor-materia);
-  color: var(--cor-tinta);
-  font: var(--ui-sigla);
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.evento[data-prova='true'] {
-  background: var(--cor-tinta);
-  color: var(--cor-sobre-tinta);
-}
-
-.item {
-  display: grid;
-  flex: none;
-  grid-template-columns: 48px minmax(0, 1fr) auto;
-  align-items: center;
-  gap: var(--e2);
-  min-height: var(--item-lista);
-  padding: 6px var(--e3);
-  border-radius: var(--raio-item);
-  text-align: left;
-}
-
-/* A completar não comanda nada: a seleção só aparece com o bloco ativo. */
-[data-foco] .item[data-sel='true'] {
-  background: var(--cor-marca);
-}
-
-.hora {
+.diaSemana {
+  padding: 0 var(--e2);
   color: var(--cor-texto-2);
-}
-
-[data-foco] .item[data-sel='true'] .hora {
-  color: var(--cor-texto);
-}
-
-.titulo {
-  overflow: hidden;
-  font: var(--ui-item);
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.sigla {
-  padding: 4px 11px;
-  border-radius: var(--raio-pilula);
-  background: var(--cor-materia);
-  color: var(--cor-tinta);
-  font: var(--ui-sigla);
+  font: var(--ui-rotulo);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .vazio {

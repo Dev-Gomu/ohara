@@ -1,22 +1,3 @@
-.alternar {
-  display: flex;
-  gap: var(--e1);
-}
-
-.pilula {
-  min-height: var(--alvo);
-  padding: 0 14px;
-  border-radius: var(--raio-pilula);
-  background: var(--cor-cartao);
-  color: var(--cor-texto-2);
-  font: var(--ui-item);
-}
-
-.pilula[data-sel='true'] {
-  background: var(--cor-marca);
-  color: var(--cor-texto);
-}
-
 .folha {
   flex: 1;
   min-height: 0;
@@ -24,8 +5,8 @@
   padding: var(--e5);
   overflow: auto;
   border-radius: var(--raio-item);
-  background: #fff; /* O slide é conteúdo: continua claro no tema escuro. */
-  color: #14122b;
+  background: var(--cor-slide);
+  color: var(--cor-slide-texto);
 }
 
 .zona {
@@ -89,8 +70,8 @@
 
 .texto mark {
   padding: 1px 4px;
-  border-radius: 6px;
-  background: var(--cor-marca);
+  border-radius: var(--raio-minimo);
+  background: var(--cor-escolhido);
   color: var(--cor-texto);
   font-style: italic;
 }
@@ -101,7 +82,7 @@
 
 .texto code {
   padding: 1px 4px;
-  border-radius: 6px;
+  border-radius: var(--raio-minimo);
   background: var(--cor-cartao-2);
 }
 
@@ -130,7 +111,7 @@
 }
 
 .ferramenta[data-sel='true'] {
-  background: var(--cor-marca);
+  background: var(--cor-escolhido);
 }
 
 .versoes {
@@ -151,40 +132,7 @@
 }
 
 .versao[data-focused] {
-  background: var(--cor-marca);
-}
-
-.aviso {
-  position: fixed;
-  left: 50%;
-  bottom: var(--e4);
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  gap: var(--e3);
-  padding: var(--e2) var(--e2) var(--e2) var(--e4);
-  border-radius: var(--raio-pilula);
-  background: var(--cor-botao);
-  color: var(--cor-sobre-botao);
-  font: var(--ui-item);
-  transform: translateX(-50%);
-}
-
-.pronto {
-  min-height: var(--alvo);
-  padding: 0 var(--e4);
-  border-radius: var(--raio-pilula);
-  background: var(--cor-destaque);
-  color: var(--cor-tinta);
-  font: var(--ui-botao);
-}
-
-.sigla {
-  padding: 4px 11px;
-  border-radius: var(--raio-pilula);
-  background: var(--cor-materia);
-  color: var(--cor-tinta);
-  font: var(--ui-sigla);
+  background: var(--cor-escolhido);
 }
 
 .vazio {
@@ -201,9 +149,9 @@
   gap: 2px;
   padding: 4px;
   border-radius: var(--raio-campo);
-  background: var(--cor-botao);
-  color: var(--cor-sobre-botao);
-  box-shadow: 0 4px 16px rgb(0 0 0 / 0.3);
+  background: var(--cor-acao);
+  color: var(--cor-sobre-acao);
+  box-shadow: var(--sombra-flutuante);
 }
 
 .bolha .ferramenta {
@@ -212,7 +160,7 @@
 }
 
 .bolha .ferramenta[data-sel='true'] {
-  background: var(--cor-marca);
+  background: var(--cor-escolhido);
   color: var(--cor-tinta);
 }
 
@@ -242,7 +190,7 @@
   margin: 0 var(--bloco-pad-x) var(--bloco-pad-y);
   overflow: hidden;
   border-radius: var(--raio-item);
-  background: #fff; /* O slide é conteúdo: continua claro no tema escuro. */
+  background: var(--cor-slide);
 }
 
 .imagem {
@@ -264,6 +212,6 @@
 }
 
 .soltar {
-  outline: 2px dashed var(--cor-marca);
+  outline: 2px dashed var(--cor-escolhido);
   outline-offset: -6px;
 }

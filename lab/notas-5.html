@@ -48,7 +48,7 @@
         min-height: 0;
       }
       .cartao.ativo {
-        border: var(--borda-bloco) solid var(--cor-bloco-ativo);
+        border: var(--borda-bloco) solid var(--cor-cursor);
         padding: calc(var(--e5) - 2px) calc(var(--e6) - 2px);
       }
       .rotulo {
@@ -70,7 +70,7 @@
         font-variant-numeric: tabular-nums;
       }
       .baixa {
-        background: color-mix(in srgb, var(--cor-laranja) 30%, var(--cor-cartao));
+        background: color-mix(in srgb, var(--cor-materia-0) 30%, var(--cor-cartao));
       }
 
       /* cabeçalho de tela */
@@ -92,7 +92,7 @@
       }
       .abas span[data-sel='true'] {
         color: var(--cor-texto);
-        box-shadow: inset 0 -3px 0 var(--cor-bloco-ativo);
+        box-shadow: inset 0 -3px 0 var(--cor-cursor);
       }
       .topo .fim {
         margin-left: auto;
@@ -161,10 +161,10 @@
         height: 11px;
       }
       .sit.ok i {
-        background: var(--cor-verde);
+        background: var(--cor-materia-3);
       }
       .sit.at i {
-        background: var(--cor-laranja);
+        background: var(--cor-materia-0);
       }
       .sit.nd {
         color: var(--cor-texto-2);
@@ -174,7 +174,7 @@
         outline-offset: -4px;
       }
       .sel {
-        background: var(--cor-marca);
+        background: var(--cor-escolhido);
       }
 
       
@@ -195,7 +195,7 @@
       /* faixas, como na A1 */
       .quadro { display: flex; align-items: flex-start; }
       .grp { display: flex; flex-direction: column; flex: none; margin-left: var(--e2); padding: 0 var(--e2); border-radius: var(--raio-item); background: var(--cor-cartao-2); }
-      .grp.ano { background: var(--cor-marca); }
+      .grp.ano { background: var(--cor-escolhido); }
       .gt { font: var(--ui-rotulo); letter-spacing: 0.06em; text-transform: uppercase; text-align: center; height: 32px; display: grid; place-items: center; }
       .gs, .gr { display: grid; text-align: center; }
       .gs { height: 24px; }
@@ -212,13 +212,13 @@
       .fecha b { font: 700 15px/18px var(--fonte-interface); font-variant-numeric: tabular-nums; }
       .fecha small { color: var(--cor-texto-2); font: var(--ui-apoio); }
       .fecha.rot { height: 24px; }
-      .sel.in, .in.sel { background: var(--cor-marca); }
-      .in.foco { outline: var(--contorno-foco) solid var(--cor-contorno-foco); outline-offset: -4px; background: var(--cor-marca); }
+      .sel.in, .in.sel { background: var(--cor-escolhido); }
+      .in.foco { outline: var(--contorno-foco) solid var(--cor-contorno-foco); outline-offset: -4px; background: var(--cor-escolhido); }
 
       /* avaliações */
       .tit2 { display: flex; align-items: center; gap: var(--e4); margin-bottom: var(--e3); }
       .tit2 h4 { font: var(--voz-titulo); }
-      .tit2 .btn.p { margin-left: auto; background: var(--cor-botao); color: var(--cor-sobre-botao); }
+      .tit2 .btn.p { margin-left: auto; background: var(--cor-acao); color: var(--cor-sobre-acao); }
       .tit2 .btn.p kbd { color: inherit; opacity: 0.7; }
       .ava { display: grid; grid-template-columns: minmax(0, 1fr) 80px 130px; align-items: center; }
       .ava > * { min-height: 44px; display: flex; align-items: center; }
@@ -228,7 +228,7 @@
       .ava .no { justify-content: center; }
       .ava .no span { width: 96px; height: 40px; display: grid; place-items: center; border-radius: var(--raio-campo); border: 2px dashed var(--cor-texto-2); color: var(--cor-texto-2); font: var(--ui-item); }
       .ava .an { font: var(--voz-mini); padding-left: var(--e3); }
-      .ava .an.sel, .ava .pe.sel, .ava .no.sel { background: var(--cor-marca); }
+      .ava .an.sel, .ava .pe.sel, .ava .no.sel { background: var(--cor-escolhido); }
       .ava .an.sel { border-radius: var(--raio-item) 0 0 var(--raio-item); }
       .ava .no.sel { border-radius: 0 var(--raio-item) var(--raio-item) 0; }
       .mb { margin-top: var(--e4); display: flex; align-items: center; gap: var(--e3); }

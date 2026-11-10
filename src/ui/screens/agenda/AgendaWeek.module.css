@@ -20,33 +20,18 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   min-height: var(--alvo);
   padding: 2px 0;
   border-radius: var(--raio-item);
 }
 
 .dia[data-sel='true'] {
-  background: var(--cor-marca);
+  background: var(--cor-escolhido);
 }
 
-.semanaDia {
-  color: var(--cor-texto-2);
-  font: var(--ui-rotulo);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-.numero {
-  min-width: 36px;
-  padding: 0 var(--e2);
-  border-radius: var(--raio-pilula);
-  font: var(--voz-item);
-  font-variant-numeric: tabular-nums;
-}
-
-.numero[data-hoje='true'] {
-  background: var(--cor-destaque);
-  color: var(--cor-tinta);
+.dia > span {
+  align-self: center;
 }
 
 .chipLugar {
@@ -77,7 +62,7 @@
 }
 
 .chip[data-sel='true'] {
-  background: var(--cor-marca);
+  background: var(--cor-escolhido);
   color: var(--cor-texto);
 }
 
@@ -96,7 +81,7 @@
 
 .coluna {
   position: relative;
-  border-radius: 16px;
+  border-radius: var(--raio-campo);
   background: var(--cor-cartao-2);
 }
 
@@ -116,13 +101,13 @@
   height: 100%;
   padding: 5px 7px;
   overflow: hidden;
-  border-radius: 12px;
+  border-radius: var(--raio-campo);
   background: var(--cor-cartao);
   text-align: left;
 }
 
 .aula[data-sel='true'] {
-  background: var(--cor-marca);
+  background: var(--cor-escolhido);
 }
 
 /* Só a aula de agora ganha a cor cheia da matéria. */

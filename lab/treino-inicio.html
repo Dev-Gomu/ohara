@@ -16,7 +16,7 @@
         padding: var(--e5) var(--e6) var(--e6);
         border-radius: var(--raio-bloco);
         background: var(--cor-cartao);
-        border: 2px solid var(--cor-bloco-ativo);
+        border: 2px solid var(--cor-cursor);
         display: grid;
         justify-items: center;
         gap: var(--e2);
@@ -62,8 +62,8 @@
         min-height: 52px;
         padding: 0 var(--e6);
         border-radius: var(--raio-botao);
-        background: var(--cor-botao);
-        color: var(--cor-sobre-botao);
+        background: var(--cor-acao);
+        color: var(--cor-sobre-acao);
         font: var(--ui-botao);
       }
       .iniciar kbd {
@@ -102,7 +102,7 @@
         font: var(--ui-item);
       }
       .regua span[data-sel='true'] {
-        background: var(--cor-marca);
+        background: var(--cor-escolhido);
       }
       .sigla {
         display: inline-grid;
@@ -126,7 +126,7 @@
         cursor: pointer;
       }
       .item[data-sel='true'] {
-        background: var(--cor-marca);
+        background: var(--cor-escolhido);
       }
       .item small {
         color: var(--cor-texto-2);
@@ -224,7 +224,7 @@
         font: var(--ui-apoio);
       }
       .v-b .linhaMat[data-sel='true'] {
-        background: var(--cor-marca);
+        background: var(--cor-escolhido);
       }
       .v-b .reserva {
         height: 190px;
@@ -246,7 +246,7 @@
         cursor: pointer;
       }
       .v-c .cel[data-sel='true'] {
-        background: var(--cor-marca);
+        background: var(--cor-escolhido);
       }
       .v-c .cel small {
         color: var(--cor-texto-2);
@@ -259,19 +259,19 @@
       import { Sala } from './_sala.js';
       const MATERIAS = [
         ['IMU', 'Imunologia', 'var(--cor-destaque)', 10],
-        ['GEN', 'Genética', 'var(--cor-laranja)', 4],
-        ['PRO', 'Processos patológicos', 'var(--cor-azul)', 7],
-        ['APS', 'Atenção primária', 'var(--cor-verde)', 0],
-        ['PSI', 'Psicologia médica', 'var(--cor-rosa)', 3],
-        ['ANA', 'Anatomia', 'var(--cor-amarelo)', 12],
-        ['FIS', 'Fisiologia', 'var(--cor-ciano)', 5],
-        ['BIO', 'Bioquímica', 'var(--cor-cinza-lavanda)', 0],
-        ['HIS', 'Histologia', 'var(--cor-laranja)', 2],
-        ['EMB', 'Embriologia', 'var(--cor-azul)', 6],
-        ['FAR', 'Farmacologia', 'var(--cor-verde)', 9],
-        ['PAT', 'Patologia geral', 'var(--cor-rosa)', 1],
-        ['SEM', 'Semiologia', 'var(--cor-amarelo)', 8],
-        ['ETI', 'Ética médica', 'var(--cor-ciano)', 0],
+        ['GEN', 'Genética', 'var(--cor-materia-0)', 4],
+        ['PRO', 'Processos patológicos', 'var(--cor-materia-2)', 7],
+        ['APS', 'Atenção primária', 'var(--cor-materia-3)', 0],
+        ['PSI', 'Psicologia médica', 'var(--cor-materia-4)', 3],
+        ['ANA', 'Anatomia', 'var(--cor-materia-5)', 12],
+        ['FIS', 'Fisiologia', 'var(--cor-materia-6)', 5],
+        ['BIO', 'Bioquímica', 'var(--cor-materia-7)', 0],
+        ['HIS', 'Histologia', 'var(--cor-materia-0)', 2],
+        ['EMB', 'Embriologia', 'var(--cor-materia-2)', 6],
+        ['FAR', 'Farmacologia', 'var(--cor-materia-3)', 9],
+        ['PAT', 'Patologia geral', 'var(--cor-materia-4)', 1],
+        ['SEM', 'Semiologia', 'var(--cor-materia-5)', 8],
+        ['ETI', 'Ética médica', 'var(--cor-materia-6)', 0],
       ];
       const sigla = (s, cor) => `<span class="sigla" style="background:${cor}">${s}</span>`;
       const cabeca = `

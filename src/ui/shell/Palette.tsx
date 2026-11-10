@@ -1,4 +1,5 @@
 import { Autocomplete, Input, Menu, MenuItem, SearchField, useFilter } from 'react-aria-components';
+import { Key } from '../components/Key';
 import { Window } from '../components/Window';
 import { dispatch } from '../keyboard/store';
 import { useStudy } from '../study/study';
@@ -32,7 +33,7 @@ export function Palette() {
           {(command) => (
             <MenuItem className={styles.item} textValue={command.label}>
               <span>{command.label}</span>
-              {command.keys !== undefined && <kbd className={styles.tecla}>{command.keys}</kbd>}
+              {command.keys !== undefined && <Key>{command.keys}</Key>}
             </MenuItem>
           )}
         </Menu>

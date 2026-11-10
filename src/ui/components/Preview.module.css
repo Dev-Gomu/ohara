@@ -1,0 +1,32 @@
+.previa {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--e2);
+  min-height: 0;
+  padding: var(--e1) var(--bloco-pad-x) var(--bloco-pad-y);
+}
+
+.titulo {
+  font: var(--voz-titulo);
+}
+
+.apoio {
+  color: var(--cor-texto-2);
+}
+
+/* Só o corpo rola: título e ações não pulam ao trocar de item. */
+.corpo {
+  flex: 1;
+  min-height: 0;
+  max-width: var(--texto-max);
+  overflow: auto;
+  font: var(--leitura-texto);
+}
+
+.acoes {
+  flex: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e2);
+}

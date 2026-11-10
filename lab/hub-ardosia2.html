@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="pt-BR" data-id="ardosia2" data-tema="claro">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hub na Ardósia refinada</title>
+    <style>
+      /* Mesmos valores de lab/id-ardosia2.html (biblioteca). Estado mostrado: chegada do Hub, cursor na aula de agora. */
+      html[data-id='ardosia2'] {
+        --cor-materia-4: #e48ae8;
+        --cor-materia-2: #5eb6ee;
+        --cor-materia-0: #f27a9f;
+        --cor-materia-3: #7fdcb0;
+        --cor-materia-5: #ab94f4;
+        --cor-tinta: #0e1428;
+        --raio-bloco: 22px;
+        --raio-item: 14px;
+        --raio-botao: 14px;
+      }
+      html[data-id='ardosia2'][data-tema='claro'] {
+        --cor-fundo: #dfe4ea;
+        --cor-cartao: #f7f9fb;
+        --cor-cartao-2: #e6ebf0;
+        --cor-texto: #0f1e27;
+        --cor-texto-2: #465a68;
+        --cor-acao: #4a62dc;
+        --cor-sobre-acao: #ffffff;
+        --cor-escolhido: #d6defa;
+        --cor-cursor: #4a62dc;
+        color-scheme: light;
+      }
+      html[data-id='ardosia2'][data-tema='escuro'] {
+        --cor-fundo: #0e1519;
+        --cor-cartao: #172026;
+        --cor-cartao-2: #222e36;
+        --cor-texto: #e8f0f4;
+        --cor-texto-2: #93a7b3;
+        --cor-acao: #8ea4fa;
+        --cor-sobre-acao: #0e1428;
+        --cor-escolhido: #2a3660;
+        --cor-cursor: #8ea4fa;
+        color-scheme: dark;
+      }
+      html[data-id='ardosia2'] {
+        --sup-recuada: color-mix(in srgb, var(--cor-cartao) 55%, var(--cor-fundo));
+        --cor-rastro: color-mix(in srgb, var(--cor-cursor) 30%, var(--cor-cartao));
+        --cor-relevo: color-mix(in srgb, var(--cor-texto) 16%, var(--cor-cartao-2));
+        --sup-peca: color-mix(in srgb, var(--cor-texto) 6%, transparent);
+      }
+      body {
+        margin: 0;
+        background: var(--cor-fundo);
+      }
+      .tela {
+        width: 1280px;
+        height: 800px;
+        box-sizing: border-box;
+        padding: 8px;
+        display: grid;
+        grid-template: 48px 200px 1fr / 316px 1fr 340px;
+        gap: 8px;
+        color: var(--cor-texto);
+        font: var(--ui-apoio);
+        font-variant-numeric: tabular-nums;
+      }
+      .tecla {
+        font: var(--ui-tecla);
+        color: var(--cor-texto-2);
+        background: var(--sup-peca);
+        border-bottom: 2px solid var(--cor-relevo);
+        border-radius: 7px;
+        padding: 0 7px;
+        white-space: nowrap;
+      }
+      .m2 {
+        font: var(--ui-sigla);
+        letter-spacing: 0.04em;
+        color: var(--cor-tinta);
+        border-radius: 999px;
+        padding: 4px 11px;
+      }
+      .cursor {
+        box-shadow: inset 0 0 0 2px var(--cor-cursor);
+      }
+      .sel {
+        background: var(--cor-escolhido);
+        color: var(--cor-texto);
+      }
+
+      .barra {
+        grid-column: 1 / -1;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .barra h1 {
+        margin: 0;
+        flex: 1;
+        font: var(--voz-titulo);
+      }
+      .ilha {
+        height: 44px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        padding: 0 6px;
+        background: var(--sup-recuada);
+        border-radius: 999px;
+      }
+      .aba {
+        height: 32px;
+        min-width: 40px;
+        padding: 0 13px;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        border-radius: 999px;
+        font: var(--ui-botao);
+        color: var(--cor-texto-2);
+      }
+      .aba.sel {
+        color: var(--cor-texto);
+      }
+      .nivel b {
+        font: var(--ui-rotulo);
+        letter-spacing: 0.06em;
+        padding: 0 6px 0 10px;
+      }
+      .nivel .tecla:last-child {
+        margin-right: 6px;
+      }
+      .modulo {
+        padding: 0 10px;
+        font: var(--ui-item);
+        color: var(--cor-texto-2);
+      }
+
+      .provas {
+        grid-column: 1 / -1;
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 8px;
+      }
+      .prova {
+        background: var(--sup-recuada);
+        border-radius: var(--raio-bloco);
+        padding: 14px 18px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      .prova header {
+        display: flex;
+        justify-content: space-between;
+        font: var(--ui-rotulo);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--cor-texto-2);
+      }
+      .prova b {
+        font: var(--voz-numero);
+      }
+      .prova .linha {
+        display: flex;
+        gap: 4px;
+        min-height: 24px;
+      }
+      .prova.perto header span:last-child {
+        color: var(--cor-texto);
+      }
+
+      .bloco {
+        background: var(--sup-recuada);
+        border-radius: var(--raio-bloco);
+        padding: 14px 18px 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        min-height: 0;
+      }
+      .bloco.ativo {
+        background: var(--cor-cartao);
+        box-shadow: inset 0 0 0 2px var(--cor-rastro);
+      }
+      .rotulo {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font: var(--ui-rotulo);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--cor-texto-2);
+      }
+      .bloco.ativo .rotulo {
+        color: var(--cor-cursor);
+      }
+      .rotulo .tecla {
+        margin-left: auto;
+        text-transform: none;
+        letter-spacing: 0;
+      }
+
+      .mes {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        row-gap: 6px;
+        text-align: center;
+      }
+      .mes span {
+        font: var(--ui-tecla);
+        color: var(--cor-texto-2);
+        padding-bottom: 4px;
+      }
+      .d {
+        height: 44px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 3px;
+        font: var(--ui-item);
+      }
+      .d em {
+        font-style: normal;
+        width: 36px;
+        height: 26px;
+        border-radius: 999px;
+        display: grid;
+        place-items: center;
+      }
+      .d.hoje em {
+        background: var(--cor-acao);
+        color: var(--cor-sobre-acao);
+        font-weight: 700;
+      }
+      .d.fora em {
+        color: var(--cor-texto-2);
+        opacity: 0.55;
+      }
+      .d i {
+        width: 16px;
+        height: 6px;
+        border-radius: 999px;
+      }
+
+      .lista {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        margin: 0 -8px;
+      }
+      .item {
+        min-height: 60px;
+        box-sizing: border-box;
+        padding: 8px 14px;
+        border-radius: var(--raio-item);
+        display: grid;
+        grid-template-columns: 116px 1fr auto;
+        align-items: center;
+        gap: 12px;
+      }
+      .item time {
+        font: var(--ui-item);
+        color: var(--cor-texto-2);
+        white-space: nowrap;
+      }
+      .item strong {
+        font: var(--voz-mini);
+        display: block;
+      }
+      .item small {
+        font: var(--ui-apoio);
+        color: var(--cor-texto-2);
+      }
+      .item.passada strong {
+        color: var(--cor-texto-2);
+      }
+      .item .fim {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .agora {
+        font: var(--ui-sigla);
+        background: var(--cor-acao);
+        color: var(--cor-sobre-acao);
+        border-radius: 999px;
+        padding: 4px 11px;
+      }
+      .rodape {
+        margin-top: auto;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--cor-texto-2);
+      }
+
+      .lembrete {
+        display: grid;
+        grid-template-columns: 40px 1fr;
+        gap: 12px;
+        align-items: start;
+        font: var(--leitura-compacta);
+        min-height: 44px;
+      }
+      .caixa {
+        width: 40px;
+        height: 24px;
+        border-radius: 999px;
+        box-shadow: inset 0 0 0 2px var(--cor-texto-2);
+        opacity: 0.7;
+      }
+      .botao {
+        margin-top: auto;
+        height: 44px;
+        border-radius: var(--raio-botao);
+        background: var(--sup-peca);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        font: var(--ui-botao);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="tela">
+      <header class="barra">
+        <nav class="ilha">
+          <span class="aba sel">1 <span>Hub</span></span
+          ><span class="aba">2</span><span class="aba">3</span><span class="aba">4</span
+          ><span class="aba">5</span><span class="aba">6</span>
+        </nav>
+        <h1>Segunda, 9 de novembro</h1>
+        <div class="ilha nivel">
+          <b>CAMPO</b><span class="tecla">setas andam</span><span class="tecla">Esc sobe</span>
+        </div>
+        <div class="ilha">
+          <span class="modulo">Faltas</span><span class="modulo">Notas</span
+          ><span class="modulo">?</span>
+        </div>
+      </header>
+
+      <section class="provas">
+        <article class="prova perto">
+          <header><span>seg · nov</span><span>em 7 d</span></header>
+          <b>16</b>
+          <div class="linha"><span class="m2" style="background: var(--cor-materia-4)">GEN</span></div>
+        </article>
+        <article class="prova">
+          <header><span>sex · nov</span><span>em 11 d</span></header>
+          <b>20</b>
+          <div class="linha">
+            <span class="m2" style="background: var(--cor-materia-2)">IMU</span
+            ><span class="m2" style="background: var(--cor-materia-0)">PRO</span>
+          </div>
+        </article>
+        <article class="prova">
+          <header><span>seg · nov</span><span>em 14 d</span></header>
+          <b>23</b>
+          <div class="linha">
+            <span class="m2" style="background: var(--cor-materia-0)">PRO</span>
+          </div>
+        </article>
+        <article class="prova">
+          <header><span>dom · nov</span><span>em 20 d</span></header>
+          <b>29</b>
+          <div class="linha"><span class="m2" style="background: var(--cor-materia-3)">APS</span></div>
+        </article>
+        <article class="prova">
+          <header><span>sex · dez</span><span>em 25 d</span></header>
+          <b>04</b>
+          <div class="linha">
+            <span class="m2" style="background: var(--cor-materia-5)">FAR</span>
+          </div>
+        </article>
+      </section>
+
+      <section class="bloco">
+        <div class="rotulo">Novembro 2026</div>
+        <div class="mes" id="mes"></div>
+      </section>
+
+      <section class="bloco ativo">
+        <div class="rotulo">
+          Agenda de hoje · 4 aulas <span class="tecla">Enter abre na Mesa</span>
+        </div>
+        <div class="lista">
+          <div class="item passada">
+            <time>08:00 a 09:30</time>
+            <div><strong>Genética</strong><small>Expressão gênica</small></div>
+            <span class="m2" style="background: var(--cor-materia-4)">GEN</span>
+          </div>
+          <div class="item passada">
+            <time>10:00 a 11:30</time>
+            <div><strong>Atenção Primária</strong><small>Territorialização</small></div>
+            <span class="m2" style="background: var(--cor-materia-3)">APS</span>
+          </div>
+          <div class="item sel cursor">
+            <time style="color: var(--cor-texto)">13:00 a 15:00</time>
+            <div><strong>Imunologia</strong><small>Resposta inflamatória aguda</small></div>
+            <span class="fim"
+              ><span class="agora">agora</span
+              ><span class="m2" style="background: var(--cor-materia-2)">IMU</span></span
+            >
+          </div>
+          <div class="item">
+            <time>15:10 a 17:00</time>
+            <div><strong>Propedêutica</strong><small>Exame do abdome</small></div>
+            <span class="m2" style="background: var(--cor-materia-0)">PRO</span>
+          </div>
+        </div>
+        <div class="rodape">2 aulas já passaram · a próxima começa às 15:10</div>
+      </section>
+
+      <section class="bloco">
+        <div class="rotulo">Lembretes · 3 <span class="tecla">Alt L</span></div>
+        <div class="lembrete"><span class="caixa"></span>Levar o jaleco para a Propedêutica.</div>
+        <div class="lembrete">
+          <span class="caixa"></span>Revisar IL-6 e TNF-α antes da prova de Imunologia.
+        </div>
+        <div class="lembrete">
+          <span class="caixa"></span>Confirmar a sala do laboratório de Genética.
+        </div>
+        <div class="botao">Novo lembrete <span class="tecla">Alt N</span></div>
+      </section>
+    </div>
+
+    <script type="module">
+      import '../src/ui/styles/fonts.css';
+      import '../src/ui/styles/tokens.css';
+
+      // Novembro de 2026 começa num domingo. Dias com prova levam a marca da matéria.
+      const PROVAS = { 16: ['rosa'], 20: ['azul', 'laranja'], 23: ['laranja'], 29: ['verde'] };
+      const dias = [...'DSTQQSS'].map((d) => `<span>${d}</span>`);
+      for (let i = 1; i <= 35; i++) {
+        const dia = i <= 30 ? i : i - 30;
+        const marcas =
+          i <= 30
+            ? (PROVAS[i] ?? [])
+                .slice(0, 1)
+                .map((c) => `<i style="background: var(--cor-${c})"></i>`)
+                .join('')
+            : '';
+        dias.push(
+          `<div class="d ${i === 9 ? 'hoje' : ''} ${i > 30 ? 'fora' : ''}"><em>${dia}</em>${marcas}</div>`,
+        );
+      }
+      document.querySelector('#mes').innerHTML = dias.join('');
+
+      const raiz = document.documentElement;
+      document.addEventListener('keydown', (e) => {
+        if (e.key.toLowerCase() === 't')
+          raiz.dataset.tema = raiz.dataset.tema === 'escuro' ? 'claro' : 'escuro';
+      });
+    </script>
+  </body>
+</html>

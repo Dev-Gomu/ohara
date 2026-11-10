@@ -22,7 +22,7 @@
 
 /* O cursor da lista não comanda nada: só aparece com o bloco ativo (diretriz 3.2). */
 [data-foco] .linha[data-sel='true'] {
-  background: var(--cor-marca);
+  background: var(--cor-escolhido);
 }
 
 .marca {
@@ -36,9 +36,9 @@
 }
 
 .marca[aria-checked='true'] {
-  border-color: var(--cor-botao);
-  background: var(--cor-botao);
-  color: var(--cor-sobre-botao);
+  border-color: var(--cor-acao);
+  background: var(--cor-acao);
+  color: var(--cor-sobre-acao);
 }
 
 .marca[data-tipo='lesson'] {
@@ -77,8 +77,8 @@
   min-height: 48px;
   padding: 0 var(--e5);
   border-radius: var(--raio-botao);
-  background: var(--cor-botao);
-  color: var(--cor-sobre-botao);
+  background: var(--cor-acao);
+  color: var(--cor-sobre-acao);
   font: var(--ui-botao);
 }
 

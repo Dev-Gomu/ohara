@@ -1,0 +1,71 @@
+.grupo {
+  --tecla-fundo: var(--cor-cartao);
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px;
+  border-radius: var(--raio-pilula);
+  background: var(--sup-recuada);
+}
+
+.item,
+.aba {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 var(--e3);
+  border-radius: var(--raio-pilula);
+  color: var(--cor-texto-2);
+  font: var(--ui-botao);
+}
+
+.item {
+  padding-right: 6px;
+}
+
+/* O alvo de toque ocupa a altura inteira da ilha. */
+.item::after,
+.aba::after {
+  content: '';
+  position: absolute;
+  inset: -4px 0;
+}
+
+.item[data-sel='true'],
+.aba[data-sel='true'] {
+  background: var(--cor-escolhido);
+  color: var(--cor-texto);
+}
+
+.marca {
+  width: 18px;
+  height: 8px;
+  border-radius: var(--raio-pilula);
+  box-shadow: inset 0 0 0 2px var(--cor-texto-2);
+}
+
+.item[data-sel='true'] .marca {
+  background: var(--cor-acao);
+  box-shadow: none;
+}
+
+.numero {
+  padding: 0 7px;
+  border-radius: var(--raio-pilula);
+  background: var(--sup-peca);
+  font: var(--ui-sigla);
+}
+
+.aba:focus-visible {
+  box-shadow: inset 0 0 0 var(--cursor) var(--cor-cursor);
+}
+
+@media (hover: hover) {
+  .item:not([data-sel='true']):hover,
+  .aba:not([data-sel='true']):hover {
+    background: var(--sup-peca);
+  }
+}

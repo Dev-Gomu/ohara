@@ -9,11 +9,13 @@ import {
 import { addCards } from '../../../core/study/create';
 import type { Card } from '../../../core/study/types';
 import { Block } from '../../components/Block';
+import { Button } from '../../components/Button';
 import { CardBack, Inline } from '../../components/CardBack';
 import { NavItem } from '../../components/NavItem';
 import { dispatch } from '../../keyboard/store';
 import { useScreenMemory } from '../../study/screenMemory';
 import { storage, today } from '../../study/study';
+import { BlockTab, BlockTabs } from '../../components/Toggles';
 import styles from './CardsBlock.module.css';
 
 export type CardsMode = 'novo' | 'salvos';
@@ -92,24 +94,14 @@ interface CardsBlockProps {
 export function CardsBlock({ id, cards, editor }: CardsBlockProps) {
   const { mode, setMode } = editor;
   const tabs = (
-    <div className={styles.abas} role="group" aria-label="Cartões" data-bar="top" data-bar-follow>
-      <button
-        type="button"
-        className={styles.aba}
-        data-sel={mode === 'novo'}
-        onClick={() => setMode('novo')}
-      >
+    <BlockTabs label="Cartões">
+      <BlockTab selected={mode === 'novo'} onPress={() => setMode('novo')}>
         Novo
-      </button>
-      <button
-        type="button"
-        className={styles.aba}
-        data-sel={mode === 'salvos'}
-        onClick={() => setMode('salvos')}
-      >
-        Salvos {cards.length}
-      </button>
-    </div>
+      </BlockTab>
+      <BlockTab selected={mode === 'salvos'} count={cards.length} onPress={() => setMode('salvos')}>
+        Salvos
+      </BlockTab>
+    </BlockTabs>
   );
   return (
     <Block id={id} title="Cartões" icon="cartoes" tools={tabs} shortcut="Alt C" menu>
@@ -157,15 +149,11 @@ function Writer({ editor }: { editor: CardsEditor }) {
         <p className={styles.dica}>
           {saved !== null ? `${saved} ${saved === 1 ? 'cartão salvo' : 'cartões salvos'}.` : HINT}
         </p>
-        <button
-          type="button"
-          className={styles.salvar}
-          disabled={ready === 0}
-          onPointerDown={(event) => event.preventDefault()}
-          onClick={save}
-        >
-          Salvar {ready > 0 ? ready : ''} <kbd className={styles.teclaSalvar}>Ctrl Enter</kbd>
-        </button>
+        <span className={styles.salvar} onPointerDown={(event) => event.preventDefault()}>
+          <Button variant="primary" shortcut="Ctrl Enter" disabled={ready === 0} onPress={save}>
+            {ready > 0 ? `Salvar ${ready}` : 'Salvar'}
+          </Button>
+        </span>
       </footer>
     </div>
   );

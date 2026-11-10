@@ -27,7 +27,7 @@
 }
 
 .entrada:focus {
-  border-color: var(--cor-bloco-ativo);
+  border-color: var(--cor-cursor);
 }
 
 .enviar {
@@ -37,8 +37,8 @@
   gap: 10px;
   min-height: 48px;
   border-radius: var(--raio-botao);
-  background: var(--cor-botao);
-  color: var(--cor-sobre-botao);
+  background: var(--cor-acao);
+  color: var(--cor-sobre-acao);
   font: var(--ui-botao);
 }
 

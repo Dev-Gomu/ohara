@@ -1,0 +1,37 @@
+.grade {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 var(--e2);
+  border-radius: var(--raio-pilula);
+  background: var(--sup-peca);
+  color: var(--cor-texto-2);
+  font: var(--ui-sigla);
+}
+
+.item[data-sel='true'] {
+  background: var(--cor-escolhido);
+  color: var(--cor-texto);
+}
+
+.marca {
+  flex: none;
+  width: 14px;
+  height: 6px;
+  border-radius: var(--raio-pilula);
+  background: var(--cor-materia);
+}
+
+@media (hover: hover) {
+  .item:not([data-sel='true']):hover {
+    background: var(--sup-peca-viva);
+  }
+}

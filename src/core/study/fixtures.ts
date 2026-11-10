@@ -216,7 +216,21 @@ export function createFixtures(today: string): StudyData {
         { id: 'p-sem-data', subjectId: 'gen', date: '', time: '' },
         { id: 'p-sem-hora', subjectId: 'far', date: addDays(today, 25), time: '' },
       ),
-    events: eventsFor(today, lessons),
+    events: eventsFor(today, lessons).concat(
+      [
+        ['far', 7, 'Relatório de caso'],
+        ['fis', 17, 'Seminário'],
+      ].map(([subjectId, days, title], index) => ({
+        id: `t-${index}`,
+        kind: 'trabalho' as const,
+        subjectId: String(subjectId),
+        lessonId: null,
+        title: String(title),
+        date: addDays(today, Number(days)),
+        start: '18:00',
+        end: '19:00',
+      })),
+    ),
     slots: slotsFor(today),
     reminders: [
       'Levar o jaleco para a Propedêutica.',

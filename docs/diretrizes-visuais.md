@@ -1,17 +1,16 @@
 # Ohara: diretrizes visuais
 
-**Status:** versão 2, em vigor. Data: 07/11/2026.
-**Papel:** define como cada tela é pensada, navegada e desenhada. Vale para toda proposta de layout, em qualquer tela.
-**Fontes:** `visao.md`, `teclado.md`, `decisoes.md`, código de `src/core/keyboard/`, biblioteca de elementos e Acervo do ClaudeWeb, capturas da Rodada 2 e gostos registrados do legado.
-**Valores exatos:** `src/ui/styles/tokens.css`. **Para testar o fluxo com as mãos:** `diretrizes-visuais-demo.html`.
-
-As regras marcadas com **[proposta]** nasceram propostas e foram decididas (D70 a D74). Já estão no código e em `teclado.md`.
+**Status:** versão 3, 09/11/2026. Identidade **Ardósia refinada**, aceita pelo usuário.
+**Papel:** define como cada tela é pensada, navegada e desenhada. Vale para toda proposta de layout.
+**Para copiar:** `lab/vitrine.html` (todas as peças reais, código em `lab/vitrine/`) e `lab/hub-ardosia2.html` (uma tela montada). Veja com `npm run tela -- "lab/vitrine.html"`. Modelo reproduz qualidade copiando exemplo que funciona: **abra a vitrine antes de desenhar.**
+**Valores exatos:** `src/ui/styles/tokens.css`. Este texto dá o **papel** de cada coisa, não o número.
+**Transição:** o app em `src/` ainda mostra a identidade anterior até os passos 2 a 6 de `plano/linguagem-visual.md`. Tela ou peça nova já segue este texto. O registro em `decisoes.md` (revê D105, D107, D109, D111 e D115) é o passo 7.
 
 ## 1. Princípio
 
-**Toda mudança de layout deve deixar o fluxo por mosaicos mais curto, mais previsível e completo pelo teclado.**
+**A tela é calma e fria; existe uma única luz, o azul, e ela está sempre onde as teclas agem.**
 
-O layout não é decoração sobre a navegação: ele **é** a navegação. Onde um bloco fica define qual seta chega até ele. Por isso a posição das coisas é decidida pelo caminho do usuário, e só depois pelo desenho.
+O layout não é decoração sobre a navegação: ele **é** a navegação. Onde um bloco fica define qual seta chega até ele. Por isso a posição é decidida pelo caminho do usuário, e só depois pelo desenho.
 
 Quando dois critérios entram em conflito, vale esta ordem:
 1. **Não perder o lugar.** O usuário sempre sabe onde as teclas estão agindo.
@@ -32,9 +31,7 @@ Quando dois critérios entram em conflito, vale esta ordem:
 
 Enter desce, Esc sobe (D17). Alt H J K L age em qualquer nível e **mantém o nível**: de dentro de uma lista, Alt L chega ao campo do bloco à direita sem subir e descer.
 
-### 2.2 Dois tipos de campo [proposta, D70]
-
-Hoje o código só conhece campo de texto, e a régua de bimestres e a lista de aulas não têm onde morar. A regra abaixo resolve isso:
+### 2.2 Dois tipos de campo (D70)
 
 | Tipo | Exemplos | Setas e H J K L | Enter |
 |---|---|---|---|
@@ -43,7 +40,7 @@ Hoje o código só conhece campo de texto, e a régua de bimestres e a lista de 
 
 A régua de bimestres é **um bloco com campo navegável**. Ela não é nível menu: nesse nível só existe a barra de telas, e Esc ali não faz nada (D17).
 
-### 2.3 Regras das setas [proposta, D71]
+### 2.3 Regras das setas (D71)
 
 1. **Eixo:** um controle usa só o eixo dele. Régua usa ← →. Lista usa ↑ ↓. Grade usa os dois.
 2. **Seta do outro eixo sai:** na régua, ↓ vai ao bloco de baixo. Na lista, → vai ao bloco da direita. O código do nível menu já faz isso.
@@ -61,7 +58,7 @@ Enter sempre leva adiante, para o próximo passo natural:
 
 **A seleção segue o foco nos filtros e nas listas.** Andar pela régua já filtra, e andar pela lista já troca a prévia. Ninguém precisa confirmar para ver o resultado.
 
-### 2.5 Esc e a volta [proposta, D72]
+### 2.5 Esc e a volta (D72)
 
 Ordem do Esc: janela → menu ⋮ → campo → bloco → **tela-mãe** → menu de telas.
 
@@ -89,48 +86,73 @@ Uma ação frequente sobre outro bloco não deve exigir sair de onde se está. E
 
 ## 3. Foco e estados
 
-### 3.1 Um único anel forte (blocos e itens: contorno de 4px por dentro, D105; o anel escuro fica no menu e nos botões)
+### 3.1 Um azul, três forças
 
-**Só existe um anel forte na tela, e ele mostra onde as teclas estão agindo agora.** Essa é a regra visual mais importante do app.
+| Força | Token | Significa | Onde aparece |
+|---|---|---|---|
+| **Cheio** | `--cor-acao`, com `--cor-sobre-acao` por cima | Ação, agora, hoje | Botão principal, pílula "agora", dia de hoje, chave ligada, caixa marcada |
+| **Claro** | `--cor-escolhido` | Escolhido | Aba atual, filtro ativo, item selecionado, dia escolhido |
+| **Contorno** | `--cor-cursor` | Cursor do teclado | Um lugar só na tela |
 
-| Nível atual | Anel forte em | Borda do bloco |
+Fora dessas três, o azul só aparece como texto em dois lugares: o rótulo do bloco aceso e o botão discreto. **Nada mais é azul.** O grafite deixou de ser cor de botão.
+
+Teste rápido: se algo azul não é ação, nem escolhido, nem cursor, está errado.
+
+### 3.2 Cursor e rastro
+
+**Só existe um cursor na tela, sempre com a mesma forma:** contorno azul **por dentro** da peça (`box-shadow: inset`), nunca um anel afastado.
+
+| Nível atual | Cursor em | Bloco |
 |---|---|---|
-| Menu | Número da tela | Nenhuma |
-| Bloco | O bloco inteiro | Nenhuma além do anel |
-| Campo navegável | O item | Borda de bloco ativo |
-| Campo de texto | Cursor piscando, sem anel | Borda de bloco ativo |
+| Menu | A aba, 2 px | Sem rastro |
+| Bloco | O bloco inteiro, 3 px | Aceso |
+| Campo navegável | O item, 2 px | Aceso, com **rastro** |
+| Campo de texto | Cursor piscando do texto | Aceso, com **rastro** |
 
-- **Anel forte:** 3 px na cor do foco, afastado 3 px. O contraste é de 15:1 ou mais.
-- **Borda de bloco ativo:** 2 px roxa. Diz "você está dentro deste bloco".
-- O vão do mosaico (8 px) acomoda o anel (6 px). Dentro de áreas que rolam, deixe 8 px de folga para o anel não ser cortado.
-- **Com o dedo, o anel some** e fica só a borda do bloco ativo. Ele volta na primeira tecla. O app decide isso pela última forma de uso, porque tablet com teclado físico engana a detecção por tipo de aparelho.
+- **Rastro:** contorno fraco de 2 px no bloco (azul a 30% misturado à cor do bloco). Mostra para onde o Esc volta.
+- **Sobre azul cheio** (botão principal), o cursor ganha um segundo aro por dentro, na cor do bloco, para não sumir.
+- **Instantâneo.** Com a tecla segurada, atraso faria o cursor ficar para trás.
+- **Com o dedo, o cursor some** e fica só o rastro. Ele volta na primeira tecla. O app decide pela última forma de uso, não pelo tipo de aparelho.
+- Como o contorno é por dentro, ele não é cortado em áreas que rolam e cabe no vão de 8 px.
 
-### 3.2 Sete estados
+### 3.3 Três alturas
 
-A biblioteca traz cinco. Os dois últimos abaixo faltavam, e o Selecionado é indispensável para filtros e listas.
+| Altura | Token | O que é |
+|---|---|---|
+| Fundo | `--cor-fundo` | Aparece só nos vãos |
+| Bloco | `--cor-cartao` | O bloco onde o cursor está (aceso) |
+| Peça | `--cor-cartao-2` | Botão, campo, ilha, cartão dentro do bloco |
+
+**Os blocos sem cursor recuam** para meio caminho entre bloco e fundo, e o rótulo deles fica apagado. O bloco com o cursor acende e o rótulo fica azul. É isso que faz a luz seguir o teclado sem precisar de borda grossa.
+
+**No nível menu** (cursor nas abas), o último bloco usado continua aceso, com rastro: é para ele que o Enter volta (D116).
+
+Peça dentro de bloco usa a superfície de peça translúcida, para funcionar igual no bloco aceso e no recuado. Tokens: `--sup-recuada`, `--sup-peca`, `--cor-rastro`, `--cor-relevo`.
+
+### 3.4 Estados
 
 | Estado | Como aparece | Regra |
 |---|---|---|
-| Normal | Cor própria | Alvo de 44 px ou mais |
-| Passar o mouse | Borda roxa em cartões e campos; botão escuro vira roxo | Nunca é a única forma de ver algo |
-| Foco | Anel forte | Regra 3.1 |
-| Tocado | Encolhe levemente e troca para roxo forte ou cor de marca | 120 ms |
-| Desabilitado | Fundo secundário e texto 2 | Sem tracejado. Continua focável quando precisa explicar o motivo |
-| **Selecionado** | Filtro: fundo roxo com tinta. Item de lista: fundo de marca | **Sempre preenchimento, nunca borda.** Permanece quando o foco sai |
-| **Vazio ou criar** | Borda tracejada | É navegável e tem ação. O tracejado não significa mais "desabilitado" |
+| Normal | Cor do papel | Alvo de 44 px ou mais |
+| Cursor | Contorno azul por dentro | Regra 3.2 |
+| **Escolhido** | Azul claro, preenchido | **Permanece quando o cursor sai.** Nunca é borda |
+| Ação principal | Azul cheio | Uma por bloco |
+| Tocado | Encolhe levemente | 120 ms |
+| Desabilitado | Texto apagado a 60%, sem fundo | Sem tracejado. Continua focável quando precisa explicar o motivo |
+| Passada | Título em texto apagado | Aula que já aconteceu; continua navegável |
 
-**Seleção sem consequência não aparece fora de foco:** a lista de aulas mantém a seleção porque ela comanda a prévia. Já em lembretes e no calendário do Hub, a seleção só aparece com o bloco ativo.
+**Três sinais, três formas:** cursor é contorno, escolhido é azul claro, ação é azul cheio. Um item pode estar escolhido e com o cursor ao mesmo tempo, e os dois sinais se somam.
 
-**Três sinais, três formas:** foco é anel, seleção é preenchimento e mouse é borda. Um item pode estar selecionado e em foco ao mesmo tempo, e os dois sinais se somam.
+**Seleção sem consequência não aparece fora de foco:** a lista de aulas mantém o escolhido porque ele comanda a prévia. Em lembretes e no calendário do Hub, ele só aparece com o bloco aceso.
 
-Toda lista ou bloco também tem três situações de conteúdo:
-- **Vazio:** frase curta e a ação de criar.
+Toda lista ou bloco tem três situações de conteúdo:
+- **Vazio:** frase curta e a tecla de criar ("Nenhuma aula. Alt N cria.").
 - **Carregando:** o espaço reservado, sem pular a tela.
-- **Erro:** ícone de alerta, palavra e o que fazer. Nunca silencioso.
+- **Erro:** palavra, ícone de alerta e o que fazer. Nunca silencioso.
 
 ## 4. Mosaicos
 
-### 4.1 Livre e fixo [proposta, D73]
+### 4.1 Livre e fixo (D73)
 
 | | **Mosaico livre** | **Mosaico fixo** |
 |---|---|---|
@@ -179,7 +201,7 @@ Lista suspensa só serve em formulário, para escolher um valor. Nunca para nave
 
 ### Tela por tela
 
-Mapa de foco de cada tela. O detalhe funcional fica em `telas.md`, quando existir. Todas existem no app desde as etapas 3 a 9, com dados de exemplo. Treino, Agenda e Configs foram desenhadas sem referência do ClaudeWeb e ainda precisam da revisão do usuário.
+Mapa de foco de cada tela. O detalhe funcional fica em `telas.md`, quando existir.
 
 | Tela | Padrão | Blocos, na ordem do Tab | Chegada | Enter principal |
 |---|---|---|---|---|
@@ -199,88 +221,90 @@ A aula 3 do 2º bimestre custa 6 teclas, saindo de "Todas": → → Enter ↓ �
 
 ## 6. Linguagem visual
 
-**Identidade:** Rodada 2, lavanda e índigo. Cartões de uma peça, cor chapada, pílulas. Sem tema de medicina. Sutil e calmo na base, cor forte só no que merece atenção.
+**Identidade:** Ardósia refinada. Base fria em três alturas, um azul em três forças, cor viva só de matéria. Tudo que é marca é pílula. Sem tema de medicina e **sem fundo quente** (nada de creme, areia, amarelo ou terroso na base).
 
 ### 6.1 Cor
 
-**A base é neutra, e a cor carrega significado.** Fundo e cartões ficam quietos para que a cor de matéria, a aula de agora e a seleção se destaquem.
-
-| Regra | Motivo medido |
-|---|---|
-| Sobre cor de matéria, só `--cor-tinta` | Contraste de 5:1 a 7,5:1 |
-| Cor de matéria **nunca** vira texto ou borda fina no tema claro | 2,3:1 a 2,7:1 com o branco |
-| Roxo forte só em texto grande ou no estado tocado | 4,49:1 com a tinta, abaixo do mínimo para texto pequeno |
-| Sobre cor de marca, use só `--cor-texto` | Texto 2 dá 2,98:1 no escuro |
-| Borda de bloco ativo usa `--cor-bloco-ativo` | O roxo comum dá 2,9:1 com o fundo claro; o forte dá 3,2:1 |
-
-- **Peça sobre o fundo usa `--cor-cartao`; peça sobre cartão usa `--cor-cartao-2`.** No tema claro, cartão 2 e fundo são quase iguais, e a pílula some. A tela de teste mostrou isso no botão "← Acervo".
-- **Cor nunca é a única pista.** Matéria sempre tem sigla ou nome. Status sempre tem palavra e ícone.
-- **Cor de matéria só em** fundo cheio, pílula, bolinha ou sigla. Nunca em tarja, faixa colada ou lua minguante.
-- **Guarde a posição da cor, nunca o valor**, para o tema poder mudar sem mexer nos dados.
-- **Status:** verde = em dia ou concluído. Laranja = atenção, atraso ou erro, sempre com ícone de alerta. Sem vermelho em barras.
-- **Marca-texto das anotações** usa `--cor-marca`, em itálico.
+- **Toda cor entra por papel** ("ação", "fundo", "matéria 3"), nunca por valor. Hex ou `rgb()` fora de `tokens.css` e `paletas.css` é erro. Assim a paleta troca em um arquivo só.
+- **Cor de matéria só em três lugares:** pílula da sigla, marca alongada (dia do calendário) e fundo do cartão da própria matéria. Nunca em texto, borda, tarja, faixa colada, capa ou fundo de bloco.
+- **Sobre cor de matéria, só `--cor-tinta`.**
+- **Nos cartões, só a sigla** da matéria, nunca o nome inteiro.
+- **Guarde a posição da cor, nunca o valor**, para o tema mudar sem mexer nos dados.
+- **Cor nunca é a única pista.** Matéria tem sigla. Estado tem palavra.
+- **Estado:** `--cor-ok` = em dia ou concluído. `--cor-atencao` = atraso, atenção ou erro. Sempre em marca alongada com a palavra ao lado.
 - **Slide continua claro no tema escuro.** É conteúdo, não interface.
+- **Contraste mínimo:** 4,5:1 em texto, 3:1 em contorno e ícone, **nos dois temas**. Nunca julgue só o claro.
 
-### 6.2 Tipografia (D67)
+### 6.2 Tipografia (D67, D68)
 
 | Papel | Fonte | Onde |
 |---|---|---|
-| Voz | Nunito 700, 800 | Títulos de tela, números grandes, matérias, títulos curtos |
+| Voz | Nunito 700, 800 | Títulos de tela, números grandes, títulos curtos |
 | Interface | Inter 500, 600, 700 | Botões, rótulos, siglas, horas, contagens, teclas |
 | Leitura | Source Sans 3 400, 600, itálico | Texto corrido, respostas, lembretes, tudo que se digita |
-| Título de nota | Source Sans 3 600, 700 | Títulos 1, 2 e 3 dentro das Anotações |
 
-A escala tem 20 degraus fechados em `src/ui/styles/tokens.css`. Não use tamanho fora dela. Os HTML do ClaudeWeb somam mais de 30 combinações, com vizinhos como 15 e 15,5 px que não criam hierarquia.
-
-**Caixa-alta só em texto escrito pelo app e em nome de matéria.** Título de aula, pergunta de cartão e título de nota ficam exatamente como foram digitados. O motivo é funcional: em caixa-alta, `TNF-α` vira `TNF-Α`, `IL-1β` vira `IL-1Β`, `pH` vira `PH` e `mRNA` vira `MRNA`.
-
-**Exceção à regra da D67:** o texto do usuário usa leitura quando é corrido. Títulos curtos do usuário (nome da aula, pergunta do cartão) usam a voz, sem caixa-alta. É o que a biblioteca já faz.
-
-**Números:** sempre tabulares em horas, datas e contagens.
+- **Três degraus por bloco:** rótulo (caixa-alta, apagado; azul no bloco aceso), conteúdo, apoio (apagado). Não crie um quarto.
+- A escala é fechada em `tokens.css` (`--voz-*`, `--ui-*`, `--leitura-*`). Não use tamanho fora dela.
+- **Caixa-alta só em texto escrito pelo app e em sigla de matéria.** Título de aula, pergunta de cartão e título de nota ficam como foram digitados: em caixa-alta, `TNF-α` vira `TNF-Α` e `pH` vira `PH`.
+- Texto do usuário usa leitura quando é corrido e voz quando é título curto (nome da aula, pergunta do cartão).
+- **Números tabulares** em horas, datas e contagens.
 
 ### 6.3 Espaço e forma
 
-- **Grade de 4 px.** Separe por espaço e por cartão. **Sem divisórias.**
-- **Raios:** bloco 24, item e botão 18, campo 16, pílula total, mínimo 8. Quando um elemento encosta no de fora (recuo até 8 px), o raio interno é o externo menos o recuo.
-- **Sem gradiente. Sem sombra**, exceto no botão flutuante e em janelas.
+- **Grade de 4 px.** Margem e vão de 8 px. Separe por espaço e por altura de superfície. **Sem divisórias.**
+- **Pílulas, não círculos:** caixa de marcar, chave, dia do calendário, marca de estado e de matéria são alongadas. Nenhuma bolinha.
+- **Cartões de uma peça**, cantos bem arredondados. Raios só pelos tokens (`--raio-bloco`, `--raio-item`, `--raio-botao`, `--raio-campo`; pílula é raio total). Quando uma peça encosta na de fora, o raio interno é o externo menos o recuo.
+- **Sem gradiente. Sem sombra**, exceto em janelas e no botão flutuante.
+- **Proibido:** tarja ou faixa colada na lateral ou no topo, "lua minguante", cabeçalho repetido (o título da tela fica na barra do topo).
 - **Barra de rolagem:** pílula solta, nunca a do sistema.
-- **Sem cabeçalho repetido:** o título da tela fica na barra do topo, à direita dos números.
 
 ### 6.4 Ícones
 
-Grade de 24 px, traço de 2 px, pontas arredondadas, sempre SVG, nunca emoji. Tamanhos: 14, 20, 24, 28 e 40, com o traço compensado para parecer igual. Ícone sozinho só em ação universal, e sempre com nome acessível. Os 26 ícones da biblioteca são o conjunto oficial.
+Grade de 24 px, traço de 2 px, pontas arredondadas, sempre SVG, nunca emoji. Ícone sozinho só em ação universal, e sempre com nome acessível.
 
 ### 6.5 Movimento
 
-- Borda de bloco ativo: 200 ms, como no Hyprland.
-- Anel forte: **instantâneo**. Com a tecla segurada, atraso faria o anel ficar para trás.
-- Toque: 120 ms. Bloco abrindo: de 87% a 100%, só quando abre com a tela já aberta.
-- **Troca de tela (D83):** instantânea, sem animação.
+- Bloco acender ou recuar: 200 ms. Cursor: **instantâneo**. Toque: 120 ms.
+- Troca de tela (D83): instantânea.
 - Sem movimento decorativo. "Reduzir movimento" zera tudo.
-- Cartão subir 3 px só com mouse.
 
-### 6.6 Atalho visível
+### 6.6 Tecla sempre visível
 
-O app ensina as teclas enquanto é usado:
-- **Título de bloco** mostra o atalho em pílula à direita.
-- **Botão de ação** com atalho mostra a tecla dentro dele. Exemplo: `Novo  Alt N`.
-- **Número da barra** é o próprio atalho.
-- **Celular:** sem pílulas de tecla.
+O app ensina as teclas enquanto é usado, sempre com a **mesma pecinha** (Tecla, com relevo embaixo):
+- **Rótulo de bloco:** atalho à direita.
+- **Botão com atalho:** a tecla dentro dele (`Novo lembrete  Alt N`).
+- **Aba:** o número é o próprio atalho.
+- **Indicador de nível:** as teclas que valem agora.
 
-## 7. Componentes
+## 7. Peças: quando usar cada uma
 
-A biblioteca do ClaudeWeb é a referência de desenho. Use só o que está nela, com os ajustes abaixo. Componente novo entra primeiro aqui.
+Monte telas **só com estas peças**. Elas são componentes reais em `src/ui/components` (qual arquivo tem qual peça: `plano/linguagem-visual.md`). Veja todas em `lab/vitrine.html`; não redesenhe uma peça dentro da tela.
 
-| Grupo | Peças | Ajuste |
+| Peça | Use para | Regras |
 |---|---|---|
-| Botões | Primário, secundário, pílula, numerado, só ícone, flutuante | **Um primário por bloco.** Desabilitado sem tracejado |
-| Etiquetas | Matéria, sigla, sigla escura, status | Etiqueta só é clicável quando há ação. Área de toque de 44 px |
-| Cartões | Prova, estudo, matéria | Todos com estado selecionado |
-| Listas | Agenda, lembrete, linha de aula | Selecionado por preenchimento. Altura de 56 a 64 px |
-| Campos | Texto, seletor, caixa, alternador | Seletor só em formulário |
-| **Régua** (nova) | Pílulas ou cartões em linha, dentro de um bloco | Se não couber, rola por dentro. A ação de criar fica no fim e não seleciona |
-| **Prévia** (nova) | Capa, título, dados, ação principal | Capa com proporção fixa. Atualiza sem pular a tela |
-| **Janela** (nova) | Modal, raio 24, véu, largura até 640 px | Foco preso. Esc fecha e devolve o foco à origem |
+| **Bloco** | Toda divisão da tela | Rótulo em caixa-alta, com a tecla à direita. Recuado, aceso ou com rastro (3.3) |
+| **Ilha** | Agrupar controles na barra do topo | Pílula de 44 px na superfície recuada. Três ilhas: telas, nível, módulos |
+| **Aba** | Trocar de tela, só na ilha de telas | Só o número; a atual abre e mostra o nome ("1 Hub"), em azul claro |
+| **Indicador de nível** | Dizer onde as teclas agem | Um por tela, na barra: MENU, BLOCO ou CAMPO, mais as teclas que valem |
+| **Régua** | Escolher um grupo (pasta, bimestre, visão) | Pílulas em linha, fora do conteúdo que filtram. Criar fica no fim e não seleciona. Se não couber, rola por dentro |
+| **Item de lista** | Aula, lembrete, linha de agenda | 56 a 64 px. Hora, depois título e apoio, depois pílulas |
+| **Botão principal** | A ação mais provável do bloco | Azul cheio. **Um por bloco** |
+| **Botão comum** | Demais ações | Superfície de peça |
+| **Botão discreto** | Ação menor, de ajuste | Só texto azul, sem fundo |
+| **Tecla** | Mostrar um atalho | Sempre igual (6.6). Nunca clicável sozinha |
+| **Pílula de matéria** | Dizer de qual matéria é | Sigla sobre a cor da matéria, com `--cor-tinta` |
+| **Pílula de estado** | Em dia, atenção | Marca alongada colorida e a palavra |
+| **Pílula "agora"** | A aula em andamento | Azul cheio. No máximo uma na tela |
+| **Cartão de prova** | Próximas provas | Dia da semana e mês, prazo, número grande, pílulas das matérias |
+| **Cartão de matéria** | Grade do Acervo e do Treino | Fundo na cor da matéria, sigla grande, uma linha de apoio |
+| **Campo** | Busca e formulário | 44 px, superfície de peça, tecla à direita. Lista suspensa só em formulário, nunca para navegar |
+| **Chave e caixa de marcar** | Ligar e concluir | Pílulas. Ligada ou marcada: azul cheio |
+| **Dia** | Calendário | Pílula. Hoje: azul cheio. Escolhido: azul claro |
+| **Barra de progresso** | Quanto já foi feito | Pílula; preenchimento em `--cor-ok`, com o número ao lado |
+| **Prévia** | Detalhe do item escolhido | Título, dados, ação principal. Atualiza sem pular a tela |
+| **Janela** | Consultar sem perder o lugar | Modal até 640 px. Foco preso. Esc fecha e devolve o cursor à origem |
+
+**Peça nova** só nasce em bancada no lab (até 3 versões, dois temas, com o cursor testado) e com o aceite do usuário. Depois entra nesta tabela e na vitrine. Antes de pedir uma, tente montar com as que existem.
 
 ## 8. Checklist de cada proposta
 
@@ -299,29 +323,31 @@ Responda antes de propor. "Não sei" significa que a proposta não está pronta.
 8. O que Enter faz em cada item? O que Esc faz em cada nível?
 9. Precisa de tecla nova? Ela entra em `teclado.md`, nunca em componente.
 
-**C. Foco e estados**
-10. O anel forte aparece em um só lugar, em todos os níveis?
-11. Foco, seleção e mouse são distinguíveis, inclusive juntos?
-12. Como ficam vazio, carregando e erro?
+**C. Luz e estados**
+10. O cursor aparece em um só lugar, em todos os níveis? O rastro mostra a volta do Esc?
+11. Todo azul da tela é ação, escolhido ou cursor (3.1)?
+12. Só o bloco com o cursor está aceso? Há um só botão principal por bloco?
+13. Como ficam vazio, carregando e erro?
 
 **D. Mosaico**
-13. É livre ou fixo? Os vizinhos estão declarados?
-14. Funciona com o bloco no tamanho mínimo e ampliado?
-15. A Mesa continua só com Slides, Anotações e Cartões?
+14. É livre ou fixo? Os vizinhos estão declarados?
+15. Funciona com o bloco no tamanho mínimo e ampliado?
+16. A Mesa continua só com Slides, Anotações e Cartões?
 
-**E. Toque e aparelhos**
-16. Toda ação tem caminho pelo dedo, com alvo de 44 px, sem depender de mouse?
-17. Funciona em 1280 × 800, no PC e no celular, sem a página rolar?
+**E. Toque**
+17. Toda ação tem caminho pelo dedo, com alvo de 44 px, sem depender de mouse?
+18. Funciona em 1280 × 800 e no PC, sem a página rolar?
 
 **F. Visual**
-18. Usa só tokens e peças da biblioteca?
-19. Passa no contraste (4,5:1 em texto, 3:1 em borda e ícone), nos dois temas?
-20. Respeita as proibições? Nada de tarja ou faixa colada na lateral ou no topo, lua minguante, divisória, gradiente ou tema de medicina. Cartões são de uma peça, com cantos bem arredondados.
-21. Caixa-alta só em texto do app e em nome de matéria?
+19. Usa só peças da seção 7 e só tokens, sem cor ou medida solta?
+20. Cor de matéria só em pílula, marca alongada ou cartão da matéria? Só a sigla?
+21. Tudo que é marca é pílula? Nenhum círculo, tarja, faixa colada, divisória, gradiente ou fundo quente?
+22. Foi conferido **nos dois temas**, com `npm run tela`, incluindo o estado com cursor?
+23. Caixa-alta só em texto do app e em sigla?
 
 **G. Dados e registro**
-22. O que é estado de tela (memória) e o que é dado (banco)? E se o banco falhar?
-23. Criou regra nova? Registre em `decisoes.md`. Ideia para depois vai ao `backlog.md`.
+24. O que é estado de tela (memória) e o que é dado (banco)? E se o banco falhar?
+25. Criou regra nova? Registre em `decisoes.md`. Ideia para depois vai ao `backlog.md`.
 
 ## 9. Modelo de proposta
 
@@ -332,8 +358,8 @@ Teclas até o objetivo:
 Foco de chegada e volta:
 Blocos, vizinhos e ordem do Tab:
 Enter e Esc em cada ponto:
-Estados: selecionado, vazio, erro:
-Versão de toque e celular:
+Estados: escolhido, cursor, vazio, erro:
+Versão de toque:
 Estado de tela x dado:
 Decisão nova:
 Alternativa descartada e por quê:
@@ -341,31 +367,11 @@ Alternativa descartada e por quê:
 
 A alternativa descartada é obrigatória: sem ela, a escolha não foi comparada. Mostre a tela **renderizada** em 1280 × 800, nos dois temas, antes de pedir a decisão.
 
-## 10. O que corrigir nos HTML do ClaudeWeb
+## 10. A confirmar
 
-Antes de virar tela real:
+Pontos que a biblioteca ainda não mostra. Não decida sozinho: leve em bancada.
 
-| Onde | Problema | Correção |
-|---|---|---|
-| Acervo | Seleção e mouse usam a mesma borda roxa, e duas aulas parecem selecionadas | Seleção por preenchimento |
-| Acervo | "Novo bimestre" e "Nova pasta" fazem a mesma coisa | Uma ação só, no fim da régua |
-| Acervo | Sigla da prévia estica na largura toda da capa | Sigla em tamanho natural |
-| Acervo | "Abrir na Mesa" sem tecla visível, e a tela sem pílulas de atalho | Seguir 6.6 |
-| Acervo | Teclas tratadas no próprio HTML, e o foco some ao mudar de bloco | Não copiar. Usar o resolvedor |
-| Mesa e Acervo | Título de aula em caixa-alta | Seguir 6.2 |
-| Biblioteca | Título de nota em caixa-alta | Títulos 1, 2 e 3 da escala |
-| Biblioteca | Tracejado usado para desabilitado e para vazio | Tracejado só em vazio ou criar |
-| Biblioteca | Botões 1 a 6 rotulados "Mesa 1" a "Mesa 6" para leitores de tela | Usar o nome da tela |
-| Capturas | Título de nota roxo no claro (3,48:1) | Vale a biblioteca: cor do texto |
-
-## 11. Pendências
-
-**Decididas pelo usuário em 07/11/2026** (D75 a D78):
-- **Cores de matéria:** 8 cores, com amarelo, ciano e cinza-lavanda acrescentados às 5 atuais.
-- **Filtro inicial da matéria:** o bimestre mais recente com aulas.
-- **Teclas do Treino:** Espaço vira, 1 a 4 respondem. Entram em `teclado.md` na Etapa 6.
-- **Alt N:** cria novo item no bloco em foco. Entra em `teclado.md` na Etapa 6.
-
-**Técnicas:**
-- Celular: hoje os blocos viram uma coluna que rola. A regra da seção 4.3 (um bloco por vez, com barra inferior) ainda não foi feita.
-- As regras [proposta] da seção 2 já estão no código e em `teclado.md`.
+- **Passar o mouse:** as peças sobem um degrau de superfície (`--sup-peca-viva`, `--cor-acao-viva`), nunca contorno (contorno é só do cursor). Feito no passo 3; aguarda o aceite do usuário.
+- **Vazio ou criar:** "+ Nova pasta" é peça comum no fim da régua, sem tracejado. Feito no passo 3; aguarda o aceite do usuário.
+- **Hub:** rodapé da agenda, aulas passadas apagadas e provas sem faixa (mexe na D106) aguardam a palavra do usuário.
+- **Cores de matéria:** fora da fila, depois do passo 2. Bancada em `lab/id-cores-materia.html`.

@@ -1,0 +1,785 @@
+/* Bancada das peças que faltam. Só tokens por papel; nada de cor ou raio soltos. */
+button {
+  border: 0;
+  font: inherit;
+  cursor: pointer;
+}
+
+/* ---------- 1. Filtro de matérias ---------- */
+.f-a,
+.f-b {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.f-item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 var(--e3);
+  border-radius: var(--raio-pilula);
+  background: var(--sup-peca);
+  color: var(--cor-texto-2);
+  font: var(--ui-sigla);
+}
+
+.f-a .f-item[data-sel='true'] {
+  background: var(--cor-materia, var(--cor-escolhido));
+  color: var(--cor-tinta);
+}
+
+.f-a .f-item:not([data-materia])[data-sel='true'],
+.f-b .f-item[data-sel='true'] {
+  background: var(--cor-escolhido);
+  color: var(--cor-texto);
+}
+
+.f-marca {
+  width: 14px;
+  height: 6px;
+  border-radius: var(--raio-pilula);
+  background: var(--cor-materia);
+}
+
+.f-c {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  padding: 4px;
+  border-radius: var(--raio-campo);
+  background: var(--sup-recuada);
+}
+
+.f-c .f-item {
+  height: 32px;
+  background: transparent;
+}
+
+.f-c .f-item[data-sel='true'] {
+  background: var(--cor-materia, var(--cor-escolhido));
+  color: var(--cor-tinta);
+}
+
+.f-c .f-item:not([data-materia])[data-sel='true'] {
+  background: var(--cor-cartao);
+  color: var(--cor-texto);
+}
+
+/* ---------- 2. Célula de dia ---------- */
+.d-semana {
+  display: grid;
+  grid-template-columns: repeat(3, 72px);
+  gap: var(--e1);
+}
+
+.d-grade {
+  display: grid;
+  grid-template-columns: repeat(3, 150px);
+  gap: var(--e1);
+}
+
+.d-lista {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e1);
+  width: 440px;
+}
+
+.d-mes,
+.d-linha {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+  padding: 6px;
+  border-radius: var(--raio-item);
+  background: var(--sup-peca);
+}
+
+.d-mes {
+  min-height: 112px;
+}
+
+.d-linha {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--e3);
+  min-height: var(--item-lista);
+  padding: 6px var(--e3) 6px 6px;
+}
+
+.d-eventos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e1) var(--e3);
+}
+
+.d-mes[data-sel='true'],
+.d-linha[data-sel='true'] {
+  background: var(--cor-escolhido);
+}
+
+.d-cabeca {
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 6px;
+  color: var(--cor-texto-2);
+}
+
+.d-cabeca small {
+  font: var(--ui-rotulo);
+  letter-spacing: 0.06em;
+}
+
+.d-cabeca b {
+  color: var(--cor-texto);
+}
+
+.d-evento {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  color: var(--cor-texto-2);
+  font: var(--ui-apoio);
+  white-space: nowrap;
+}
+
+.d-evento b {
+  color: var(--cor-texto);
+  font: var(--ui-sigla);
+}
+
+.d-mais {
+  color: var(--cor-texto-2);
+  font: var(--ui-sigla);
+}
+
+/* A: dia da semana em rótulo, número em voz; hoje = número na pílula cheia. */
+.d-a .d-cabeca {
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.d-a .d-mes .d-cabeca,
+.d-a .d-linha .d-cabeca {
+  justify-content: flex-start;
+  flex-direction: row;
+  align-items: center;
+  align-self: flex-start;
+  min-width: 64px;
+}
+
+.d-a .d-cabeca b {
+  min-width: 36px;
+  padding: 2px 8px;
+  border-radius: var(--raio-pilula);
+  font: var(--voz-mini);
+  text-align: center;
+}
+
+.d-a .d-cabeca[data-hoje='true'] b {
+  background: var(--cor-agora);
+  color: var(--cor-sobre-acao);
+}
+
+/* B: uma pílula com dia e número; hoje = pílula cheia. */
+.d-b .d-cabeca {
+  align-self: flex-start;
+  white-space: nowrap;
+  min-width: 64px;
+  padding: 3px 10px;
+  border-radius: var(--raio-pilula);
+  color: var(--cor-texto);
+  font: var(--ui-item);
+}
+
+.d-b .d-semana .d-cabeca {
+  align-self: center;
+}
+
+.ag-semana .d-cabeca {
+  justify-self: center;
+}
+
+.d-b .d-cabeca[data-hoje='true'] {
+  background: var(--cor-agora);
+  color: var(--cor-sobre-acao);
+}
+
+.d-marca {
+  flex: none;
+  width: 12px;
+  height: 6px;
+  border-radius: var(--raio-pilula);
+  background: var(--cor-materia);
+}
+
+/* C: número em item; hoje = número em cor de ação; eventos em etiqueta tingida. */
+.d-c .d-cabeca {
+  align-self: flex-start;
+  padding: 2px 6px;
+}
+
+.d-c .d-semana .d-cabeca {
+  align-self: center;
+}
+
+.d-c .d-cabeca b {
+  font: var(--voz-mini);
+}
+
+.d-c .d-cabeca[data-hoje='true'],
+.d-c .d-cabeca[data-hoje='true'] b {
+  color: var(--cor-acao);
+}
+
+.d-c .d-cabeca[data-hoje='true'] b {
+  text-decoration: underline 3px;
+  text-underline-offset: 5px;
+}
+
+.d-c .d-evento {
+  padding: 1px 8px;
+  border-radius: var(--raio-pilula);
+  background: color-mix(in srgb, var(--cor-materia) 32%, transparent);
+  color: var(--cor-texto);
+}
+
+/* ---------- 3. Alternadores e abas ---------- */
+.b-alt,
+.b-abas {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.b-item,
+.b-aba {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 var(--e3);
+  border-radius: var(--raio-pilula);
+  background: transparent;
+  color: var(--cor-texto-2);
+  font: var(--ui-botao);
+}
+
+.b-ilha {
+  --tecla-fundo: var(--cor-cartao);
+  padding: 6px;
+  border-radius: var(--raio-pilula);
+  background: var(--sup-recuada);
+}
+
+.b-ilha .b-item {
+  padding-right: 6px;
+}
+
+.b-marca {
+  width: 18px;
+  height: 8px;
+  border-radius: var(--raio-pilula);
+  box-shadow: inset 0 0 0 2px var(--cor-texto-2);
+}
+
+.b-item[data-sel='true'] {
+  color: var(--cor-texto);
+}
+
+.b-item[data-sel='true'] .b-marca {
+  background: var(--cor-acao);
+  box-shadow: none;
+}
+
+.b-num {
+  padding: 0 7px;
+  border-radius: var(--raio-pilula);
+  background: var(--sup-peca);
+  font: var(--ui-sigla);
+}
+
+/* AB1 e AB3: aberto ganha o fundo de escolhido; abas iguais. */
+.b-ab1 [data-sel='true'],
+.b-ab3 [data-sel='true'] {
+  background: var(--cor-escolhido);
+  color: var(--cor-texto);
+}
+
+/* AB2: sem fundo no aberto; abas em trilho, a atual elevada. */
+.b-ab2 .b-aba[data-sel='true'] {
+  background: var(--cor-cartao);
+  color: var(--cor-texto);
+  box-shadow: 0 1px 2px var(--cor-relevo);
+}
+
+/* AB3: a tecla faz o papel da marca. */
+.b-ab3 .b-item kbd {
+  background: transparent;
+  box-shadow: inset 0 0 0 2px var(--cor-texto-2);
+  color: var(--cor-texto-2);
+}
+
+.b-ab3 .b-item[data-sel='true'] kbd {
+  background: var(--cor-acao);
+  box-shadow: none;
+  color: var(--cor-sobre-acao);
+}
+
+/* ---------- 4. Aviso Redimensionar ---------- */
+.a-tela {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  height: 240px;
+  padding: 6px;
+  border-radius: var(--raio-item);
+  background: var(--cor-fundo);
+}
+
+.a-topo {
+  display: flex;
+  align-items: center;
+  gap: var(--e2);
+}
+
+.a-titulo {
+  overflow: hidden;
+  font: var(--ui-item);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.a-fim {
+  margin-left: auto;
+}
+
+.a-mosaico {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 6px;
+}
+
+.a-bloco {
+  position: relative;
+  border-radius: var(--raio-item);
+  background: var(--sup-recuada);
+}
+
+.a-bloco[data-alvo] {
+  background: var(--cor-cartao);
+  box-shadow: inset 0 0 0 var(--cursor-bloco) var(--cor-cursor);
+}
+
+.a-modo {
+  padding: 0 6px;
+  font: var(--ui-rotulo);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.a-texto {
+  color: var(--cor-texto-2);
+  font: var(--ui-apoio);
+}
+
+.a-flutua {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 4px 4px 10px;
+  border-radius: var(--raio-pilula);
+  background: var(--cor-cartao);
+  box-shadow: var(--sombra-flutuante);
+  white-space: nowrap;
+  transform: translateX(-50%);
+}
+
+.a-dentro {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--e2);
+}
+
+.a-teclas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+}
+
+.a-fim .a-modo {
+  padding-left: 10px;
+}
+
+/* ---------- Dia montado na Agenda ---------- */
+.ag-semana {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: var(--e1);
+}
+
+.ag-mes {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: var(--e1);
+}
+
+.ag-mes .d-mes {
+  min-height: 104px;
+}
+
+.ag-dsem {
+  padding: 0 6px;
+  color: var(--cor-texto-2);
+  font: var(--ui-rotulo);
+  letter-spacing: 0.06em;
+}
+
+.ag-lista {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e1);
+}
+
+.d-mes[data-fora='true'] {
+  opacity: 0.45;
+}
+
+/* ---------- Cartão de próximas provas ---------- */
+.pv-fila {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 220px));
+  gap: var(--e2);
+}
+
+.pv {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e2);
+  min-width: 0;
+  padding: var(--e3) var(--e4);
+  border-radius: var(--raio-item);
+  background: var(--sup-peca);
+  text-align: left;
+}
+
+.pv-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--e2);
+  min-height: 24px;
+  color: var(--cor-texto-2);
+  font: var(--ui-tecla);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.pv-dia {
+  font: var(--voz-numero);
+}
+
+.pv-materias {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e1);
+  min-height: 24px;
+}
+
+.pv-falta {
+  white-space: nowrap;
+}
+
+/* A: só a mais próxima leva pílula. */
+.pv-a[data-proxima] .pv-falta,
+.pv-b .pv-falta {
+  padding: 3px 10px;
+  border-radius: var(--raio-pilula);
+  background: var(--cor-acao);
+  color: var(--cor-sobre-acao);
+}
+
+/* B: deitado; a contagem é sempre pílula, tonal nas outras. */
+.pv-b {
+  gap: var(--e3);
+}
+
+.pv-linha {
+  display: flex;
+  align-items: center;
+  gap: var(--e2);
+}
+
+.pv-b .pv-dia {
+  font: var(--voz-numero-mini);
+}
+
+.pv-data {
+  display: flex;
+  flex-direction: column;
+  color: var(--cor-texto-2);
+  font: var(--ui-tecla);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.pv-b .pv-falta {
+  align-self: flex-start;
+  margin-left: auto;
+  font: var(--ui-tecla);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.pv-b:not([data-proxima]) .pv-falta {
+  background: var(--cor-escolhido);
+  color: var(--cor-texto);
+}
+
+/* C: cartão aceso com a faixa virando ilha solta. */
+.pv-c {
+  padding: var(--e2);
+  background: var(--cor-cartao);
+  box-shadow: inset 0 0 0 1px var(--sup-peca);
+}
+
+.pv-c .pv-topo {
+  min-height: 32px;
+  padding: 0 var(--e3);
+  border-radius: var(--raio-pilula);
+  background: var(--cor-escolhido);
+  color: var(--cor-texto);
+}
+
+.pv-c[data-proxima] .pv-topo {
+  background: var(--cor-acao);
+  color: var(--cor-sobre-acao);
+}
+
+.pv-c .pv-dia,
+.pv-c .pv-materias {
+  padding: 0 var(--e2);
+}
+
+.pv-c .pv-materias {
+  padding-bottom: var(--e1);
+}
+
+.pv[data-cursor] {
+  box-shadow: inset 0 0 0 var(--cursor) var(--cor-cursor);
+}
+
+/* ---------- Barra do topo ---------- */
+.bt-tela {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e1);
+}
+
+.bt-barra {
+  display: flex;
+  align-items: center;
+  gap: var(--e3);
+  padding: var(--e2);
+  border-radius: var(--raio-item);
+  background: var(--cor-fundo);
+}
+
+.bt-titulo {
+  overflow: hidden;
+  font: var(--voz-titulo);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bt-fim {
+  display: flex;
+  align-items: center;
+  gap: var(--e1);
+  margin-left: auto;
+}
+
+/* Pílula de tipo: T (trabalho), A (apresentação). Neutra, só com tokens do corpo. */
+.pv-pe {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--e2);
+}
+
+.pv-tipos {
+  flex: none;
+  align-self: flex-start;
+  padding: 3px 10px;
+  border-radius: var(--raio-pilula);
+  background: var(--sup-peca-viva);
+  color: var(--cor-texto);
+  font: var(--ui-tecla);
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.pv-b .pv-tipos {
+  align-self: center;
+}
+
+.pv-c .pv-pe {
+  padding: 0 var(--e2);
+}
+
+.pv-c .pv-pe .pv-dia {
+  padding: 0;
+}
+
+/* ---------- Mostrador de avaliações (três conceitos) ---------- */
+/* Blocos de cor, três versões. Altura fixa; a peça do dia alarga com o conteúdo. */
+.av-rolo {
+  display: flex;
+  align-items: stretch;
+  gap: var(--e2);
+  overflow-x: auto;
+}
+
+.av-grupo {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--e2);
+  padding: var(--e2) var(--e2) var(--e2);
+  border-radius: var(--raio-bloco);
+  background: var(--sup-peca);
+  text-align: left;
+}
+
+.av-cab {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--e3);
+  min-height: 24px;
+  padding: 0 var(--e1) 0 var(--e2);
+  white-space: nowrap;
+}
+
+.av-cab b {
+  font: var(--voz-mini);
+}
+
+.av-quanto {
+  color: var(--cor-texto-2);
+  font: var(--ui-tecla);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.av-grupo[data-proxima] .av-quanto {
+  padding: 3px 10px;
+  border-radius: var(--raio-pilula);
+  background: var(--cor-acao);
+  color: var(--cor-sobre-acao);
+}
+
+.av-tijolos {
+  display: flex;
+  gap: var(--e1);
+}
+
+.av-tijolo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 84px;
+  height: 56px;
+  padding: 0 var(--e3);
+  border-radius: var(--raio-item);
+  background: var(--cor-materia);
+  color: var(--cor-tinta);
+  font: var(--ui-tecla);
+}
+
+.av-tijolo b {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font: var(--voz-mini);
+}
+
+.av-tijolo i {
+  display: none;
+}
+
+/* A2: bloco neutro, cor só na marca alongada. */
+.av-a2 .av-tijolo {
+  background: var(--sup-peca-viva);
+  color: var(--cor-texto);
+}
+
+.av-a2 .av-tijolo > span {
+  color: var(--cor-texto-2);
+}
+
+.av-a2 .av-tijolo i {
+  display: block;
+  width: 16px;
+  height: 8px;
+  border-radius: var(--raio-pilula);
+  background: var(--cor-materia);
+}
+
+/* A3: dia grande à esquerda; prova cheia, o resto claro. */
+.av-a3 .av-grupo {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--e3);
+  padding-left: var(--e4);
+}
+
+.av-lado {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.av-numero {
+  font: var(--voz-numero-mini);
+}
+
+.av-lado-texto {
+  display: flex;
+  align-items: center;
+  gap: var(--e2);
+  color: var(--cor-texto-2);
+  font: var(--ui-tecla);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.av-a3 .av-tijolo {
+  height: 72px;
+}
+
+.av-a3 .av-tijolo[data-prova='false'] {
+  background: color-mix(in srgb, var(--cor-materia) 28%, var(--cor-cartao));
+  color: var(--cor-texto);
+}

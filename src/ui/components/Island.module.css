@@ -1,0 +1,54 @@
+.ilha {
+  --tecla-fundo: var(--cor-cartao);
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e1);
+  height: var(--alvo);
+  padding: 0 6px;
+  border-radius: var(--raio-pilula);
+  background: var(--sup-recuada);
+}
+
+.aba {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--e2);
+  min-width: 40px;
+  height: 32px;
+  padding: 0 var(--e3);
+  border-radius: var(--raio-pilula);
+  color: var(--cor-texto-2);
+  font: var(--ui-botao);
+}
+
+/* O alvo de toque ocupa a altura inteira da ilha. */
+.aba::after {
+  content: '';
+  position: absolute;
+  inset: -6px 0;
+}
+
+.aba[data-sel='true'] {
+  background: var(--cor-escolhido);
+  color: var(--cor-texto);
+}
+
+.nivel {
+  padding: 0 6px 0 10px;
+  font: var(--ui-rotulo);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.ilha > kbd:last-child {
+  margin-right: 6px;
+}
+
+@media (hover: hover) {
+  .aba:not([data-sel='true']):hover {
+    background: var(--sup-peca);
+  }
+}

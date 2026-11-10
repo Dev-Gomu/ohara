@@ -77,33 +77,42 @@ export function daysToNextExam(data: StudyData, subjectId: string, today: string
   return next ? daysBetween(today, next.date) : null;
 }
 
-export interface ExamDay {
+export type AssessmentKind = 'prova' | 'trabalho';
+
+export interface Assessment {
+  id: string;
+  kind: AssessmentKind;
+  subjectId: string;
+}
+
+export interface AssessmentDay {
   date: string;
-  exams: Exam[];
+  items: Assessment[];
 }
 
-export function upcomingExamDays(data: StudyData, today: string): ExamDay[] {
-  const days: ExamDay[] = [];
+// Dias com prova ou trabalho, do mais próximo ao mais distante. No dia, provas primeiro (por hora),
+// depois os trabalhos. Sem limite de itens: a peça do dia alarga com o conteúdo.
+export function upcomingAssessmentDays(data: StudyData, today: string): AssessmentDay[] {
+  const byDate = new Map<string, { time: string; item: Assessment }[]>();
+  const add = (date: string, time: string, item: Assessment): void => {
+    byDate.set(date, [...(byDate.get(date) ?? []), { time, item }]);
+  };
   for (const exam of upcomingExams(data, today)) {
-    const last = days[days.length - 1];
-    if (last && last.date === exam.date) last.exams.push(exam);
-    else days.push({ date: exam.date, exams: [exam] });
+    add(exam.date, exam.time, { id: exam.id, kind: 'prova', subjectId: exam.subjectId });
   }
-  for (const day of days) day.exams.sort((a, b) => a.time.localeCompare(b.time));
-  return days;
-}
-
-// Cartão do dia: 4 vagas fixas. Passou de 4, a última vira "+N" com as que não couberam.
-export const EXAM_SLOTS = 4;
-
-export interface ExamSlots {
-  shown: Exam[];
-  extra: number;
-}
-
-export function examSlots(exams: readonly Exam[], slots = EXAM_SLOTS): ExamSlots {
-  if (exams.length <= slots) return { shown: [...exams], extra: 0 };
-  return { shown: exams.slice(0, slots - 1), extra: exams.length - (slots - 1) };
+  for (const event of data.events) {
+    if (event.kind !== 'trabalho' || event.date === '' || daysBetween(today, event.date) < 0)
+      continue;
+    add(event.date, event.start, { id: event.id, kind: 'trabalho', subjectId: event.subjectId });
+  }
+  return [...byDate.entries()]
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([date, entries]) => ({
+      date,
+      items: entries
+        .sort((a, b) => a.item.kind.localeCompare(b.item.kind) || a.time.localeCompare(b.time))
+        .map((entry) => entry.item),
+    }));
 }
 
 function slotOccurs(slot: Slot, day: string): boolean {

@@ -53,11 +53,11 @@
         font-weight: 600;
       }
       .n.baixa {
-        background: var(--cor-laranja);
+        background: var(--cor-materia-0);
         color: var(--cor-tinta);
       }
       .n.sel {
-        background: var(--cor-marca);
+        background: var(--cor-escolhido);
       }
       .n.foco {
         outline: var(--contorno-foco) solid var(--cor-contorno-foco);
@@ -96,12 +96,12 @@
         border-radius: var(--raio-campo);
       }
       .a .grupo .sem.baixa {
-        background: var(--cor-laranja);
+        background: var(--cor-materia-0);
       }
       .a .ano {
         display: grid;
         place-items: center;
-        background: var(--cor-marca);
+        background: var(--cor-escolhido);
         border-radius: var(--raio-item);
         font: var(--voz-numero-mini);
         font-size: 28px;
@@ -192,7 +192,7 @@
         font-variant-numeric: tabular-nums;
       }
       .b .bims .baixa {
-        background: var(--cor-laranja);
+        background: var(--cor-materia-0);
         color: var(--cor-tinta);
       }
       .b .bims .baixa small {
@@ -209,7 +209,7 @@
         font: var(--ui-tecla);
       }
       .b .tot.baixa b {
-        background: var(--cor-laranja);
+        background: var(--cor-materia-0);
         color: var(--cor-tinta);
         padding: 0 var(--e2);
         border-radius: var(--raio-minimo);
@@ -221,7 +221,7 @@
         height: 56px;
         align-content: center;
         border-radius: var(--raio-campo);
-        background: var(--cor-marca);
+        background: var(--cor-escolhido);
         font: var(--voz-titulo);
       }
       .b .ano small {
@@ -255,7 +255,7 @@
       }
       .c .per.ano {
         height: 52px;
-        background: var(--cor-marca);
+        background: var(--cor-escolhido);
         font: var(--voz-mini);
       }
       .c .per.s {
@@ -286,7 +286,7 @@
       }
       .c .n.ano {
         height: 52px;
-        background: var(--cor-marca);
+        background: var(--cor-escolhido);
         font: var(--voz-titulo);
       }
       .c .n.s {
@@ -296,7 +296,7 @@
         font: var(--voz-titulo);
       }
       .c .n.s.baixa {
-        background: var(--cor-laranja);
+        background: var(--cor-materia-0);
       }
       .c .n.ano.v {
         background: var(--cor-cartao-2);
@@ -338,7 +338,7 @@
         const cab = `<div class="linha cab"><span></span>
           <div class="grupo"><div class="cx"><div class="tit" style="padding:0"><b>1º semestre</b></div></div><div class="sub rotulo"><span>1º bim</span><span>2º bim</span><span>Média</span></div></div>
           <div class="grupo"><div class="cx"><div class="tit" style="padding:0"><b>2º semestre</b></div></div><div class="sub rotulo"><span>3º bim</span><span>4º bim</span><span>Média</span></div></div>
-          <div class="grupo"><div class="cx" style="border-radius:var(--raio-item) var(--raio-item) 0 0;background:var(--cor-marca)"><div class="tit" style="padding:0"><b>Ano</b></div></div><div class="sub rotulo"><span style="grid-column:1/-1">Média</span></div></div></div>`;
+          <div class="grupo"><div class="cx" style="border-radius:var(--raio-item) var(--raio-item) 0 0;background:var(--cor-escolhido)"><div class="tit" style="padding:0"><b>Ano</b></div></div><div class="sub rotulo"><span style="grid-column:1/-1">Média</span></div></div></div>`;
         const linhas = D.map((d, i) => {
           const g = d[3];
           const c = calc(g);

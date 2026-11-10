@@ -39,16 +39,7 @@
 }
 
 .item[data-focused] {
-  background: var(--cor-marca);
-}
-
-.tecla {
-  color: var(--cor-texto-2);
-  font: var(--ui-tecla);
-}
-
-.item[data-focused] .tecla {
-  color: var(--cor-texto);
+  background: var(--cor-escolhido);
 }
 
 .vazio {

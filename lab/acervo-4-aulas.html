@@ -12,20 +12,20 @@
       .aula .c { grid-row: 1 / 3; grid-column: 2; font: var(--ui-apoio); color: var(--cor-texto-2); }
       .foco { outline: 4px solid var(--cor-contorno-foco); outline-offset: -4px; }
       /* Hoje: selecionada com fundo azul forte */
-      .v-atual .sel { background: var(--cor-marca); }
+      .v-atual .sel { background: var(--cor-escolhido); }
       /* A: seleção suave (fundo marca) e foco por contorno, sem fundo forte */
-      .v-a .sel { background: color-mix(in srgb, var(--cor-marca) 55%, var(--cor-cartao)); }
+      .v-a .sel { background: color-mix(in srgb, var(--cor-escolhido) 55%, var(--cor-cartao)); }
       /* B: selecionada = bolinha da cor da matéria à esquerda + título forte; sem fundo */
       .v-b .aula { grid-template-columns: 14px 1fr auto; column-gap: var(--e3); }
       .v-b .aula::before { content: ''; grid-row: 1 / 3; width: 8px; height: 8px; border-radius: 50%; background: transparent; }
-      .v-b .sel::before { background: var(--cor-bloco-ativo); }
+      .v-b .sel::before { background: var(--cor-cursor); }
       .v-b .aula small { grid-column: 2; }
       .v-b .aula .c { grid-column: 3; }
       .v-b .sel { font-weight: 700; }
       /* C: A + foco por fundo do cartão (sobe) */
-      .v-c .sel { background: var(--cor-marca); }
+      .v-c .sel { background: var(--cor-escolhido); }
       .v-c .foco { outline: 2px solid var(--cor-contorno-foco); outline-offset: -2px; background: var(--cor-cartao); }
-      .v-c .foco.sel { background: var(--cor-marca); }
+      .v-c .foco.sel { background: var(--cor-escolhido); }
       .par { display: flex; gap: var(--e5); flex-wrap: wrap; }
       .legenda { color: var(--cor-texto-2); font: var(--ui-apoio); margin-bottom: var(--e2); }
     </style>

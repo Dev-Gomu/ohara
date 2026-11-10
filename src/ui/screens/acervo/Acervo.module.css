@@ -39,7 +39,7 @@
 }
 
 .modo[data-sel='true'] {
-  background: var(--cor-marca);
+  background: var(--cor-escolhido);
 }
 
 .semFundo {
@@ -210,7 +210,7 @@
 }
 
 .aula[data-sel='true'] {
-  background: color-mix(in srgb, var(--cor-marca) 55%, var(--cor-cartao));
+  background: color-mix(in srgb, var(--cor-escolhido) 55%, var(--cor-cartao));
 }
 
 .aulaNome {
@@ -301,8 +301,8 @@
   flex: none;
   min-height: 48px;
   border-radius: var(--raio-botao);
-  background: var(--cor-botao);
-  color: var(--cor-sobre-botao);
+  background: var(--cor-acao);
+  color: var(--cor-sobre-acao);
   font: var(--ui-botao);
 }
 

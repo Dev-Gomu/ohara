@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="pt-BR" data-tema="claro">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Teste: Roxo (a) e Traço (b)</title>
+    <style>
+      /* Teste rápido de duas linguagens (09/11/2026). ?v=a Roxo suave, ?v=b Traço de ilustração. */
+      html[data-v='a'][data-tema='claro'] {
+        --fundo: #f6f3fd;
+        --cartao: #fff;
+        --peca: #f0ebfa;
+        --texto: #231c2b;
+        --texto2: #6f6780;
+        --acento: #a259e6;
+        --sobre: #fff;
+        --sel: #ecdffb;
+        --agora: #a259e6;
+        --sobre-agora: #fff;
+      }
+      html[data-v='a'][data-tema='escuro'] {
+        --fundo: #17131d;
+        --cartao: #221c2b;
+        --peca: #2e2639;
+        --texto: #f1ecf7;
+        --texto2: #a79db5;
+        --acento: #b784f0;
+        --sobre: #1b1422;
+        --sel: #3a2a54;
+        --agora: #b784f0;
+        --sobre-agora: #1b1422;
+      }
+      html[data-v='b'][data-tema='claro'] {
+        --fundo: #eef1f5;
+        --cartao: #fff;
+        --peca: #fff;
+        --texto: #16181d;
+        --texto2: #555b66;
+        --acento: #16181d;
+        --sobre: #fff;
+        --sel: #f0d2ff;
+        --agora: #ff5a36;
+        --sobre-agora: #16181d;
+        --traco: #16181d;
+      }
+      html[data-v='b'][data-tema='escuro'] {
+        --fundo: #14161a;
+        --cartao: #1e2126;
+        --peca: #1e2126;
+        --texto: #f1f2f4;
+        --texto2: #a2a8b3;
+        --acento: #f1f2f4;
+        --sobre: #14161a;
+        --sel: #4a2f63;
+        --agora: #ff6d4d;
+        --sobre-agora: #14161a;
+        --traco: #e9ebef;
+      }
+      html {
+        --rosa: #f3a6d8;
+        --azul: #8cc4f5;
+        --verde: #8fdcb4;
+        --tinta: #16181d;
+      }
+      body {
+        margin: 0;
+        background: var(--fundo);
+      }
+      .tela {
+        width: 660px;
+        box-sizing: border-box;
+        padding: 14px;
+        display: grid;
+        gap: 12px;
+        color: var(--texto);
+        font: var(--ui-apoio);
+        font-variant-numeric: tabular-nums;
+      }
+      .linha {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .bloco {
+        background: var(--cartao);
+        padding: 16px 18px;
+        display: grid;
+        gap: 10px;
+      }
+      .rotulo {
+        font: var(--ui-rotulo);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--texto2);
+        display: flex;
+      }
+      .rotulo .tecla {
+        margin-left: auto;
+        text-transform: none;
+        letter-spacing: 0;
+      }
+      .item {
+        min-height: 54px;
+        box-sizing: border-box;
+        padding: 8px 14px;
+        display: grid;
+        grid-template-columns: 104px 1fr auto;
+        align-items: center;
+        gap: 10px;
+      }
+      .item time {
+        font: var(--ui-item);
+        color: var(--texto2);
+      }
+      .item strong {
+        font: var(--voz-mini);
+        display: block;
+      }
+      .item small {
+        color: var(--texto2);
+      }
+      .m2 {
+        font: var(--ui-sigla);
+        color: var(--tinta);
+        padding: 4px 11px;
+        border-radius: 999px;
+      }
+      .agora {
+        font: var(--ui-sigla);
+        background: var(--agora);
+        color: var(--sobre-agora);
+        padding: 4px 11px;
+        border-radius: 999px;
+      }
+      .botao {
+        height: 44px;
+        padding: 0 20px;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font: var(--ui-botao);
+        background: var(--peca);
+      }
+      .botao.primario {
+        background: var(--acento);
+        color: var(--sobre);
+      }
+      .busca {
+        flex: 1;
+        height: 44px;
+        padding: 0 16px;
+        display: flex;
+        align-items: center;
+        background: var(--peca);
+        color: var(--texto2);
+        font: var(--leitura-campo);
+      }
+      .busca .tecla {
+        margin-left: auto;
+      }
+      .tecla {
+        font: var(--ui-tecla);
+        padding: 0 7px;
+        border-radius: 7px;
+        color: var(--texto2);
+      }
+      .aba {
+        height: 34px;
+        min-width: 38px;
+        padding: 0 13px;
+        box-sizing: border-box;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        font: var(--ui-botao);
+        color: var(--texto2);
+        border-radius: 999px;
+      }
+      .prova {
+        width: 132px;
+        padding: 12px 16px;
+        display: grid;
+        gap: 4px;
+        background: var(--cartao);
+      }
+      .prova small {
+        font: var(--ui-tecla);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--texto2);
+      }
+      .prova b {
+        font: var(--voz-numero-mini);
+      }
+      .nome {
+        margin: 0 auto 0 0;
+        font: var(--voz-titulo);
+      }
+
+      /* A · Roxo suave: sem contorno, formas bem redondas, brilho roxo só no que está ativo */
+      [data-v='a'] .bloco,
+      [data-v='a'] .prova {
+        border-radius: 26px;
+      }
+      [data-v='a'] .bloco.ativo {
+        box-shadow: 0 14px 34px -16px color-mix(in srgb, var(--acento) 70%, transparent);
+      }
+      [data-v='a'] .item {
+        border-radius: 18px;
+      }
+      [data-v='a'] .item.sel {
+        background: var(--sel);
+      }
+      [data-v='a'] .item.cursor,
+      [data-v='a'] .prova.cursor {
+        box-shadow: inset 0 0 0 2px var(--acento);
+      }
+      [data-v='a'] .botao,
+      [data-v='a'] .busca {
+        border-radius: 999px;
+      }
+      [data-v='a'] .botao.primario {
+        box-shadow: 0 10px 22px -10px var(--acento);
+      }
+      [data-v='a'] .tecla {
+        background: color-mix(in srgb, var(--texto) 8%, transparent);
+      }
+      [data-v='a'] .primario .tecla {
+        background: color-mix(in srgb, var(--sobre) 22%, transparent);
+        color: inherit;
+      }
+      [data-v='a'] .ilha {
+        background: var(--cartao);
+        border-radius: 999px;
+        padding: 5px;
+        display: inline-flex;
+      }
+      [data-v='a'] .aba.sel {
+        background: var(--sel);
+        color: var(--acento);
+      }
+      [data-v='a'] .nome {
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+      [data-v='a'] .nome em {
+        font-style: normal;
+        color: var(--acento);
+      }
+
+      /* B · Traço: contorno de tinta em tudo, cor chapada, cursor = sombra dura deslocada */
+      [data-v='b'] .bloco,
+      [data-v='b'] .prova {
+        border-radius: 16px;
+        border: 2.5px solid var(--traco);
+      }
+      [data-v='b'] .item {
+        border-radius: 12px;
+        border: 2.5px solid transparent;
+      }
+      [data-v='b'] .item.sel {
+        background: var(--sel);
+        border-color: var(--traco);
+      }
+      [data-v='b'] .item.cursor,
+      [data-v='b'] .prova.cursor {
+        box-shadow: 4px 4px 0 var(--traco);
+        transform: translate(-2px, -2px);
+      }
+      [data-v='b'] .prova.cursor {
+        background: var(--sel);
+      }
+      [data-v='b'] .m2,
+      [data-v='b'] .agora {
+        border: 2px solid var(--traco);
+        padding: 2px 10px;
+      }
+      [data-v='b'] .botao,
+      [data-v='b'] .busca {
+        border-radius: 12px;
+        border: 2.5px solid var(--traco);
+        box-sizing: border-box;
+      }
+      [data-v='b'] .botao.primario {
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-weight: 800;
+      }
+      [data-v='b'] .tecla {
+        border: 1.5px solid var(--texto2);
+      }
+      [data-v='b'] .primario .tecla {
+        border-color: var(--sobre);
+        color: inherit;
+        text-transform: none;
+        letter-spacing: 0;
+      }
+      [data-v='b'] .ilha {
+        display: inline-flex;
+        gap: 4px;
+      }
+      [data-v='b'] .aba {
+        border: 2.5px solid transparent;
+        border-radius: 12px;
+      }
+      [data-v='b'] .aba.sel {
+        background: var(--sel);
+        border-color: var(--traco);
+        color: var(--texto);
+      }
+      .item time, .botao, .tecla { white-space: nowrap; }
+      .item { grid-template-columns: 116px 1fr auto; }
+      .botao { padding: 0 16px; }
+      .prova { width: 120px; }
+      .nome em { font-style: normal; }
+      .tela { width: 740px; grid-template-columns: minmax(0, 1fr); }
+    </style>
+  </head>
+  <body>
+    <div class="tela">
+      <div class="linha">
+        <span class="ilha"
+          ><span class="aba sel">1 Hub</span><span class="aba">2</span><span class="aba">3</span
+          ><span class="aba">4</span></span
+        >
+        <h1 class="nome" style="margin-left: 8px">Segunda, <em>9 de novembro</em></h1>
+      </div>
+      <section class="bloco ativo">
+        <div class="rotulo">Agenda de hoje <span class="tecla">Enter abre</span></div>
+        <div class="item">
+          <time>08:00 a 09:30</time>
+          <div><strong>Genética</strong><small>Expressão gênica</small></div>
+          <span class="m2" style="background: var(--rosa)">GEN</span>
+        </div>
+        <div class="item sel">
+          <time>10:00 a 11:30</time>
+          <div><strong>Atenção Primária</strong><small>escolhido</small></div>
+          <span class="m2" style="background: var(--verde)">APS</span>
+        </div>
+        <div class="item sel cursor">
+          <time>13:00 a 15:00</time>
+          <div><strong>Imunologia</strong><small>escolhido e com o cursor</small></div>
+          <span class="linha" style="gap: 6px"
+            ><span class="agora">agora</span
+            ><span class="m2" style="background: var(--azul)">IMU</span></span
+          >
+        </div>
+      </section>
+      <div class="linha" style="align-items: stretch">
+        <div class="prova">
+          <small>seg · em 7 d</small><b>16</b
+          ><span><span class="m2" style="background: var(--rosa)">GEN</span></span>
+        </div>
+        <div class="prova cursor">
+          <small>sex · em 11 d</small><b>20</b
+          ><span><span class="m2" style="background: var(--azul)">IMU</span></span>
+        </div>
+        <div style="flex: 1; display: grid; gap: 10px; align-content: center">
+          <div class="linha">
+            <span class="busca">Buscar aula <span class="tecla">Alt F</span></span>
+          </div>
+          <div class="linha">
+            <span class="botao primario">Abrir na Mesa <span class="tecla">Enter</span></span
+            ><span class="botao">Novo <span class="tecla">Alt N</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="module">
+      import '../src/ui/styles/fonts.css';
+      import '../src/ui/styles/tokens.css';
+      const raiz = document.documentElement;
+      raiz.dataset.v = new URLSearchParams(location.search).get('v') ?? 'a';
+      document.addEventListener('keydown', (e) => {
+        if (e.key.toLowerCase() === 't')
+          raiz.dataset.tema = raiz.dataset.tema === 'escuro' ? 'claro' : 'escuro';
+        if (e.key === 'a' || e.key === 'b') raiz.dataset.v = e.key;
+      });
+    </script>
+  </body>
+</html>

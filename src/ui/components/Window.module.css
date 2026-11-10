@@ -59,11 +59,6 @@
   min-height: var(--alvo);
   padding: 0 14px;
   border-radius: var(--raio-pilula);
-  background: var(--cor-cartao-2);
+  background: var(--sup-peca);
   font: var(--ui-botao);
-}
-
-.tecla {
-  color: var(--cor-texto-2);
-  font: var(--ui-tecla);
 }

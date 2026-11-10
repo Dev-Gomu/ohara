@@ -12,6 +12,11 @@ import {
 import { subjectOf } from '../../../core/study/queries';
 import type { StudyData } from '../../../core/study/types';
 import { Block } from '../../components/Block';
+import { Button } from '../../components/Button';
+import { Key } from '../../components/Key';
+import { ListItem } from '../../components/ListItem';
+import { DayPill, SubjectMark, SubjectPill } from '../../components/Pill';
+import { FilterChip, FilterGrid } from '../../components/Filter';
 import { NavItem, useSelectedIndex } from '../../components/NavItem';
 import { Ruler } from '../../components/Ruler';
 import { dispatch } from '../../keyboard/store';
@@ -64,20 +69,22 @@ function columnsFor(data: StudyData, view: number, anchor: string, subjectId: st
 function DayCell({ column, list }: { column: AgendaColumn; list: boolean }) {
   return (
     <>
-      <span className={styles.cabeca} data-hoje={column.day === today}>
-        {list ? shortDate(column.day) : `${weekdayShort(column.day)} ${column.number}`}
+      <DayPill
+        weekday={list ? weekdayShort(column.day).toUpperCase() : ''}
+        number={list ? shortDate(column.day) : column.number}
+        today={column.day === today}
+      />
+      <span className={styles.eventos}>
+        {column.items.slice(1).map((item) => (
+          <SubjectMark
+            key={item.id}
+            code={item.subject?.code ?? item.title}
+            color={item.subject?.color}
+          >
+            {item.kind === 'prova' ? `Prova ${item.start}` : item.start}
+          </SubjectMark>
+        ))}
       </span>
-      {column.items.slice(1).map((item) => (
-        <span
-          key={item.id}
-          className={styles.evento}
-          data-materia={item.subject?.color ?? 7}
-          data-prova={item.kind === 'prova'}
-        >
-          {item.start} {item.kind === 'prova' ? 'Prova ' : ''}
-          {item.subject?.code ?? item.title}
-        </span>
-      ))}
     </>
   );
 }
@@ -191,24 +198,22 @@ function AgendaMain({ view }: { view: number }) {
           <div className={styles.barra}>
             <Ruler block={AGENDA_VIEWS} items={views} />
             <div className={styles.periodo}>
-              <button type="button" aria-label="Anterior" onClick={() => changePage(-1)}>
+              <Button label="Anterior" onPress={() => changePage(-1)}>
                 ‹
-              </button>
-              <button type="button" onClick={() => setShown(today)}>
-                Hoje
-              </button>
-              <button type="button" aria-label="Próximo" onClick={() => changePage(1)}>
+              </Button>
+              <Button onPress={() => setShown(today)}>Hoje</Button>
+              <Button label="Próximo" onPress={() => changePage(1)}>
                 ›
-              </button>
+              </Button>
               <span className={styles.datas}>{period}</span>
-              <kbd className={styles.tecla}>Alt PgUp PgDn</kbd>
-              <button
-                type="button"
-                className={styles.novo}
-                onClick={() => dispatch({ type: 'openOptions' })}
+              <Key>Alt PgUp PgDn</Key>
+              <Button
+                variant="primary"
+                shortcut="Alt N"
+                onPress={() => dispatch({ type: 'openOptions' })}
               >
-                + Novo <kbd>Alt N</kbd>
-              </button>
+                + Novo
+              </Button>
             </div>
           </div>
         </Block>
@@ -217,6 +222,12 @@ function AgendaMain({ view }: { view: number }) {
             <AgendaWeek block={content} columns={columns} onOpen={() => actions[0]?.run()} />
           ) : (
             <div className={view === 1 ? styles.mes : styles.lista}>
+              {view === 1 &&
+                columns.slice(0, 7).map((column) => (
+                  <span key={`sem-${column.key}`} className={styles.diaSemana}>
+                    {weekdayShort(column.day)}
+                  </span>
+                ))}
               {columns.map((column, index) => (
                 <NavItem
                   key={column.key}
@@ -242,19 +253,17 @@ function AgendaMain({ view }: { view: number }) {
         </Block>
         <Block id={SUBJECTS} title="Matérias">
           <div className={styles.filtro}>
-            {['Todas', ...subjects.map((subject) => subject.code)].map((code, index) => (
-              <span key={code} className={styles.lugar} data-materia={subjects[index - 1]?.color}>
-                <NavItem
-                  block={SUBJECTS}
-                  index={index}
-                  ring="anel"
-                  className={styles.filtroItem}
-                  color={index === 0 ? 'todas' : 'materia'}
+            <FilterGrid label="Matérias">
+              {['Todas', ...subjects.map((subject) => subject.code)].map((code, index) => (
+                <FilterChip
+                  key={code}
+                  nav={{ block: SUBJECTS, index }}
+                  subject={subjects[index - 1]?.color}
                 >
                   {code}
-                </NavItem>
-              </span>
-            ))}
+                </FilterChip>
+              ))}
+            </FilterGrid>
           </div>
         </Block>
         <Block id={COMPLETE} title="A completar" count={String(pending.length)}>
@@ -263,19 +272,16 @@ function AgendaMain({ view }: { view: number }) {
             {pending.map((exam, index) => {
               const subject = subjectOf(data, exam.subjectId);
               return (
-                <NavItem
+                <ListItem
                   key={exam.id}
-                  block={COMPLETE}
-                  index={index}
-                  className={styles.item}
+                  nav={{ block: COMPLETE, index }}
+                  title="Prova"
+                  detail={`falta ${missingFields(exam).join(' e ')}`}
+                  quietSelection
                   onOpen={() => askCompleteExam(data, exam.id)}
                 >
-                  <span className={styles.sigla} data-materia={subject?.color}>
-                    {subject?.code}
-                  </span>
-                  <b className={styles.titulo}>Prova</b>
-                  <span className={styles.falta}>falta {missingFields(exam).join(' e ')}</span>
-                </NavItem>
+                  {subject && <SubjectPill code={subject.code} color={subject.color} />}
+                </ListItem>
               );
             })}
           </div>

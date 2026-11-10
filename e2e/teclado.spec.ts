@@ -124,11 +124,11 @@ test('Alt R redimensiona com as setas até Esc', async ({ page }) => {
     page.locator('[data-block="mesa.notes"]').evaluate((el) => el.getBoundingClientRect().width);
   const antes = await largura();
   await page.keyboard.press('Alt+KeyR');
-  await expect(page.getByText('Redimensionar:')).toBeVisible();
+  await expect(page.getByText('Redimensionar', { exact: true })).toBeVisible();
   await page.keyboard.press('ArrowLeft');
   await expect.poll(largura).toBeGreaterThan(antes);
   await page.keyboard.press('Escape');
-  await expect(page.getByText('Redimensionar:')).toBeHidden();
+  await expect(page.getByText('Redimensionar', { exact: true })).toBeHidden();
   await expect(nivel(page)).toHaveText('bloco');
 });
 

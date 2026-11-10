@@ -52,7 +52,7 @@
 
 .destaque {
   padding: 0 2px;
-  border-radius: 4px;
-  background: var(--cor-marca);
+  border-radius: var(--raio-minimo);
+  background: var(--cor-escolhido);
   color: inherit;
 }

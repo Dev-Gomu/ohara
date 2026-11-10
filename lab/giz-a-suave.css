@@ -1,0 +1,14 @@
+/* Giz A suave: tira o néon e o preto puro. Carregar por último; remova o <link> para voltar à Giz A original. */
+html[data-tema="claro"]{--fundo:#eff0ed;--cartao:#fbfbfa;--cartao2:#e8eae6;--texto:#141a17;--texto2:#59635d;--linha:#dcdfda;
+ --tinta:#1c2622;--sobre-tinta:#f1f4f1;--acao:#1c2622;--sobre-acao:#f1f4f1;--menta:#bfe3cf;--sobre-menta:#10231b;--foco:#3b52c4;--marca:#dbeae2;
+ --m-azul:#cfdcec;--m-verde:#cfe3d9;--m-rosa:#ecd5d3;--m-lilas:#ddd7ec;--m-amarelo:#efe4c6;--m-cinza:#dde0de;--m-texto:#1b2a24}
+html[data-tema="escuro"]{--fundo:#101315;--cartao:#181c20;--cartao2:#23292e;--texto:#eef1f3;--texto2:#98a2aa;--linha:#2a3036;
+ --tinta:#0b0f0d;--sobre-tinta:#eef2ef;--acao:#e8efe9;--sobre-acao:#10231b;--menta:#bfe3cf;--sobre-menta:#10231b;--foco:#9fb0f5;--marca:#223a30;
+ --m-azul:#27384a;--m-verde:#25413a;--m-rosa:#4a3331;--m-lilas:#383250;--m-amarelo:#4a4128;--m-cinza:#2a3036;--m-texto:#dbe5ee}
+.agora .btn{background:var(--menta);color:var(--sobre-menta)}
+.agora .ao{background:var(--menta);color:var(--sobre-menta)}
+.prova.prox .n{color:var(--menta)}
+.prog i{background:var(--menta)}
+.linha-agora{background:var(--foco)}
+.prova.prox,.agora,.ev.agora{background:var(--tinta)}
+html[data-tema="escuro"] .prova.prox,html[data-tema="escuro"] .agora,html[data-tema="escuro"] .ev.agora{background:#0b0f0d;box-shadow:0 0 0 1px var(--linha)}

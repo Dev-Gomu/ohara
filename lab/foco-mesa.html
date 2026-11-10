@@ -131,14 +131,14 @@
       .sigla {
         padding: 2px 9px;
         border-radius: var(--raio-pilula);
-        background: var(--cor-azul);
+        background: var(--cor-materia-2);
         color: var(--cor-tinta);
         font: var(--ui-sigla);
       }
 
       /* Dentro do bloco (igual em todas por enquanto: é a Etapa 3) */
       .bloco[data-foco='dentro'] {
-        border-color: var(--cor-bloco-ativo);
+        border-color: var(--cor-cursor);
       }
       .bloco[data-foco='dentro'] [data-item-foco] {
         outline: var(--anel-traco) solid var(--cor-foco);
@@ -176,19 +176,19 @@
       /* F2: borda grossa por dentro, na cor de bloco ativo. Nada sai do bloco; o vão fica livre. */
       .f2 .bloco[data-foco='bloco'] {
         outline: 4px solid
-          color-mix(in srgb, var(--cor-bloco-ativo) var(--opac-contorno, 70%), transparent);
+          color-mix(in srgb, var(--cor-cursor) var(--opac-contorno, 70%), transparent);
         outline-offset: -4px;
       }
 
       /* F3: o bloco inteiro ganha um tom da cor ativa; sem linha nenhuma. O rótulo acompanha. */
       .f3 .bloco[data-foco='bloco'] {
-        background: color-mix(in srgb, var(--cor-bloco-ativo) 20%, var(--cor-cartao));
+        background: color-mix(in srgb, var(--cor-cursor) 20%, var(--cor-cartao));
       }
       .f3 .bloco[data-foco='bloco'] .nome {
-        color: var(--cor-bloco-ativo);
+        color: var(--cor-cursor);
       }
       .f3 .bloco[data-foco='bloco'] :is(.pagina, .cartao) {
-        background: color-mix(in srgb, var(--cor-bloco-ativo) 30%, var(--cor-cartao));
+        background: color-mix(in srgb, var(--cor-cursor) 30%, var(--cor-cartao));
       }
 
 
@@ -201,8 +201,8 @@
         gap: 2px;
         padding: var(--e2) var(--e3);
         border-radius: var(--raio-item);
-        background: var(--cor-botao);
-        color: var(--cor-sobre-botao);
+        background: var(--cor-acao);
+        color: var(--cor-sobre-acao);
         font: var(--ui-apoio);
       }
       .ajuda.opac {
@@ -211,7 +211,7 @@
         min-width: 200px;
       }
       .ajuda.opac input {
-        accent-color: var(--cor-bloco-ativo);
+        accent-color: var(--cor-cursor);
       }
       .ajuda b {
         font: var(--ui-sigla);
@@ -267,7 +267,7 @@
 
       /* ===== Etapa 3: dentro do bloco (Enter). Base: F2 a 70% e nome inteiro em pílula ===== */
       :root {
-        --contorno: color-mix(in srgb, var(--cor-bloco-ativo) var(--opac-contorno, 70%), transparent);
+        --contorno: color-mix(in srgb, var(--cor-cursor) var(--opac-contorno, 70%), transparent);
       }
       /* D1: como hoje. Borda de 2 px e anel escuro no item. */
       /* D2: o contorno do nível bloco continua; o anel do item usa a mesma cor, sem afastamento */
@@ -277,12 +277,12 @@
         outline-offset: -4px;
       }
       .d2 .bloco[data-foco='dentro'] [data-item-foco] {
-        outline-color: var(--cor-bloco-ativo);
+        outline-color: var(--cor-cursor);
       }
       /* D3: um sinal forte só. O contorno fica fraco, só para lembrar em que bloco você está. */
       .d3 .bloco[data-foco='dentro'] {
         border-color: transparent;
-        outline: 2px solid color-mix(in srgb, var(--cor-bloco-ativo) 30%, transparent);
+        outline: 2px solid color-mix(in srgb, var(--cor-cursor) 30%, transparent);
         outline-offset: -2px;
       }
 
@@ -292,7 +292,7 @@
       }
       .l-fant .bloco[data-foco] .nome svg {
         opacity: 1;
-        color: var(--cor-bloco-ativo);
+        color: var(--cor-cursor);
       }
       .l-solo .nome {
         display: inline-flex;

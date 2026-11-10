@@ -1,4 +1,9 @@
-import { currentEventIndex, eventsOn, upcomingExamDays, upcomingExams } from '../../../core/study/queries';
+import {
+  currentEventIndex,
+  eventsOn,
+  upcomingAssessmentDays,
+  upcomingExams,
+} from '../../../core/study/queries';
 import { leaf, split } from '../../../core/mosaic/tree';
 import { longDate, monthGrid } from '../../../core/study/dates';
 import { dispatch, getKeyboardState } from '../../keyboard/store';
@@ -27,7 +32,7 @@ export function Hub() {
   const data = useStudy();
   const mosaic = useMosaic('hub', INITIAL, ALL);
   const exams = upcomingExams(data, today);
-  const examDays = upcomingExamDays(data, today);
+  const examDays = upcomingAssessmentDays(data, today);
   const events = eventsOn(data, today);
   const reminders = data.reminders.filter((item) => item.date === today);
   const days = monthGrid(today);

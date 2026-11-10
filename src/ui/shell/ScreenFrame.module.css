@@ -127,7 +127,7 @@
   }
 
   .paginaCelular[data-sel='true'] {
-    background: var(--cor-marca);
+    background: var(--cor-escolhido);
     color: var(--cor-texto);
   }
 }

@@ -63,6 +63,15 @@ p {
   outline-offset: -2px;
 }
 
+/* Cursor das peças novas (diretrizes 3.2): um só na tela, contorno por dentro. */
+[data-cursor] {
+  box-shadow: inset 0 0 0 var(--cursor) var(--cor-cursor);
+}
+
+:root[data-entrada='toque'] [data-cursor] {
+  box-shadow: none;
+}
+
 :root[data-entrada='toque'] .anel,
 :root[data-entrada='toque'] .anel-fino,
 :root[data-entrada='toque'] .anel-interno {
@@ -97,33 +106,33 @@ p {
 
 /* A cor da matéria é guardada como posição na paleta. */
 [data-materia='0'] {
-  --cor-materia: var(--cor-laranja);
+  --cor-materia: var(--cor-materia-0);
 }
 
 [data-materia='1'] {
-  --cor-materia: var(--cor-destaque);
+  --cor-materia: var(--cor-materia-1);
 }
 
 [data-materia='2'] {
-  --cor-materia: var(--cor-azul);
+  --cor-materia: var(--cor-materia-2);
 }
 
 [data-materia='3'] {
-  --cor-materia: var(--cor-verde);
+  --cor-materia: var(--cor-materia-3);
 }
 
 [data-materia='4'] {
-  --cor-materia: var(--cor-rosa);
+  --cor-materia: var(--cor-materia-4);
 }
 
 [data-materia='5'] {
-  --cor-materia: var(--cor-amarelo);
+  --cor-materia: var(--cor-materia-5);
 }
 
 [data-materia='6'] {
-  --cor-materia: var(--cor-ciano);
+  --cor-materia: var(--cor-materia-6);
 }
 
 [data-materia='7'] {
-  --cor-materia: var(--cor-cinza-lavanda);
+  --cor-materia: var(--cor-materia-7);
 }

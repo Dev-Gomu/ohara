@@ -1,29 +1,29 @@
 .regua {
   display: flex;
   align-items: center;
-  gap: var(--e2);
+  gap: var(--e1);
   height: 100%;
   padding: 8px 10px;
   overflow-x: auto;
   scrollbar-width: none;
 }
 
-.item {
+.item,
+.criar {
   flex: none;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-width: 132px;
-  height: 56px;
-  padding: 0 var(--e4);
-  border-radius: var(--raio-item);
-  background: var(--cor-cartao-2);
+  min-height: var(--alvo);
+  padding: var(--e1) var(--e4);
+  border-radius: var(--raio-pilula);
+  color: var(--cor-texto-2);
   text-align: left;
 }
 
 .item[data-sel='true'] {
-  background: var(--cor-aba-ativa, var(--cor-destaque));
-  color: var(--cor-sobre-aba-ativa, var(--cor-tinta));
+  background: var(--cor-escolhido);
+  color: var(--cor-texto);
 }
 
 .titulo {
@@ -31,32 +31,15 @@
 }
 
 .detalhe {
-  color: var(--cor-texto-2);
   font: var(--ui-sigla);
   font-weight: 500;
 }
 
-.item[data-sel='true'] .detalhe {
-  color: var(--cor-sobre-aba-ativa, var(--cor-tinta));
-}
-
-/* Sem linha de detalhe a pílula fica de uma linha só, mais baixa. */
-.item:not(:has(.detalhe)),
-.regua:not(:has(.detalhe)) .criar {
-  min-width: 0;
-  height: 44px;
-}
-
 /* "+" desenhado com duas barras: o glifo de texto desalinhava dentro da pílula. */
 .criar {
-  flex: none;
-  display: flex;
+  flex-direction: row;
   align-items: center;
   gap: var(--e2);
-  height: 56px;
-  padding: 0 var(--e4);
-  border-radius: var(--raio-item);
-  background: var(--cor-cartao-2);
   font: var(--ui-item);
 }
 
@@ -68,4 +51,11 @@
   background:
     linear-gradient(currentColor, currentColor) center / 100% 2px no-repeat,
     linear-gradient(currentColor, currentColor) center / 2px 100% no-repeat;
+}
+
+@media (hover: hover) {
+  .item:not([data-sel='true']):hover,
+  .criar:hover {
+    background: var(--sup-peca);
+  }
 }

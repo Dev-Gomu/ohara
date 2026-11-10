@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { Button, Dialog, Heading, Modal, ModalOverlay } from 'react-aria-components';
 import { dispatch, useKeyboardState } from '../keyboard/store';
+import { Key } from './Key';
 import styles from './Window.module.css';
 
 interface WindowProps {
@@ -31,7 +32,7 @@ export function Window({ id, title, testId, wide, children }: WindowProps) {
               {title}
             </Heading>
             <Button className={styles.fechar} onPress={() => dispatch({ type: 'escape' })}>
-              Fechar <kbd className={styles.tecla}>Esc</kbd>
+              Fechar <Key>Esc</Key>
             </Button>
           </div>
           {children}

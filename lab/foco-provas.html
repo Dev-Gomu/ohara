@@ -18,25 +18,25 @@
 
       /* Hoje: contorno do bloco + anel escuro do cartão */
       .a.nivel-bloco .bloco { outline: 4px solid var(--cor-contorno-foco); outline-offset: -4px; }
-      .a.nivel-dentro .bloco { box-shadow: inset 0 0 0 2px var(--cor-bloco-ativo); }
+      .a.nivel-dentro .bloco { box-shadow: inset 0 0 0 2px var(--cor-cursor); }
       .a .foco { outline: 3px solid var(--cor-foco); outline-offset: 3px; }
 
       /* B: sem contorno no bloco; cartão em foco só ganha faixa forte */
-      .b .prova.foco .faixa { background: var(--cor-bloco-ativo); color: var(--cor-sobre-botao); }
+      .b .prova.foco .faixa { background: var(--cor-cursor); color: var(--cor-sobre-acao); }
       .b.nivel-bloco .faixa { }
       /* No nível bloco o cursor ainda aparece no primeiro cartão, mas sem o resto */
 
       /* C: contorno fino de 2px por dentro, só no cartão; bloco sem contorno */
-      .c .prova.foco .cartao { outline: 2px solid var(--cor-bloco-ativo); outline-offset: -2px; }
+      .c .prova.foco .cartao { outline: 2px solid var(--cor-cursor); outline-offset: -2px; }
 
       /* D: faixa forte + contorno fino */
-      .d .prova.foco .faixa { background: var(--cor-bloco-ativo); color: var(--cor-sobre-botao); }
-      .d .prova.foco .cartao { outline: 2px solid var(--cor-bloco-ativo); outline-offset: -2px; }
+      .d .prova.foco .faixa { background: var(--cor-cursor); color: var(--cor-sobre-acao); }
+      .d .prova.foco .cartao { outline: 2px solid var(--cor-cursor); outline-offset: -2px; }
 
       /* E: por nível. Bloco: todas as faixas na cor ativa (o bloco "acende"). Dentro: só o cartão em foco acende, com contorno fino */
-      .e.nivel-bloco .faixa { background: var(--cor-bloco-ativo); color: var(--cor-sobre-botao); }
-      .e.nivel-dentro .prova.foco .faixa { background: var(--cor-bloco-ativo); color: var(--cor-sobre-botao); }
-      .e.nivel-dentro .prova.foco .cartao { outline: 2px solid var(--cor-bloco-ativo); outline-offset: -2px; }
+      .e.nivel-bloco .faixa { background: var(--cor-cursor); color: var(--cor-sobre-acao); }
+      .e.nivel-dentro .prova.foco .faixa { background: var(--cor-cursor); color: var(--cor-sobre-acao); }
+      .e.nivel-dentro .prova.foco .cartao { outline: 2px solid var(--cor-cursor); outline-offset: -2px; }
     </style>
   </head>
   <body>

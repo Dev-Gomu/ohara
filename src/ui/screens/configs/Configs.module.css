@@ -26,7 +26,7 @@
 
 .secao[data-sel='true'],
 .linha[data-sel='true'] {
-  background: var(--cor-marca);
+  background: var(--cor-escolhido);
 }
 
 .linha {

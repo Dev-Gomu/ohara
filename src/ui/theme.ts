@@ -32,17 +32,16 @@ export function toggleTheme(): void {
   }
 }
 
-// Paletas de teste: 'original' não põe atributo. ?paleta=a|b|c|original escolhe e fica guardada.
-export type Palette = 'original' | 'a' | 'b' | 'c';
+// 'original' é a Ardósia (tokens.css) e não põe atributo. ?paleta=a|b|original escolhe e fica guardada.
+export type Palette = 'original' | 'a' | 'b';
 
-const PALETTES: readonly Palette[] = ['original', 'a', 'b', 'c'];
+const PALETTES: readonly Palette[] = ['original', 'a', 'b'];
 const PALETTE_KEY = prefixed('paleta');
 
 export const PALETTE_NAMES: Readonly<Record<Palette, string>> = {
-  original: 'Original',
+  original: 'Ardósia',
   a: 'A · Azul-gelo',
   b: 'B · Cinza-índigo',
-  c: 'C · Ardósia',
 };
 
 function asPalette(value: string | null): Palette | null {

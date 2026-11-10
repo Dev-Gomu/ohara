@@ -71,13 +71,13 @@
         outline-offset: var(--anel-afastamento);
       }
       .contorno-dentro {
-        outline: 4px solid color-mix(in srgb, var(--cor-bloco-ativo) 70%, transparent);
+        outline: 4px solid color-mix(in srgb, var(--cor-cursor) 70%, transparent);
         outline-offset: -4px;
       }
 
       /* Caso 4: anel do item afastado (corta na beira da rolagem) contra colado */
       .dentro {
-        border-color: var(--cor-bloco-ativo);
+        border-color: var(--cor-cursor);
       }
       .item-afastado {
         outline: var(--anel-traco) solid var(--cor-foco);
@@ -101,7 +101,7 @@
         outline-offset: -4px;
       }
       .dupla .bloco[data-foco] {
-        outline-color: color-mix(in srgb, var(--cor-bloco-ativo) 70%, transparent);
+        outline-color: color-mix(in srgb, var(--cor-cursor) 70%, transparent);
       }
       .sem-movimento .bloco {
         transition: none;
@@ -126,14 +126,14 @@
       }
       /* Selecionado, pelas diretrizes: item de lista com fundo de marca, mesmo sem foco */
       .itens [data-sel] {
-        background: var(--cor-marca);
+        background: var(--cor-escolhido);
       }
       .i1 [data-item-foco] {
-        outline: 2px solid var(--cor-bloco-ativo);
+        outline: 2px solid var(--cor-cursor);
         outline-offset: 0;
       }
       .i2 [data-item-foco] {
-        background: color-mix(in srgb, var(--cor-bloco-ativo) 24%, var(--cor-cartao));
+        background: color-mix(in srgb, var(--cor-cursor) 24%, var(--cor-cartao));
         font-weight: 700;
       }
       .i2 [data-item-foco] small {
@@ -144,19 +144,19 @@
       }
       .i3 [data-item-foco] {
         background: var(--cor-cartao);
-        outline: 2px solid var(--cor-bloco-ativo);
+        outline: 2px solid var(--cor-cursor);
         outline-offset: -2px;
       }
       /* Escolhida e em foco ao mesmo tempo: a I3 mantém o fundo de marca e soma o contorno */
       .i3 [data-sel][data-item-foco] {
-        background: var(--cor-marca);
+        background: var(--cor-escolhido);
       }
       .i4 [data-item-foco] {
-        background: var(--cor-botao);
-        color: var(--cor-sobre-botao);
+        background: var(--cor-acao);
+        color: var(--cor-sobre-acao);
       }
       .i4 [data-item-foco] small {
-        color: color-mix(in srgb, var(--cor-sobre-botao) 70%, transparent);
+        color: color-mix(in srgb, var(--cor-sobre-acao) 70%, transparent);
       }
 
       /* ===== Versões da I3: todas sobem o cartão para o branco do bloco ===== */
@@ -176,10 +176,10 @@
         background: var(--cor-cartao);
       }
       .i3x [data-sel][data-item-foco] {
-        background: var(--cor-marca);
+        background: var(--cor-escolhido);
       }
       .i3a [data-item-foco] {
-        outline: 4px solid color-mix(in srgb, var(--cor-bloco-ativo) 70%, transparent);
+        outline: 4px solid color-mix(in srgb, var(--cor-cursor) 70%, transparent);
         outline-offset: -4px;
       }
       .i3b [data-item-foco] {
@@ -191,17 +191,17 @@
         position: absolute;
         top: 50%;
         right: var(--e3);
-        color: var(--cor-bloco-ativo);
+        color: var(--cor-cursor);
         font: 700 22px/1 var(--fonte-interface);
         transform: translateY(-55%);
       }
       .i3d [data-item-foco] {
-        outline: 1px solid var(--cor-bloco-ativo);
+        outline: 1px solid var(--cor-cursor);
         outline-offset: -1px;
-        color: var(--cor-bloco-ativo);
+        color: var(--cor-cursor);
       }
       .i3e [data-item-foco] {
-        outline: 2px solid var(--cor-bloco-ativo);
+        outline: 2px solid var(--cor-cursor);
         outline-offset: -2px;
       }
     </style>

@@ -84,11 +84,11 @@
   --cor-cartao-2: #eae6fc;
   --cor-texto: #14122b;
   --cor-texto-2: #5c5878;
-  --cor-botao: #14122b;
-  --cor-sobre-botao: #f4f2ff;
-  --cor-marca: #d9ceff;
+  --cor-acao: #14122b;
+  --cor-sobre-acao: #f4f2ff;
+  --cor-escolhido: #d9ceff;
   --cor-foco: #14122b;
-  --cor-bloco-ativo: #8872d8; /* 3,2:1 com o fundo; o --cor-destaque daria 2,9:1 */
+  --cor-cursor: #8872d8; /* 3,2:1 com o fundo; o --cor-destaque daria 2,9:1 */
   --cor-nota-titulo: #14122b;
   --cor-veu: rgb(20 18 43 / 40%);
   color-scheme: light;
@@ -100,11 +100,11 @@
   --cor-cartao-2: #22242f;
   --cor-texto: #f4f2ff;
   --cor-texto-2: #a9a6c6;
-  --cor-botao: #f4f2ff;
-  --cor-sobre-botao: #090c18;
-  --cor-marca: #5b4ba6;
+  --cor-acao: #f4f2ff;
+  --cor-sobre-acao: #090c18;
+  --cor-escolhido: #5b4ba6;
   --cor-foco: #f4f2ff;
-  --cor-bloco-ativo: #9178e6;
+  --cor-cursor: #9178e6;
   --cor-nota-titulo: #9178e6;
   --cor-veu: rgb(9 12 24 / 60%);
   color-scheme: dark;

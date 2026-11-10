@@ -1,132 +1,10 @@
-.semFundo {
-  background: transparent;
-}
-
 .provas {
   flex: 1;
   min-height: 0;
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(220px, 1fr);
-  gap: var(--vao-mosaico);
-  overflow-x: auto;
-}
-
-.prova {
-  display: grid;
-  min-width: 0;
-  border-radius: var(--raio-bloco);
-  text-align: left;
-}
-
-/* Faixa de altura fixa; a sobra de altura fica dentro do corpo, entre o dia e as siglas, que se
-   encostam nas bordas a --inset (medido pela tinta, text-box). No PC a faixa não cresce junto. */
-.cartao {
-  --inset: var(--e4);
-  container-type: size;
-  display: grid;
-  grid-template-rows: auto minmax(0, 1fr);
-  min-width: 0;
-  overflow: hidden;
-  border-radius: var(--raio-bloco);
-  background: var(--cor-cartao);
-  color: var(--cor-texto);
-}
-
-.faixa {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  height: clamp(44px, 22cqh, 72px);
-  padding: 0 var(--inset) 1px;
-  background: color-mix(in srgb, var(--cor-destaque) var(--mistura-faixa), var(--cor-cartao));
-  font: var(--ui-rotulo);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-/* Foco das provas (D106): no nível bloco todas as faixas acendem; dentro, só a do cartão em foco,
-   com um fio de 2px. O contorno do bloco não vale aqui (o bloco não tem fundo). */
-.semFundo.semFundo[data-foco] {
-  outline: none;
-  border-color: transparent;
-}
-
-.semFundo[data-foco='bloco'] .faixa,
-.semFundo[data-foco='dentro'] .prova[data-sel='true'] .faixa {
-  background: var(--cor-bloco-ativo);
-  color: var(--cor-sobre-botao);
-}
-
-.semFundo[data-foco='dentro'] .prova[data-sel='true'] .cartao {
-  outline: 2px solid var(--cor-bloco-ativo);
-  outline-offset: -2px;
-}
-
-.prazo {
-  margin-right: -0.06em;
-  letter-spacing: 0;
-  text-transform: none;
-}
-
-.corpoProva {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: var(--inset);
-  padding: var(--inset);
-}
-
-.diaGrande {
-  font: var(--voz-numero);
-  font-size: clamp(66px, 42cqh, 120px);
-  line-height: 0.82;
-  letter-spacing: -0.03em;
-  font-variant-numeric: tabular-nums;
-  text-box: trim-both cap alphabetic;
-}
-
-/* Cada dígito tem um respiro de lado diferente: o puxão alinha a tinta do número a 16px da borda. */
-.diaGrande[data-d='0'],
-.diaGrande[data-d='3'] {
-  margin-left: -0.0303em;
-}
-
-.diaGrande[data-d='1'] {
-  margin-left: -0.0758em;
-}
-
-.diaGrande[data-d='2'] {
-  margin-left: -0.0455em;
-}
-
-.vagas {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  grid-template-rows: clamp(28px, 11cqh, 38px);
-  gap: var(--e1);
-}
-
-.vaga {
-  display: grid;
-}
-
-.siglaDia,
-.siglaMais {
-  display: grid;
-  place-items: center;
-  border-radius: var(--raio-pilula);
-  font: var(--ui-sigla);
-}
-
-.siglaDia {
-  background: var(--cor-materia);
-  color: var(--cor-tinta);
-}
-
-.siglaMais {
-  background: var(--cor-cartao-2);
+  gap: var(--e2);
+  overflow-x: auto;
 }
 
 .calendario {
@@ -168,7 +46,7 @@
 }
 
 [data-foco] .dia[data-sel='true'] .numero {
-  background: var(--cor-marca);
+  background: var(--cor-escolhido);
 }
 
 .numero[data-hoje='true'],
@@ -210,7 +88,7 @@
 }
 
 [data-foco] .aula[data-sel='true'] .aulaCorpo {
-  background: var(--cor-marca);
+  background: var(--cor-escolhido);
 }
 
 .aula .aulaCorpo[data-agora='true'] {
@@ -275,7 +153,7 @@
 }
 
 [data-foco] .lembrete[data-sel='true'] {
-  background: var(--cor-marca);
+  background: var(--cor-escolhido);
 }
 
 .bola {
@@ -286,7 +164,7 @@
 }
 
 .bola[data-feito='true'] {
-  background: var(--cor-verde);
+  background: var(--cor-ok);
 }
 
 .lembreteTexto {
@@ -303,7 +181,7 @@
   min-height: 48px;
   margin: 0 var(--bloco-pad-x) var(--bloco-pad-y);
   border-radius: var(--raio-botao);
-  background: var(--cor-botao);
-  color: var(--cor-sobre-botao);
+  background: var(--cor-acao);
+  color: var(--cor-sobre-acao);
   font: var(--ui-botao);
 }

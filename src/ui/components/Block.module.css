@@ -5,13 +5,21 @@
   min-height: 0;
   border: var(--borda-bloco) solid transparent;
   border-radius: var(--raio-bloco);
-  background: var(--cor-cartao);
-  transition: border-color var(--tempo-borda);
+  background: var(--sup-recuada);
+  transition:
+    background-color var(--tempo-borda),
+    border-color var(--tempo-borda);
 }
 
+/* Só o bloco com o cursor acende; os outros recuam para o fundo (diretrizes 3.3). */
+.bloco[data-foco] {
+  background: var(--cor-cartao);
+}
+
+/* Contorno (e não sombra por dentro): o conteúdo que encosta na borda não o cobre. */
 .bloco[data-foco='bloco'] {
-  outline: var(--contorno-foco) solid var(--cor-contorno-foco);
-  outline-offset: calc(var(--contorno-foco) * -1);
+  outline: var(--cursor-bloco) solid var(--cor-cursor);
+  outline-offset: calc(var(--cursor-bloco) * -1);
 }
 
 .bloco[data-foco='dentro'] {
@@ -20,7 +28,7 @@
 
 .bloco[data-foco='dentro'],
 :global(:root[data-entrada='toque']) .bloco[data-foco='bloco'] {
-  border-color: var(--cor-bloco-ativo);
+  border-color: var(--cor-rastro);
 }
 
 :global(:root[data-entrada='toque']) .bloco[data-foco='bloco'] {
@@ -28,7 +36,7 @@
 }
 
 .bloco[data-foco] .nome {
-  color: var(--cor-bloco-ativo);
+  color: var(--cor-cursor);
 }
 
 .icone {
@@ -37,7 +45,9 @@
   height: 20px;
   color: var(--cor-texto-2);
   opacity: 0.45;
-  transition: color var(--tempo-borda), opacity var(--tempo-borda);
+  transition:
+    color var(--tempo-borda),
+    opacity var(--tempo-borda);
 }
 
 .icone svg {
@@ -46,7 +56,7 @@
 }
 
 .bloco[data-foco] .icone {
-  color: var(--cor-bloco-ativo);
+  color: var(--cor-cursor);
   opacity: 1;
 }
 
@@ -90,15 +100,6 @@
   content: '';
   position: absolute;
   inset: -6px;
-}
-
-.tecla {
-  padding: 1px 9px;
-  border-radius: var(--raio-pilula);
-  background: var(--cor-cartao-2);
-  color: var(--cor-texto-2);
-  font: var(--ui-tecla);
-  white-space: nowrap;
 }
 
 @media (max-width: 767px) {

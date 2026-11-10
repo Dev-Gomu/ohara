@@ -4,6 +4,10 @@ import { leaf, leaves, split } from '../../../core/mosaic/tree';
 import { currentEventIndex, eventsOn, subjectOf } from '../../../core/study/queries';
 import type { StudyData } from '../../../core/study/types';
 import { Block } from '../../components/Block';
+import { Button } from '../../components/Button';
+import { SubjectPill } from '../../components/Pill';
+import { ModeIndicator } from '../../components/Island';
+import { BlockToggle, ToggleGroup } from '../../components/Toggles';
 import { dispatch, getKeyboardState } from '../../keyboard/store';
 import { useBlocks } from '../../keyboard/useBlocks';
 import { Mosaic } from '../../mosaic/Mosaic';
@@ -29,9 +33,9 @@ const ALL = [SLIDES, NOTES, CARDS];
 const INITIAL = split('row', split('col', leaf(SLIDES), leaf(CARDS), 0.58), leaf(NOTES));
 
 const TOGGLES = [
-  { id: SLIDES, label: 'Slides', keys: 'Alt S' },
-  { id: NOTES, label: 'Anotações', keys: 'Alt A' },
-  { id: CARDS, label: 'Cartões', keys: 'Alt C' },
+  { id: SLIDES, label: 'Slides', letter: 'S' },
+  { id: NOTES, label: 'Anotações', letter: 'A' },
+  { id: CARDS, label: 'Cartões', letter: 'C' },
 ];
 
 function defaultLesson(data: StudyData): string {
@@ -196,13 +200,7 @@ function LessonDesk({ data, lessonId }: { data: StudyData; lessonId: string }) {
             ) : (
               <div className={styles.vazio}>
                 <p>Esta aula ainda não tem slides.</p>
-                <button
-                  type="button"
-                  className={styles.pilula}
-                  onClick={() => pickFile(attachSlides)}
-                >
-                  Anexar PDF
-                </button>
+                <Button onPress={() => pickFile(attachSlides)}>Anexar PDF</Button>
               </div>
             )}
           </div>
@@ -221,24 +219,26 @@ function LessonDesk({ data, lessonId }: { data: StudyData; lessonId: string }) {
       caps={false}
       end={
         <>
-          <span className={styles.sigla} data-materia={subject?.color}>
-            {subject?.code}
-          </span>
-          <div className={styles.alternar} role="group" aria-label="Blocos">
-            {TOGGLES.map(({ id, label, keys }) => (
-              <button
-                key={id}
-                type="button"
-                className={styles.pilula}
-                data-sel={mosaic.isOpen(id)}
-                aria-pressed={mosaic.isOpen(id)}
-                title={keys}
-                onClick={() => mosaic.toggle(id)}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
+          {subject && <SubjectPill code={subject.code} color={subject.color} />}
+          {mosaic.resizing ? (
+            <ModeIndicator
+              name="Redimensionar"
+              keys={['← → ↑ ↓ ajustam', 'Enter termina']}
+              onDone={() => dispatch({ type: 'escape' })}
+            />
+          ) : (
+            <ToggleGroup label="Blocos">
+              {TOGGLES.map(({ id, label, letter }) => (
+                <BlockToggle
+                  key={id}
+                  name={label}
+                  letter={letter}
+                  open={mosaic.isOpen(id)}
+                  onToggle={() => mosaic.toggle(id)}
+                />
+              ))}
+            </ToggleGroup>
+          )}
         </>
       }
     >
@@ -249,18 +249,6 @@ function LessonDesk({ data, lessonId }: { data: StudyData; lessonId: string }) {
         onChange={mosaic.setTree}
       />
       <HistoryWindow lessonId={lessonId} editor={editor} />
-      {mosaic.resizing && (
-        <div className={styles.aviso} role="status">
-          Redimensionar: setas ajustam, Enter ou Esc termina
-          <button
-            type="button"
-            className={styles.pronto}
-            onClick={() => dispatch({ type: 'escape' })}
-          >
-            Pronto
-          </button>
-        </div>
-      )}
     </ScreenFrame>
   );
 }

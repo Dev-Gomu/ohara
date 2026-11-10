@@ -1,29 +1,30 @@
-/* Paletas de teste (sem cores quentes). A original fica sem atributo; Configs e ?paleta=a|b|c trocam.
+/* Paletas alternativas (sem cores quentes). A Ardósia é a base, sem atributo (tokens.css); Configs e ?paleta=a|b trocam.
    Os nomes das variáveis de cor de matéria (laranja, rosa...) ficam: só os valores mudam. */
 
 /* A: Azul-gelo. Fundo azulado frio, acento azul, matérias em azuis, violetas e verdes-água. */
 :root[data-paleta='a'] {
   --cor-destaque: #86a8ee;
+  --cor-materia-1: #86a8ee;
   --cor-destaque-forte: #6f95e6;
   --cor-tinta: #0f1a24;
   --cor-sobre-tinta: #f2f6fb;
-  --cor-laranja: #6fcbb5;
-  --cor-azul: #b394ea;
-  --cor-verde: #6ec3dc;
-  --cor-rosa: #8ccf9f;
-  --cor-amarelo: #9b9aea;
-  --cor-ciano: #9fb0c8;
-  --cor-cinza-lavanda: #84b4cc;
+  --cor-materia-0: #6fcbb5;
+  --cor-materia-2: #b394ea;
+  --cor-materia-3: #6ec3dc;
+  --cor-materia-4: #8ccf9f;
+  --cor-materia-5: #9b9aea;
+  --cor-materia-6: #9fb0c8;
+  --cor-materia-7: #84b4cc;
   --cor-fundo: #e9eef5;
   --cor-cartao: #ffffff;
   --cor-cartao-2: #e1e8f1;
   --cor-texto: #121a2b;
   --cor-texto-2: #4f5d74;
-  --cor-botao: #121a2b;
-  --cor-sobre-botao: #f2f6fb;
-  --cor-marca: #cfdcf3;
+  --cor-acao: #121a2b;
+  --cor-sobre-acao: #f2f6fb;
+  --cor-escolhido: #cfdcf3;
   --cor-foco: #121a2b;
-  --cor-bloco-ativo: #3f6fd6;
+  --cor-cursor: #3f6fd6;
   --cor-nota-titulo: #121a2b;
   --cor-veu: rgb(18 26 43 / 40%);
 }
@@ -34,11 +35,11 @@
   --cor-cartao-2: #1d2738;
   --cor-texto: #eaf0fa;
   --cor-texto-2: #9fb0c8;
-  --cor-botao: #eaf0fa;
-  --cor-sobre-botao: #0b111c;
-  --cor-marca: #2e4a85;
+  --cor-acao: #eaf0fa;
+  --cor-sobre-acao: #0b111c;
+  --cor-escolhido: #2e4a85;
   --cor-foco: #eaf0fa;
-  --cor-bloco-ativo: #7ea6ea;
+  --cor-cursor: #7ea6ea;
   --cor-nota-titulo: #7ea6ea;
   --cor-veu: rgb(11 17 28 / 60%);
 }
@@ -46,26 +47,27 @@
 /* B: Cinza-índigo. Fundo cinza frio quase neutro, acento índigo, matérias em tons de joia frios. */
 :root[data-paleta='b'] {
   --cor-destaque: #a094ec;
+  --cor-materia-1: #a094ec;
   --cor-destaque-forte: #8f82e2;
   --cor-tinta: #12141f;
   --cor-sobre-tinta: #f4f4fb;
-  --cor-laranja: #6f8fe0;
-  --cor-azul: #5bbdc4;
-  --cor-verde: #66b89a;
-  --cor-rosa: #8d9db5;
-  --cor-amarelo: #7b83d6;
-  --cor-ciano: #82cbe0;
-  --cor-cinza-lavanda: #a9a4e0;
+  --cor-materia-0: #6f8fe0;
+  --cor-materia-2: #5bbdc4;
+  --cor-materia-3: #66b89a;
+  --cor-materia-4: #8d9db5;
+  --cor-materia-5: #7b83d6;
+  --cor-materia-6: #82cbe0;
+  --cor-materia-7: #a9a4e0;
   --cor-fundo: #f0f2f6;
   --cor-cartao: #ffffff;
   --cor-cartao-2: #e6e9f0;
   --cor-texto: #161826;
   --cor-texto-2: #575c70;
-  --cor-botao: #161826;
-  --cor-sobre-botao: #f4f4fb;
-  --cor-marca: #d9d6f4;
+  --cor-acao: #161826;
+  --cor-sobre-acao: #f4f4fb;
+  --cor-escolhido: #d9d6f4;
   --cor-foco: #161826;
-  --cor-bloco-ativo: #6558c9;
+  --cor-cursor: #6558c9;
   --cor-nota-titulo: #161826;
   --cor-veu: rgb(22 24 38 / 40%);
 }
@@ -76,55 +78,11 @@
   --cor-cartao-2: #222432;
   --cor-texto: #eeeefa;
   --cor-texto-2: #a2a4bd;
-  --cor-botao: #eeeefa;
-  --cor-sobre-botao: #0e0f16;
-  --cor-marca: #4a4590;
+  --cor-acao: #eeeefa;
+  --cor-sobre-acao: #0e0f16;
+  --cor-escolhido: #4a4590;
   --cor-foco: #eeeefa;
-  --cor-bloco-ativo: #9a8ff0;
+  --cor-cursor: #9a8ff0;
   --cor-nota-titulo: #9a8ff0;
   --cor-veu: rgb(14 15 22 / 60%);
-}
-
-/* C: Ardósia (do ClaudeWeb). Camadas de cinza-azulado, ação em grafite, cobalto só no bloco ativo. */
-:root[data-paleta='c'] {
-  --cor-destaque: #8aa0f8;
-  --cor-destaque-forte: #7389ea;
-  --cor-rosa: #e48ae8;
-  --cor-azul: #5eb6ee;
-  --cor-laranja: #f27a9f;
-  --cor-verde: #7fdcb0;
-  --cor-tinta: #0e1428;
-  --cor-sobre-tinta: #f3f5ff;
-  --cor-amarelo: #ab94f4;
-  --cor-ciano: #3fd0c4;
-  --cor-cinza-lavanda: #a3b0c4;
-  --cor-fundo: #dfe4ea;
-  --cor-cartao: #f7f9fb;
-  --cor-cartao-2: #e6ebf0;
-  --cor-texto: #0f1e27;
-  --cor-texto-2: #465a68;
-  --cor-botao: #14232d;
-  --cor-sobre-botao: #f4f8fa;
-  --cor-marca: #c9d3de;
-  --cor-foco: #0f1e27;
-  --cor-bloco-ativo: #4a62dc;
-  --cor-nota-titulo: #0f1e27;
-  --cor-veu: rgb(15 30 39 / 40%);
-  --cor-aba-ativa: var(--cor-botao);
-  --cor-sobre-aba-ativa: var(--cor-sobre-botao);
-}
-
-:root[data-paleta='c'][data-tema='escuro'] {
-  --cor-fundo: #0e1519;
-  --cor-cartao: #172026;
-  --cor-cartao-2: #222e36;
-  --cor-texto: #e8f0f4;
-  --cor-texto-2: #93a7b3;
-  --cor-botao: #e8f0f4;
-  --cor-sobre-botao: #0e1519;
-  --cor-marca: #2c3b46;
-  --cor-foco: #e8f0f4;
-  --cor-bloco-ativo: #8ea4fa;
-  --cor-nota-titulo: #e8f0f4;
-  --cor-veu: rgb(14 21 25 / 60%);
 }

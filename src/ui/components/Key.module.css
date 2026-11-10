@@ -1,0 +1,11 @@
+/* Quem hospeda a tecla pode trocar o fundo e o relevo (botão principal, ilha). */
+.tecla {
+  flex: none;
+  padding: 0 var(--e2);
+  border-bottom: 2px solid var(--tecla-relevo, var(--cor-relevo));
+  border-radius: var(--raio-minimo);
+  background: var(--tecla-fundo, var(--sup-peca));
+  color: var(--tecla-texto, var(--cor-texto-2));
+  font: var(--ui-tecla);
+  white-space: nowrap;
+}

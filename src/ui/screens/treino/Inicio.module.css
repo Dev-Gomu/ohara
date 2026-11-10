@@ -73,8 +73,8 @@
   min-height: 48px;
   padding: 0 var(--e6);
   border-radius: var(--raio-botao);
-  background: var(--cor-botao);
-  color: var(--cor-sobre-botao);
+  background: var(--cor-acao);
+  color: var(--cor-sobre-acao);
   font: var(--ui-botao);
 }
 
@@ -113,7 +113,7 @@
 }
 
 .periodoItem[data-sel='true'] {
-  background: var(--cor-marca);
+  background: var(--cor-escolhido);
 }
 
 .busca {
@@ -166,7 +166,7 @@
 }
 
 .peca[data-sel='true'] {
-  background: var(--cor-marca);
+  background: var(--cor-escolhido);
 }
 
 .sigla {

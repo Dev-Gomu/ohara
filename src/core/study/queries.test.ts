@@ -5,14 +5,13 @@ import {
   currentEventIndex,
   daysToNextExam,
   eventsOn,
-  examSlots,
   filterLessons,
   folderTabs,
   initialTabIndex,
   lessonsOf,
   NO_FOLDER,
   slotsOn,
-  upcomingExamDays,
+  upcomingAssessmentDays,
   upcomingExams,
 } from './queries';
 
@@ -55,19 +54,57 @@ describe('dia', () => {
     expect(dates.every((date) => date >= today)).toBe(true);
   });
 
-  it('agrupa as provas por dia, uma caixa por data', () => {
-    const days = upcomingExamDays(data, today);
-    expect(new Set(days.map((day) => day.date)).size).toBe(days.length);
-    const total = days.reduce((sum, day) => sum + day.exams.length, 0);
-    expect(total).toBe(upcomingExams(data, today).length);
+  it('agrupa provas e trabalhos por dia, uma peça por data, em ordem', () => {
+    const days = upcomingAssessmentDays(data, today);
+    const dates = days.map((day) => day.date);
+    expect(new Set(dates).size).toBe(days.length);
+    expect(dates).toEqual([...dates].sort());
+    const exams = days.flatMap((day) => day.items).filter((item) => item.kind === 'prova');
+    expect(exams.length).toBe(upcomingExams(data, today).length);
   });
 
-  it('as vagas do dia mostram até 4 provas e resumem o resto em +N', () => {
-    const exam = (id: string) => ({ id, subjectId: id, date: '2026-11-18', time: '08:00' });
-    const five = ['a', 'b', 'c', 'd', 'e'].map(exam);
-    expect(examSlots(five.slice(0, 4))).toEqual({ shown: five.slice(0, 4), extra: 0 });
-    expect(examSlots(five)).toEqual({ shown: five.slice(0, 3), extra: 2 });
-    expect(examSlots([])).toEqual({ shown: [], extra: 0 });
+  it('no mesmo dia, as provas vêm antes do trabalho, sem limite de itens', () => {
+    const date = '2026-11-18';
+    const exam = (id: string, time: string) => ({ id, subjectId: id, date, time });
+    const full = {
+      ...data,
+      exams: [exam('c', '14:00'), exam('a', '08:00'), exam('b', '10:00')],
+      events: [
+        {
+          id: 't',
+          kind: 'trabalho' as const,
+          subjectId: 'imu',
+          lessonId: null,
+          title: 'Seminário',
+          date,
+          start: '07:00',
+          end: '08:00',
+        },
+        {
+          id: 'velho',
+          kind: 'trabalho' as const,
+          subjectId: 'imu',
+          lessonId: null,
+          title: 'Passou',
+          date: '2026-11-01',
+          start: '07:00',
+          end: '08:00',
+        },
+        {
+          id: 'aula',
+          kind: 'aula' as const,
+          subjectId: 'imu',
+          lessonId: null,
+          title: 'Aula',
+          date,
+          start: '09:00',
+          end: '10:00',
+        },
+      ],
+    };
+    const days = upcomingAssessmentDays(full, today);
+    expect(days).toHaveLength(1);
+    expect(days[0]?.items.map((item) => item.id)).toEqual(['a', 'b', 'c', 't']);
   });
 
   it('acha a aula de agora ou a próxima', () => {

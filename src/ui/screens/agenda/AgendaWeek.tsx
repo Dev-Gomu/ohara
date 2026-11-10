@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react';
 import { hourRange, toHours } from '../../../core/study/agenda';
+import { DayPill } from '../../components/Pill';
 import { NavItem } from '../../components/NavItem';
 import { nowTime, today } from '../../study/study';
 import type { AgendaColumn, AgendaItem } from './agendaData';
@@ -39,12 +40,11 @@ export function AgendaWeek({ block, columns, onOpen }: WeekProps) {
               label={head?.title}
               onOpen={() => head && onOpen(head)}
             >
-              <span className={styles.semanaDia}>{column.weekday}</span>
-              {column.number !== '' && (
-                <span className={styles.numero} data-hoje={column.day === today}>
-                  {column.number}
-                </span>
-              )}
+              <DayPill
+                weekday={column.weekday.toUpperCase()}
+                number={column.number}
+                today={column.day === today}
+              />
             </NavItem>
             {column.items.map((item, row) =>
               item.kind === 'prova' || item.kind === 'trabalho' ? (

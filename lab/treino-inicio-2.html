@@ -15,7 +15,7 @@
         padding: var(--e5) var(--e6) var(--e5);
         border-radius: var(--raio-bloco);
         background: var(--cor-cartao);
-        border: 2px solid var(--cor-bloco-ativo);
+        border: 2px solid var(--cor-cursor);
         display: grid;
         justify-items: center;
         gap: var(--e1);
@@ -61,8 +61,8 @@
         min-height: 52px;
         padding: 0 var(--e6);
         border-radius: var(--raio-botao);
-        background: var(--cor-botao);
-        color: var(--cor-sobre-botao);
+        background: var(--cor-acao);
+        color: var(--cor-sobre-acao);
         font: var(--ui-botao);
       }
       .iniciar kbd {
@@ -101,7 +101,7 @@
         font: var(--ui-item);
       }
       .regua span[data-sel='true'] {
-        background: var(--cor-marca);
+        background: var(--cor-escolhido);
       }
 
       .sigla {
@@ -139,7 +139,7 @@
         min-height: 64px;
       }
       .cel[data-sel='true'] {
-        background: var(--cor-marca);
+        background: var(--cor-escolhido);
       }
       .cel.foco {
         outline: 4px solid var(--cor-contorno-foco);
@@ -184,7 +184,7 @@
         font: var(--ui-tecla);
       }
       .filtro[data-vazio='false'] {
-        outline: 2px solid var(--cor-bloco-ativo);
+        outline: 2px solid var(--cor-cursor);
         outline-offset: -2px;
       }
       .contagem {

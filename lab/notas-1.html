@@ -49,7 +49,7 @@
         min-height: 0;
       }
       .cartao.ativo {
-        border: var(--borda-bloco) solid var(--cor-bloco-ativo);
+        border: var(--borda-bloco) solid var(--cor-cursor);
         padding: calc(var(--e4) - 2px) calc(var(--e5) - 2px);
       }
       .cartao.interno {
@@ -80,11 +80,11 @@
         white-space: nowrap;
       }
       .pilula[data-sel='true'] {
-        background: var(--cor-marca);
+        background: var(--cor-escolhido);
       }
       .pilula.primario {
-        background: var(--cor-botao);
-        color: var(--cor-sobre-botao);
+        background: var(--cor-acao);
+        color: var(--cor-sobre-acao);
       }
       .pilula.mini {
         height: 28px;
@@ -131,10 +131,10 @@
         height: 14px;
       }
       .ok {
-        background: var(--cor-verde);
+        background: var(--cor-materia-3);
       }
       .atencao {
-        background: var(--cor-laranja);
+        background: var(--cor-materia-0);
       }
       .vazio-pill {
         background: var(--cor-cartao-2);
@@ -254,11 +254,11 @@
         background: var(--cor-cartao-2);
       }
       .nota.baixa {
-        background: var(--cor-laranja);
+        background: var(--cor-materia-0);
         color: var(--cor-tinta);
       }
       .nota[data-sel='true'] {
-        background: var(--cor-marca);
+        background: var(--cor-escolhido);
       }
       .nota.foco {
         outline: var(--contorno-foco) solid var(--cor-contorno-foco);
@@ -287,7 +287,7 @@
         width: 12px;
         height: 12px;
         border-radius: 4px;
-        background: var(--cor-laranja);
+        background: var(--cor-materia-0);
       }
 
       /* B: por disciplina */
@@ -313,7 +313,7 @@
         font: var(--voz-mini);
       }
       .lista .item[data-sel='true'] {
-        background: var(--cor-marca);
+        background: var(--cor-escolhido);
       }
       .lista .item .nome {
         flex: 1;
@@ -396,7 +396,7 @@
         font: var(--voz-mini);
       }
       .linha[data-sel='true'] {
-        background: var(--cor-marca);
+        background: var(--cor-escolhido);
       }
       .linha .peso {
         color: var(--cor-texto-2);
@@ -499,7 +499,7 @@
         padding: 0 var(--e4);
         border-radius: var(--raio-campo);
         background: var(--cor-cartao);
-        outline: 2px solid var(--cor-bloco-ativo);
+        outline: 2px solid var(--cor-cursor);
         outline-offset: -2px;
         color: var(--cor-texto-2);
         font: var(--leitura-campo);

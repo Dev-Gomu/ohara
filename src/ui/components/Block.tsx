@@ -1,6 +1,7 @@
 import { createContext, useContext, type ReactNode } from 'react';
 import { dispatch, useKeyboardState } from '../keyboard/store';
 import { BlockIcon, type IconName } from './BlockIcon';
+import { Key } from './Key';
 import styles from './Block.module.css';
 
 // Bloco que o celular mostra agora. As telas maiores ignoram (D79).
@@ -18,20 +19,26 @@ interface BlockProps {
   shortcut?: string;
   tools?: ReactNode;
   menu?: boolean;
+  // Estado fixo, sem o teclado: só para a vitrine do lab.
+  fixed?: 'none' | 'block' | 'inside';
   className?: string;
   children: ReactNode;
 }
 
 export function Block(props: BlockProps) {
-  const { id, title, icon, label, count, shortcut, tools, menu, className, children } = props;
+  const { id, title, icon, label, count, shortcut, tools, menu, fixed, className, children } =
+    props;
   const { focus } = useKeyboardState();
   const phone = useContext(PhoneBlock);
   const page = label ?? title;
   const shown =
     page === undefined ? undefined : phone === '' || phone === id ? 'visivel' : 'oculto';
   const here = focus.block === id;
-  const onBlock = here && focus.level === 'block';
-  const inside = here && (focus.level === 'field' || focus.level === 'nav');
+  const onBlock = fixed ? fixed === 'block' : here && focus.level === 'block';
+  const inside = fixed
+    ? fixed === 'inside'
+    : // No menu, o último bloco usado segue aceso: é para ele que o Enter volta (D116).
+      here && focus.level !== 'block';
   return (
     <section
       className={`${styles.bloco} ${className ?? ''}`}
@@ -53,7 +60,7 @@ export function Block(props: BlockProps) {
           {count !== undefined && <span className={styles.conta}>{count}</span>}
           <div className={styles.fim}>
             {tools}
-            {shortcut !== undefined && <kbd className={styles.tecla}>{shortcut}</kbd>}
+            {shortcut !== undefined && <Key>{shortcut}</Key>}
             {menu && (
               <button
                 type="button"

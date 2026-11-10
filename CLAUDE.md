@@ -59,6 +59,10 @@ Versões marcadas `A VERIFICAR` em `decisoes.md`: confirme antes de fixar e regi
 - Salvar ao trocar de tela, ao ocultar o app e antes de sincronizar.
 - Notas do boletim são **cifradas** antes de gravar e sincronizar. Não confunda com **Anotações** (texto das aulas).
 
+## Visual: use a vitrine (obrigatório)
+- Antes de montar ou mudar qualquer tela, abra `lab/vitrine.html` (`npm run tela -- "lab/vitrine.html"`) e monte **só com as peças de `src/ui/components`**. Não redesenhe peça dentro da tela. Peça nova só em bancada, com aceite do usuário.
+- Cor só por papel (`--cor-*`) e raio só por token (`--raio-*`). `npm run lint` roda `scripts/lint-visual.mjs` e falha com cor, raio ou tamanho de letra solto em CSS fora de `src/ui/styles/`. Exceção rara: comentário `lint-visual-ok: motivo` na linha.
+
 ## Isolamento do app antigo
 O mesmo domínio do GitHub Pages já hospeda o app antigo. Use **nomes de banco únicos** e **escopo próprio do service worker**. O código antigo fica em pasta ao lado, **somente leitura**, e não é copiado: só `docs/regras.md` descreve o comportamento aproveitado.
 

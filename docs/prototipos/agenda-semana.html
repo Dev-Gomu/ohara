@@ -18,7 +18,7 @@ body { background: #777; font: var(--ui-apoio); padding: 16px; color: var(--cor-
 .num.on { background: var(--cor-destaque); color: var(--cor-tinta); }
 .titulo-tela { font: var(--voz-titulo); text-transform: uppercase; margin-left: 12px; }
 .bloco { background: var(--cor-cartao); border-radius: var(--raio-bloco); padding: var(--bloco-pad-y) var(--bloco-pad-x); min-height: 0; display: flex; flex-direction: column; gap: 10px; }
-.bloco.ativo { box-shadow: inset 0 0 0 var(--borda-bloco) var(--cor-bloco-ativo); }
+.bloco.ativo { box-shadow: inset 0 0 0 var(--borda-bloco) var(--cor-cursor); }
 .cab { display: flex; align-items: center; gap: 8px; }
 .cab h2 { font: var(--ui-rotulo); text-transform: uppercase; letter-spacing: .06em; }
 .cab .n { font: var(--ui-rotulo); color: var(--cor-texto-2); }
@@ -28,14 +28,14 @@ body { background: #777; font: var(--ui-apoio); padding: 16px; color: var(--cor-
 .pil { font: var(--ui-botao); padding: 0 16px; height: 44px; border-radius: var(--raio-botao); background: var(--cor-cartao-2); display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
 .pil.sel { background: var(--cor-destaque); color: var(--cor-tinta); }
 .pil.ic { width: 44px; padding: 0; justify-content: center; }
-.prim { background: var(--cor-botao); color: var(--cor-sobre-botao); }
+.prim { background: var(--cor-acao); color: var(--cor-sobre-acao); }
 .prim .tecla { background: transparent; color: inherit; opacity: .75; margin-left: 4px; padding: 0; }
 .periodo { font: var(--ui-item); margin: 0 8px; font-variant-numeric: tabular-nums; }
 .sigla { font: var(--ui-sigla); padding: 2px 8px; border-radius: 999px; color: var(--cor-tinta); background: var(--m); white-space: nowrap; }
 .filtro { display: flex; flex-wrap: wrap; gap: 6px; }
 .filtro .sigla { height: 32px; display: inline-flex; align-items: center; padding: 0 10px; }
 .filtro .sigla.off { background: var(--cor-cartao-2); color: var(--cor-texto-2); }
-.filtro .todas { font: var(--ui-sigla); height: 32px; padding: 0 12px; border-radius: 999px; background: var(--cor-marca); display: inline-flex; align-items: center; }
+.filtro .todas { font: var(--ui-sigla); height: 32px; padding: 0 12px; border-radius: 999px; background: var(--cor-escolhido); display: inline-flex; align-items: center; }
 .item { display: flex; align-items: center; gap: 8px; min-height: 48px; padding: 6px 10px; border-radius: var(--raio-item); background: var(--cor-cartao-2); }
 .item .t { font: var(--ui-item); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .item .falta { font: var(--ui-apoio); color: var(--cor-texto-2); white-space: nowrap; }
@@ -48,7 +48,7 @@ body { background: #777; font: var(--ui-apoio); padding: 16px; color: var(--cor-
 .dcab { text-align: center; padding-bottom: 4px; }
 .dcab .ds { font: var(--ui-rotulo); text-transform: uppercase; letter-spacing: .06em; color: var(--cor-texto-2); }
 .dcab .dn { font: var(--voz-item); display: inline-block; min-width: 40px; border-radius: 999px; padding: 2px 8px; font-variant-numeric: tabular-nums; }
-.dcab.hoje .dn { background: var(--cor-marca); }
+.dcab.hoje .dn { background: var(--cor-escolhido); }
 .diatodo { display: flex; flex-direction: column; gap: 4px; padding-bottom: 6px; min-height: 30px; }
 .chipdia { font: var(--ui-sigla); border-radius: 10px; padding: 4px 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--cor-tinta); background: var(--m); }
 .chipdia.vaz { background: transparent; color: var(--cor-texto); box-shadow: inset 0 0 0 2px var(--cor-texto-2); }

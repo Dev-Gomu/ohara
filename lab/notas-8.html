@@ -48,7 +48,7 @@
         min-height: 0;
       }
       .cartao.ativo {
-        border: var(--borda-bloco) solid var(--cor-bloco-ativo);
+        border: var(--borda-bloco) solid var(--cor-cursor);
         padding: calc(var(--e5) - 2px) calc(var(--e6) - 2px);
       }
       .rotulo {
@@ -70,7 +70,7 @@
         font-variant-numeric: tabular-nums;
       }
       .baixa {
-        background: color-mix(in srgb, var(--cor-laranja) 30%, var(--cor-cartao));
+        background: color-mix(in srgb, var(--cor-materia-0) 30%, var(--cor-cartao));
       }
 
       /* cabeçalho de tela */
@@ -92,7 +92,7 @@
       }
       .abas span[data-sel='true'] {
         color: var(--cor-texto);
-        box-shadow: inset 0 -3px 0 var(--cor-bloco-ativo);
+        box-shadow: inset 0 -3px 0 var(--cor-cursor);
       }
       .topo .fim {
         margin-left: auto;
@@ -161,10 +161,10 @@
         height: 11px;
       }
       .sit.ok i {
-        background: var(--cor-verde);
+        background: var(--cor-materia-3);
       }
       .sit.at i {
-        background: var(--cor-laranja);
+        background: var(--cor-materia-0);
       }
       .sit.nd {
         color: var(--cor-texto-2);
@@ -174,7 +174,7 @@
         outline-offset: -4px;
       }
       .sel {
-        background: var(--cor-marca);
+        background: var(--cor-escolhido);
       }
 
       
@@ -183,7 +183,7 @@
       .regua { display: flex; align-items: center; gap: var(--e1); padding: var(--e3) var(--e4); border-radius: var(--raio-bloco); background: var(--cor-cartao); overflow: hidden; }
       .ri { display: flex; align-items: center; gap: var(--e2); height: 48px; padding: 0 var(--e4); border-radius: var(--raio-item); font: 700 15px/20px var(--fonte-interface); white-space: nowrap; flex: none; }
       .ri .m { font-weight: 500; color: var(--cor-texto-2); font-variant-numeric: tabular-nums; }
-      .ri[data-sel='true'] { background: var(--cor-marca); }
+      .ri[data-sel='true'] { background: var(--cor-escolhido); }
       .ri[data-sel='true'] .m { color: var(--cor-texto); }
       .ri.foco { outline: var(--contorno-foco) solid var(--cor-contorno-foco); outline-offset: -4px; }
       .ri svg { width: 20px; height: 20px; flex: none; }

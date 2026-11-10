@@ -1,0 +1,134 @@
+/* Só a moldura da vitrine. As peças vêm prontas de src/ui/components: nada aqui as redesenha.
+   Tudo por token, como nas telas. */
+html,
+body,
+#root {
+  height: auto;
+  min-height: 100%;
+  overflow: visible;
+}
+
+.vitrine {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--e2);
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: var(--e2) var(--e2) var(--e6);
+}
+
+.v-topo,
+.v-secao,
+.v-12 {
+  grid-column: 1 / -1;
+}
+
+.v-8 {
+  grid-column: span 8;
+}
+
+.v-7 {
+  grid-column: span 7;
+}
+
+.v-6 {
+  grid-column: span 6;
+}
+
+.v-5 {
+  grid-column: span 5;
+}
+
+.v-4 {
+  grid-column: span 4;
+}
+
+.v-topo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--e3);
+  padding: var(--e3) var(--e2);
+}
+
+.v-titulo {
+  font: var(--voz-tela);
+}
+
+.v-fim {
+  margin-left: auto;
+}
+
+.v-secao {
+  padding: var(--e5) var(--e2) 0;
+  font: var(--voz-titulo);
+}
+
+.v-corpo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e3);
+  min-width: 0;
+  padding: 0 var(--bloco-pad-x) var(--bloco-pad-y);
+}
+
+.v-janela {
+  padding: var(--e3) 0 0;
+}
+
+.v-uso {
+  font: var(--leitura-compacta);
+  color: var(--cor-texto-2);
+}
+
+.v-linha {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--e3);
+}
+
+.v-amostra {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--e1);
+  min-width: 0;
+}
+
+.v-legenda {
+  font: var(--ui-tecla);
+  color: var(--cor-texto-2);
+}
+
+/* O item de lista sangra até a borda do bloco, como nas telas. */
+.v-lista {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e1);
+  margin: 0 calc(var(--e2) * -1);
+}
+
+.v-grade {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: var(--e2);
+}
+
+.v-grade > * {
+  display: grid;
+}
+
+@media (max-width: 900px) {
+  .v-grade {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .v-8,
+  .v-7,
+  .v-6,
+  .v-5,
+  .v-4 {
+    grid-column: 1 / -1;
+  }
+}

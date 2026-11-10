@@ -48,7 +48,7 @@
         min-height: 0;
       }
       .cartao.ativo {
-        border: var(--borda-bloco) solid var(--cor-bloco-ativo);
+        border: var(--borda-bloco) solid var(--cor-cursor);
         padding: calc(var(--e5) - 2px) calc(var(--e6) - 2px);
       }
       .rotulo {
@@ -70,7 +70,7 @@
         font-variant-numeric: tabular-nums;
       }
       .baixa {
-        background: color-mix(in srgb, var(--cor-laranja) 30%, var(--cor-cartao));
+        background: color-mix(in srgb, var(--cor-materia-0) 30%, var(--cor-cartao));
       }
 
       /* cabeçalho de tela */
@@ -92,7 +92,7 @@
       }
       .abas span[data-sel='true'] {
         color: var(--cor-texto);
-        box-shadow: inset 0 -3px 0 var(--cor-bloco-ativo);
+        box-shadow: inset 0 -3px 0 var(--cor-cursor);
       }
       .topo .fim {
         margin-left: auto;
@@ -161,10 +161,10 @@
         height: 11px;
       }
       .sit.ok i {
-        background: var(--cor-verde);
+        background: var(--cor-materia-3);
       }
       .sit.at i {
-        background: var(--cor-laranja);
+        background: var(--cor-materia-0);
       }
       .sit.nd {
         color: var(--cor-texto-2);
@@ -174,7 +174,7 @@
         outline-offset: -4px;
       }
       .sel {
-        background: var(--cor-marca);
+        background: var(--cor-escolhido);
       }
 
       
@@ -183,7 +183,7 @@
       .regua { display: flex; align-items: center; gap: var(--e1); padding: var(--e3) var(--e4); border-radius: var(--raio-bloco); background: var(--cor-cartao); overflow: hidden; }
       .ri { display: flex; align-items: center; gap: var(--e2); height: 48px; padding: 0 var(--e4); border-radius: var(--raio-item); font: 700 15px/20px var(--fonte-interface); white-space: nowrap; flex: none; }
       .ri .m { font-weight: 500; color: var(--cor-texto-2); font-variant-numeric: tabular-nums; }
-      .ri[data-sel='true'] { background: var(--cor-marca); }
+      .ri[data-sel='true'] { background: var(--cor-escolhido); }
       .ri[data-sel='true'] .m { color: var(--cor-texto); }
       .ri.foco { outline: var(--contorno-foco) solid var(--cor-contorno-foco); outline-offset: -4px; }
       .ri svg { width: 20px; height: 20px; flex: none; }
@@ -202,14 +202,14 @@
       .p { display: flex; align-items: center; gap: var(--e2); height: 52px; padding: 0 var(--e2) 0 var(--e2); border-radius: var(--raio-item); background: var(--cor-cartao-2); flex: none; font: 700 15px/20px var(--fonte-interface); }
       .p .m { min-width: 36px; padding: 0 var(--e2); text-align: center; font: 700 16px/20px var(--fonte-interface); font-variant-numeric: tabular-nums; }
       .p .m.vz { color: var(--cor-texto-2); font-weight: 400; }
-      .p[data-sel='true'] { background: var(--cor-marca); }
+      .p[data-sel='true'] { background: var(--cor-escolhido); }
       .p.foco { outline: var(--contorno-foco) solid var(--cor-contorno-foco); outline-offset: -4px; }
       .regua { gap: var(--e2); }
       /* 2: média embaixo da sigla */
       .e { display: grid; justify-items: center; gap: 2px; height: 64px; align-content: center; width: 76px; border-radius: var(--raio-item); background: var(--cor-cartao-2); flex: none; }
       .e .m { font: 700 17px/20px var(--fonte-interface); font-variant-numeric: tabular-nums; }
       .e .m.vz { color: var(--cor-texto-2); font-weight: 400; }
-      .e[data-sel='true'] { background: var(--cor-marca); }
+      .e[data-sel='true'] { background: var(--cor-escolhido); }
       .e.foco { outline: var(--contorno-foco) solid var(--cor-contorno-foco); outline-offset: -4px; }
       .e.g { width: auto; padding: 0 var(--e4); }
       .e.g b { font: var(--ui-botao); }
@@ -218,8 +218,8 @@
       .d .a { display: flex; align-items: center; padding: 0 var(--e3) 0 var(--e4); }
       .d .m { display: flex; align-items: center; padding: 0 var(--e4) 0 var(--e3); background: var(--cor-cartao-2); color: var(--cor-texto); font: 700 15px/20px var(--fonte-interface); font-variant-numeric: tabular-nums; }
       .d .m.vz { color: var(--cor-texto-2); font-weight: 400; }
-      .d[data-sel='true'] .m { background: var(--cor-marca); }
-      .d[data-sel='true'] { outline: 3px solid var(--cor-marca); outline-offset: 0; }
+      .d[data-sel='true'] .m { background: var(--cor-escolhido); }
+      .d[data-sel='true'] { outline: 3px solid var(--cor-escolhido); outline-offset: 0; }
       .d.foco { outline: var(--contorno-foco) solid var(--cor-contorno-foco); outline-offset: 2px; }
       .d.g { background: var(--cor-cartao-2); color: var(--cor-texto); padding: 0 var(--e4); align-items: center; gap: var(--e2); }
     </style>

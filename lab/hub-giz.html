@@ -1,0 +1,556 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hub Giz A</title>
+    <style>
+/* ===== Tokens do app (nomes iguais aos de codigo-atual/tokens.css) ===== */
+.stage{
+  --cor-destaque:#8aa0f8;
+  --cor-materia-1: #8aa0f8; --cor-destaque-forte:#7389ea;
+  --cor-materia-4:#e48ae8; --cor-materia-2:#5eb6ee; --cor-materia-0:#f27a9f; --cor-materia-3:#7fdcb0;
+  --cor-tinta:#0e1428; --cor-sobre-tinta:#f3f5ff;
+  --cor-materia-5:#ab94f4; --cor-materia-6:#3fd0c4; --cor-materia-7:#a3b0c4;
+  --fonte-voz:'Nunito',system-ui,sans-serif; --fonte-interface:'Inter',system-ui,sans-serif; --fonte-leitura:'Source Sans 3','Inter',system-ui,sans-serif;
+  --voz-numero:800 66px/54px var(--fonte-voz); --voz-numero-mini:800 48px/40px var(--fonte-voz);
+  --voz-pergunta:800 32px/40px var(--fonte-voz); --voz-tela:800 30px/32px var(--fonte-voz);
+  --voz-titulo:800 22px/24px var(--fonte-voz); --voz-item:800 20px/22px var(--fonte-voz); --voz-mini:800 17px/20px var(--fonte-voz);
+  --ui-botao:700 15px/20px var(--fonte-interface); --ui-item:600 15px/20px var(--fonte-interface);
+  --ui-apoio:500 14px/20px var(--fonte-interface); --ui-rotulo:700 13px/20px var(--fonte-interface);
+  --ui-sigla:700 12.5px/16px var(--fonte-interface); --ui-tecla:600 12px/18px var(--fonte-interface);
+  --leitura-texto:400 16.5px/25px var(--fonte-leitura); --leitura-compacta:400 15.5px/23px var(--fonte-leitura); --leitura-campo:400 16px/24px var(--fonte-leitura);
+  --nota-t1:700 22px/28px var(--fonte-leitura); --nota-t2:700 18px/24px var(--fonte-leitura);
+  --e1:4px; --e2:8px; --e3:12px; --e4:16px; --e5:24px; --e6:32px;
+  --vao-mosaico:8px; --margem-tela:8px; --barra-topo:48px; --bloco-pad-y:14px; --bloco-pad-x:18px;
+  --raio-bloco:24px; --raio-item:18px; --raio-botao:18px; --raio-campo:16px; --raio-minimo:8px; --raio-pilula:999px;
+  --alvo:44px; --item-lista:56px; --anel-traco:3px; --anel-afastamento:3px; --borda-bloco:2px;
+  --tempo-borda:200ms; --tempo-toque:120ms;
+  width:1280px;height:800px;overflow:hidden;background:var(--cor-fundo);color:var(--cor-texto);
+  font:var(--ui-apoio);font-variant-numeric:tabular-nums;font-synthesis:none;
+}
+/* Direção A · Papel Frio */
+.stage[data-dir="a"][data-tema="claro"]{
+  --cor-fundo:#eceff6; --cor-cartao:#ffffff; --cor-cartao-2:#e0e6f2; --cor-texto:#121830; --cor-texto-2:#525c78;
+  --cor-acao:#2f47c6; --cor-sobre-acao:#ffffff; --cor-escolhido:#d3dcf9; --cor-foco:#121830; --cor-cursor:#3a52d2; --cor-nota-titulo:#121830; --cor-veu:rgb(18 24 48/40%); color-scheme:light}
+.stage[data-dir="a"][data-tema="escuro"]{
+  --cor-fundo:#0c1022; --cor-cartao:#141a33; --cor-cartao-2:#222b4f; --cor-texto:#eef1fb; --cor-texto-2:#a0a9c8;
+  --cor-acao:#8ea4fa; --cor-sobre-acao:#0c1022; --cor-escolhido:#2a3770; --cor-foco:#eef1fb; --cor-cursor:#8ea4fa; --cor-nota-titulo:#aebcfc; --cor-veu:rgb(12 16 34/60%); color-scheme:dark}
+/* Direção B · Ardósia */
+.stage[data-dir="b"][data-tema="claro"]{
+  --cor-fundo:#dfe4ea; --cor-cartao:#f7f9fb; --cor-cartao-2:#e6ebf0; --cor-texto:#0f1e27; --cor-texto-2:#465a68;
+  --cor-acao:#14232d; --cor-sobre-acao:#f4f8fa; --cor-escolhido:#c9d3de; --cor-foco:#0f1e27; --cor-cursor:#4a62dc; --cor-nota-titulo:#0f1e27; --cor-veu:rgb(15 30 39/40%); color-scheme:light}
+.stage[data-dir="b"][data-tema="escuro"]{
+  --cor-fundo:#0e1519; --cor-cartao:#172026; --cor-cartao-2:#222e36; --cor-texto:#e8f0f4; --cor-texto-2:#93a7b3;
+  --cor-acao:#e8f0f4; --cor-sobre-acao:#0e1519; --cor-escolhido:#2c3b46; --cor-foco:#e8f0f4; --cor-cursor:#8ea4fa; --cor-nota-titulo:#e8f0f4; --cor-veu:rgb(14 21 25/60%); color-scheme:dark}
+
+[data-materia="0"]{--cor-materia:var(--cor-materia-0)} [data-materia="1"]{--cor-materia:var(--cor-destaque)}
+[data-materia="2"]{--cor-materia:var(--cor-materia-2)}    [data-materia="3"]{--cor-materia:var(--cor-materia-3)}
+[data-materia="4"]{--cor-materia:var(--cor-materia-4)}    [data-materia="5"]{--cor-materia:var(--cor-materia-5)}
+[data-materia="6"]{--cor-materia:var(--cor-materia-6)}   [data-materia="7"]{--cor-materia:var(--cor-materia-7)}
+
+/* ===== base.css (trechos que mudam por direção) ===== */
+.stage *{box-sizing:border-box}
+.stage h1,.stage h2,.stage h3,.stage p{margin:0}
+.stage button{all:unset;box-sizing:border-box;cursor:default}
+.stage svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.anel{outline:var(--anel-traco) solid var(--cor-foco);outline-offset:var(--anel-afastamento)}
+.anel-i{outline:var(--anel-traco) solid var(--cor-foco);outline-offset:0}
+.stage[data-dir="a"] .peca{box-shadow:0 0 0 1px var(--cor-cartao-2)}
+.stage[data-dir="a"] .mono{border-radius:var(--raio-campo)}
+.stage[data-dir="b"] .mono{border-radius:var(--raio-pilula)}
+
+/* ===== Estrutura das telas ===== */
+.tela{position:absolute;inset:0;padding:var(--margem-tela);display:flex;flex-direction:column;gap:var(--vao-mosaico)}
+.barra{height:var(--barra-topo);display:flex;align-items:center;gap:var(--e2);flex:none}
+.barra .tit{font:var(--voz-tela);margin-left:var(--e2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.barra .fim{margin-left:auto;display:flex;gap:var(--e2);align-items:center;flex:none}
+.num{width:var(--alvo);height:var(--alvo);border-radius:var(--raio-pilula);display:grid;place-items:center;font:var(--ui-botao);background:var(--cor-cartao);color:var(--cor-texto-2);flex:none}
+.num.at{background:var(--cor-acao);color:var(--cor-sobre-acao)}
+.pil{height:var(--alvo);padding:0 var(--e4);border-radius:var(--raio-pilula);display:inline-flex;align-items:center;gap:var(--e2);background:var(--cor-cartao);font:var(--ui-botao);color:var(--cor-texto-2);flex:none;white-space:nowrap}
+.pil.on{background:var(--cor-escolhido);color:var(--cor-texto)}
+.pil.redondo{width:var(--alvo);padding:0;justify-content:center}
+.pil .tecla{margin-left:2px}
+.peca{background:var(--cor-cartao);border-radius:var(--raio-bloco)}
+.bloco{border:var(--borda-bloco) solid transparent;padding:var(--bloco-pad-y) var(--bloco-pad-x);display:flex;flex-direction:column;min-height:0;min-width:0;overflow:hidden;position:relative}
+.bloco.ativo{border-color:var(--cor-cursor)}
+.cab-b{display:flex;align-items:center;gap:var(--e2);height:28px;flex:none;margin-bottom:var(--e2)}
+.rot{font:var(--ui-rotulo);letter-spacing:.06em;text-transform:uppercase;color:var(--cor-texto-2)}
+.rot b{font-weight:700;color:var(--cor-texto);margin-left:6px;letter-spacing:0}
+.tecla{display:inline-flex;align-items:center;height:22px;padding:0 var(--e2);border-radius:var(--raio-pilula);background:var(--cor-cartao-2);color:var(--cor-texto-2);font:var(--ui-tecla);white-space:nowrap}
+.pil.on .tecla,.sel .tecla{background:var(--cor-cartao);}
+.dots{margin-left:auto;color:var(--cor-texto-2);display:grid;place-items:center;width:28px;height:28px}
+.cab-b .tecla{margin-left:auto}
+.cab-b .tecla + .dots{margin-left:0}
+.btn{height:52px;border-radius:var(--raio-botao);display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:0 var(--e5);font:var(--ui-botao);background:var(--cor-acao);color:var(--cor-sobre-acao);white-space:nowrap}
+.btn .tecla{background:transparent;color:inherit;opacity:.75;padding:0}
+.btn.sec{background:var(--cor-cartao-2);color:var(--cor-texto)}
+.btn.sec .tecla{background:transparent;color:var(--cor-texto-2);opacity:1}
+.btn.m{height:var(--alvo);border-radius:var(--raio-pilula)}
+/* monograma: a cor da matéria vive só aqui */
+.mono{display:grid;place-items:center;background:var(--cor-materia);color:var(--cor-tinta);font:var(--ui-sigla);flex:none}
+.mono.g{width:48px;height:48px;font-size:14px;letter-spacing:.02em}
+.mono.m{width:40px;height:40px}
+.sig{display:inline-grid;place-items:center;height:26px;min-width:46px;padding:0 10px;border-radius:var(--raio-pilula);background:var(--cor-materia);color:var(--cor-tinta);font:var(--ui-sigla);flex:none}
+.dot{width:10px;height:10px;border-radius:var(--raio-pilula);background:var(--cor-materia);flex:none}
+.sel{background:var(--cor-escolhido)}
+.vazio{border:2px dashed var(--cor-texto-2);background:transparent !important}
+.stage[data-dir="a"] .vazio{box-shadow:none}
+.scroll-fim{flex:1}
+
+/* Hub */
+.provas{display:grid;grid-template-columns:repeat(5,1fr);gap:var(--vao-mosaico);height:184px;flex:none}
+.prova{padding:var(--bloco-pad-y) var(--bloco-pad-x) 16px;display:flex;flex-direction:column;justify-content:space-between;border-radius:var(--raio-bloco);background:var(--cor-cartao);min-width:0}
+.prova .topo{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.prova .quando{font:var(--ui-apoio);color:var(--cor-texto-2)}
+.prova .n{font:var(--voz-numero);color:var(--cor-texto);display:flex;align-items:baseline;gap:8px}
+.prova .n small{font:var(--ui-botao);color:var(--cor-texto-2)}
+.prova .nome{margin-top:8px;font:var(--voz-titulo);text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stage[data-dir="a"] .prova.prox .n{color:var(--cor-cursor)}
+.prova .prox-tag{display:none}
+.stage[data-dir="b"] .prova.prox .prox-tag{display:inline-flex;background:var(--cor-acao);color:var(--cor-sobre-acao);height:22px;padding:0 10px;border-radius:var(--raio-pilula);font:var(--ui-tecla);align-items:center}
+.prova .quando{white-space:nowrap}.prova .prox-tag{margin-left:auto;align-self:center}
+.hub-baixo{flex:1;min-height:0;display:grid;grid-template-columns:1fr 1.31fr 1fr;gap:var(--vao-mosaico)}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);grid-auto-rows:50px;row-gap:2px;margin-top:2px}
+.cal .dw{font:var(--ui-rotulo);color:var(--cor-texto-2);display:grid;place-items:center;height:28px}
+.cal .d{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font:600 15px/18px var(--fonte-interface);color:var(--cor-texto)}
+.cal .d.fora{color:var(--cor-texto-2);font-weight:500}
+.cal .d.prv{font-weight:800}
+.cal .d .dot{width:8px;height:8px}
+.cal .d .dot.nada{background:transparent}
+.cal .d.hoje span{width:52px;height:36px;border-radius:var(--raio-pilula);display:grid;place-items:center;background:var(--cor-acao);color:var(--cor-sobre-acao);font-weight:700}
+.cal .d.hoje{gap:0}
+.linhas{display:flex;flex-direction:column;gap:4px;min-height:0;overflow:hidden}
+.aula{height:64px;border-radius:var(--raio-item);display:grid;grid-template-columns:100px 1fr auto;align-items:center;gap:8px;padding:0 12px 0 12px;flex:none}
+.aula .h{font:var(--ui-apoio);color:var(--cor-texto-2)}
+.aula .m{font:var(--voz-item);text-transform:uppercase;white-space:nowrap}
+.aula .s{font:var(--ui-apoio);color:var(--cor-texto-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.aula .dir{display:flex;gap:8px;align-items:center}
+.agora{display:inline-flex;align-items:center;height:22px;padding:0 9px;border-radius:var(--raio-pilula);background:var(--cor-destaque);color:var(--cor-tinta);font:var(--ui-tecla);letter-spacing:.04em;text-transform:uppercase}
+.lemb{display:flex;gap:12px;align-items:flex-start;padding:10px 0;font:var(--leitura-texto)}
+.lemb .ck{width:40px;height:24px;border-radius:var(--raio-pilula);border:2px solid var(--cor-texto-2);flex:none;margin-top:-1px}
+
+/* Mesa */
+.mesa{flex:1;min-height:0;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:418px 1fr;gap:var(--vao-mosaico)}
+.mesa .anot{grid-row:1/3;grid-column:2}
+.vazio-c{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;font:var(--ui-item);color:var(--cor-texto-2)}
+.nota h3.t1{font:var(--nota-t1);color:var(--cor-nota-titulo);margin:4px 0 8px}
+.nota h3.t2{font:var(--nota-t2);margin:12px 0 6px}
+.nota p{font:var(--leitura-texto);margin-bottom:8px}
+.nota ul{margin:0 0 8px;padding-left:22px;font:var(--leitura-texto)}
+.nota li{margin-bottom:6px}
+.mk{background:var(--cor-escolhido);font-style:italic;border-radius:6px;padding:0 4px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.abas{display:inline-flex;gap:4px;background:var(--cor-cartao-2);border-radius:var(--raio-pilula);padding:4px;height:44px;margin-left:auto}
+.abas span{display:inline-flex;align-items:center;padding:0 16px;border-radius:var(--raio-pilula);font:var(--ui-botao);color:var(--cor-texto-2)}
+.abas span.on{background:var(--cor-cartao);color:var(--cor-texto)}
+.cartoes-corpo{flex:1;min-height:0;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.editor{background:var(--cor-cartao-2);border-radius:var(--raio-item);padding:12px 14px;font:var(--leitura-campo);white-space:pre-line;color:var(--cor-texto)}
+.previa-vazia{font:var(--leitura-campo);color:var(--cor-texto-2);padding:12px 0}
+.rodape-c{display:flex;align-items:center;gap:16px;margin-top:8px;flex:none}
+.rodape-c .dica-c{flex:1;min-width:0;font:var(--leitura-compacta);color:var(--cor-texto-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* Acervo */
+.regua{display:flex;gap:8px;align-items:stretch;height:76px;flex:none}
+.regua .faixa{flex:1;min-width:0;display:flex;gap:8px;align-items:center;padding:8px 10px;border-radius:var(--raio-bloco)}
+.chip{height:56px;border-radius:var(--raio-item);padding:0 16px;display:flex;flex-direction:column;justify-content:center;background:var(--cor-cartao-2);color:var(--cor-texto);flex:none}
+.chip b{font:var(--voz-mini)}
+.chip small{font:var(--ui-apoio);font-size:12.5px;color:var(--cor-texto-2);line-height:16px}
+.chip.on{background:var(--cor-acao);color:var(--cor-sobre-acao)}
+.chip.on small{color:var(--cor-sobre-acao);opacity:.85}
+.chip.novo{border:2px dashed var(--cor-texto-2);background:transparent;font:var(--ui-botao);color:var(--cor-texto-2);flex-direction:row;align-items:center;gap:6px}
+.busca{width:380px;border-radius:var(--raio-bloco);display:flex;align-items:center;justify-content:space-between;padding:0 18px;color:var(--cor-texto-2);font:var(--ui-item);flex:none}
+.grade{flex:1;min-height:0;border:var(--borda-bloco) solid transparent;border-radius:var(--raio-bloco);padding:6px;display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:1fr 1fr;gap:var(--vao-mosaico)}
+.grade.ativo{border-color:var(--cor-cursor)}
+.mat{border-radius:var(--raio-bloco);background:var(--cor-cartao);padding:18px 20px 18px;display:flex;flex-direction:column;justify-content:space-between;min-width:0;min-height:0;overflow:hidden}
+.mat .topo{display:flex;justify-content:space-between;align-items:flex-start}
+.mat .n{font:var(--voz-numero);display:flex;align-items:baseline;gap:8px;margin-top:auto}
+.mat .n small{font:var(--ui-botao);color:var(--cor-texto-2)}
+.mat .nome{font:var(--voz-titulo);text-transform:uppercase;margin-top:8px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.mat .ult{font:var(--ui-apoio);color:var(--cor-texto-2);margin-top:4px}
+
+/* Treino */
+.treino-chips{display:flex;gap:8px;padding:8px 10px;overflow:hidden;flex:none;border-radius:var(--raio-bloco)}
+.treino-chips .chip{width:128px;flex:none;padding:0 14px}
+.treino-chips .chip .l{display:flex;align-items:center;gap:8px}
+.treino{flex:1;min-height:0;display:grid;grid-template-columns:1fr 420px;gap:var(--vao-mosaico)}
+.lin{height:60px;display:flex;align-items:center;gap:14px;padding:0 14px;border-radius:var(--raio-item);flex:none}
+.lin .t{font:var(--voz-mini);flex:1}
+.lin .c{font:var(--ui-apoio);color:var(--cor-texto-2)}
+.cx{width:28px;height:28px;border-radius:8px;border:2px solid var(--cor-texto-2);display:grid;place-items:center;flex:none}
+.cx.on{background:var(--cor-acao);border-color:var(--cor-acao);color:var(--cor-sobre-acao)}
+.cx svg.i{width:18px;height:18px;stroke-width:3}
+
+/* Agenda */
+.ag-barra{height:76px;flex:none;border-radius:var(--raio-bloco);display:flex;align-items:center;gap:8px;padding:0 10px}
+.ag-barra .esp{flex:1}
+.ag-corpo{flex:1;min-height:0;display:grid;grid-template-columns:1fr 340px;gap:var(--vao-mosaico)}
+.semana{padding:12px 12px 8px 8px}
+.sem-grade{flex:1;min-height:0;display:grid;grid-template-columns:44px repeat(7,1fr);column-gap:6px}
+.sem-dia{display:flex;flex-direction:column;min-width:0}
+.sem-dia .cabd{height:56px;flex:none;display:flex;flex-direction:column;align-items:center;justify-content:center;font:var(--ui-rotulo);letter-spacing:.06em;color:var(--cor-texto-2);gap:2px}
+.sem-dia .cabd b{font:var(--voz-mini);letter-spacing:0;color:var(--cor-texto);min-width:34px;height:26px;display:grid;place-items:center;border-radius:var(--raio-pilula)}
+.sem-dia .cabd b.hj{background:var(--cor-acao);color:var(--cor-sobre-acao)}
+.sem-col{position:relative;flex:1;background:var(--cor-cartao-2);border-radius:var(--raio-item)}
+.horas{position:relative}
+.horas span{position:absolute;right:4px;transform:translateY(-50%);font:var(--ui-rotulo);color:var(--cor-texto-2)}
+.ev{position:absolute;left:4px;right:4px;border-radius:14px;background:var(--cor-cartao);padding:3px 8px;overflow:hidden;display:flex;flex-direction:column;gap:1px}
+.ev .l1{display:flex;align-items:center;gap:6px;font:700 13px/22px var(--fonte-interface)}
+.ev .l2{font:var(--ui-apoio);color:var(--cor-texto-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:12.5px;line-height:16px}
+.ev .sig{height:22px;min-width:0;padding:0 8px;font-size:12px}
+.ev.sel{background:var(--cor-escolhido)}
+.ev.sel .l2{color:var(--cor-texto)}
+.ag-dir{display:flex;flex-direction:column;gap:var(--vao-mosaico);min-height:0}
+.prev h2{font:800 28px/32px var(--fonte-voz);margin:10px 0 6px}
+.prev .meta{font:var(--ui-apoio);color:var(--cor-texto-2);line-height:22px}
+.prev .btn{margin-top:auto;align-self:flex-start}
+.fil{display:flex;flex-wrap:wrap;gap:8px}
+.fil .pil{height:44px;padding:0 14px;background:var(--cor-cartao-2);color:var(--cor-texto)}
+.fil .pil.on{background:var(--cor-acao);color:var(--cor-sobre-acao)}
+.compl{display:flex;align-items:center;gap:10px;height:56px;padding:0 4px;font:var(--ui-botao)}
+.compl .f{margin-left:auto;font:var(--ui-apoio);color:var(--cor-texto-2)}
+
+/* Faltas */
+.falt{flex:1;min-height:0;display:grid;grid-template-columns:292px 1fr 340px;gap:var(--vao-mosaico)}
+.fm{height:56px;display:flex;align-items:center;gap:10px;padding:0 10px;border-radius:var(--raio-item);flex:none}
+.fm .s{font:var(--ui-sigla);width:34px;color:var(--cor-texto)}
+.fm .nm{font:var(--ui-item);flex:1;min-width:0;line-height:17px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.fm .pc{font:var(--ui-item);color:var(--cor-texto-2);flex:none}
+.fa{height:56px;display:flex;align-items:center;gap:16px;padding:0 14px;border-radius:var(--raio-item);flex:none}
+.fa .hr{font:var(--ui-item);color:var(--cor-texto-2);width:34px}
+.fa .dt{font:var(--ui-item);flex:1}
+.fa .st{font:var(--ui-item);display:flex;align-items:center;gap:6px}
+.fa .st.n{color:var(--cor-texto-2);font-weight:500}
+.kv{display:flex;justify-content:space-between;padding:5px 0;font:var(--ui-apoio);color:var(--cor-texto-2)}
+.kv b{color:var(--cor-texto);font-weight:700}
+.res-g{font:var(--voz-numero-mini);margin:4px 0 6px}
+.ok{display:flex;align-items:center;gap:8px;font:var(--ui-botao);margin-top:14px}
+.ok-t{font:var(--leitura-compacta);color:var(--cor-texto-2);margin-top:4px}
+
+/* Notas */
+.cofre{flex:1;min-height:0}
+.cofre p{font:var(--leitura-texto);max-width:60ch;margin-bottom:12px}
+.cofre .lin{width:480px}
+/* Notas v2 · menos poluída */
+.nb{flex:1;min-height:0;display:grid;grid-template-columns:104px minmax(0,1fr) 300px;gap:var(--vao-mosaico)}
+.nb.geral{grid-template-columns:minmax(0,1fr)}
+.nb-rail{padding:8px;gap:4px;display:flex;flex-direction:column;overflow:hidden}
+.nb-r{height:84px;border-radius:var(--raio-item);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;cursor:pointer;flex:none}
+.nb-r .v{font:800 16px/18px var(--fonte-voz);color:var(--cor-texto)}
+.nb-c{display:flex;flex-direction:column;gap:var(--vao-mosaico);min-height:0;min-width:0}
+.nb-res{padding:20px 26px 22px;flex:none}
+.nb-id{display:flex;align-items:center;gap:16px}
+.nb-id h2{font:800 32px/36px var(--fonte-voz);letter-spacing:-.01em}
+.nb-st{display:flex;align-items:center;gap:6px;font:var(--ui-item);color:var(--cor-texto-2);margin-top:2px}
+.nb-st svg.i{width:18px;height:18px}
+.nb-media{margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;gap:0}
+.nb-media b{font:800 60px/58px var(--fonte-voz);letter-spacing:-.02em}
+.nb-tira{display:flex;gap:44px;margin-top:22px}
+.nb-tira .g{display:flex;flex-direction:column;gap:10px}
+.nb-tira .row{display:flex;gap:6px}
+.nb-tira .c{width:78px;display:flex;flex-direction:column;align-items:center;gap:0;text-align:center}
+.nb-tira .l{font:var(--ui-rotulo);color:var(--cor-texto-2);text-transform:uppercase;letter-spacing:.05em}
+.nb-tira .sb{font:var(--ui-apoio);font-size:12.5px;color:var(--cor-texto-2);margin-bottom:6px}
+.nb-tira .vl{font:800 28px/30px var(--fonte-voz);min-width:64px;height:44px;display:grid;place-items:center;border-radius:var(--raio-pilula);padding:0 12px}
+.nb-tira .tot .vl{background:var(--cor-cartao-2)}
+.nb-tira .aberto .vl{box-shadow:inset 0 0 0 2px var(--cor-texto-2);border-radius:var(--raio-pilula);color:var(--cor-texto-2)}
+.nb-tira .nada .vl{color:var(--cor-texto-2);font-weight:700}
+.nb-bim{flex:1;padding:20px 26px 22px}
+.nb-bh{display:flex;align-items:center;gap:14px;margin-bottom:10px;flex:none}
+.nb-bh h3{font:800 24px/28px var(--fonte-voz)}
+.nb-soma{margin-right:auto;display:inline-flex;align-items:baseline;gap:6px;font:800 18px/22px var(--fonte-voz);background:var(--cor-cartao-2);border-radius:var(--raio-pilula);padding:6px 14px}
+.nb-soma small{font:var(--ui-apoio);color:var(--cor-texto-2);font-weight:500}
+.nb-t{grid-template-columns:minmax(0,1fr) 90px 160px}
+.nb-t.tab-r{height:56px}
+.nb-t .n{font:var(--voz-mini)}
+.nb-bim .inp{width:128px;height:44px;border-radius:var(--raio-pilula);text-align:center;padding:0 16px;background:var(--cor-cartao-2);font:800 17px/20px var(--fonte-voz)}
+.nb-bim .inp.pend{background:transparent;box-shadow:inset 0 0 0 2px var(--cor-texto-2);font:700 15px/20px var(--fonte-interface)}
+.nb-bim .inp.pend::placeholder{color:var(--cor-texto-2)}
+.nb-pre{padding:22px 24px;gap:0}
+.nb-meta{display:flex;align-items:center;gap:12px;margin:6px 0 18px}
+.nb-meta b{font:800 28px/32px var(--fonte-voz);min-width:56px;text-align:center}
+.nb-meta .rot{margin-right:auto}
+.nb-p{display:flex;flex-direction:column;padding:12px 0}
+.nb-p .l{font:var(--ui-item);color:var(--cor-texto-2)}
+.nb-p b{font:800 48px/52px var(--fonte-voz);letter-spacing:-.02em}
+.nb-p .s{font:var(--ui-apoio);color:var(--cor-texto-2)}
+.nb-p.dest{background:var(--cor-cartao-2);border-radius:var(--raio-item);padding:16px 18px;margin-top:6px}
+.nb-p.dest b{font-size:60px;line-height:62px}
+.nb-p.dest .l{color:var(--cor-texto);font-weight:700}
+.nb-g{padding:20px 26px 22px}
+.tab-gg{grid-template-columns:48px minmax(0,1fr) 90px 90px 110px 150px 170px}
+.tab-gg .r{text-align:right;justify-self:end}
+.tab-gg.tab-r{height:54px}
+
+/* Notas (desbloqueadas) */
+.nt{flex:1;min-height:0;display:grid;grid-template-columns:340px 1fr;gap:var(--vao-mosaico)}
+.nl{height:56px;display:flex;align-items:center;gap:12px;padding:0 12px;border-radius:var(--raio-item);flex:none;cursor:pointer}
+.nl .nm{flex:1;min-width:0;font:var(--ui-item);line-height:17px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.nl .md{font:800 17px/20px var(--fonte-voz);flex:none}
+.nl.geral{height:72px}
+.nl.geral .nm{font:var(--voz-mini)}
+.nl.geral .md{font:var(--voz-item)}
+.nl .gl{width:40px;height:40px;border-radius:var(--raio-pilula);background:var(--cor-acao);color:var(--cor-sobre-acao);display:grid;place-items:center;flex:none}
+.stage[data-dir="a"] .nl .gl{border-radius:var(--raio-campo)}
+.nt-rot{margin:12px 0 6px 12px;flex:none}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;flex:none;margin-bottom:10px}
+.stat{background:var(--cor-cartao-2);border-radius:var(--raio-item);padding:12px 16px}
+.stat .v{font:var(--voz-numero-mini);display:flex;align-items:baseline;gap:8px}
+.stat .v small{font:var(--ui-botao);color:var(--cor-texto-2)}
+.stat .l{font:var(--ui-apoio);color:var(--cor-texto-2);margin-top:6px}
+.tab-h,.tab-r{display:grid;align-items:center;column-gap:12px}
+.tab-h{height:28px;padding:0 10px;font:var(--ui-rotulo);letter-spacing:.06em;text-transform:uppercase;color:var(--cor-texto-2);flex:none}
+.tab-r{height:44px;padding:0 10px;border-radius:var(--raio-item);flex:none}
+.tab-r.cl{cursor:pointer}
+.tab-g{grid-template-columns:40px minmax(0,1fr) 84px 160px 210px}
+.tab-d{grid-template-columns:minmax(0,1fr) 80px 120px 90px}
+.tab-r .n{font:var(--ui-item)}
+.tab-r .n.m{font:var(--voz-mini)}
+.tab-r .c{font:var(--ui-item);color:var(--cor-texto-2)}
+.sit{display:flex;align-items:center;gap:8px;font:var(--ui-item)}
+.sit svg.i{width:18px;height:18px}
+.sit.n{color:var(--cor-texto-2);font-weight:500}
+.tab-h .r,.tab-r .r{text-align:right;justify-self:end}
+.inp{width:96px;height:36px;border-radius:12px;background:transparent;text-align:right;padding:0 12px;font:var(--ui-item);color:var(--cor-texto);border:0;outline:none;font-variant-numeric:tabular-nums}
+.inp.pend{background:var(--cor-cartao-2)}
+.inp::placeholder{color:var(--cor-texto-2)}
+.inp:focus{outline:var(--anel-traco) solid var(--cor-foco);outline-offset:0}
+.disc-h{display:flex;align-items:center;gap:14px;margin-bottom:12px;flex:none}
+.disc-h h2{font:800 28px/32px var(--fonte-voz);letter-spacing:-.01em}
+.disc-h .sub{font:var(--ui-apoio);color:var(--cor-texto-2)}
+.rolagem{display:flex;flex-direction:column;gap:2px;min-height:0;overflow:auto}
+.nota-rod{margin-top:auto;padding-top:10px;font:var(--leitura-compacta);color:var(--cor-texto-2);flex:none}
+.pil .peq{font:var(--ui-apoio);color:var(--cor-texto-2);font-weight:500}
+
+/* ===== Hub novo: layout e foco do app; vocabulário de forma da identidade (data-dir a = Papel Frio, b = Ardósia) ===== */
+.stage{--cor-contorno-foco:color-mix(in srgb,var(--cor-cursor) 70%,var(--cor-cartao))}
+.stage .bloco{border:0;padding:var(--bloco-pad-y) var(--bloco-pad-x)}
+.stage .bloco.ativo{border:0}
+/* foco no nível bloco: contorno de 4px por dentro (D105); dentro do bloco: borda de 2px e o item com 2px (D109) */
+.stage .bloco[data-foco='bloco']{box-shadow:inset 0 0 0 4px var(--cor-contorno-foco)}
+.stage .bloco[data-foco='dentro']{box-shadow:inset 0 0 0 2px var(--cor-cursor)}
+
+.stage .num.foco-topo{box-shadow:inset 0 0 0 2px var(--cor-cartao)}
+
+/* Provas: peça por dia. Faixa neutra; acende na cor de foco (D106) */
+.stage .provas{height:196px;display:grid;grid-auto-flow:column;grid-auto-columns:minmax(220px,1fr);gap:var(--vao-mosaico);flex:none}
+.stage .prova{padding:0;background:transparent;border-radius:var(--raio-bloco);display:grid;min-width:0;text-align:left}
+.stage .prova .cartao{display:grid;grid-template-rows:auto 1fr;border-radius:var(--raio-bloco);overflow:hidden;background:var(--cor-cartao);color:var(--cor-texto);min-width:0}
+.stage .faixa{display:flex;align-items:center;justify-content:space-between;height:46px;padding:0 var(--e4);font:var(--ui-rotulo);letter-spacing:.06em;text-transform:uppercase;background:var(--faixa-bg);color:var(--faixa-fg)}
+.stage .faixa .prazo{letter-spacing:0;text-transform:none}
+.stage .provas[data-foco='bloco'] .faixa,.stage .provas[data-foco='dentro'] .prova[data-sel='true'] .faixa{background:var(--cor-cursor);color:var(--cor-sobre-acao)}
+.stage .provas[data-foco='dentro'] .prova[data-sel='true'] .cartao{box-shadow:inset 0 0 0 2px var(--cor-cursor)}
+.stage .corpoP{display:flex;flex-direction:column;justify-content:space-between;padding:var(--e3) var(--e4) var(--e4)}
+.stage .linha-dia{display:flex;align-items:center;gap:var(--e2)}
+.stage .linha-dia .n{font:var(--voz-numero);letter-spacing:-.03em;line-height:56px}
+.stage .pt{margin-left:auto;display:inline-flex;align-items:center;height:22px;padding:0 10px;border-radius:var(--raio-pilula);background:var(--cor-cartao-2);color:var(--cor-texto-2);font:var(--ui-tecla);letter-spacing:.08em}
+.stage .vagas{display:flex;gap:5px;min-height:26px}
+.stage .vaga{min-width:46px;height:26px}
+.stage .sig.mais{background:var(--cor-cartao-2);color:var(--cor-texto-2)}
+
+/* Ardósia: camadas de cinza, sem contorno, monograma redondo, grafite na ação */
+.stage[data-dir='b']{--faixa-bg:var(--cor-cartao-2);--faixa-fg:var(--cor-texto-2)}
+/* Papel Frio: folha com fio de 1px, monograma quadrado, uma tinta azul; o dia mais próximo leva o número na tinta */
+.stage[data-dir='a']{--faixa-bg:color-mix(in srgb,var(--cor-cursor) 14%,var(--cor-cartao));--faixa-fg:var(--cor-texto-2)}
+.stage[data-dir='a'] .prova .cartao{box-shadow:0 0 0 1px var(--cor-cartao-2)}
+.stage[data-dir='a'] .prova:first-child .n{color:var(--cor-cursor)}
+.stage[data-dir='a'] .provas[data-foco='dentro'] .prova[data-sel='true'] .cartao{box-shadow:inset 0 0 0 2px var(--cor-cursor)}
+
+/* Agenda de hoje: um dia da tela Agenda (eixo de horas, aulas pela duração, linha da hora atual) */
+.stage .dia{position:relative;flex:1;min-height:0;margin-top:var(--e1)}
+.stage .eixo{position:absolute;left:0;width:44px;font:var(--ui-tecla);color:var(--cor-texto-2);font-variant-numeric:tabular-nums;transform:translateY(-50%)}
+.stage .lugar{position:absolute;left:52px;right:0;top:calc(100% / 9 * var(--ini));height:calc(100% / 9 * var(--dur));padding:2px 0}
+.stage .aula{display:flex;flex-direction:column;justify-content:center;gap:2px;width:100%;height:100%;padding:0 var(--e3);overflow:hidden;border-radius:var(--raio-item);background:var(--cor-cartao-2);color:var(--cor-texto)}
+.stage .aula{text-align:left;align-items:stretch}
+.stage .aula.agora-a{justify-content:flex-end;padding-bottom:var(--e2)}
+.stage .aula .linha{display:flex;align-items:center;gap:var(--e2);min-width:0}
+.stage .aula .hora{margin-left:auto;font:var(--ui-tecla);font-variant-numeric:tabular-nums;color:var(--cor-texto-2);white-space:nowrap}
+.stage .aula .tit{font:var(--ui-item);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.stage .aula .sub{font:var(--ui-apoio);color:var(--cor-texto-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.stage .aula.passou{opacity:.62}
+.stage .aula.agora-a{background:var(--cor-materia);color:var(--cor-tinta)}
+.stage .aula.agora-a .sig{background:var(--cor-tinta);color:var(--cor-sobre-tinta)}
+.stage .aula.agora-a .hora,.stage .aula.agora-a .sub{color:var(--cor-tinta)}
+.stage .aula.foco-item{box-shadow:inset 0 0 0 2px var(--cor-contorno-foco)}
+.stage .aula.agora-a.foco-item{box-shadow:inset 0 0 0 3px var(--cor-tinta)}
+.stage .agora-linha{position:absolute;left:0;right:0;top:calc(100% / 9 * var(--ini));height:3px;margin-top:-1px;border-radius:var(--raio-pilula);background:var(--cor-texto);z-index:3;pointer-events:none}
+.stage .agora-hora{position:absolute;left:0;top:calc(100% / 9 * var(--ini));transform:translateY(-50%);z-index:4;display:inline-flex;align-items:center;height:22px;padding:0 9px;border-radius:var(--raio-pilula);background:var(--cor-acao);color:var(--cor-sobre-acao);font:var(--ui-tecla);font-variant-numeric:tabular-nums}
+
+/* Marca da matéria sem pílula: ponto + sigla em texto (M1); na agenda, monograma ao lado do texto (M2) */
+.stage .ms{display:inline-flex;align-items:center;gap:6px;min-width:46px;font:var(--ui-sigla);color:var(--cor-texto);white-space:nowrap}
+.stage .ms .pt-m{width:20px;height:10px;border-radius:var(--raio-pilula);background:var(--cor-materia);flex:none}
+.stage[data-tema='claro'] .ms .pt-m{box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--cor-tinta) 22%,transparent)}
+.stage .ms.mais{color:var(--cor-texto-2);min-width:0;padding-left:2px}
+.stage .aula.agora-a .ms{color:var(--cor-tinta)}
+.stage .aula.agora-a .ms .pt-m{background:var(--cor-tinta);box-shadow:none}
+.stage .aula.m2{flex-direction:row;align-items:center;gap:var(--e3);padding:0 var(--e3) 0 var(--e2)}
+.stage .aula.m2 .col{display:flex;flex-direction:column;min-width:0;flex:1;gap:1px}
+.stage .aula.m2 .hora{margin-left:0}
+.stage .aula.m2 .mono.m{width:36px;height:36px;font-size:11.5px}
+.stage .aula.m2.agora-a{align-items:flex-end;padding-bottom:var(--e2)}
+.stage .aula.agora-a.m2 .mono{background:var(--cor-tinta);color:var(--cor-sobre-tinta)}
+
+/* Monograma em pílula (nada de círculo): a sigla na forma da pílula do app */
+.stage .mono.m,.stage[data-dir='a'] .mono.m,.stage[data-dir='b'] .mono.m{width:auto;min-width:54px;height:28px;padding:0 12px;border-radius:var(--raio-pilula);font:var(--ui-sigla)}
+/* Moldura da bancada */
+body{margin:0;background:#888;font:500 14px/20px Inter,system-ui,sans-serif}
+.barra-lab{position:sticky;top:0;z-index:5;display:flex;gap:8px;padding:8px 12px;background:#222;color:#fff;align-items:center}
+.barra-lab button{all:unset;cursor:pointer;padding:6px 14px;border-radius:999px;background:#444;font-weight:600}
+.barra-lab button[aria-pressed="true"]{background:#fff;color:#111}
+.cena{position:relative;overflow:hidden;margin:12px auto;max-width:1280px;width:100%}
+.stage{position:absolute;left:0;top:0;transform-origin:0 0}
+
+/* ===== Giz A (identidade fiel às referências Descomplica) ===== */
+.stage[data-dir='g']{--cor-tinta:#000;--cor-materia-0:#fcc5c5;--cor-destaque:#dcc9fb;--cor-materia-2:#a9d5fb;--cor-materia-3:#b3f5dd;--cor-materia-4:#f9c6ec;--cor-materia-5:#fde9a8;--cor-materia-6:#b3f5dd;--cor-materia-7:#e3e3e3;
+  --acao:#00e58b;--raio-bloco:14px;--raio-item:10px;--raio-botao:8px;--raio-campo:10px;--faixa-bg:#f0f0ec;--faixa-fg:#5c5c5c}
+.stage[data-dir='g'][data-tema='claro']{--cor-fundo:#f4f4f1;--cor-cartao:#fff;--cor-cartao-2:#ecece8;--cor-texto:#000;--cor-texto-2:#5c5c5c;--linha:#dcdcd8;
+  --cor-acao:#000;--cor-sobre-acao:#fff;--cor-escolhido:#d4f7e6;--cor-foco:#000;--cor-cursor:#00a566;--cor-nota-titulo:#000;color-scheme:light}
+.stage[data-dir='g'][data-tema='escuro']{--cor-fundo:#121212;--cor-cartao:#1e1e1e;--cor-cartao-2:#2a2a2a;--cor-texto:#fff;--cor-texto-2:#a3a3a3;--linha:#333;
+  --cor-acao:#fff;--cor-sobre-acao:#000;--cor-escolhido:#17402f;--cor-foco:#fff;--cor-cursor:#00e58b;--cor-nota-titulo:#fff;--faixa-bg:#2a2a2a;--faixa-fg:#a3a3a3;color-scheme:dark}
+.stage[data-dir='g'] .bloco.peca{border:1px solid var(--linha)}
+.stage[data-dir='g'] .prova .cartao{box-shadow:0 0 0 1px var(--linha)}
+.stage[data-dir='g'] .btn{background:var(--acao);color:#000;font-weight:700}
+.stage[data-dir='g'] .btn.sec{background:var(--cor-cartao-2);color:var(--cor-texto)}
+.stage[data-dir='g'] .ms{background:var(--cor-materia);color:#000;border-radius:4px;padding:1px 7px;min-width:0;text-transform:uppercase;font:500 12px/18px var(--fonte-interface);letter-spacing:.2px}
+.stage[data-dir='g'] .ms .pt-m{display:none}
+.stage[data-dir='g'] .ms.mais{background:var(--cor-cartao-2);color:var(--cor-texto-2)}
+.stage[data-dir='g'] .aula.agora-a .ms{color:#000}
+.stage[data-dir='g'] .stage .mono.m,.stage[data-dir='g'] .mono.m,.stage[data-dir='g'] .sig{border-radius:4px;text-transform:uppercase}
+.stage[data-dir='g'] .provas .prova:first-child .cartao{background:#000;color:#fff;box-shadow:none}
+.stage[data-dir='g'] .provas .prova:first-child .faixa{background:#1f1f1f;color:#bbb}
+.stage[data-dir='g'] .provas .prova:first-child .n{color:var(--acao)}
+.stage[data-dir='g'] .provas .prova:first-child .pt{background:#2a2a2a;color:#ddd}
+.stage[data-dir='g'] .provas .prova:first-child .ms{background:#2a2a2a;color:#fff}
+.stage[data-dir='g'] .provas[data-foco='bloco'] .faixa,.stage[data-dir='g'] .provas[data-foco='dentro'] .prova[data-sel='true'] .faixa{background:var(--cor-cursor);color:#000}
+.stage[data-dir='g'] .agora{background:var(--acao);color:#000}
+    </style>
+  </head>
+  <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-dots" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="12" cy="19" r="1.4"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 4l9 16H3z"/><path d="M12 10v4.5M12 17.5v.01"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="3"/><path d="M8 11V8a4 4 0 018 0v3"/></symbol>
+  <symbol id="i-left" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></symbol>
+  <symbol id="i-chl" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></symbol>
+  <symbol id="i-chr" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+  <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></symbol>
+  <symbol id="i-unlock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="3"/><path d="M8 11V8a4 4 0 0 1 7.5-2"/></symbol>
+</svg>
+    <div class="barra-lab" id="bl"></div>
+    <div id="palcos"></div>
+    <script type="module">
+      import '../src/ui/styles/fonts.css';
+      const P = new URLSearchParams(location.search);
+      const st = { tema: P.get('tema') ?? 'claro', dir: P.get('dir') ?? 'g', foco: P.get('foco') ?? 'provas', marca: P.get('marca') ?? 'm1' };
+      const T = {};
+      const MAT = {GEN:{n:'Genética',m:0},IMU:{n:'Imunologia',m:1},PRO:{n:'Propedêutica',m:2},APS:{n:'Atenção Primária',m:3},FAR:{n:'Farmacologia',m:4},FIS:{n:'Fisiologia',m:5},PAT:{n:'Patologia Geral e Bases Moleculares da Doença',m:6},BIO:{n:'Bioética',m:7}};
+const ic = (n,c)=>`<svg class="i ${c||''}" aria-hidden="true"><use href="#i-${n}"/></svg>`;
+const sig = s=>`<span class="sig" data-materia="${MAT[s].m}">${s}</span>`;
+const mono = (s,t)=>`<span class="mono ${t||'g'}" data-materia="${MAT[s].m}">${s}</span>`;
+const dot = s=>`<span class="dot" data-materia="${MAT[s].m}"></span>`;
+const tec = t=>`<span class="tecla">${t}</span>`;
+const dots = `<span class="dots">${ic('dots')}</span>`;
+
+function barra(at,titulo,opts){
+  opts=opts||{};
+  let nums='';for(let i=1;i<=6;i++)nums+=`<span class="num ${i===at?'at':''}">${i}</span>`;
+  const voltar = opts.voltar?`<span class="pil">${ic('left')} Agenda ${tec('Esc')}</span>`:'';
+  return `<div class="barra">${nums}<h1 class="tit">${titulo}</h1>${opts.meio||''}<div class="fim">${opts.antes||''}${voltar}<span class="pil">Faltas</span><span class="pil">Notas</span><span class="pil redondo" aria-label="Ajuda">?</span></div></div>`;
+}
+
+
+      const PROVAS = [
+        ['DOM · NOV', '15', 7, ['GEN'], ''],
+        ['QUI · NOV', '19', 11, ['IMU', 'PRO'], 'T'],
+        ['DOM · NOV', '22', 14, ['FAR', 'APS', 'PAT'], 'A'],
+        ['SÁB · NOV', '28', 20, ['APS', 'FAR', 'PRO', 'FIS', 'PAT', 'GEN', 'BIO'], ''],
+        ['QUI · DEZ', '03', 25, ['FAR', 'GEN'], 'T A'],
+      ];
+      const ms = (c) => `<span class="ms" data-materia="${MAT[c].m}"><i class="pt-m"></i>${c}</span>`;
+      const vagas = (l) => {
+        const v = l.length > 4 ? [...l.slice(0, 3), '+' + (l.length - 3)] : l;
+        return `<div class="vagas">${[0, 1, 2, 3].map((k) => (v[k] === undefined ? '<span class="vaga"></span>' : v[k].startsWith('+') ? `<span class="ms mais">${v[k]}</span>` : ms(v[k]))).join('')}</div>`;
+      };
+      const tipo = (t) => (t ? `<span class="pt" title="Trabalho ou apresentação">${t}</span>` : '');
+      const cartao = (p, i) => `<div class="prova" data-sel="${i === 1}"><div class="cartao">
+        <div class="faixa"><span>${p[0]}</span><span class="prazo">em ${p[2]} d</span></div>
+        <div class="corpoP"><div class="linha-dia"><b class="n">${p[1]}</b>${tipo(p[4])}</div>${vagas(p[3])}</div></div></div>`;
+      const FOCOS = { provas: 'Provas (bloco)', prova: 'Provas (dentro)', agenda: 'Agenda (bloco)', item: 'Agenda (dentro)', topo: 'Menu', nenhum: 'Sem foco' };
+      const hub = () => {
+        const f = st.foco;
+        const pf = { 15: 'GEN', 19: 'IMU', 22: 'PRO', 28: 'APS' };
+        let cal = '';
+        ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'].forEach((x) => (cal += `<span class="dw">${x}</span>`));
+        for (let d = 1; d <= 30; d++) {
+          if (d === 8) cal += `<span class="d hoje"><span>8</span></span>`;
+          else cal += `<span class="d ${pf[d] ? 'prv' : ''}">${d}${pf[d] ? dot(pf[d]) : ''}</span>`;
+        }
+        cal += `<span class="d fora">1</span><span class="d fora">2</span><span class="d fora prv" style="color:var(--cor-texto)">3${dot('FAR')}</span><span class="d fora">4</span><span class="d fora">5</span>`;
+        const ag = [[8, 1.5, 'GEN', 'Expressão gênica', '08:00–09:30'], [10, 1, 'APS', 'Territorialização', '10:00–11:00'], [13, 2, 'IMU', 'Resposta inflamatória aguda', '13:00–15:00', 1], [15 + 1 / 6, 1 + 5 / 6, 'PRO', 'Exame do abdome', '15:10–17:00']];
+        const AGORA = 13 + 35 / 60;
+        const aulas = ag.map((a) => {
+          const alta = a[1] >= 1.5;
+          const cls = `aula ${st.marca === 'm2' ? 'm2' : ''} ${a[5] ? 'agora-a' : ''} ${a[0] + a[1] <= AGORA ? 'passou' : ''} ${a[5] && f === 'item' ? 'foco-item' : ''}`;
+          const m2 = st.marca === 'm2';
+          const hora = alta ? a[4] : a[4].slice(0, 5);
+          const textos = alta
+            ? `${a[5] ? '' : `<span class="tit">${MAT[a[2]].n}</span>`}<span class="sub">${a[3]}</span>`
+            : `<span class="tit">${a[3]}</span>`;
+          const corpo = m2
+            ? `<span class="mono m" data-materia="${MAT[a[2]].m}">${a[2]}</span><span class="col">${textos}</span><span class="hora">${hora}</span>`
+            : alta
+              ? `<span class="linha">${ms(a[2])}<span class="hora">${hora}</span></span>${textos}`
+              : `<span class="linha">${ms(a[2])}${textos}<span class="hora">${hora}</span></span>`;
+          return `<div class="lugar" style="--ini:${a[0] - 8};--dur:${a[1]}" data-materia="${MAT[a[2]].m}"><div class="${cls}">${corpo}</div></div>`;
+        }).join('');
+        const eixo = Array.from({ length: 10 }, (_, i) => `<span class="eixo" style="top:calc(100% / 9 * ${i})">${String(8 + i).padStart(2, '0')}h</span>`).join('');
+        const dia = `<div class="dia">${eixo}${aulas}<span class="agora-linha" style="--ini:${AGORA - 8}"></span><span class="agora-hora" style="--ini:${AGORA - 8}">13:35</span></div>`;
+        const lembs = ['Levar o jaleco para a Propedêutica.', 'Revisar IL-6 e TNF-α antes da prova de Imunologia.', 'Confirmar a sala do laboratório de Genética.'].map((t) => `<div class="lemb"><span class="ck"></span><span>${t}</span></div>`).join('');
+        const provasFoco = f === 'provas' ? 'bloco' : f === 'prova' ? 'dentro' : '';
+        const agendaFoco = f === 'agenda' ? 'bloco' : f === 'item' ? 'dentro' : '';
+        return `<div class="tela">${barra(1, 'Domingo, 8 de novembro').replace('class="num at"', `class="num at ${f === 'topo' ? 'foco-topo' : ''}"`)}
+          <div class="provas" data-foco="${provasFoco}">${PROVAS.map(cartao).join('')}</div>
+          <div class="hub-baixo">
+            <div class="bloco peca"><div class="cab-b"><span class="rot">Novembro<b>2026</b></span>${dots}</div><div class="cal">${cal}</div></div>
+            <div class="bloco peca" data-foco="${agendaFoco}"><div class="cab-b"><span class="rot" style="${agendaFoco ? 'color:var(--cor-cursor)' : ''}">Agenda de hoje<b>4 aulas</b></span>${tec('Enter abre')}${dots}</div>${dia}</div>
+            <div class="bloco peca"><div class="cab-b"><span class="rot">Lembretes</span>${tec('Alt I')}${dots}</div><div class="linhas" style="flex:1">${lembs}</div><span class="btn" style="width:100%">Novo lembrete</span></div>
+          </div></div>`;
+      };
+      T.hub = hub;
+      const DIRS = [['g', 'Giz A'], ['b', 'Ardósia']];
+      function build() {
+        document.getElementById('palcos').innerHTML = `<div class="cena"><div class="stage" data-dir="${st.dir}" data-tema="${st.tema}">${hub()}</div></div>`;
+        document.documentElement.dataset.tema = st.tema;
+        fit();
+        const mk = (k, v, r) => `<button data-k="${k}" data-v="${v}" aria-pressed="${st[k] === v}">${r}</button>`;
+        document.getElementById('bl').innerHTML =
+          DIRS.map((d) => mk('dir', d[0], d[1])).join('') + ' | ' + mk('tema', 'claro', 'Claro') + mk('tema', 'escuro', 'Escuro') + ' | ' +
+          Object.entries(FOCOS).map((e) => mk('foco', e[0], e[1])).join('') + ' | ' + mk('marca', 'm1', 'M1 ponto + sigla') + mk('marca', 'm2', 'M2 monograma na agenda');
+      }
+      function fit() {
+        document.querySelectorAll('.cena').forEach((c) => {
+          const s = c.clientWidth / 1280;
+          c.firstElementChild.style.transform = `scale(${s})`;
+          c.style.height = 800 * s + 'px';
+        });
+      }
+      document.getElementById('bl').addEventListener('click', (e) => {
+        const b = e.target.closest('button');
+        if (!b) return;
+        st[b.dataset.k] = b.dataset.v;
+        build();
+      });
+      addEventListener('resize', fit);
+      new MutationObserver(() => {
+        const t = document.documentElement.dataset.tema;
+        if (t && t !== st.tema) {
+          st.tema = t;
+          build();
+        }
+      }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-tema'] });
+      build();
+    </script>
+  </body>
+</html>

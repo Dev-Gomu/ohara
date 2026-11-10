@@ -127,7 +127,9 @@ test('Treino: escolher uma aula só treina os cartões dela', async ({ page }) =
   await expect(page.getByText(/^0 de 6$/)).toBeVisible();
 });
 
-test('Mesa: Alt T vai às abas dos cartões e as setas e H L trocam entre Novo e Salvos', async ({ page }) => {
+test('Mesa: Alt T vai às abas dos cartões e as setas e H L trocam entre Novo e Salvos', async ({
+  page,
+}) => {
   await page.keyboard.press('Alt+Digit2');
   await page.keyboard.press('Alt+KeyN');
   await expect(bloco(page)).toHaveText('mesa.cards');
@@ -276,13 +278,18 @@ test('Acervo: Alt C alterna entre aulas e cartões', async ({ page }) => {
 });
 
 test('a Paleta abre matéria e aula pelo nome', async ({ page }) => {
+  const primeiro = page.getByTestId('paleta').getByRole('menuitem').first();
   await page.keyboard.press('Alt+KeyP');
+  await expect(page.getByTestId('paleta')).toBeVisible();
   await page.keyboard.type('Farmacocin');
+  await expect(primeiro).toContainText('Farmacocin');
   await page.keyboard.press('Enter');
   await expect(tela(page)).toHaveText('mesa');
   await expect(page.locator('nav h1')).toHaveText('Farmacocinética');
   await page.keyboard.press('Alt+KeyP');
+  await expect(page.getByTestId('paleta')).toBeVisible();
   await page.keyboard.type('Imunologia');
+  await expect(primeiro).toContainText('Imunologia');
   await page.keyboard.press('Enter');
   await expect(bloco(page)).toHaveText('acervo.pastas');
 });

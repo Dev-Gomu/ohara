@@ -1,5 +1,9 @@
 import { daysBetween, longDate } from '../../../core/study/dates';
-import { NavItem } from '../../components/NavItem';
+import { Button } from '../../components/Button';
+import { ListItem } from '../../components/ListItem';
+import { useNavCursor } from '../../components/NavItem';
+import { SubjectPill } from '../../components/Pill';
+import { Preview } from '../../components/Preview';
 import { dispatch } from '../../keyboard/store';
 import { openLesson } from '../../study/navigation';
 import { today } from '../../study/study';
@@ -62,62 +66,62 @@ interface PreviewProps {
   actions: readonly PreviewAction[];
 }
 
+function ActionButton({
+  block,
+  index,
+  action,
+}: {
+  block: string;
+  index: number;
+  action: PreviewAction;
+}) {
+  const cursor = useNavCursor(block, index);
+  return (
+    <Button
+      variant={index === 0 ? 'primary' : 'plain'}
+      cursor={cursor}
+      onPress={action.run}
+      {...(action.keys !== undefined && { shortcut: action.keys })}
+    >
+      {action.label}
+    </Button>
+  );
+}
+
+function detailOf(item: AgendaItem): string {
+  const parts = [KIND_NAMES[item.kind]];
+  if (item.kind !== 'dia') parts.push(when(item));
+  if (countdown(item) !== '') parts.push(countdown(item));
+  return parts.join(' · ');
+}
+
 // Prévia do que está selecionado na semana: troca enquanto o foco anda (diretrizes 2.4).
 export function AgendaPreview({ block, item, dayItems, actions }: PreviewProps) {
   if (item === undefined) return <p className={styles.vazio}>Nada selecionado.</p>;
   const isDay = item.kind === 'dia';
+  const buttons = actions.map((action, index) => (
+    <ActionButton key={action.id} block={block} index={index} action={action} />
+  ));
   return (
-    <div className={styles.previa}>
-      <div className={styles.topo}>
-        {item.subject && (
-          <span className={styles.sigla} data-materia={item.subject.color}>
-            {item.subject.code}
-          </span>
-        )}
-        <span className={styles.tipo}>{KIND_NAMES[item.kind]}</span>
-      </div>
-      <h3 className={styles.titulo}>{isDay ? item.title : (item.subject?.name ?? item.title)}</h3>
-      <div className={styles.dados}>
-        {!isDay && <span>{when(item)}</span>}
-        {!isDay && item.subject && item.title !== '' && <span>{item.title}</span>}
-        {countdown(item) !== '' && <span>{countdown(item)}</span>}
-        {item.virtual && <span>Aula da Grade, ainda sem anotações</span>}
-      </div>
-      {isDay && (
-        <ul className={styles.doDia}>
-          {dayItems.length === 0 && <li className={styles.vazio}>Nada neste dia.</li>}
-          {dayItems.map((entry) => (
-            <li key={entry.id}>
-              <span className={styles.hora}>{entry.start || '—'}</span>
-              {entry.subject && (
-                <span className={styles.sigla} data-materia={entry.subject.color}>
-                  {entry.subject.code}
-                </span>
-              )}
-              <span className={styles.nome}>
-                {entry.kind === 'prova' ? 'Prova' : entry.title || entry.subject?.name}
-              </span>
-            </li>
-          ))}
-        </ul>
-      )}
-      {actions.length > 0 && (
-        <div className={styles.acoes}>
-          {actions.map((action, index) => (
-            <NavItem
-              key={action.id}
-              block={block}
-              index={index}
-              ring="anel"
-              className={index === 0 ? styles.primario : styles.botao}
-              onOpen={action.run}
-            >
-              {action.label}
-              {action.keys && <kbd className={styles.tecla}>{action.keys}</kbd>}
-            </NavItem>
-          ))}
-        </div>
-      )}
-    </div>
+    <Preview
+      title={isDay ? item.title : (item.subject?.name ?? item.title)}
+      detail={detailOf(item)}
+      {...(buttons.length > 0 && { actions: buttons })}
+    >
+      {item.subject && <SubjectPill code={item.subject.code} color={item.subject.color} />}
+      {!isDay && item.subject && item.title !== '' && <p>{item.title}</p>}
+      {item.virtual && <p>Aula da Grade, ainda sem anotações</p>}
+      {isDay && dayItems.length === 0 && <p className={styles.vazio}>Nada neste dia.</p>}
+      {isDay &&
+        dayItems.map((entry) => (
+          <ListItem
+            key={entry.id}
+            time={entry.start || '—'}
+            title={entry.kind === 'prova' ? 'Prova' : entry.title || (entry.subject?.name ?? '')}
+          >
+            {entry.subject && <SubjectPill code={entry.subject.code} color={entry.subject.color} />}
+          </ListItem>
+        ))}
+    </Preview>
   );
 }

@@ -9,7 +9,7 @@
       small { color: var(--cor-texto-2); font: var(--ui-apoio); }
       .item { display: grid; align-content: center; height: 48px; padding: 0 var(--e4); border-radius: var(--raio-pilula); background: var(--cor-cartao-2); font: var(--ui-item); }
       .item small { display: block; }
-      .item[data-sel='true'] { background: var(--cor-marca); }
+      .item[data-sel='true'] { background: var(--cor-escolhido); }
       .foco { outline: 2px solid var(--cor-contorno-foco); outline-offset: -2px; }
       .nova { display: grid; align-content: center; height: 48px; padding: 0 var(--e4); border-radius: var(--raio-pilula); color: var(--cor-texto-2); font: var(--ui-item); }
       /* Hoje */
@@ -17,8 +17,8 @@
       .v-atual .nova { display: flex; align-items: center; }
       .v-atual .nova::before { content: '+\00a0'; }
       /* A: "+ Nova" vira ícone redondo cheio no fim */
-      .v-a .nova { width: 48px; padding: 0; place-items: center; background: var(--cor-botao); color: var(--cor-sobre-botao); font-size: 0; }
-      .v-a .nova::before { content: ''; width: 18px; height: 18px; background: linear-gradient(var(--cor-sobre-botao), var(--cor-sobre-botao)) center / 100% 2px no-repeat, linear-gradient(var(--cor-sobre-botao), var(--cor-sobre-botao)) center / 2px 100% no-repeat; }
+      .v-a .nova { width: 48px; padding: 0; place-items: center; background: var(--cor-acao); color: var(--cor-sobre-acao); font-size: 0; }
+      .v-a .nova::before { content: ''; width: 18px; height: 18px; background: linear-gradient(var(--cor-sobre-acao), var(--cor-sobre-acao)) center / 100% 2px no-repeat, linear-gradient(var(--cor-sobre-acao), var(--cor-sobre-acao)) center / 2px 100% no-repeat; }
       /* N1: pílula tonal igual aos chips, com ícone "+" e o rótulo; sem contagem */
       .v-n1 .nova { display: flex; align-items: center; gap: var(--e2); background: var(--cor-cartao-2); color: var(--cor-texto); }
       /* "+" desenhado (duas barras), não texto: o glifo desalinhava dentro do círculo */

@@ -17,7 +17,7 @@ function lerArgs(lista) {
     teclas: '',
     sel: '',
     temas: 'claro,escuro',
-    paleta: 'a',
+    paleta: '',
     largura: '1280',
     altura: '800',
     escala: '0.5',

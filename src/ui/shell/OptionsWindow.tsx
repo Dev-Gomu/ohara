@@ -1,4 +1,5 @@
 import { Dialog, Menu, MenuItem, Modal, ModalOverlay } from 'react-aria-components';
+import { Key } from '../components/Key';
 import { blockOptions, dispatch, useKeyboardState } from '../keyboard/store';
 import styles from './OptionsWindow.module.css';
 
@@ -35,7 +36,7 @@ export function OptionsWindow() {
             {(option) => (
               <MenuItem className={styles.item} textValue={option.label}>
                 <span>{option.label}</span>
-                {option.keys !== undefined && <kbd className={styles.tecla}>{option.keys}</kbd>}
+                {option.keys !== undefined && <Key>{option.keys}</Key>}
               </MenuItem>
             )}
           </Menu>

@@ -1,19 +1,21 @@
 /* Tokens do Ohara: docs/diretrizes-visuais.md explica cada regra.
-   Tela nenhuma usa valor solto: só estas variáveis. */
+   Tela nenhuma usa valor solto: só estas variáveis. As cores são as da Ardósia refinada (D115, D119). */
 
 :root {
-  /* Cores de matéria e destaque: iguais nos dois temas, sempre com --cor-tinta por cima */
-  --cor-destaque: #9178e6;
-  --cor-destaque-forte: #8872d8; /* só em texto grande ou estado tocado: 4,49:1 com a tinta */
-  --cor-rosa: #e879c0;
-  --cor-azul: #5fa0fc;
-  --cor-laranja: #fb7e5b;
-  --cor-verde: #00c386;
-  --cor-tinta: #101d1b;
-  --cor-sobre-tinta: #f4f2ff;
-  --cor-amarelo: #f2c14e;
-  --cor-ciano: #35c7d1;
-  --cor-cinza-lavanda: #a7aec4;
+  /* Matérias: --cor-materia-0 a 7 (posição guardada no banco), iguais nos dois temas, sempre com --cor-tinta por cima.
+     Valores trocáveis: cada paleta só redefine estas variáveis. Cor repete; a sigla distingue. */
+  --cor-destaque: #8aa0f8;
+  --cor-materia-1: #8aa0f8;
+  --cor-destaque-forte: #7389ea; /* só em texto grande ou estado tocado */
+  --cor-materia-4: #e48ae8;
+  --cor-materia-2: #5eb6ee;
+  --cor-materia-0: #f27a9f;
+  --cor-materia-3: #7fdcb0;
+  --cor-tinta: #0e1428;
+  --cor-sobre-tinta: #f3f5ff;
+  --cor-materia-5: #ab94f4;
+  --cor-materia-6: #3fd0c4;
+  --cor-materia-7: #a3b0c4;
 
   /* Fontes (D67) */
   --fonte-voz: 'Nunito', system-ui, sans-serif;
@@ -59,9 +61,9 @@
   --texto-max: 72ch;
 
   /* Raios */
-  --raio-bloco: 24px;
-  --raio-item: 18px;
-  --raio-botao: 18px;
+  --raio-bloco: 22px;
+  --raio-item: 14px;
+  --raio-botao: 14px;
   --raio-campo: 16px;
   --raio-minimo: 8px;
   --raio-pilula: 999px;
@@ -73,6 +75,8 @@
   --anel-afastamento: 3px;
   --contorno-foco: 4px; /* bloco e item em foco: por dentro, sem cortar na rolagem */
   --borda-bloco: 2px;
+  --cursor: 2px; /* cursor do teclado em peça, por dentro */
+  --cursor-bloco: 3px; /* cursor no bloco inteiro */
 
   /* Movimento */
   --tempo-borda: 200ms;
@@ -82,42 +86,62 @@
 
 :root,
 :root[data-tema='claro'] {
-  --cor-fundo: #ece8fb;
-  --cor-cartao: #ffffff;
-  --cor-cartao-2: #eae6fc;
-  --cor-texto: #14122b;
-  --cor-texto-2: #5c5878;
-  --cor-botao: #14122b;
-  --cor-sobre-botao: #f4f2ff;
-  --cor-marca: #d9ceff;
-  --cor-foco: #14122b;
-  --cor-bloco-ativo: #8872d8; /* 3,2:1 com o fundo; o --cor-destaque daria 2,9:1 */
+  --cor-fundo: #dfe4ea;
+  --cor-cartao: #f7f9fb;
+  --cor-cartao-2: #e6ebf0;
+  --cor-texto: #0f1e27;
+  --cor-texto-2: #465a68;
+  --cor-acao: #4a62dc;
+  --cor-sobre-acao: #ffffff;
+  --cor-escolhido: #d6defa;
+  --cor-foco: #0f1e27;
+  --cor-cursor: #4a62dc;
+  --cor-ok: #2a9d74; /* concluído, feito */
+  --cor-atencao: #d9527a; /* erro e aviso */
   --mistura-faixa: 40%; /* faixa do cartão de prova: a 22% quase igualava o fundo da tela */
-  --cor-nota-titulo: #14122b;
-  --cor-veu: rgb(20 18 43 / 40%);
+  --cor-nota-titulo: #0f1e27;
+  --cor-veu: rgb(15 30 39 / 40%);
   color-scheme: light;
 }
 
 :root[data-tema='escuro'] {
-  --cor-fundo: #090c18;
-  --cor-cartao: #14172a;
-  --cor-cartao-2: #22242f;
-  --cor-texto: #f4f2ff;
-  --cor-texto-2: #a9a6c6;
-  --cor-botao: #f4f2ff;
-  --cor-sobre-botao: #090c18;
-  --cor-marca: #5b4ba6;
-  --cor-foco: #f4f2ff;
-  --cor-bloco-ativo: #9178e6;
+  --cor-fundo: #0e1519;
+  --cor-cartao: #172026;
+  --cor-cartao-2: #222e36;
+  --cor-texto: #e8f0f4;
+  --cor-texto-2: #93a7b3;
+  --cor-acao: #8ea4fa;
+  --cor-sobre-acao: #0e1428;
+  --cor-escolhido: #2a3660;
+  --cor-foco: #e8f0f4;
+  --cor-cursor: #8ea4fa;
+  --cor-ok: #6fcf9f;
+  --cor-atencao: #f27a9f;
   --mistura-faixa: 30%;
-  --cor-nota-titulo: #9178e6;
-  --cor-veu: rgb(9 12 24 / 60%);
+  --cor-nota-titulo: #e8f0f4;
+  --cor-veu: rgb(14 21 25 / 60%);
   color-scheme: dark;
+}
+
+/* Papéis derivados: valem para toda paleta e tema; a paleta só troca os valores de cima. */
+:root {
+  --cor-agora: var(--cor-acao); /* hoje, agora: mesmo azul cheio da ação */
+  --cor-aba-ativa: var(--cor-acao); /* aba atual da barra do topo */
+  --cor-sobre-aba-ativa: var(--cor-sobre-acao);
+  --sup-recuada: color-mix(in srgb, var(--cor-cartao) 55%, var(--cor-fundo)); /* bloco sem cursor */
+  --sup-peca: color-mix(in srgb, var(--cor-texto) 6%, transparent); /* peça dentro de bloco, aceso ou recuado */
+  --cor-rastro: color-mix(in srgb, var(--cor-cursor) 30%, var(--cor-cartao)); /* para onde o Esc volta */
+  --cor-relevo: color-mix(in srgb, var(--cor-texto) 16%, var(--cor-cartao-2)); /* tecla com relevo */
+  --sup-peca-viva: color-mix(in srgb, var(--cor-texto) 11%, transparent); /* peça sob o mouse: um degrau acima */
+  --cor-acao-viva: color-mix(in srgb, var(--cor-acao) 88%, var(--cor-texto)); /* botão principal sob o mouse */
+  --cor-slide: #fff; /* o slide é conteúdo: continua claro no tema escuro */
+  --cor-slide-texto: #0f1e27;
+  --sombra-flutuante: 0 4px 16px rgb(0 0 0 / 0.3); /* barra que flutua sobre o conteúdo */
 }
 
 /* Cor sólida (70% da ativa sobre o cartão): resolvida aqui vale para toda paleta e tema. */
 :root {
-  --cor-contorno-foco: color-mix(in srgb, var(--cor-bloco-ativo) 70%, var(--cor-cartao));
+  --cor-contorno-foco: color-mix(in srgb, var(--cor-cursor) 70%, var(--cor-cartao));
 }
 
 @media (prefers-reduced-motion: reduce) {
