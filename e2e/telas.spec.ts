@@ -303,6 +303,7 @@ test('Anotações: o histórico restaura a versão anterior', async ({ page }) =
   await page.keyboard.press('Alt+KeyO');
   await page.getByRole('menuitem', { name: 'Histórico de versões' }).click();
   await expect(page.getByTestId('historico')).toBeVisible();
+  await expect(page.getByTestId('historico').getByRole('menuitem').first()).toBeFocused();
   await page.keyboard.press('Enter');
   await expect(page.getByTestId('historico')).toBeHidden();
   await expect(editor(page)).toContainText('TLR4');
