@@ -57,3 +57,4 @@ Lista curta do que foi **adiado ou ainda não decidido**. O que está no plano d
 - Tipo "Apresentação" na Agenda (hoje só aula, trabalho e compromisso), para aparecer no bloco de avaliações do Hub (D120).
 - 2026-11-10: **Layout do Hub em 1920x1080 (pendente, Fable):** agenda de hoje estilo B escolhida; provas em faixa ou lista vertical em aberto. Brief em `docs/plano/hub-layouts-brief.md`, bancada `lab/pecas-novas.html?peca=hublayout`.
 - Notas: busca `/` na régua, metas por semestre ("Precisa no 2º bim."), janela de esquema com modelos 5 + 5 / 3 + 7 e "Mais opções" (D114) ainda não levadas ao app.
+- Colocar DayItem e FaultCell (D128) na vitrine (lab/vitrine.html).

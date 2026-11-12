@@ -1,18 +1,24 @@
 import {
   daysBetween,
+  longDate,
   monthName,
+  monthShort,
   parseDay,
   shortDate,
   weekdayShort,
 } from '../../../core/study/dates';
-import { isNow, subjectOf, type AssessmentDay } from '../../../core/study/queries';
-import type { ClassEvent, Exam, Reminder } from '../../../core/study/types';
+import { eventsOn, isNow, subjectOf, type AssessmentDay } from '../../../core/study/queries';
+import type { ClassEvent, Exam, Reminder, StudyData } from '../../../core/study/types';
 import { Block } from '../../components/Block';
 import { AssessmentDayCard } from '../../components/Cards';
 import { Button } from '../../components/Button';
 import { Day } from '../../components/Controls';
+import { DayItem } from '../../components/DayItem';
+import { FaultCell } from '../../components/FaultCell';
 import { ListItem } from '../../components/ListItem';
-import { NowPill, StatePill, SubjectPill } from '../../components/Pill';
+import { useSelectedIndex } from '../../components/NavItem';
+import { NowPill, StatePill, SubjectMark } from '../../components/Pill';
+import type { FaultLine } from '../../faltas/summary';
 import { dispatch } from '../../keyboard/store';
 import { openLesson } from '../../study/navigation';
 import { nowTime, today, useStudy } from '../../study/study';
@@ -47,6 +53,7 @@ export function ExamsBlock({ id, days }: { id: string; days: readonly Assessment
               nav={{ block: id, index }}
               label={`${shortDate(day.date)}, ${remaining(day.date)}: ${spoken}`}
               when={when}
+              month={monthShort(day.date)}
               due={remaining(day.date)}
               next={index === 0}
               bricks={bricks}
@@ -69,6 +76,9 @@ interface CalendarProps {
 export function CalendarBlock({ id, days, exams }: CalendarProps) {
   const data = useStudy();
   const month = parseDay(today).getMonth();
+  const chosen = days[useSelectedIndex(id, days.length)] ?? today;
+  const rows = dayRows(data, chosen);
+  const away = daysBetween(today, chosen);
   return (
     <Block id={id} title={monthName(today)} label="Calendário" count={today.slice(0, 4)} menu>
       <div className={styles.calendario}>
@@ -93,8 +103,57 @@ export function CalendarBlock({ id, days, exams }: CalendarProps) {
           );
         })}
       </div>
+      <p className={styles.doDia}>
+        <b>{longDate(chosen)}</b>
+        {away === 0 ? ' · hoje' : away > 0 ? ` · em ${away} dias` : ''}
+      </p>
+      <div className={styles.eventos}>
+        {rows.length === 0 && <p className={styles.vazio}>Nada neste dia.</p>}
+        {rows.map((row) => (
+          <div key={row.key} className={styles.evento}>
+            <time>{row.time}</time>
+            <span className={styles.eventoTitulo}>{row.title}</span>
+            {row.code && <SubjectMark code={row.code} color={row.color} />}
+          </div>
+        ))}
+      </div>
     </Block>
   );
+}
+
+interface DayRow {
+  key: string;
+  time: string;
+  title: string;
+  code: string;
+  color: number | undefined;
+}
+
+// Aulas, compromissos e provas do dia escolhido, em ordem de hora.
+function dayRows(data: StudyData, day: string): DayRow[] {
+  const events = eventsOn(data, day).map((event) => {
+    const subject = subjectOf(data, event.subjectId);
+    return {
+      key: event.id,
+      time: event.start,
+      title: event.title,
+      code: subject?.code ?? '',
+      color: subject?.color,
+    };
+  });
+  const exams = data.exams
+    .filter((exam) => exam.date === day)
+    .map((exam) => {
+      const subject = subjectOf(data, exam.subjectId);
+      return {
+        key: exam.id,
+        time: exam.time,
+        title: 'Prova',
+        code: subject?.code ?? '',
+        color: subject?.color,
+      };
+    });
+  return [...events, ...exams].sort((a, b) => a.time.localeCompare(b.time));
 }
 
 export function TodayBlock({ id, events }: { id: string; events: readonly ClassEvent[] }) {
@@ -106,21 +165,44 @@ export function TodayBlock({ id, events }: { id: string; events: readonly ClassE
         {events.map((event, index) => {
           const subject = subjectOf(data, event.subjectId);
           return (
-            <ListItem
+            <DayItem
               key={event.id}
               nav={{ block: id, index }}
-              time={`${event.start}–${event.end}`}
+              start={event.start}
+              end={event.end}
               title={event.title}
-              quietSelection
+              code={subject?.code ?? ''}
+              color={subject?.color}
+              past={event.end <= nowTime && event.date === today}
               onOpen={() => {
                 if (event.lessonId) openLesson(event.lessonId);
               }}
             >
               {isNow(event, today, today, nowTime) && <NowPill />}
-              {subject && <SubjectPill code={subject.code} color={subject.color} />}
-            </ListItem>
+            </DayItem>
           );
         })}
+      </div>
+    </Block>
+  );
+}
+
+export function FaultsBlock({ id, lines }: { id: string; lines: readonly FaultLine[] }) {
+  return (
+    <Block id={id} title="Faltas" label="Faltas" menu>
+      <div className={styles.faltas}>
+        {lines.length === 0 && <p className={styles.vazio}>Nenhuma matéria ainda.</p>}
+        {lines.map((line, index) => (
+          <FaultCell
+            key={line.subject.id}
+            nav={{ block: id, index }}
+            label={`${line.subject.code}: ${line.missed ?? 0} de ${line.limit ?? 0} horas${line.attention ? ', atenção' : ''}`}
+            code={line.subject.code}
+            missed={line.missed}
+            limit={line.limit}
+            attention={line.attention}
+          />
+        ))}
       </div>
     </Block>
   );

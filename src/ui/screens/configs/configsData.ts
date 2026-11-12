@@ -12,6 +12,7 @@ import {
   cycleTopAnimation,
   TOP_ANIMATION_NAMES,
 } from '../../shell/topAnimation';
+import { currentTopTabs, cycleTopTabs, TOP_TABS_NAMES } from '../../shell/topTabs';
 import { currentPalette, cyclePalette, PALETTE_NAMES, toggleTheme } from '../../theme';
 
 export interface Row {
@@ -109,6 +110,11 @@ export function buildSections(diag: Diagnostics | null): readonly Section[] {
           label: 'Animação da barra do topo',
           detail: `Troca de tela: Elástico ou Nenhuma. Agora: ${TOP_ANIMATION_NAMES[currentTopAnimation()]}.`,
           run: () => showNotice(`Animação: ${TOP_ANIMATION_NAMES[cycleTopAnimation()]}.`),
+        },
+        {
+          label: 'Menu de telas da barra do topo',
+          detail: `Só números, número com ícone, só ícones, ícone com número pequeno em cima ou embaixo. Agora: ${TOP_TABS_NAMES[currentTopTabs()]}.`,
+          run: () => showNotice(`Menu de telas: ${TOP_TABS_NAMES[cycleTopTabs()]}.`),
         },
       ],
     },

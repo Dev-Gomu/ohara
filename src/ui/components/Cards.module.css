@@ -17,6 +17,7 @@
 .dia {
   flex: none;
   gap: var(--e2);
+  min-width: 112px;
   padding: var(--e2);
   border-radius: var(--raio-bloco);
   background: var(--sup-peca);
@@ -25,49 +26,58 @@
 .cabecalho {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: var(--e3);
-  min-height: 24px;
-  padding: 0 var(--e1) 0 var(--e2);
-  font: var(--voz-mini);
-  text-transform: uppercase;
+  padding: var(--e1) var(--e1) 0 var(--e2);
   white-space: nowrap;
 }
 
-.prazo {
+.numero {
+  font: var(--voz-tela);
+  font-variant-numeric: tabular-nums;
+}
+
+.data {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font: var(--ui-rotulo);
+  letter-spacing: 0.06em;
+  line-height: 14px;
+  text-transform: uppercase;
+}
+
+.data small {
   color: var(--cor-texto-2);
+  font: var(--ui-tecla);
+  letter-spacing: 0.05em;
+  line-height: 14px;
+}
+
+.prazo {
+  margin-left: auto;
+  padding: 3px 10px;
+  border-radius: var(--raio-pilula);
+  background: var(--cor-acao);
+  color: var(--cor-sobre-acao);
   font: var(--ui-tecla);
   letter-spacing: 0.05em;
   text-transform: uppercase;
 }
 
-.prazo[data-proximo='true'] {
-  padding: 3px 10px;
-  border-radius: var(--raio-pilula);
-  background: var(--cor-acao);
-  color: var(--cor-sobre-acao);
-}
-
-.tijolos {
+.pilulas {
   display: flex;
   gap: var(--e1);
-  height: 64px;
+  padding: 0 var(--e1) var(--e1) var(--e2);
 }
 
-.tijolo {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 84px;
-  padding: 0 var(--e3);
-  border-radius: var(--raio-item);
+.pilulaSigla {
+  padding: 3px 10px;
+  border-radius: var(--raio-pilula);
   background: var(--cor-materia);
   color: var(--cor-tinta);
-  font: var(--ui-tecla);
-}
-
-.tijolo b {
-  font: var(--voz-mini);
+  font: var(--ui-sigla);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .materia {

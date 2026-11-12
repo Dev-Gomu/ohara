@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hub: Agenda de hoje e Faltas</title>
+    <style>
+      /* Sem pílula de sigla, sem marca alongada e sem bloco de hora colorido: cada versão acha outro caminho. */
+      .trio { display: grid; grid-template-columns: repeat(3, 400px); gap: var(--e5); align-items: start; }
+      .opt > small { display: block; margin: 0 0 var(--e2) var(--e2); font: var(--ui-rotulo); color: var(--cor-texto-2); }
+      .bl { display: flex; flex-direction: column; border-radius: var(--raio-bloco); background: var(--sup-recuada); padding-bottom: var(--e3); }
+      .hd { display: flex; align-items: center; gap: var(--e2); padding: var(--e3) var(--bloco-pad-x) var(--e2); font: var(--ui-rotulo); letter-spacing: 0.06em; text-transform: uppercase; color: var(--cor-texto-2); }
+      .kb { margin-left: auto; padding: 0 var(--e2); border-radius: var(--raio-minimo); background: var(--sup-peca); border-bottom: 2px solid var(--cor-relevo); font: var(--ui-tecla); letter-spacing: 0; text-transform: none; }
+      .lim { margin-left: auto; font: var(--ui-tecla); letter-spacing: 0; text-transform: none; }
+      .lim + .kb { margin-left: 0; }
+      .lista { display: flex; flex-direction: column; gap: var(--e1); padding: 0 10px; }
+      .sg { font: var(--ui-sigla); letter-spacing: 0.04em; text-transform: uppercase; color: var(--cor-texto-2); }
+      .agora { padding: 3px 10px; border-radius: var(--raio-pilula); background: var(--cor-agora); color: var(--cor-sobre-acao); font: var(--ui-sigla); }
+      .passou { opacity: 0.5; }
+
+      /* AGENDA A: só tipografia. Hora em duas linhas, título, sigla em texto. */
+      .a-item { display: flex; align-items: center; gap: var(--e3); min-height: 64px; padding: var(--e2) var(--e4); border-radius: var(--raio-item); background: var(--sup-peca); }
+      .a-item.now { background: var(--cor-escolhido); }
+      .a-hora { flex: none; display: flex; flex-direction: column; width: 48px; font: var(--ui-item); font-variant-numeric: tabular-nums; }
+      .a-hora span { font: var(--ui-tecla); color: var(--cor-texto-2); }
+      .a-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+      .a-txt b { overflow: hidden; font: var(--voz-mini); text-overflow: ellipsis; white-space: nowrap; }
+
+      /* AGENDA B: o cartão inteiro leva um tom da matéria. A cor mora no fundo, não numa forma. */
+      .b-item { display: flex; align-items: center; gap: var(--e3); min-height: 64px; padding: var(--e2) var(--e4); border-radius: var(--raio-item); background: color-mix(in srgb, var(--cor-materia) 24%, var(--cor-cartao)); }
+      .b-item.now { box-shadow: inset 0 0 0 var(--cursor) var(--cor-agora); }
+      .b-item .a-hora span { color: var(--cor-texto); opacity: 0.7; }
+      .b-item .sg { color: var(--cor-texto); opacity: 0.75; }
+
+      /* AGENDA C: o que está acontecendo ganha tamanho; o resto vira linha compacta. */
+      .c-agora { display: grid; gap: var(--e2); margin: 0 10px var(--e1); padding: var(--e3) var(--e4); border-radius: var(--raio-item); background: var(--cor-escolhido); }
+      .c-linha { display: flex; align-items: center; gap: var(--e2); color: var(--cor-texto-2); font: var(--ui-apoio); }
+      .c-linha .agora { margin-left: auto; }
+      .c-tit { font: var(--voz-titulo); }
+      .c-rest { font: var(--ui-apoio); color: var(--cor-texto-2); }
+      .c-item { display: flex; align-items: center; gap: var(--e3); min-height: var(--alvo); padding: 0 var(--e4); border-radius: var(--raio-item); background: var(--sup-peca); font: var(--ui-item); }
+      .c-item .h { flex: none; width: 48px; font: var(--ui-apoio); font-variant-numeric: tabular-nums; color: var(--cor-texto-2); }
+      .c-item .t { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+      /* FALTAS: nenhuma cor de matéria. A cor só aparece para dizer "atenção". */
+      .atn { padding: 3px 10px; border-radius: var(--raio-pilula); background: var(--cor-atencao); color: var(--cor-tinta); font: var(--ui-sigla); }
+      .num { font: var(--voz-mini); font-variant-numeric: tabular-nums; }
+      .num small { font: var(--ui-apoio); color: var(--cor-texto-2); }
+      .crit { background: color-mix(in srgb, var(--cor-atencao) 22%, var(--cor-cartao)) !important; }
+
+      /* FALTAS A: tabela de números, ordenada da mais crítica à menos. */
+      .fa-lin { display: flex; align-items: center; gap: var(--e3); min-height: var(--alvo); padding: 0 var(--e4); border-radius: var(--raio-item); background: var(--sup-peca); }
+      .fa-lin .sg { width: 44px; font: var(--ui-item); letter-spacing: 0.04em; color: var(--cor-texto); }
+      .fa-lin .num { margin-left: auto; }
+      .fa-lin .atn { margin-left: 0; }
+
+      /* FALTAS B: oito casas por matéria, como risquinhos de contagem. Pílulas em pé, nunca círculo. */
+      .casas { display: flex; flex: 1; justify-content: center; gap: 6px; }
+      .casas i { width: 8px; height: 20px; border-radius: var(--raio-pilula); background: color-mix(in srgb, var(--cor-texto) 14%, transparent); }
+      .casas i.on { background: var(--cor-texto-2); }
+      .crit .casas i.on { background: var(--cor-atencao); }
+      .casas i:last-child { margin-left: 4px; }
+
+      /* FALTAS C: mostra o que resta. A mais crítica vira destaque, o resto fica compacto. */
+      .c-crit { display: grid; gap: 2px; margin: 0 10px var(--e1); padding: var(--e3) var(--e4); border-radius: var(--raio-item); }
+      .c-crit .l1 { display: flex; align-items: center; gap: var(--e2); }
+      .c-crit .l1 .atn { margin-left: auto; }
+      .c-crit .sg { font: var(--ui-item); letter-spacing: 0.04em; color: var(--cor-texto); }
+      .c-crit .grande { font: var(--voz-pergunta); }
+      .c-crit .grande small { font: var(--ui-item); color: var(--cor-texto-2); }
+      .fc-lin { display: flex; align-items: center; gap: var(--e3); min-height: var(--alvo); padding: 0 var(--e4); border-radius: var(--raio-item); background: var(--sup-peca); }
+      .fc-lin .sg { width: 44px; font: var(--ui-item); letter-spacing: 0.04em; color: var(--cor-texto); }
+      .fc-lin .num { margin-left: auto; }
+
+      /* FALTAS COMPACTAS: servem para limite 8 ou 64. O número é sempre "usadas/limite". */
+      .K { --k-pad: var(--e2); }
+      .kg { display: grid; gap: var(--e1); padding: 0 10px; }
+      .kg.tres { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .kg.dois { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .kf { display: flex; flex-direction: column; justify-content: center; gap: 2px; min-height: 52px; padding: 6px var(--e3); border-radius: var(--raio-item); background: var(--sup-peca); }
+      .kf .sg { color: var(--cor-texto); font: var(--ui-item); letter-spacing: 0.04em; }
+      .kf .num { font: var(--voz-mini); }
+      .kf.crit .sg::after { content: ' · atenção'; color: var(--cor-texto); font: var(--ui-tecla); letter-spacing: 0; text-transform: none; }
+      .kl { display: flex; align-items: center; gap: var(--e2); min-height: 40px; padding: 0 var(--e3); border-radius: var(--raio-item); background: var(--sup-peca); }
+      .kl .sg { color: var(--cor-texto); font: var(--ui-item); letter-spacing: 0.04em; }
+      .kl .num { margin-left: auto; }
+      .kl .atn { padding: 1px 8px; }
+      .kp { position: relative; overflow: hidden; }
+      .kp::after { content: ''; position: absolute; left: var(--e3); right: var(--e3); bottom: 5px; height: 4px; border-radius: var(--raio-pilula); background: color-mix(in srgb, var(--cor-texto) 14%, transparent); }
+      .kp::before { content: ''; position: absolute; z-index: 1; left: var(--e3); bottom: 5px; width: calc((100% - 2 * var(--e3)) * var(--f)); height: 4px; border-radius: var(--raio-pilula); background: var(--cor-texto-2); }
+      .kp.crit::before { background: var(--cor-atencao); }
+      .kp { padding-bottom: 14px; }
+      .kc-alerta { display: flex; align-items: center; gap: var(--e2); margin: 0 10px var(--e1); min-height: 40px; padding: 0 var(--e3); border-radius: var(--raio-item); }
+      .kc-alerta .num { margin-left: auto; }
+      .kc-alerta .sg { color: var(--cor-texto); font: var(--ui-item); letter-spacing: 0.04em; }
+      .kc-resto { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2px var(--e2); padding: 4px var(--e4) 0; }
+      .kc-resto span { display: flex; gap: 6px; align-items: baseline; font: var(--ui-item); font-variant-numeric: tabular-nums; }
+
+      /* FALTAS SIMPLES: itens do tamanho do conteúdo, que quebram de linha em vez de se apertar. Mesma caixa em todos (com ou sem marca), então nada pula. */
+      .ks { display: flex; flex-wrap: wrap; gap: var(--e2) var(--e1); padding: var(--e1) var(--e3) var(--e3); }
+      .ks > span { display: inline-flex; align-items: center; gap: var(--e2); min-height: 36px; padding: 0 var(--e3); border-radius: var(--raio-minimo); font: var(--ui-item); font-variant-numeric: tabular-nums; white-space: nowrap; }
+      .ks .sg { color: var(--cor-texto); font: var(--ui-item); letter-spacing: 0.04em; }
+      .ks > span > span { display: inline; } .ks small { font: var(--ui-apoio); color: var(--cor-texto-2); }
+      .ks .ate { background: color-mix(in srgb, var(--cor-atencao) 38%, transparent); }
+      .ks.sub .ate { background: none; text-decoration: underline; text-decoration-color: var(--cor-atencao); text-decoration-thickness: 3px; text-underline-offset: 6px; text-decoration-skip-ink: none; }
+      .ks.sub .ate small { color: var(--cor-texto); }
+      .ks.pe > span::before { content: ''; flex: none; width: 4px; height: 16px; margin-right: -2px; border-radius: var(--raio-pilula); background: transparent; }
+      .ks.pe .ate::before { background: var(--cor-atencao); }
+      .ks.pe .ate { font-weight: 800; }
+
+      /* FALTAS COM BOLINHA: 2 colunas, texto igual em todas; só a marca de atenção muda. */
+      .kb2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--e1) var(--e2); padding: var(--e1) var(--e4) var(--e3); }
+      .kb2 > span { position: relative; display: flex; align-items: center; gap: var(--e2); min-height: 36px; padding: 0 var(--e2); font: var(--ui-item); font-variant-numeric: tabular-nums; white-space: nowrap; }
+      .kb2 .sg { color: var(--cor-texto); font: var(--ui-item); letter-spacing: 0.04em; }
+      .kb2 small { font: var(--ui-apoio); color: var(--cor-texto-2); }
+      .kb2 .n { order: 2; margin-left: auto; }
+      .kb2 .ate::after { content: ''; flex: none; background: var(--cor-atencao); }
+      /* A: bolinha logo depois da sigla */
+      .kb2.a .ate::after { order: 1; width: 10px; height: 10px; border-radius: 50%; }
+      .kb2.a .sg { order: 0; }
+      /* B: bolinha de notificação no canto do item, com anel na cor do bloco */
+      .kb2.b .ate::after { display: none; }
+      .kb2.b .sg { position: relative; margin-right: 6px; }
+      .kb2.b .ate .sg::after { content: ''; position: absolute; top: -3px; right: -11px; width: 10px; height: 10px; border-radius: 50%; background: var(--cor-atencao); box-shadow: 0 0 0 2px var(--sup-recuada); }
+      /* C: a mesma ideia, mas em pílula (segue a regra de identidade) */
+      .kb2.c .ate::after { order: 1; width: 16px; height: 8px; border-radius: var(--raio-pilula); }
+    </style>
+  </head>
+  <body>
+    <script type="module">
+      import { Sala } from './_sala.js';
+
+      const AG = [
+        { ini: '08:00', fim: '09:30', t: 'Expressão gênica', m: ['GEN', 0], p: true },
+        { ini: '10:00', fim: '11:30', t: 'Territorialização', m: ['APS', 3], p: true },
+        { ini: '13:00', fim: '15:00', t: 'Resposta inflamatória aguda', m: ['IMU', 2], agora: true },
+        { ini: '15:15', fim: '17:00', t: 'Exame do abdome', m: ['PRO', 1] },
+      ];
+      const F = [['IMU', 2, 6], ['FIS', 6, 4], ['APS', 3, 3], ['GEN', 0, 2], ['PRO', 1, 1], ['FAR', 4, 0]];
+      const cab = (n, tecla, lim = '') => `<div class="hd"><span>${n}</span>${lim}<span class="kb">${tecla}</span></div>`;
+      const trio = (itens) => `<div class="trio">${itens.map(([n, h]) => `<div class="opt"><small>${n}</small>${h}</div>`).join('')}</div>`;
+
+      const agA = `<section class="bl">${cab('Agenda de hoje', 'Alt A')}<div class="lista">${AG.map((a) =>
+        `<div class="a-item${a.agora ? ' now' : ''}${a.p ? ' passou' : ''}"><span class="a-hora">${a.ini}<span>${a.fim}</span></span><span class="a-txt"><b>${a.t}</b><span class="sg">${a.m[0]}</span></span>${a.agora ? '<span class="agora">agora</span>' : ''}</div>`).join('')}</div></section>`;
+      const agB = `<section class="bl">${cab('Agenda de hoje', 'Alt A')}<div class="lista">${AG.map((a) =>
+        `<div class="b-item${a.agora ? ' now' : ''}${a.p ? ' passou' : ''}" data-materia="${a.m[1]}"><span class="a-hora">${a.ini}<span>${a.fim}</span></span><span class="a-txt"><b>${a.t}</b><span class="sg">${a.m[0]}</span></span>${a.agora ? '<span class="agora">agora</span>' : ''}</div>`).join('')}</div></section>`;
+      const agC = `<section class="bl">${cab('Agenda de hoje', 'Alt A')}<div class="c-agora"><div class="c-linha"><span>13:00 – 15:00</span><span class="agora">agora</span></div><div class="c-tit">Resposta inflamatória aguda</div><div class="c-rest">IMU · faltam 40 min</div></div><div class="lista">${AG.filter((a) => !a.agora).map((a) =>
+        `<div class="c-item${a.p ? ' passou' : ''}"><span class="h">${a.ini}</span><span class="t">${a.t}</span><span class="sg">${a.m[0]}</span></div>`).join('')}</div></section>`;
+
+      const atn = '<span class="atn">atenção</span>';
+      const faA = `<section class="bl">${cab('Faltas', 'Alt F', '<span class="lim">limite 8</span>')}<div class="lista">${F.map((f) =>
+        `<div class="fa-lin${f[2] >= 6 ? ' crit' : ''}"><span class="sg">${f[0]}</span>${f[2] >= 6 ? atn : ''}<span class="num">${f[2]}<small> de 8</small></span></div>`).join('')}</div></section>`;
+      const casas = (n) => Array.from({ length: 8 }, (_, i) => `<i class="${i < n ? 'on' : ''}"></i>`).join('');
+      const faB = `<section class="bl">${cab('Faltas', 'Alt F', '<span class="lim">limite 8</span>')}<div class="lista">${F.map((f) =>
+        `<div class="fa-lin${f[2] >= 6 ? ' crit' : ''}"><span class="sg">${f[0]}</span><span class="casas">${casas(f[2])}</span><span class="num">${f[2]}<small>/8</small></span></div>`).join('')}</div></section>`;
+      const [c0, ...resto] = F;
+      const faC = `<section class="bl">${cab('Faltas', 'Alt F', '<span class="lim">limite 8</span>')}<div class="c-crit crit"><div class="l1"><span class="sg">${c0[0]}</span>${atn}</div><div class="grande">${8 - c0[2]} <small>faltas restantes</small></div><div class="c-rest">${c0[2]} de 8 usadas</div></div><div class="lista">${resto.map((f) =>
+        `<div class="fc-lin"><span class="sg">${f[0]}</span><span class="num">${8 - f[2]}<small> restam</small></span></div>`).join('')}</div></section>`;
+
+
+      const K = [['IMU', 6, 8], ['FIS', 20, 64], ['APS', 3, 8], ['GEN', 2, 8], ['PRO', 1, 8], ['FAR', 0, 16]];
+      const cr = (f) => f[1] / f[2] >= 0.75;
+      const kA = `<section class="bl">${cab('Faltas', 'Alt F')}<div class="kg tres">${K.map((f) => `<div class="kf${cr(f) ? ' crit' : ''}"><span class="sg">${f[0]}</span><span class="num">${f[1]}<small>/${f[2]}</small></span></div>`).join('')}</div></section>`;
+      const kB = `<section class="bl">${cab('Faltas', 'Alt F')}<div class="kg dois">${K.map((f) => `<div class="kl kp${cr(f) ? ' crit' : ''}" style="--f:${f[1] / f[2]}"><span class="sg">${f[0]}</span><span class="num">${f[1]}<small>/${f[2]}</small></span></div>`).join('')}</div></section>`;
+      const al = K.filter(cr), ok = K.filter((f) => !cr(f));
+      const kC = `<section class="bl">${cab('Faltas', 'Alt F')}${al.map((f) => `<div class="kc-alerta crit"><span class="sg">${f[0]}</span>${atn}<span class="num">${f[1]}<small>/${f[2]}</small></span></div>`).join('')}<div class="kc-resto">${ok.map((f) => `<span><b class="sg" style="color:var(--cor-texto)">${f[0]}</b>${f[1]}<small class="sg" style="text-transform:none">/${f[2]}</small></span>`).join('')}</div></section>`;
+
+      const K2 = [['IMU', 6, 8], ['FIS', 52, 64], ['APS', 3, 8], ['GEN', 2, 8], ['PRO', 1, 8], ['FAR', 0, 16]];
+      const ks = (cls) => `<section class="bl">${cab('Faltas', 'Alt F')}<div class="ks ${cls}">${K2.map((f) => `<span class="${cr(f) ? 'ate' : ''}"><b class="sg">${f[0]}</b><span>${f[1]}<small>/${f[2]}</small></span></span>`).join('')}</div></section>`;
+
+      const kb = (cls) => `<section class="bl">${cab('Faltas', 'Alt F')}<div class="kb2 ${cls}">${K2.map((f) => `<span class="${cr(f) ? 'ate' : ''}"><b class="sg">${f[0]}</b><span class="n">${f[1]}<small>/${f[2]}</small></span></span>`).join('')}</div></section>`;
+      Sala.montar({
+        titulo: 'Hub: Agenda de hoje e Faltas',
+        dados: null,
+        variantes: [
+          { id: 'bolinha', nome: 'Faltas com marca de aviso: A bolinha ao lado da sigla · B bolinha de notificação no canto · C pílula pequena', html: () => trio([['A · bolinha ao lado', kb('a')], ['B · notificação à direita da sigla', kb('b')], ['C · pílula (identidade)', kb('c')]]) },
+          { id: 'simples', nome: 'Faltas simples: A marca-texto · B sublinhado grosso · C marcador em pé', html: () => trio([['A · marca-texto', ks('')], ['B · sublinhado', ks('sub')], ['C · marcador em pé + negrito', ks('pe')]]) },
+          { id: 'compactas', nome: 'Faltas compactas (limites 8, 16 e 64): A fichas · B filete · C só o alerta em linha', html: () => trio([['A · fichas', kA], ['B · filete proporcional', kB], ['C · alerta + texto', kC]]) },
+          { id: 'agenda', nome: 'Agenda de hoje: A só tipografia · B cartão com tom da matéria · C o agora em destaque', html: () => trio([['A · tipografia', agA], ['B · tom no cartão', agB], ['C · agora em destaque', agC]]) },
+          { id: 'faltas', nome: 'Faltas: A números · B casas de contagem · C o que resta', html: () => trio([['A · números', faA], ['B · casas', faB], ['C · o que resta', faC]]) },
+        ],
+      });
+    </script>
+  </body>
+</html>

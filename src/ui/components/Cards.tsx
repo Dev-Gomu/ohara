@@ -9,30 +9,34 @@ export interface DayBrick {
 }
 
 interface AssessmentDayCardProps extends TargetProps {
-  // Texto do app, já pronto: "TER 17" e "em 7 d".
+  // Texto do app, já pronto: "TER 17" e "em 7 d". O mês ("nov") vem à parte.
   when: string;
+  month?: string;
   due: string;
-  // O dia mais próximo: a contagem vira pílula cheia de ação.
+  // O dia mais próximo é o único que mostra a contagem, em pílula cheia de ação (D128).
   next?: boolean;
   bricks: readonly DayBrick[];
 }
 
-// Dia de avaliação: um bloquinho na cor da matéria para cada prova ou trabalho.
-// A altura é fixa; a peça alarga com a quantidade de bloquinhos.
-export function AssessmentDayCard({ when, due, next, bricks, ...target }: AssessmentDayCardProps) {
+// Dia de avaliação: número grande, dia da semana e mês, e uma pílula de sigla para cada prova ou trabalho.
+// A peça alarga com a quantidade de pílulas; o tipo (prova, trabalho) fica no rótulo falado.
+export function AssessmentDayCard(props: AssessmentDayCardProps) {
+  const { when, month, due, next, bricks, ...target } = props;
+  const [weekday = '', number = ''] = when.split(' ');
   return (
     <Target className={styles.dia} {...target}>
       <span className={styles.cabecalho}>
-        <b>{when}</b>
-        <span className={styles.prazo} data-proximo={next ?? false}>
-          {due}
+        <b className={styles.numero}>{number}</b>
+        <span className={styles.data}>
+          <span>{weekday}</span>
+          {month !== undefined && <small>{month}</small>}
         </span>
+        {next && <span className={styles.prazo}>{due}</span>}
       </span>
-      <span className={styles.tijolos}>
+      <span className={styles.pilulas}>
         {bricks.map((brick, index) => (
-          <span key={index} className={styles.tijolo} data-materia={brick.color}>
-            <b>{brick.code}</b>
-            <span>{brick.kind}</span>
+          <span key={index} className={styles.pilulaSigla} data-materia={brick.color}>
+            {brick.code}
           </span>
         ))}
       </span>

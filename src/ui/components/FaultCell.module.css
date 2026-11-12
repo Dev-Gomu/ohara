@@ -1,0 +1,40 @@
+.celula {
+  display: flex;
+  align-items: center;
+  gap: var(--e2);
+  min-height: 40px;
+  padding: 0 var(--e3);
+  border-radius: var(--raio-item);
+  font: var(--ui-item);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.sigla {
+  position: relative;
+  margin-right: var(--e2);
+  font: var(--ui-item);
+  letter-spacing: 0.04em;
+}
+
+/* Bolinha de notificação no canto superior direito da sigla; o anel vem da cor do bloco. */
+.atencao::after {
+  content: '';
+  position: absolute;
+  top: -3px;
+  right: -11px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%; /* lint-visual-ok: exceção do aviso de Faltas (D128) */
+  background: var(--cor-atencao);
+  box-shadow: 0 0 0 2px var(--sup-recuada);
+}
+
+.numero {
+  margin-left: auto;
+}
+
+.numero small {
+  color: var(--cor-texto-2);
+  font: var(--ui-apoio);
+}

@@ -32,6 +32,28 @@
   height: 18px;
 }
 
+/* Ícone com o número pequeno no canto: em cima (sobrescrito) ou embaixo (subscrito). */
+.canto {
+  position: relative;
+  display: inline-flex;
+  margin-right: 6px;
+}
+
+.pequeno {
+  position: absolute;
+  right: -8px;
+  font: var(--ui-tecla);
+  line-height: 1;
+}
+
+.canto[data-canto='sobrescrito'] .pequeno {
+  top: -5px;
+}
+
+.canto[data-canto='subscrito'] .pequeno {
+  bottom: -5px;
+}
+
 /* O alvo de toque ocupa a altura inteira da ilha. */
 .aba::after {
   content: '';

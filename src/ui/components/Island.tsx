@@ -30,10 +30,13 @@ interface TabProps {
   menuItem?: boolean;
   onOpen?: () => void;
   icon?: ReactNode;
+  // Como o número e o ícone aparecem (Ajustes, D129).
+  show?: 'numeros' | 'ambos' | 'icones' | 'sobrescrito' | 'subscrito';
 }
 
 // Aba: ícone da tela e número, que é o próprio atalho. O nome da tela fica no título da barra.
-export function Tab({ number, name, current, cursor, menuItem, onOpen, icon }: TabProps) {
+export function Tab(props: TabProps) {
+  const { number, name, current, cursor, menuItem, onOpen, icon, show = 'ambos' } = props;
   return (
     <Target
       className={styles.aba}
@@ -43,8 +46,17 @@ export function Tab({ number, name, current, cursor, menuItem, onOpen, icon }: T
       onOpen={onOpen}
       label={`${number} ${name}`}
     >
-      {icon}
-      {number}
+      {show === 'sobrescrito' || show === 'subscrito' ? (
+        <span className={styles.canto} data-canto={show}>
+          {icon}
+          <sup className={styles.pequeno}>{number}</sup>
+        </span>
+      ) : (
+        <>
+          {show !== 'numeros' && icon}
+          {show !== 'icones' && number}
+        </>
+      )}
     </Target>
   );
 }

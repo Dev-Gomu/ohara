@@ -2,7 +2,6 @@ import {
   cancelDay,
   markOccurrence,
   reopenDay,
-  pastOccurrences,
   presenceOf,
   setClassesFrom,
   situationOf,
@@ -12,7 +11,7 @@ import {
   type Situation,
 } from '../../core/study/attendance';
 import { isoDay, shortDate } from '../../core/study/dates';
-import type { StudyData, Subject } from '../../core/study/types';
+import type { Subject } from '../../core/study/types';
 import { Block } from '../components/Block';
 import { NavItem, useSelectedIndex } from '../components/NavItem';
 import { getKeyboardState, type BlockOption } from '../keyboard/store';
@@ -23,6 +22,7 @@ import { ScreenFrame } from '../shell/ScreenFrame';
 import { closeFaults } from '../study/navigation';
 import { showNotice } from '../study/notice';
 import { storage, useStudy } from '../study/study';
+import { occurrencesOf, subjectsOf } from './summary';
 
 const SUBJECTS = 'faltas.materias';
 const CLASSES = 'faltas.aulas';
@@ -41,23 +41,6 @@ function hours(value: number): string {
 
 function percent(value: number | null): string {
   return value === null ? '—' : `${(value * 100).toFixed(1)}%`;
-}
-
-function subjectsOf(data: StudyData): Subject[] {
-  const years = new Set(data.years.filter((year) => !year.archived).map((year) => year.id));
-  return data.subjects.filter((subject) => years.has(subject.yearId));
-}
-
-function occurrencesOf(data: StudyData, subject: Subject | undefined): Occurrence[] {
-  if (!subject?.classesFrom) return [];
-  const now = new Date();
-  return pastOccurrences(
-    data,
-    subject.id,
-    subject.classesFrom,
-    isoDay(now),
-    now.toTimeString().slice(0, 5),
-  );
 }
 
 function describe(item: Occurrence): string {

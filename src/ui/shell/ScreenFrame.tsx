@@ -10,6 +10,7 @@ import { openFaults, openNotes } from '../study/navigation';
 import { storage } from '../study/study';
 import styles from './ScreenFrame.module.css';
 import { placeTopBar } from './topAnimation';
+import { useTopTabs } from './topTabs';
 
 interface ScreenFrameProps {
   title: ReactNode;
@@ -71,6 +72,7 @@ export function ScreenFrame({ title, caps = true, bar, end, level = true, childr
   const bar_ = useRef<HTMLElement>(null);
   const indicator = useRef<HTMLElement>(null);
   const heading = useRef<HTMLHeadingElement>(null);
+  const tabs = useTopTabs();
 
   useLayoutEffect(() => {
     const numbers = [...(bar_.current?.querySelectorAll<HTMLElement>('[data-menu-item]') ?? [])].slice(
@@ -83,7 +85,7 @@ export function ScreenFrame({ title, caps = true, bar, end, level = true, childr
         SCREENS.indexOf(screen),
       );
     }
-  }, [screen]);
+  }, [screen, tabs]);
 
   return (
     <main className={styles.tela}>
@@ -98,6 +100,7 @@ export function ScreenFrame({ title, caps = true, bar, end, level = true, childr
               current={id === screen}
               cursor={cursorAt(index)}
               menuItem
+              show={tabs}
               icon={<ScreenIcon screen={id} />}
               onOpen={() => dispatch({ type: 'goToScreen', screen: id })}
             />
