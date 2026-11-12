@@ -134,10 +134,11 @@
 - L35 ## Sessão 2: faxina visual (Sonnet)
 - L47 ## Sessão 3: três paletas (Fable na bancada, Sonnet no código). FEITA em 12/11/2026 (D132)
 - L52 ## Sessão 4: publicação (Sonnet) — FEITA em 12/11/2026
-- L57 ## Sessão 5: Etapa 11, Treino com FSRS (Opus)
-- L61 ## Sessão 6: Etapa 12, sincronização (Opus, modo de plano)
-- L66 ## Sessão 7 em diante: varredura (Sonnet)
-- L70 ## O que é só do usuário
+- L57 ## Sessão R: refinos das telas (Sonnet, antes da 5)
+- L62 ## Sessão 5: Etapa 11, Treino com FSRS (Opus)
+- L66 ## Sessão 6: Etapa 12, sincronização (Opus, modo de plano)
+- L71 ## Sessão 7 em diante: varredura (Sonnet)
+- L75 ## O que é só do usuário
 
 ### docs/plano/roteiro-5min-publicacao.md
 - L1 # Roteiro de 5 minutos: antes de publicar no main

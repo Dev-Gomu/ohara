@@ -7,9 +7,10 @@
 | 1 | Faxina de papel | Sonnet | feita (12/11/2026) |
 | 2 | Faxina visual (lab, protótipos, tokens, diretrizes) | Sonnet | feita (12/11/2026) |
 | 3 | Três paletas oficiais (Gelo suave, Gelo, Índigo) | Fable na bancada, Sonnet no código | feita |
-| 4 | Publicação (teste da Agenda, roteiro de 5 min, main) | Sonnet | |
+| 4 | Publicação (teste da Agenda, roteiro de 5 min, main) | Sonnet | feita (12/11/2026) |
+| R | Refinos das telas (Acervo e Configs primeiro; Treino só depois da 11), uma tela por sessão | Sonnet | **próxima** |
 | 5 | Etapa 11, Treino com FSRS (`etapa-11.md`) | Opus | |
 | 6 | Etapa 12, sincronização (`etapa-12.md`) | Opus, modo de plano | |
-| 7+ | Varredura de telas (Acervo, Treino, Configs), uma por sessão | Sonnet | |
+| 7+ | Sobra dos refinos e refino do Treino | Sonnet | |
 
 Uma sessão por vez; ao fechar, `npm run salvar` e `/clear`. Ideia nova vai para `docs/backlog.md`.

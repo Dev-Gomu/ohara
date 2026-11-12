@@ -54,6 +54,11 @@ Bancada única com Ardósia padrão, A e B lado a lado, dois temas, foco testado
 Resolver o teste "Agenda: prova nova aparece no Hub" (descobrir se é defeito do app ou do teste; o CI roda o e2e antes do deploy). O usuário cumpre `roteiro-5min-publicacao.md`. Juntar `telas-3-a-9` ao `main` e publicar **só com pedido explícito do usuário**.
 **Pronta quando:** todos os testes passam; o site no ar mostra a versão nova.
 
+## Sessão R: refinos das telas (Sonnet, antes da 5)
+
+Decidido em 12/11/2026: ainda há ajustes e refinos a fazer nas telas, e isso vem **antes** da Etapa 11 e da sincronização. O usuário lista as telas e os ajustes; uma tela por sessão, só com peças da vitrine, dois temas desde a primeira versão. Faça Acervo e Configs primeiro. **Treino fica para depois da Etapa 11** (a tela ganha a lógica FSRS e refinar antes seria retrabalho). Junto: dividir `Grades.module.css`.
+**Pronta quando:** cada tela listada foi aplicada, recusada ou adiada; `check` passa; publicado só com pedido do usuário.
+
 ## Sessão 5: Etapa 11, Treino com FSRS (Opus)
 
 Conforme `etapa-11.md`. **Pronta quando:** critérios do plano cumpridos; roteiro de 5 minutos entregue; publicado.
@@ -65,7 +70,7 @@ Conforme `etapa-12.md`. Fecha a Etapa 13 (teste das Notas em outro aparelho). **
 
 ## Sessão 7 em diante: varredura (Sonnet)
 
-Acervo, Treino e Configs só com peças da vitrine, uma tela por sessão. Junto: dividir `Grades.module.css`.
+O que sobrar da Sessão R, mais o refino do Treino depois da Etapa 11. Uma tela por sessão.
 
 ## O que é só do usuário
 
