@@ -5,9 +5,18 @@ import { Target } from './Target';
 import styles from './Island.module.css';
 
 // Ilha: agrupa controles na barra do topo (telas, nível, módulos).
-export function Island({ label, children }: { label?: string; children: ReactNode }) {
+export function Island({
+  label,
+  slides,
+  children,
+}: {
+  label?: string;
+  // A aba atual é desenhada por um indicador que desliza (ver shell/topAnimation).
+  slides?: boolean;
+  children: ReactNode;
+}) {
   return (
-    <div className={styles.ilha} role="group" aria-label={label}>
+    <div className={styles.ilha} role="group" aria-label={label} data-desliza={slides ? '' : undefined}>
       {children}
     </div>
   );
@@ -20,10 +29,11 @@ interface TabProps {
   cursor?: boolean;
   menuItem?: boolean;
   onOpen?: () => void;
+  icon?: ReactNode;
 }
 
-// Aba: só o número, que é o próprio atalho; a atual abre e mostra o nome.
-export function Tab({ number, name, current, cursor, menuItem, onOpen }: TabProps) {
+// Aba: ícone da tela e número, que é o próprio atalho. O nome da tela fica no título da barra.
+export function Tab({ number, name, current, cursor, menuItem, onOpen, icon }: TabProps) {
   return (
     <Target
       className={styles.aba}
@@ -33,8 +43,8 @@ export function Tab({ number, name, current, cursor, menuItem, onOpen }: TabProp
       onOpen={onOpen}
       label={`${number} ${name}`}
     >
+      {icon}
       {number}
-      {current && <span>{name}</span>}
     </Target>
   );
 }

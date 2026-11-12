@@ -1,5 +1,6 @@
 .ilha {
   --tecla-fundo: var(--cor-cartao);
+  position: relative;
   flex: none;
   display: inline-flex;
   align-items: center;
@@ -15,13 +16,20 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--e2);
+  gap: 6px;
   min-width: 40px;
   height: 32px;
   padding: 0 var(--e3);
   border-radius: var(--raio-pilula);
   color: var(--cor-texto-2);
   font: var(--ui-botao);
+}
+
+/* O ícone acompanha o tamanho do número. */
+.aba svg {
+  flex: none;
+  width: 18px;
+  height: 18px;
 }
 
 /* O alvo de toque ocupa a altura inteira da ilha. */
@@ -34,6 +42,10 @@
 .aba[data-sel='true'] {
   background: var(--cor-escolhido);
   color: var(--cor-texto);
+}
+
+.ilha[data-desliza] .aba[data-sel='true'] {
+  background: none;
 }
 
 .nivel {

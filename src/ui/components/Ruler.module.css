@@ -15,7 +15,7 @@
   flex-direction: column;
   justify-content: center;
   min-height: var(--alvo);
-  padding: var(--e1) var(--e4);
+  padding: var(--e2) var(--e5);
   border-radius: var(--raio-pilula);
   color: var(--cor-texto-2);
   text-align: left;

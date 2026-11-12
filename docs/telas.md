@@ -29,7 +29,7 @@ Biblioteca. **Início:** régua de anos e grade de matérias (cor, sigla, nome, 
 Revisão com repetição espaçada. **Escolha:** régua de matérias (Todas ou uma), lista do que treinar (tudo, bimestres e, na matéria, cada aula, com marcar várias) e resumo com Iniciar; a escolha fica lembrada e o foco nasce em Iniciar. Sem cartão vencido, Iniciar vira "Adiantar". Em sessão: cartão ampliado, Espaço vira, 1 a 4 respondem (Errei, Difícil, Bom, Fácil), progresso à vista. Fim de sessão com resumo.
 
 ## 5. Agenda (Alt 5)
-Régua de visão (Semana, Mês, Lista), grade de horários, provas, trabalhos, compromissos e lembretes. Porta de entrada das Notas, que chegam na Etapa 13.
+Régua de visão (Semana, Mês, Grade), grade de horários, provas, trabalhos, compromissos e lembretes. Porta de entrada das Notas, que chegam na Etapa 13.
 
 ## 6. Configs (Alt 6)
 Lista de seções e detalhe: Aparência (tema), Atalhos, Sincronização, Backup, Segurança, Sobre (versão).

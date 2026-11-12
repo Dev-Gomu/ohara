@@ -107,7 +107,7 @@ export function buildSections(diag: Diagnostics | null): readonly Section[] {
         },
         {
           label: 'Animação da barra do topo',
-          detail: `Troca de tela: Deslizar, Gelatina ou Nenhuma. Agora: ${TOP_ANIMATION_NAMES[currentTopAnimation()]}.`,
+          detail: `Troca de tela: Elástico ou Nenhuma. Agora: ${TOP_ANIMATION_NAMES[currentTopAnimation()]}.`,
           run: () => showNotice(`Animação: ${TOP_ANIMATION_NAMES[cycleTopAnimation()]}.`),
         },
       ],

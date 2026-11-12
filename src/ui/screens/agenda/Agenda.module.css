@@ -2,7 +2,7 @@
   height: 100%;
   display: grid;
   grid-template:
-    'regua regua' 76px
+    'regua regua' 84px
     'conteudo previa' minmax(0, 1fr)
     'conteudo materias' auto
     'conteudo completar' auto
@@ -61,8 +61,7 @@
   overflow: auto;
 }
 
-.mes,
-.lista {
+.mes {
   flex: 1;
   min-height: 0;
   padding: 10px;
@@ -74,12 +73,6 @@
   grid-template-columns: repeat(7, minmax(0, 1fr));
   grid-template-rows: auto;
   grid-auto-rows: minmax(96px, 1fr);
-  gap: var(--e1);
-}
-
-.lista {
-  display: flex;
-  flex-direction: column;
   gap: var(--e1);
 }
 
@@ -96,18 +89,6 @@
   text-align: left;
 }
 
-.lista .dia {
-  flex-direction: row;
-  min-height: var(--item-lista);
-  align-items: center;
-  gap: var(--e3);
-}
-
-.lista .dia > :first-child {
-  align-self: center;
-  min-width: 96px;
-}
-
 .dia[data-sel='true'] {
   background: var(--cor-escolhido);
 }
@@ -117,11 +98,6 @@
   flex-direction: column;
   gap: 2px;
   min-width: 0;
-}
-
-.lista .eventos {
-  flex-flow: row wrap;
-  gap: var(--e1) var(--e3);
 }
 
 .diaSemana {

@@ -1,13 +1,12 @@
 import { prefixed } from '../../core/appInfo';
 
-export type TopAnimation = 'deslizar' | 'gelatina' | 'nenhuma';
+export type TopAnimation = 'elastico' | 'nenhuma';
 
-const MODES: readonly TopAnimation[] = ['deslizar', 'gelatina', 'nenhuma'];
+const MODES: readonly TopAnimation[] = ['elastico', 'nenhuma'];
 const KEY = prefixed('animacao-topo');
 
 export const TOP_ANIMATION_NAMES: Readonly<Record<TopAnimation, string>> = {
-  deslizar: 'Deslizar',
-  gelatina: 'Gelatina',
+  elastico: 'Elástico',
   nenhuma: 'Nenhuma',
 };
 
@@ -15,14 +14,14 @@ export const TOP_ANIMATION_NAMES: Readonly<Record<TopAnimation, string>> = {
 export function currentTopAnimation(): TopAnimation {
   try {
     const value = localStorage.getItem(KEY);
-    return MODES.find((mode) => mode === value) ?? 'deslizar';
+    return MODES.find((mode) => mode === value) ?? 'elastico';
   } catch {
-    return 'deslizar';
+    return 'elastico';
   }
 }
 
 export function cycleTopAnimation(): TopAnimation {
-  const next = MODES[(MODES.indexOf(currentTopAnimation()) + 1) % MODES.length] ?? 'deslizar';
+  const next = MODES[(MODES.indexOf(currentTopAnimation()) + 1) % MODES.length] ?? 'elastico';
   try {
     localStorage.setItem(KEY, next);
   } catch {
@@ -42,45 +41,38 @@ export interface TopBarParts {
 
 const reducedMotion = (): boolean => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-function play(parts: TopBarParts, from: number, to: number, mode: TopAnimation): void {
+const clamp01 = (value: number): number => Math.min(1, Math.max(0, value));
+
+// Elástico (ideia do RubberSegment, sem a biblioteca): cada ponta da pílula anda por conta própria.
+// A da frente chega rápido e a de trás se estica e alcança depois, com uma folguinha de mola.
+function elasticFrames(start: number, end: number, width: number): Keyframe[] {
+  const total = 560;
+  const steps = 28;
+  const dir = end > start ? 1 : -1;
+  const lead = (ms: number) => 1 - Math.pow(1 - clamp01(ms / 300), 4);
+  const trail = (ms: number) => {
+    const p = clamp01((ms - 70) / 490);
+    return p >= 1 ? 1 : 1 - Math.exp(-9 * p) * Math.cos(7 * p);
+  };
+  return Array.from({ length: steps + 1 }, (_, step) => {
+    const ms = (step / steps) * total;
+    const left = start + (end - start) * (dir > 0 ? trail(ms) : lead(ms));
+    const right = start + width + (end - start) * (dir > 0 ? lead(ms) : trail(ms));
+    return { left: `${left}px`, width: `${Math.max(0, right - left)}px` };
+  });
+}
+
+function play(parts: TopBarParts, from: number, to: number): void {
   const start = parts.numbers[from]?.offsetLeft;
   const end = parts.numbers[to]?.offsetLeft;
   const target = parts.numbers[to];
   if (start === undefined || end === undefined || !target) return;
   const dir = to > from ? 1 : -1;
 
-  if (mode === 'deslizar') {
-    parts.indicator.animate([{ left: `${start}px` }, { left: `${end}px` }], {
-      duration: 550,
-      easing: 'cubic-bezier(.34,1.5,.5,1)',
-    });
-  } else {
-    const width = target.offsetWidth;
-    const left = Math.min(start, end);
-    parts.indicator.animate(
-      [
-        { left: `${start}px`, width: `${width}px`, transform: 'scale(1,1)' },
-        {
-          left: `${left}px`,
-          width: `${Math.abs(start - end) + width}px`,
-          transform: 'scale(1,.86)',
-          offset: 0.45,
-        },
-        { left: `${end}px`, width: `${width}px`, transform: 'scale(1.08,1.08)', offset: 0.8 },
-        { left: `${end}px`, width: `${width}px`, transform: 'scale(1,1)' },
-      ],
-      { duration: 640, easing: 'cubic-bezier(.3,.8,.3,1)' },
-    );
-  }
-
-  target.animate(
-    [{ transform: 'scale(1)' }, { transform: 'scale(1.18)' }, { transform: 'scale(1)' }],
-    {
-      duration: 380,
-      easing: 'ease-out',
-      delay: 120,
-    },
-  );
+  parts.indicator.animate(elasticFrames(start, end, target.offsetWidth), {
+    duration: 560,
+    easing: 'linear',
+  });
 
   parts.title?.animate(
     [
@@ -96,9 +88,11 @@ export function placeTopBar(parts: TopBarParts, current: number): void {
   const left = parts.numbers[current]?.offsetLeft ?? 0;
   parts.indicator.style.left = `${left}px`;
   parts.indicator.style.top = `${parts.numbers[current]?.offsetTop ?? 0}px`;
+  parts.indicator.style.width = `${parts.numbers[current]?.offsetWidth ?? 0}px`;
+  parts.indicator.style.height = `${parts.numbers[current]?.offsetHeight ?? 0}px`;
   const from = previousIndex;
   previousIndex = current;
   const mode = currentTopAnimation();
   if (from === null || from === current || mode === 'nenhuma' || reducedMotion()) return;
-  play(parts, from, current, mode);
+  play(parts, from, current);
 }

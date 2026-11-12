@@ -29,6 +29,7 @@ import { NotasPecas } from './notas-pecas';
 import { NotasModelos } from './notas-modelos';
 import { NotasCompostas } from './notas-compostas';
 import { NotasTelas } from './notas-telas';
+import { BarraIcones } from './barra-icones';
 import { ProvasHub } from './ideias-provas';
 
 const raiz = document.documentElement;
@@ -55,6 +56,7 @@ function Bancada() {
   if (peca === 'notasmodelos') return <NotasModelos />;
   if (peca === 'notascomp') return <NotasCompostas />;
   if (peca === 'notastelas') return <NotasTelas />;
+  if (peca === 'barraicones') return <BarraIcones />;
   return (
     <main className="vitrine">
       {!peca && <Secao>Peças que faltam: três versões de cada</Secao>}

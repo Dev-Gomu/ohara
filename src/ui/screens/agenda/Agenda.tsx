@@ -40,12 +40,10 @@ import { Faltas } from '../../faltas/Faltas';
 import { Notas } from '../../notas/Notas';
 
 const WEEK = 'agenda.semana';
-const LIST = 'agenda.lista';
 const GRADE = 'agenda.grade';
 const PREVIEW = 'agenda.previa';
 const SUBJECTS = 'agenda.materias';
 const COMPLETE = 'agenda.completar';
-const LIST_DAYS = 21;
 const SUBJECT_COLUMNS = 5;
 
 function movePage(view: number, day: string, step: number): string {
@@ -53,25 +51,21 @@ function movePage(view: number, day: string, step: number): string {
     const date = parseDay(day);
     return isoDay(new Date(date.getFullYear(), date.getMonth() + step, 1));
   }
-  return addDays(day, step * (view === 2 ? LIST_DAYS : 7));
+  return addDays(day, step * 7);
 }
 
 function columnsFor(data: StudyData, view: number, anchor: string, subjectId: string | null) {
-  if (view === 3) return gradeColumns(data, subjectId);
+  if (view === 2) return gradeColumns(data, subjectId);
   if (view === 1) return weekColumns(data, monthGrid(anchor), subjectId);
-  if (view === 2) {
-    const days = Array.from({ length: LIST_DAYS }, (_, index) => addDays(anchor, index));
-    return weekColumns(data, days, subjectId);
-  }
   return weekColumns(data, mondayWeekOf(anchor), subjectId);
 }
 
-function DayCell({ column, list }: { column: AgendaColumn; list: boolean }) {
+function DayCell({ column }: { column: AgendaColumn }) {
   return (
     <>
       <DayPill
-        weekday={list ? weekdayShort(column.day).toUpperCase() : ''}
-        number={list ? shortDate(column.day) : column.number}
+        weekday=""
+        number={column.number}
         today={column.day === today}
       />
       <span className={styles.eventos}>
@@ -93,13 +87,12 @@ function viewItems(month: string) {
   return [
     { id: 'semana', title: 'Semana', detail: 'dias e horas' },
     { id: 'mes', title: 'Mês', detail: month },
-    { id: 'lista', title: 'Lista', detail: `${LIST_DAYS} dias` },
     { id: 'grade', title: 'Grade', detail: 'horário fixo' },
   ];
 }
 
 export function Agenda() {
-  const view = useSelectedIndex(AGENDA_VIEWS, 4);
+  const view = useSelectedIndex(AGENDA_VIEWS, 3);
   const [notes] = useScreenMemory(NOTES_OPEN, false);
   const [faults] = useScreenMemory(FAULTS_OPEN, false);
   if (notes) return <Notas />;
@@ -116,8 +109,8 @@ function AgendaMain({ view }: { view: number }) {
   const subjectId = subjects[subjectIndex - 1]?.id ?? null;
   const anchor = shown;
   const columns = columnsFor(data, view, anchor, subjectId);
-  const hours = view === 0 || view === 3;
-  const content = [WEEK, AGENDA_MONTH, LIST, GRADE][view] ?? WEEK;
+  const hours = view === 0 || view === 2;
+  const content = [WEEK, AGENDA_MONTH, GRADE][view] ?? WEEK;
   const flat = hours ? columns.flatMap((column) => column.items) : columns.map((c) => c.items[0]);
   const selected = flat[useSelectedIndex(content, flat.length)];
   const selectedColumn = columns.find((column) => selected && column.items.includes(selected));
@@ -131,11 +124,11 @@ function AgendaMain({ view }: { view: number }) {
   const arrival =
     before.reduce((sum, column) => sum + column.items.length, 0) + Math.max(nowRow ?? 0, 0);
   const changePage = (step: number) => {
-    if (view !== 3) setShown(movePage(view, shown, step));
+    if (view !== 2) setShown(movePage(view, shown, step));
   };
   const views = viewItems(monthName(view === 1 ? anchor : today));
   const period =
-    view === 3
+    view === 2
       ? 'Toda semana'
       : view === 1
         ? monthName(anchor)
@@ -146,7 +139,7 @@ function AgendaMain({ view }: { view: number }) {
       {
         id: AGENDA_VIEWS,
         kind: 'nav',
-        nav: { axis: 'x', count: 4 },
+        nav: { axis: 'x', count: 3 },
         neighbors: { down: content },
         enterGoesTo: content,
         enterKeepsItem: true,
@@ -156,7 +149,7 @@ function AgendaMain({ view }: { view: number }) {
         kind: 'nav',
         nav: hours
           ? { axis: 'columns', count: flat.length, lengths: columns.map((c) => c.items.length) }
-          : { axis: view === 2 ? 'y' : 'grid', count: flat.length, columns: 7 },
+          : { axis: 'grid', count: flat.length, columns: 7 },
         neighbors: { up: AGENDA_VIEWS, right: PREVIEW },
         onActivate: () => actions[0]?.run(),
       },
@@ -221,13 +214,12 @@ function AgendaMain({ view }: { view: number }) {
           {hours ? (
             <AgendaWeek block={content} columns={columns} onOpen={() => actions[0]?.run()} />
           ) : (
-            <div className={view === 1 ? styles.mes : styles.lista}>
-              {view === 1 &&
-                columns.slice(0, 7).map((column) => (
-                  <span key={`sem-${column.key}`} className={styles.diaSemana}>
-                    {weekdayShort(column.day)}
-                  </span>
-                ))}
+            <div className={styles.mes}>
+              {columns.slice(0, 7).map((column) => (
+                <span key={`sem-${column.key}`} className={styles.diaSemana}>
+                  {weekdayShort(column.day)}
+                </span>
+              ))}
               {columns.map((column, index) => (
                 <NavItem
                   key={column.key}
@@ -237,7 +229,7 @@ function AgendaMain({ view }: { view: number }) {
                   label={shortDate(column.day)}
                   onOpen={() => actions[0]?.run()}
                 >
-                  <DayCell column={column} list={view === 2} />
+                  <DayCell column={column} />
                 </NavItem>
               ))}
             </div>

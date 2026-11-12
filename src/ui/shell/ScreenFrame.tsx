@@ -1,13 +1,15 @@
-import { useSyncExternalStore, type ReactNode } from 'react';
+import { useLayoutEffect, useRef, useSyncExternalStore, type ReactNode } from 'react';
 import { SCREENS } from '../../core/keyboard/actions';
 import { SCREEN_NAMES } from '../../core/keyboard/keys';
 import { PhoneBlock } from '../components/Block';
 import { Button } from '../components/Button';
 import { Island, LevelIndicator, Tab } from '../components/Island';
+import { ScreenIcon } from '../components/ScreenIcon';
 import { dispatch, useKeyboardState } from '../keyboard/store';
 import { openFaults, openNotes } from '../study/navigation';
 import { storage } from '../study/study';
 import styles from './ScreenFrame.module.css';
+import { placeTopBar } from './topAnimation';
 
 interface ScreenFrameProps {
   title: ReactNode;
@@ -66,11 +68,28 @@ export function ScreenFrame({ title, caps = true, bar, end, level = true, childr
   const phone = usePhonePages(focus.block);
   const cursorAt = (index: number) => focus.level === 'menu' && focus.menuIndex === index;
   const levelName: keyof typeof LEVEL_KEYS = focus.level === 'nav' ? 'field' : focus.level;
+  const bar_ = useRef<HTMLElement>(null);
+  const indicator = useRef<HTMLElement>(null);
+  const heading = useRef<HTMLHeadingElement>(null);
+
+  useLayoutEffect(() => {
+    const numbers = [...(bar_.current?.querySelectorAll<HTMLElement>('[data-menu-item]') ?? [])].slice(
+      0,
+      SCREENS.length,
+    );
+    if (indicator.current) {
+      placeTopBar(
+        { indicator: indicator.current, numbers, title: heading.current },
+        SCREENS.indexOf(screen),
+      );
+    }
+  }, [screen]);
 
   return (
     <main className={styles.tela}>
-      <nav className={styles.topo} data-menu aria-label="Telas">
-        <Island label="Telas">
+      <nav ref={bar_} className={styles.topo} data-menu aria-label="Telas">
+        <Island label="Telas" slides>
+          <i ref={indicator} className={styles.indicador} aria-hidden="true" />
           {SCREENS.map((id, index) => (
             <Tab
               key={id}
@@ -79,12 +98,13 @@ export function ScreenFrame({ title, caps = true, bar, end, level = true, childr
               current={id === screen}
               cursor={cursorAt(index)}
               menuItem
+              icon={<ScreenIcon screen={id} />}
               onOpen={() => dispatch({ type: 'goToScreen', screen: id })}
             />
           ))}
         </Island>
         {bar}
-        <h1 className={styles.titulo} data-caps={caps}>
+        <h1 ref={heading} className={styles.titulo} data-caps={caps}>
           {title}
         </h1>
         <div className={styles.fim}>
