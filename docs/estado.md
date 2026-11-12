@@ -8,7 +8,7 @@
 - Sessões 1 (papel), 2 (visual) e 3 (paletas) da faxina: feitas. `lab/` só tem índice, sala, vitrine (agora com DayItem e FaultCell) e `provas-dias.html`; `diretrizes-visuais.md` virou resumo de uma página.
 
 ## Próximo passo
-**Sessão 4 (Sonnet):** resolver o teste "Agenda: prova nova aparece no Hub", fazer `plano/roteiro-5min-publicacao.md` e pedir a publicação ao usuário.
+**Sessão 4 (Sonnet):** teste do Hub corrigido (era o teste, não o app: o Hub mostra só a sigla). e2e: 58 passam. Falta o usuário fazer `plano/roteiro-5min-publicacao.md` e pedir a publicação.
 
 ## Esperando o usuário
 - Sessão 4: fazer `plano/roteiro-5min-publicacao.md` e pedir a publicação.

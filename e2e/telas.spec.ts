@@ -332,7 +332,7 @@ test('Agenda: prova nova aparece no Hub', async ({ page }) => {
   await page.getByRole('button', { name: /Criar/ }).click();
   await expect(page.getByTestId('pergunta')).toBeHidden();
   await page.keyboard.press('Alt+Digit1');
-  await expect(page.locator('[data-block="hub.provas"]')).toContainText('Bioética');
+  await expect(page.locator('[data-block="hub.provas"]')).toContainText('BIO');
 });
 
 test('Agenda: Exportar .ics baixa o arquivo', async ({ page }) => {
