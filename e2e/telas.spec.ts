@@ -287,7 +287,9 @@ test('a Paleta abre matéria e aula pelo nome', async ({ page }) => {
   await expect(tela(page)).toHaveText('mesa');
   await expect(page.locator('nav h1')).toHaveText('Farmacocinética');
   await page.keyboard.press('Alt+KeyP');
-  await expect(page.getByTestId('paleta')).toBeVisible();
+  const campo = page.getByTestId('paleta').getByRole('searchbox');
+  await expect(campo).toBeFocused();
+  await expect(campo).toHaveValue('');
   await page.keyboard.type('Imunologia');
   await expect(primeiro).toContainText('Imunologia');
   await page.keyboard.press('Enter');
