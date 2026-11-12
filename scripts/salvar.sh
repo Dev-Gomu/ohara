@@ -17,6 +17,7 @@ if ! saida=$(npm run check 2>&1); then
   exit 1
 fi
 
+node scripts/mapa.mjs >/dev/null 2>&1 || true
 git add -u
 git add src docs lab e2e scripts package.json CLAUDE.md 2>/dev/null || true
 if [ -n "${2:-}" ]; then git commit -q -m "$mensagem" -m "$2"; else git commit -q -m "$mensagem"; fi

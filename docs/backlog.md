@@ -30,7 +30,6 @@ Lista curta do que foi **adiado ou ainda não decidido**. O que está no plano d
 
 | ID | Item | Pergunta |
 |---|---|---|
-| B08 | **Livro** | **Decidido em 06/11/2026:** PDF que pode ser anexado a uma matéria (livro inteiro) ou a uma aula (capítulo). Ver glossário em `visao.md` |
 
 ## Cortados (não voltam sem decisão explícita do usuário)
 
@@ -45,16 +44,13 @@ Lista curta do que foi **adiado ou ainda não decidido**. O que está no plano d
 - 2026-11-05: Ideias que sobraram do legado, sem decisão: cloze nos cartões, suspender cartão, estudar só uma prova, limite de novos por dia, pomodoro, paleta de comandos no gerenciador de cartões, escolha do ícone de atalhos (o "?" do legado não agradou).
 - 2026-11-05: Manter o app antigo no ar até o novo ter tudo o que o usuário usa.
 - 2026-11-07: **Agenda (Etapa 9, regras em `regras.md`):** Mover e Sem aula na Prévia, aula avulsa, inverter quinzenal, editar a Grade pelo cronograma, prova só com a matéria, campos de prova (bimestre, conteúdo, local, observação), atrasados no topo da Lista, importar .ics como atalho da Grade.
-- 2026-11-07: **Cores mais confortáveis** (tema claro primeiro). Três protótipos recusados em `docs/prototipos/visual-menos-colorido.html`; retomar depois das telas.
 - 2026-11-07: **Busca FTS** do SQLite quando a busca em memória ficar lenta. Fora da Etapa 7.
 - 2026-11-07: **Busca dentro do PDF.** Fora da Etapa 10. (Anotar sobre o PDF: descartado pelo usuário.)
 - 2026-11-07: **Lixeira visível:** hoje o que se exclui some da tela e fica marcado no banco (`deleted = 1`), com Desfazer por 10 s (Alt Z). Falta uma tela para ver e restaurar depois disso. Também falta o ⋮ por toque na régua de pastas (hoje só Alt O).
-- 2026-11-07: **Ler o livro numa tela (PENDENTE DE DECISÃO DO USUÁRIO, fora da fila):** hoje o livro só se anexa e remove pelo ⋮ da matéria. Recomendação: janela de consulta. Também: anexar capítulo a uma aula.
-- 2026-11-08: **Tipo no cartão de provas do Hub (T/A em pílula):** desenho pronto em `lab/provas-n.html` (S2, D103). Falta o dado: dar tipo às provas (ou trazer os eventos `trabalho` da Agenda para o bloco) e renomear o bloco.
-- 2026-11-08: **Notas, aplicar D113 e D114 no app** (núcleo em `core/grades` com testes, migração dos itens cifrados, telas e janelas). Vem **depois** da escolha da identidade (cor), para já nascer nos tokens novos. Pendentes menores: teclado da régua de matérias (← → andam, ↓ desce às faixas), comportamento com 12+ matérias (rolagem por dentro e busca), tela travada no estilo novo.
+- 2026-11-07: **Ler o livro numa tela:** hoje o livro só se anexa e remove pelo ⋮ da matéria. Recomendação: janela de consulta. Também: anexar capítulo a uma aula.
 - 2026-11-08: **Situação nova (No ritmo, Fora do alcance)** do ClaudeWeb: usuário ficou com a atual por ora. Reavaliar se a pergunta "ainda dá para salvar a matéria?" fizer falta.
-- 2026-11-08: **Identidade do ClaudeWeb (Papel Frio / Ardósia):** avaliar como paleta de teste. Recomendação: Ardósia como base, cor de alerta quente separada das matérias, seleção em tom suave e cobalto só em ação.
 - Tipo "Apresentação" na Agenda (hoje só aula, trabalho e compromisso), para aparecer no bloco de avaliações do Hub (D120).
-- 2026-11-10: **Layout do Hub em 1920x1080 (pendente, Fable):** agenda de hoje estilo B escolhida; provas em faixa ou lista vertical em aberto. Brief em `docs/plano/hub-layouts-brief.md`, bancada `lab/pecas-novas.html?peca=hublayout`.
 - Notas: busca `/` na régua, metas por semestre ("Precisa no 2º bim."), janela de esquema com modelos 5 + 5 / 3 + 7 e "Mais opções" (D114) ainda não levadas ao app.
-- Colocar DayItem e FaultCell (D128) na vitrine (lab/vitrine.html).
+- 2026-11-12: Botões "Registrar falta" e "Novo evento" no calendário do Hub.
+- 2026-11-12: Três botões fora das peças da vitrine (Atualizar, ErrorScreen, Criar): trocar por peças.
+- 2026-11-12: Dividir `Grades.module.css` (passa de 300 linhas).

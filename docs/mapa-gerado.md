@@ -8,8 +8,11 @@
 - L12 ## Adiados (entram no fim do projeto, nesta ordem)
 - L20 ## Condicionais e técnicos
 - L29 ## Conceitos a esclarecer
-- L35 ## Cortados (não voltam sem decisão explícita do usuário)
-- L41 ## Ideias novas
+- L34 ## Cortados (não voltam sem decisão explícita do usuário)
+- L40 ## Ideias novas
+
+### docs/decisoes-arquivo.md
+- L1 # Decisões substituídas
 
 ### docs/decisoes.md
 - L1 # Ohara: registro de decisões
@@ -24,23 +27,34 @@
 - L101 ## 9. Qualidade
 - L110 ## 10. Trabalho com o Claude Code
 - L119 ## Registro da Etapa 1 (05/11/2026)
-- L152 ## Planos das Etapas 7 a 13 (Opus, 07/11/2026)
-- L180 ## Pendências consolidadas
-- L187 ## Itens a verificar na Etapa 1
+- L151 ## Planos das Etapas 7 a 13 (Opus, 07/11/2026)
+- L179 ## Pendências consolidadas
+- L186 ## Identidade única e paletas (12/11/2026)
 
 ### docs/diretrizes-visuais.md
 - L1 # Ohara: diretrizes visuais
-- L10 ## 1. Princípio
-- L23 ## 2. Modelo de navegação
-- L90 ## 3. Foco e estados
-- L131 ## 4. Mosaicos
-- L163 ## 5. Padrões de layout
-- L200 ## 6. Linguagem visual
-- L270 ## 7. Componentes
-- L285 ## 8. Checklist de cada proposta
-- L326 ## 9. Modelo de proposta
-- L344 ## 10. O que corrigir nos HTML do ClaudeWeb
-- L361 ## 11. Pendências
+- L9 ## 1. Princípio
+- L22 ## 2. Modelo de navegação
+- L87 ## 3. Foco e estados
+- L153 ## 4. Mosaicos
+- L185 ## 5. Padrões de layout
+- L222 ## 6. Linguagem visual
+- L279 ## 7. Peças: quando usar cada uma
+- L309 ## 8. Checklist de cada proposta
+- L352 ## 9. Modelo de proposta
+- L370 ## 10. A confirmar
+
+### docs/estado.md
+- L1 # Estado do Ohara (atualizado em 12/11/2026)
+- L5 ## Onde estamos
+- L10 ## Próximo passo
+- L13 ## Arquivos envolvidos
+- L16 ## Esperando o usuário
+- L21 ## Iniciativas abertas (máx. 3)
+
+### docs/mapa.md
+- L1 # Mapa do projeto
+- L7 ## Se o assunto é X, abra Y
 
 ### docs/regras.md
 - L1 # Regras herdadas do legado: Agenda e Grade
@@ -84,96 +98,7 @@
 - L97 ## 9. Glossário
 
 ### docs/plano/_indice.md
-- L1 # Ohara: plano de etapas
-- L12 ## Fase 0: preparação (fora do Claude Code)
-- L20 ## Ordem de execução (07/11/2026)
-- L58 ## Fase A: interface com dados fictícios (sem banco)
-- L69 ## Fase B: dados reais
-- L81 ## Depois do essencial
-- L85 ## Pendências que travam etapas
-- L97 ## Acréscimo (05/11/2026): fontes para `regras.md` e `telas.md`
-
-### docs/plano/acervo-visual.md
-- L1 # Revisão visual do Acervo: plano em 6 etapas
-- L9 ## O que vi
-- L27 ## Etapas
-- L38 ## Cuidados
-- L43 ## Resultado das etapas 1 a 5 (refeito considerando os DOIS temas, 08/11/2026)
-
-### docs/plano/etapa-01.md
-- L1 # Etapa 1: fundação
-- L6 ## Objetivo
-- L10 ## Antes de começar (o usuário faz)
-- L16 ## Escopo
-- L29 ## Fora de escopo (não fazer)
-- L33 ## Critérios de pronto (verificáveis)
-- L48 ## Roteiro de 5 minutos (o usuário)
-- L59 ## Ao terminar
-- L65 ## Pontos de atenção
-- L71 ## Acréscimo (05/11/2026): referência do legado
-
-### docs/plano/etapa-02.md
-- L1 # Etapa 2: teclado
-- L7 ## Objetivo
-- L11 ## Escopo
-- L37 ## Regras novas a implementar e registrar
-- L49 ## Fora de escopo (não fazer)
-- L56 ## Critérios de pronto (verificáveis)
-- L72 ## Roteiro de 5 minutos (o usuário)
-- L87 ## Ao terminar
-- L93 ## Pontos de atenção
-
-### docs/plano/etapa-03.md
-- L1 # Etapa 3: casca de navegação
-- L5 ## Feito
-- L12 ## Critérios de pronto
-- L15 ## Roteiro de 5 minutos
-
-### docs/plano/etapa-04.md
-- L1 # Etapa 4: mosaico e Mesa
-- L5 ## Feito
-- L12 ## Roteiro de 5 minutos
-
-### docs/plano/etapa-05.md
-- L1 # Etapa 5: fixtures e telas de leitura
-- L5 ## Feito
-- L12 ## Roteiro de 5 minutos
-
-### docs/plano/etapa-06.md
-- L1 # Etapa 6: Treino, Agenda, Configs e janelas
-- L5 ## Feito
-- L12 ## Roteiro de 5 minutos
-
-### docs/plano/etapa-07.md
-- L1 # Etapa 7: Banco
-- L7 ## Objetivo
-- L10 ## Desenho (decidido, ver D84 a D86)
-- L79 ## Fora do escopo
-- L82 ## Passos (um commit cada)
-- L91 ## Testes obrigatórios
-- L96 ## Critérios de pronto
-- L103 ## Roteiro de 5 minutos (usuário, no Chrome do PC e no tablet)
-
-### docs/plano/etapa-08.md
-- L1 # Etapa 8: Acervo e Anotações (telas)
-- L5 ## Feito
-- L13 ## Falta para ficar real
-- L16 ## Roteiro de 5 minutos
-
-### docs/plano/etapa-09.md
-- L1 # Etapa 9: Agenda, Grade e Lembretes (telas)
-- L5 ## Feito
-- L13 ## Falta para ficar real
-- L16 ## Roteiro de 5 minutos
-
-### docs/plano/etapa-10.md
-- L1 # Etapa 10: Slides e Livros em PDF
-- L5 ## Objetivo
-- L8 ## Desenho
-- L19 ## Fora do escopo
-- L22 ## Testes
-- L26 ## Critérios de pronto
-- L31 ## Roteiro de 5 minutos
+- L1 # Ohara: fila atual
 
 ### docs/plano/etapa-11.md
 - L1 # Etapa 11: Treino real com FSRS
@@ -197,62 +122,21 @@
 - L51 ## Critérios de pronto
 - L56 ## Roteiro de 5 minutos
 
-### docs/plano/etapa-13.md
-- L1 # Etapa 13: Notas do boletim cifradas
-- L7 ## Pergunta ao usuário no início (produto)
-- L10 ## Cifra (D35 a D40, D87)
-- L23 ## Regras das notas (N1 de `regras.md`, detalhadas do legado)
-- L34 ## Testes obrigatórios (D42)
-- L39 ## Critérios de pronto
-- L44 ## Roteiro de 5 minutos
+### docs/plano/faxina.md
+- L1 # Plano de faxina e retomada (12/11/2026)
+- L7 ## Por que (resumo das medições, 44 sessões)
+- L13 ## Decisões do usuário (12/11/2026)
+- L21 ## Sessão 1: faxina de papel (Sonnet). FEITA em 12/11/2026. Não toca em `src/`
+- L35 ## Sessão 2: faxina visual (Sonnet)
+- L47 ## Sessão 3: três paletas (Fable na bancada, Sonnet no código)
+- L52 ## Sessão 4: publicação (Sonnet)
+- L57 ## Sessão 5: Etapa 11, Treino com FSRS (Opus)
+- L61 ## Sessão 6: Etapa 12, sincronização (Opus, modo de plano)
+- L66 ## Sessão 7 em diante: varredura (Sonnet)
+- L70 ## O que é só do usuário
 
-### docs/plano/foco-mosaico.md
-- L1 # Foco visual dos blocos: plano de implementação (Etapa 7)
-- L8 ## O que foi decidido
-- L27 ## Passos
-- L38 ## Cuidados
-
-### docs/plano/identidade-tipografia.md
-- L1 # Plano: tipografia e identidade do zero
-- L9 ## 1. Por que as rodadas 1 e 2 não funcionaram (hipóteses)
-- L15 ## 2. O que continua e o que sai
-- L26 ## 3. Sistema: quatro papéis
-- L37 ## 4. Candidatas (medidas em 06/11/2026, nos arquivos do Google Fonts)
-- L50 ## 5. Execução
-- L67 ## 6. Critérios de escolha
-- L76 ## 7. Pronto quando
-- L81 ## 8. Resultado da execução
-
-### docs/plano/loop-telas.md
-- L1 # Loop das telas: etapas 3, 4, 5, 6, 8 e 9
-- L5 ## Regras para cada sessão
-- L18 ## Etapas 8 e 9 sem banco
-- L25 ## Situação
-- L36 ## Escolhas feitas sem o usuário
-- L61 ## Rodada 2 (07/11/2026): Treino, editor de cartões e celular
-- L74 ## Etapa 7 (07/11/2026, Sonnet): banco
-- L87 ## Pendências pequenas (07/11/2026, Sonnet)
-- L99 ## Barra de formatação ocultável (07/11/2026)
-
-### docs/plano/referencia-knowunity.md
-- L1 # Referência visual: landing da Knowunity
-- L6 ## 1. Clima
-- L9 ## 2. Cores medidas
-- L27 ## 3. Tipografia
-- L34 ## 4. Formas
-- L37 ## 5. Proposta de modo claro (derivada, não existe no site)
-- L50 ## 6. Conflito com o que já está decidido
-
-### docs/plano/tipografia-seis-papeis.md
-- L1 # Plano: duas tipografias em seis papéis
-- L9 ## 1. O que cada papel exige
-- L19 ## 2. Medição (arquivos reais do Google Fonts)
-- L26 ## 3. Tipografia 1: Estante
-- L41 ## 4. Tipografia 2: Bancada
-- L56 ## 5. Decisões comuns
-- L62 ## 6. Descartadas depois de ver
-- L67 ## 7. Execução
-- L76 ## 8. Resultado da Bancada (Rodada 4)
+### docs/plano/roteiro-5min-publicacao.md
+- L1 # Roteiro de 5 minutos: antes de publicar no main
 
 ## Código em src/ (primeira linha de comentário ou primeiro export)
 
@@ -313,6 +197,8 @@
 - src/core/study/session.test.ts: (sem comentário nem export no topo)
 - src/core/study/session.ts: A data da próxima revisão vem do FSRS na Etapa 11. Aqui só se decide a fila da sessão.
 - src/core/study/storage.ts: A tela só conhece esta interface: o banco (data/) e a memória (testes) a implementam.
+- src/core/study/subjectTiles.test.ts: (sem comentário nem export no topo)
+- src/core/study/subjectTiles.ts: Peça da grade de disciplinas do Treino. id nulo é "Todas".
 - src/core/study/types.ts: Posição na paleta, nunca o valor da cor: o tema pode mudar sem mexer nos dados.
 - src/core/study/versions.test.ts: (sem comentário nem export no topo)
 - src/core/study/versions.ts: D34: guarda uma versão a cada 5 minutos, até 50 por aula. Grava a versão anterior à edição,
@@ -327,17 +213,47 @@
 - src/data/worker.ts: Fica pronto assim que o pool existe, para o export funcionar mesmo se a migração falhar.
 - src/env.d.ts: (sem comentário nem export no topo)
 - src/main.tsx: Modo exemplo (?exemplo): outro banco, preenchido com dados fictícios. Só para testes e dev.
-- src/ui/components/Block.module.css: (sem comentário nem export no topo)
+- src/ui/components/Block.module.css: Só o bloco com o cursor acende; os outros recuam para o fundo (diretrizes 3.3).
 - src/ui/components/Block.tsx: Bloco que o celular mostra agora. As telas maiores ignoram (D79).
 - src/ui/components/BlockIcon.tsx: `export type IconName = keyof typeof PATHS;`
+- src/ui/components/Button.module.css: Sobre azul cheio o cursor ganha um segundo aro, para não sumir.
+- src/ui/components/Button.tsx: 'primary': azul cheio, um por bloco. 'quiet': só texto, para ajuste menor.
 - src/ui/components/CardBack.module.css: (sem comentário nem export no topo)
 - src/ui/components/CardBack.tsx: Verso do cartão já formatado: seção, listas e marcas clínicas (+ a favor, − contra, ? dúvida).
+- src/ui/components/Cards.module.css: Dia de avaliação: peça recuada com os bloquinhos das matérias.
+- src/ui/components/Cards.tsx: Texto do app, já pronto: "prova", "trabalho", "apres.".
+- src/ui/components/Controls.module.css: Em coluna, o flex: 1 esmagaria ou esticaria o campo.
+- src/ui/components/Controls.tsx: Campo de busca e de formulário. As teclas são do texto: o listener cuida disso pelo nível.
+- src/ui/components/DayItem.module.css: (sem comentário nem export no topo)
+- src/ui/components/DayItem.tsx: Posição da cor da matéria: tinge o cartão inteiro (D128).
+- src/ui/components/FaultCell.module.css: Bolinha de notificação no canto superior direito da sigla; o anel vem da cor do bloco.
+- src/ui/components/FaultCell.tsx: Horas faltadas e limite até agora; null enquanto não houve aula.
+- src/ui/components/Filter.module.css: (sem comentário nem export no topo)
+- src/ui/components/Filter.tsx: Filtro de uma escolha por matéria: marca na cor da matéria sempre à vista (serve de legenda);
+- src/ui/components/Grades.module.css: ---------- 1. Célula de nota ----------
+- src/ui/components/Grades.tsx: Peças de Notas aprovadas nos degraus 1 a 3 (D121 a D124). Só desenho: as contas vêm da tela.
+- src/ui/components/Island.module.css: O ícone acompanha o tamanho do número.
+- src/ui/components/Island.tsx: Ilha: agrupa controles na barra do topo (telas, nível, módulos).
+- src/ui/components/Key.module.css: Quem hospeda a tecla pode trocar o fundo e o relevo (botão principal, ilha).
+- src/ui/components/Key.tsx: Tecla: a mesma pecinha em todo lugar que ensina um atalho (diretrizes 6.6). Nunca clicável sozinha.
+- src/ui/components/ListItem.module.css: Largura fixa: as horas alinham de uma linha para a outra.
+- src/ui/components/ListItem.tsx: Aula que já aconteceu: título apagado, continua navegável.
 - src/ui/components/NavItem.tsx: 'anel' = controle pequeno (contorno fino de 2px); 'anel-interno' = item de lista (4px);
-- src/ui/components/Ruler.module.css: (sem comentário nem export no topo)
-- src/ui/components/Ruler.tsx: Régua de filtro: o que escolhe fica fora do que é escolhido. Criar não seleciona.
+- src/ui/components/Pill.module.css: (sem comentário nem export no topo)
+- src/ui/components/Pill.tsx: Matéria: só a sigla, sobre a cor guardada como posição.
+- src/ui/components/Preview.module.css: Só o corpo rola: título e ações não pulam ao trocar de item.
+- src/ui/components/Preview.tsx: Linha de apoio: hora, matéria, contagens.
+- src/ui/components/Ruler.module.css: "+" desenhado com duas barras: o glifo de texto desalinhava dentro da pílula.
+- src/ui/components/Ruler.tsx: Criar fica no fim da régua, é peça comum e não seleciona.
+- src/ui/components/ScreenIcon.tsx: (sem comentário nem export no topo)
+- src/ui/components/Target.tsx: Onde a peça vive: `nav` liga ao teclado (campo navegável); sem ele, a tela informa
+- src/ui/components/Toggles.module.css: O alvo de toque ocupa a altura inteira da ilha.
+- src/ui/components/Toggles.tsx: Grupo de alternadores ou de abas: a mesma ilha recuada da barra do topo.
 - src/ui/components/Window.module.css: (sem comentário nem export no topo)
 - src/ui/components/Window.tsx: O Esc é do listener: ele fecha pelo estado, e o React Aria nem chega a ver a tecla (D08).
 - src/ui/faltas/Faltas.tsx: (sem comentário nem export no topo)
+- src/ui/faltas/summary.ts: Horas faltadas e o limite até agora; null enquanto não houve aula.
+- src/ui/keyboard/bars.ts: Barras de um bloco: a de cima é o cabeçalho (abas, ferramentas) e a de baixo é o rodapé
 - src/ui/keyboard/listener.ts: Painel flutuante de um campo (a bolha das Anotações): tocar nele mantém o cursor no texto.
 - src/ui/keyboard/store.ts: Devolver false deixa a tecla seguir o caminho normal.
 - src/ui/keyboard/useBlocks.ts: Cada tela declara seus blocos. Sem deps: a contagem de itens muda com o filtro.
@@ -345,8 +261,10 @@
 - src/ui/mosaic/Mosaic.tsx: (sem comentário nem export no topo)
 - src/ui/mosaic/useMosaic.ts: O arranjo vive em memória até existir banco: o banco o guardará por aula e por aparelho.
 - src/ui/notas/Notas.module.css: (sem comentário nem export no topo)
-- src/ui/notas/Notas.tsx: (sem comentário nem export no topo)
+- src/ui/notas/Notas.tsx: `export function Notas()`
+- src/ui/notas/NotasAberto.tsx: (sem comentário nem export no topo)
 - src/ui/notas/forms.ts: `export function askSetup(): void`
+- src/ui/notas/model.ts: Contas de tela de Notas: transforma itens e esquema nos números que as peças mostram (D123).
 - src/ui/notas/session.ts: D41: a chave mestra só existe em memória e some depois de 2 minutos sem uso.
 - src/ui/screens/acervo/Acervo.module.css: (sem comentário nem export no topo)
 - src/ui/screens/acervo/Acervo.tsx: `export function Acervo()`
@@ -363,9 +281,9 @@
 - src/ui/screens/configs/Configs.module.css: (sem comentário nem export no topo)
 - src/ui/screens/configs/Configs.tsx: `export function Configs()`
 - src/ui/screens/configs/configsData.ts: `export interface Row`
-- src/ui/screens/hub/Hub.module.css: Faixa de altura fixa; a sobra de altura fica dentro do corpo, entre o dia e as siglas, que se
-- src/ui/screens/hub/Hub.tsx: `export function Hub()`
-- src/ui/screens/hub/HubBlocks.tsx: `export function ExamsBlock({ id, days }: { id: string; days: readonly ExamDay[] })`
+- src/ui/screens/hub/Hub.module.css: (sem comentário nem export no topo)
+- src/ui/screens/hub/Hub.tsx: Altura que as Provas precisam: cartão de 86 px mais a margem de 8 px dos dois lados.
+- src/ui/screens/hub/HubBlocks.tsx: `export function ExamsBlock({ id, days }: { id: string; days: readonly AssessmentDay[] })`
 - src/ui/screens/mesa/CardsBlock.module.css: (sem comentário nem export no topo)
 - src/ui/screens/mesa/CardsBlock.tsx: O rascunho fica na memória da tela, por aula, até salvar (não sobrevive a fechar o app).
 - src/ui/screens/mesa/Mesa.module.css: (sem comentário nem export no topo)
@@ -373,6 +291,7 @@
 - src/ui/screens/mesa/NotesBlock.tsx: (sem comentário nem export no topo)
 - src/ui/screens/mesa/SlidesViewer.tsx: (sem comentário nem export no topo)
 - src/ui/screens/mesa/useNotesEditor.ts: `export function useNotesEditor(lessonId: string, html: string): Editor | null`
+- src/ui/screens/treino/Inicio.module.css: Tela inicial do Treino: uma coluna de blocos no centro; "Ajustar" abre a lista ao lado.
 - src/ui/screens/treino/TrainingChoice.tsx: `export function TrainingChoice({ onStart }: TrainingChoiceProps)`
 - src/ui/screens/treino/TrainingSession.tsx: `export function TrainingSession({ session, onChange }: TrainingSessionProps)`
 - src/ui/screens/treino/Treino.module.css: O cursor da lista não comanda nada: só aparece com o bloco ativo (diretriz 3.2).
@@ -392,12 +311,13 @@
 - src/ui/shell/PromptWindow.tsx: Formulário curto de qualquer tela. Enter envia, Esc cancela.
 - src/ui/shell/ReminderWindow.tsx: `export function ReminderWindow()`
 - src/ui/shell/ScreenFrame.module.css: (sem comentário nem export no topo)
-- src/ui/shell/ScreenFrame.tsx: Uma tela por vez no app, então basta observar o documento.
-- src/ui/shell/Shell.module.css: (sem comentário nem export no topo)
+- src/ui/shell/ScreenFrame.tsx: Falso quando um modo passageiro (Redimensionar) toma o lugar do indicador de nível.
+- src/ui/shell/Shell.module.css: Tecla sobre o botão amarelo do aviso.
 - src/ui/shell/Shell.tsx: (sem comentário nem export no topo)
 - src/ui/shell/UndoBar.tsx: `export function UndoBar()`
 - src/ui/shell/commands.ts: `export const CONSULT_WINDOWS = [`
 - src/ui/shell/topAnimation.ts: Preferência de aparelho, como o tema: sem armazenamento vale o padrão.
+- src/ui/shell/topTabs.ts: Como a barra do topo mostra as telas: só o número, número com ícone, só o ícone ou o ícone
 - src/ui/study/actions.ts: `export function toggleReminder(id: string | undefined): void`
 - src/ui/study/attach.ts: `export async function attach(`
 - src/ui/study/download.ts: `export function downloadBytes(bytes: Uint8Array, filename: string): void`
@@ -411,6 +331,6 @@
 - src/ui/study/undo.ts: D: exclusão é lógica no banco e tem Desfazer (regras.md G8). `label` aparece no aviso.
 - src/ui/styles/base.css: (sem comentário nem export no topo)
 - src/ui/styles/fonts.css: Fontes da D67, servidas pelo app (D68). Licença OFL.
-- src/ui/styles/paletas.css: Paletas de teste (sem cores quentes). A original fica sem atributo; Configs e ?paleta=a|b trocam.
+- src/ui/styles/paletas.css: Paletas alternativas (sem cores quentes). A Ardósia é a base, sem atributo (tokens.css); Configs e ?paleta=a|b trocam.
 - src/ui/styles/tokens.css: Tokens do Ohara: docs/diretrizes-visuais.md explica cada regra.
 - src/ui/theme.ts: Preferência de aparelho, não dado: se o armazenamento falhar, vale o tema do sistema.

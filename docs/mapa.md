@@ -2,7 +2,7 @@
 
 > `docs/mapa-gerado.md` é gerado por `node scripts/mapa.mjs` (títulos e linhas de cada doc, e a primeira linha de cada arquivo de `src/`). Não edite ele à mão; rode o script de novo.
 
-Use este mapa para ir direto ao trecho certo. Abra só a seção indicada, não o arquivo inteiro. Os IDs `D..` são de `docs/decisoes.md` (vão até D109).
+Use este mapa para ir direto ao trecho certo. Abra só a seção indicada, não o arquivo inteiro. Os IDs `D..` são de `docs/decisoes.md` (vão até D131).
 
 ## Se o assunto é X, abra Y
 
@@ -17,7 +17,7 @@ Use este mapa para ir direto ao trecho certo. Abra só a seção indicada, não 
 - **Testes de teclado:** `src/core/keyboard/*.test.ts`. Bug de teclado vira teste antes da correção.
 
 ### Dados e banco
-- **Modelo de dados, OPFS, falhas:** `docs/plano/etapa-07.md`, seções "Desenho", "Abertura e falhas" e "Esquema". Decisões D84 a D86, D22.
+- **Modelo de dados, OPFS, falhas:** `docs/arquivo/etapa-07.md`, seções "Desenho", "Abertura e falhas" e "Esquema". Decisões D84 a D86, D22.
 - **Espelho de leitura e escrita:** D84. Código em `src/core/db/diff.ts` e `src/data/worker.ts`.
 - **Migrações SQL:** `src/core/db/migrations.ts` e `src/data/migrationList.ts`. Sem ORM (D45).
 - **Backup e importação:** `src/core/db/backup.ts`; D97.
@@ -27,7 +27,7 @@ Use este mapa para ir direto ao trecho certo. Abra só a seção indicada, não 
 - **Hub (Alt 1), Mesa (2), Acervo (3), Treino (4), Agenda (5), Configs (6), janelas de consulta:** `docs/telas.md`, seções 1 a 6 e "Janelas de consulta".
 - **Código das telas:** `src/ui/screens/<tela>/`. Casca e navegação: `src/ui/shell/`.
 - **Mosaico (motor dwindle, mosaico fixo e livre):** `src/core/mosaic/tree.ts` e `src/ui/mosaic/`. Decisão D73 (livre x fixo) e D10.
-- **Foco visual dos blocos:** `docs/plano/foco-mosaico.md`; D105 e D109.
+- **Foco visual dos blocos:** `docs/arquivo/foco-mosaico.md`; D105 e D109.
 - **Cartões de provas no Hub:** código em `src/ui/screens/hub/` (`HubBlocks.tsx`). Estado e regras de design: `docs/telas.md`, seção 1.
 
 ### Agenda, Grade e lembretes
@@ -42,7 +42,7 @@ Use este mapa para ir direto ao trecho certo. Abra só a seção indicada, não 
 
 ### Notas do boletim (cifradas)
 - **Cifra e derivação de chave:** `docs/decisoes.md` seção 6 (D35 a D40, D87 para PBKDF2).
-- **Plano:** `docs/plano/etapa-13.md`.
+- **Plano:** `docs/arquivo/etapa-13.md`.
 - **Código:** `src/core/secret/` (`codec.ts`, `vault.ts`) e `src/core/grades/`.
 - **Atenção:** Notas do boletim não são Anotações (texto das aulas).
 
@@ -60,7 +60,7 @@ Use este mapa para ir direto ao trecho certo. Abra só a seção indicada, não 
 ### Etapas e plano
 - **Ordem, fila e status de cada etapa:** `docs/plano/_indice.md`, seções "Ordem de execução" e "Fase A/B".
 - **Etapa atual:** o arquivo `docs/plano/etapa-XX.md` da etapa. Só ela é detalhada.
-- **Histórico das rodadas de telas:** `docs/plano/loop-telas.md`.
+- **Histórico das rodadas de telas:** `docs/arquivo/loop-telas.md`.
 - **Pendências de cor e identidade:** `docs/plano/identidade-tipografia.md` e `docs/plano/tipografia-seis-papeis.md`. D67 e D68 fecham a tipografia.
 
 ### Diretrizes visuais
@@ -68,7 +68,7 @@ Use este mapa para ir direto ao trecho certo. Abra só a seção indicada, não 
 - **Foco e sete estados:** seção 3 (D105).
 - **Cor, tipografia e espaço:** seção 6 (tokens em `src/ui/styles/tokens.css`).
 - **Paletas de teste A e B:** `src/ui/styles/paletas.css`. O usuário ainda escolhe.
-- **Revisão visual do Acervo:** `docs/plano/acervo-visual.md` (D108).
+- **Revisão visual do Acervo:** `docs/arquivo/acervo-visual.md` (D108).
 
 ### Testes e qualidade
 - **`npm run check`:** tipos, lint e Vitest. Portão único (D48).

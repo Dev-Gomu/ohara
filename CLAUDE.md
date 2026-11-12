@@ -3,12 +3,11 @@
 App pessoal de estudo de medicina (PWA). **Projeto novo, reescrito do zero.** A fonte da verdade é `docs/`, não o app antigo.
 
 ## Leia antes de agir
-- `docs/visao.md`: para quem é, critérios, o que NÃO faremos, glossário.
-- `docs/decisoes.md`: decisões técnicas (IDs D01 a D66). Não contrarie uma `Decidida` sem avisar.
-- `docs/plano/_indice.md` e o arquivo da etapa atual: o que fazer agora.
-- `docs/backlog.md`: onde vão as ideias novas.
-- `docs/diretrizes-visuais.md`: obrigatório antes de propor ou mudar qualquer layout (checklist e modelo de proposta).
-- `docs/teclado.md`, `docs/telas.md`, `docs/regras.md`: só se existirem e só quando a etapa os citar.
+- Abra `docs/estado.md` (onde estamos e próximo passo). Se precisar de mais, a seção indicada em `docs/mapa.md`; não leia docs grandes inteiros.
+- `docs/visao.md` (para quem é, o que NÃO faremos, glossário); `docs/decisoes.md` (D01 a D131: busque por ID com grep; não contrarie uma `Decidida` sem avisar); `docs/backlog.md` (ideias novas, uma linha).
+- `docs/diretrizes-visuais.md`: obrigatório antes de propor ou mudar layout.
+- `docs/plano/_indice.md` e o arquivo da sessão atual. Planos antigos ficam em `docs/arquivo/` e não são fila.
+- `docs/teclado.md`, `docs/telas.md`, `docs/regras.md`: só quando a sessão os citar.
 
 ## O usuário
 Estudante de medicina, **não programa**, é o Product Owner. Responda em **português**, curto e direto, sem enrolação. Explique em linguagem simples, sem jargão. Economize créditos: não releia arquivos à toa e não repita o que já está nos docs.
@@ -20,7 +19,7 @@ Estudante de medicina, **não programa**, é o Product Owner. Responda em **port
 - `npm run dev`: servidor local (http://localhost:5173/ohara/). `npm run build`: build de produção.
 - Sala de protótipos: `npm run dev` e abrir http://localhost:5173/ohara/lab/. Um HTML por experimento em `lab/`, usando os CSS reais do app; fora do build e do `check`. Teste visual antes de mexer em `src/`: veja `lab/_sala.js` (barra de tema, paleta, largura) e copie `lab/provas-dias.html`.
 - Prefixo de tudo que fica no navegador: **`ohara2-`** (`src/core/appInfo.ts`). Base do site: `/ohara/`. Node: `.nvmrc`.
-- Rode `npm run check` antes de declarar qualquer etapa pronta. Saída curta: não cole logs longos.
+- O hook e o `npm run salvar` já rodam o `check`: não o rode à mão a cada passo. Saída curta: não cole logs longos.
 
 ## Economia de créditos (obrigatório)
 - **Conferir visual:** `npm run tela -- [caminho] --teclas "Alt+3,Enter" --sel "[data-block='x']"` (precisa do `npm run dev`). Gera `.telas/<saida>.jpg` com claro e escuro lado a lado, pequeno; leia só esse arquivo. Bancada: `npm run tela -- "lab/x.html?v=a"`. Use o navegador do app só se o usuário pedir ou para algo que o script não faz.
@@ -92,8 +91,13 @@ O mesmo domínio do GitHub Pages já hospeda o app antigo. Use **nomes de banco 
 - Não use `localStorage` para dados que importam (use o banco).
 - Não publique nem faça `git push --force` sem pedido do usuário.
 
-## Pendências abertas (ver `decisoes.md`)
-Paleta (React Aria ou cmdk, Etapa 3), Argon2 ou PBKDF2, conta Dropbox, formato do hook de parada (confirmar na Etapa 1).
+## Pendências abertas (ver `decisoes.md` e `estado.md`)
+Argon2 ou PBKDF2 (Etapa 12), conta Dropbox (só se o teste favorecer), formato do hook de parada. Paleta e componente da Paleta já decididos (D13, D130, D131).
+
+## Disciplina de sessão
+- Feche a sessão ao passar de ~35% do contexto; não troque de modelo no meio.
+- Bancada e aplicação no app ficam em sessões separadas.
+- Toda iniciativa termina como **aplicada, recusada ou adiada** (nada fica "em estudo").
 
 ## Referência rápida do legado (acréscimo de 05/11/2026)
 Há um kit de consulta barato em `referencia-legado/` (fora deste repositório, em `../Dev_Ohara/referencia-legado/`). Comece por `referencia-legado/LEIA-ME.md`: ele diz o que abrir. Contém resumo dos gostos do usuário, capturas de cada tela (tablet e PC, claro e escuro), cores e medidas (`tokens-legado.css`), atalhos (`teclado-legado.js`) e o histórico de decisões antigo (só com `grep`). É **só referência de comportamento e visual**: não copie código nem dados. Projeto antigo completo: `../PROJETO ESTUDO` (tag `legado-2026-11-05`), somente leitura. Proibido no visual, herdado do legado: tarja/faixa colada na lateral ou no topo e "lua minguante" em blocos; cartões de uma peça, cantos bem arredondados; sem divisórias, sem gradiente.
