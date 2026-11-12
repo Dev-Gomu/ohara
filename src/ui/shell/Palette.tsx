@@ -1,7 +1,8 @@
+import { useState } from 'react';
 import { Autocomplete, Input, Menu, MenuItem, SearchField, useFilter } from 'react-aria-components';
 import { Key } from '../components/Key';
 import { Window } from '../components/Window';
-import { dispatch } from '../keyboard/store';
+import { dispatch, useKeyboardState } from '../keyboard/store';
 import { useStudy } from '../study/study';
 import { commands } from './commands';
 import styles from './Palette.module.css';
@@ -11,6 +12,11 @@ import styles from './Palette.module.css';
 export function Palette() {
   const { contains } = useFilter({ sensitivity: 'base' });
   const list = commands(useStudy());
+  const aberta = useKeyboardState().focus.window === 'palette';
+  const [busca, setBusca] = useState('');
+
+  // A janela guarda o texto entre aberturas; zerar ao fechar evita abrir com a busca velha.
+  if (!aberta && busca !== '') setBusca('');
 
   function run(id: React.Key) {
     dispatch({ type: 'escape' });
@@ -19,7 +25,7 @@ export function Palette() {
 
   return (
     <Window id="palette" title="Ir para" testId="paleta">
-      <Autocomplete filter={contains}>
+      <Autocomplete filter={contains} inputValue={busca} onInputChange={setBusca}>
         <SearchField aria-label="Ir para" autoFocus>
           <Input className={styles.busca} placeholder="Tela, matéria, aula, comando…" />
         </SearchField>
