@@ -297,6 +297,8 @@ test('a Paleta abre matéria e aula pelo nome', async ({ page }) => {
 });
 
 test('Anotações: o histórico restaura a versão anterior', async ({ page }) => {
+  page.on('console', (m) => console.log('SONDA console', m.type(), m.text()));
+  page.on('pageerror', (e) => console.log('SONDA erro', e.message));
   await page.keyboard.press('Alt+Digit2');
   await expect(editor(page)).toContainText('TLR4');
   await editor(page).fill('apagado sem querer');
