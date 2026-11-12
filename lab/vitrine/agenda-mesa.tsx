@@ -2,6 +2,8 @@
 import { ModeIndicator } from '../../src/ui/components/Island';
 import { FilterChip, FilterGrid } from '../../src/ui/components/Filter';
 import { DayPill, SubjectMark } from '../../src/ui/components/Pill';
+import { DayItem } from '../../src/ui/components/DayItem';
+import { FaultCell } from '../../src/ui/components/FaultCell';
 import { BlockTab, BlockTabs, BlockToggle, ToggleGroup } from '../../src/ui/components/Toggles';
 import { Amostra, Ficha, Linha, Secao } from './moldura';
 
@@ -85,6 +87,35 @@ export function AgendaMesa() {
               Salvos
             </BlockTab>
           </BlockTabs>
+        </Amostra>
+      </Ficha>
+      <Ficha
+        nome="Item do dia"
+        arquivo="DayItem"
+        largura={6}
+        uso="Agenda de hoje: hora em duas linhas, título e sigla em texto; a matéria é um tom no fundo. Aula passada fica apagada."
+      >
+        <Amostra estado="normal">
+          <DayItem start="08:00" end="10:00" title="Genética médica" code="GEN" color={0} />
+        </Amostra>
+        <Amostra estado="passada">
+          <DayItem start="06:00" end="08:00" title="Imunologia" code="IMU" color={2} past />
+        </Amostra>
+      </Ficha>
+      <Ficha
+        nome="Célula de faltas"
+        arquivo="FaultCell"
+        largura={4}
+        uso="Só texto: sigla e horas faltadas sobre o limite. A bolinha no canto da sigla marca atenção (exceção em D130)."
+      >
+        <Amostra estado="normal">
+          <FaultCell code="GEN" missed={4} limit={12} attention={false} />
+        </Amostra>
+        <Amostra estado="atenção">
+          <FaultCell code="IMU" missed={10.5} limit={12} attention />
+        </Amostra>
+        <Amostra estado="sem aula">
+          <FaultCell code="PRO" missed={null} limit={null} attention={false} />
         </Amostra>
       </Ficha>
       <Ficha

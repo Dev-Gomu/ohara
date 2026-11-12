@@ -64,7 +64,7 @@ Use este mapa para ir direto ao trecho certo. Abra só a seção indicada, não 
 - **Pendências de cor e identidade:** `docs/plano/identidade-tipografia.md` e `docs/plano/tipografia-seis-papeis.md`. D67 e D68 fecham a tipografia.
 
 ### Diretrizes visuais
-- **Antes de propor ou mudar qualquer layout:** `docs/diretrizes-visuais.md`. Checklist na seção 8 e modelo de proposta na seção 9.
+- **Antes de propor ou mudar qualquer layout:** `docs/diretrizes-visuais.md` (uma página). Detalhes: `diretrizes-visuais-referencia.md` (checklist na seção 8, modelo de proposta na 9).
 - **Foco e sete estados:** seção 3 (D105).
 - **Cor, tipografia e espaço:** seção 6 (tokens em `src/ui/styles/tokens.css`).
 - **Paletas de teste A e B:** `src/ui/styles/paletas.css`. O usuário ainda escolhe.

@@ -43,9 +43,6 @@ export default defineConfig({
       workbox: {
         cacheId: 'ohara2',
         navigateFallback: `${BASE}index.html`,
-        // O protótipo de teclado (Etapa 0) é outra página: nem cache nem fallback do app
-        navigateFallbackDenylist: [/\/prototipo-teclado\//],
-        globIgnores: ['prototipo-teclado/**'],
         // O SQLite em WebAssembly precisa estar no cache para o app abrir offline
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2,wasm,mjs}'],
         maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,

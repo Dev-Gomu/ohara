@@ -5,13 +5,10 @@
 ## Onde estamos
 - Branch `telas-3-a-9`. Etapas 1 a 10 e 13 (sem sincronização) feitas; Hub Refinado, Agenda B, Faltas, Notas e menu de telas já no app (D121 a D129).
 - Identidade única: **Ardósia refinada** (D130). Três paletas oficiais: Ardósia, A e B (D131).
-- Sessão 1 da faxina (papel): feita. Nenhuma outra executada.
+- Sessões 1 (papel) e 2 (visual) da faxina: feitas. `lab/` só tem índice, sala, vitrine (agora com DayItem e FaultCell) e `provas-dias.html`; `diretrizes-visuais.md` virou resumo de uma página.
 
 ## Próximo passo
-**Sessão 2 da faxina: faxina visual** (Sonnet). Apagar bancadas velhas de `lab/`, `docs/prototipos/`, protótipo de teclado em `public/`; mover pastas `*-claudeweb/` e `.zip` da raiz para `../ohara-arquivo/`; limpar `tokens.css`; resumir `diretrizes-visuais.md`.
-
-## Arquivos envolvidos
-`lab/`, `docs/prototipos/`, `public/prototipo-teclado/`, `vite.config.ts`, `eslint.config.js`, `.prettierignore`, `src/ui/styles/tokens.css`, `docs/diretrizes-visuais.md`.
+**Sessão 3: três paletas oficiais** (Fable na bancada, Sonnet no código). Ver `docs/plano/faxina.md`.
 
 ## Esperando o usuário
 - Sessão 3: aceitar as três paletas.

@@ -1,7 +1,7 @@
 # Ohara: teclado
 
 **Status:** versão 1, Etapa 0 concluída com o PC. Roteiro da Etapa 2 passou no tablet (ver "Testado"). Falta o verificador completo no tablet (ver "Pendências"). Data: 06/11/2026.
-**Fonte:** protótipo em `public/prototipo-teclado/` (`teclas.js` é a tabela candidata) e o relatório do PC (Linux, Chrome instalado como app, teclado ABNT2).
+**Fonte:** protótipo da Etapa 0 (removido; a tabela vigente está em `src/core/`) e o relatório do PC (Linux, Chrome instalado como app, teclado ABNT2).
 
 Esta é a tabela de atalhos que a Etapa 2 implementa. Cada linha vira um teste (D16).
 

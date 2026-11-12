@@ -31,26 +31,30 @@
 - L179 ## Pendências consolidadas
 - L186 ## Identidade única e paletas (12/11/2026)
 
-### docs/diretrizes-visuais.md
+### docs/diretrizes-visuais-referencia.md
 - L1 # Ohara: diretrizes visuais
-- L9 ## 1. Princípio
-- L22 ## 2. Modelo de navegação
-- L87 ## 3. Foco e estados
-- L153 ## 4. Mosaicos
-- L185 ## 5. Padrões de layout
-- L222 ## 6. Linguagem visual
-- L279 ## 7. Peças: quando usar cada uma
-- L309 ## 8. Checklist de cada proposta
-- L352 ## 9. Modelo de proposta
-- L370 ## 10. A confirmar
+- L8 ## 1. Princípio
+- L21 ## 2. Modelo de navegação
+- L86 ## 3. Foco e estados
+- L152 ## 4. Mosaicos
+- L184 ## 5. Padrões de layout
+- L221 ## 6. Linguagem visual
+- L278 ## 7. Peças: quando usar cada uma
+- L308 ## 8. Checklist de cada proposta
+- L351 ## 9. Modelo de proposta
+- L369 ## 10. A confirmar
+
+### docs/diretrizes-visuais.md
+- L1 # Ohara: diretrizes visuais (resumo de uma página)
+- L7 ## Princípio
+- L10 ## Checklist
 
 ### docs/estado.md
 - L1 # Estado do Ohara (atualizado em 12/11/2026)
 - L5 ## Onde estamos
 - L10 ## Próximo passo
-- L13 ## Arquivos envolvidos
-- L16 ## Esperando o usuário
-- L21 ## Iniciativas abertas (máx. 3)
+- L13 ## Esperando o usuário
+- L18 ## Iniciativas abertas (máx. 3)
 
 ### docs/mapa.md
 - L1 # Mapa do projeto

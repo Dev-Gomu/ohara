@@ -38,7 +38,6 @@ export default tseslint.config(
       'dist',
       'dev-dist',
       'node_modules',
-      'public/prototipo-teclado',
       'playwright-report',
       'test-results',
     ],

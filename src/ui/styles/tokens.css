@@ -36,7 +36,6 @@
   --ui-rotulo: 700 13px/20px var(--fonte-interface); /* caixa-alta, espaçamento .06em */
   --ui-sigla: 700 12.5px/16px var(--fonte-interface);
   --ui-tecla: 600 12px/18px var(--fonte-interface);
-  --leitura-resposta: 400 22px/32px var(--fonte-leitura);
   --leitura-texto: 400 16.5px/25px var(--fonte-leitura);
   --leitura-compacta: 400 15.5px/23px var(--fonte-leitura);
   --leitura-campo: 400 16px/24px var(--fonte-leitura);
@@ -56,8 +55,6 @@
   --barra-topo: 48px;
   --bloco-pad-y: 14px;
   --bloco-pad-x: 18px;
-  --bloco-min-largura: 300px;
-  --bloco-min-altura: 200px;
   --texto-max: 72ch;
 
   /* Raios */
@@ -73,7 +70,6 @@
   --item-lista: 56px;
   --anel-traco: 3px;
   --anel-afastamento: 3px;
-  --contorno-foco: 4px; /* bloco e item em foco: por dentro, sem cortar na rolagem */
   --borda-bloco: 2px;
   --cursor: 2px; /* cursor do teclado em peça, por dentro */
   --cursor-bloco: 3px; /* cursor no bloco inteiro */
@@ -98,7 +94,6 @@
   --cor-cursor: #4a62dc;
   --cor-ok: #2a9d74; /* concluído, feito */
   --cor-atencao: #d9527a; /* erro e aviso */
-  --mistura-faixa: 40%; /* faixa do cartão de prova: a 22% quase igualava o fundo da tela */
   --cor-nota-titulo: #0f1e27;
   --cor-veu: rgb(15 30 39 / 40%);
   color-scheme: light;
@@ -117,7 +112,6 @@
   --cor-cursor: #8ea4fa;
   --cor-ok: #6fcf9f;
   --cor-atencao: #f27a9f;
-  --mistura-faixa: 30%;
   --cor-nota-titulo: #e8f0f4;
   --cor-veu: rgb(14 21 25 / 60%);
   color-scheme: dark;
@@ -126,8 +120,6 @@
 /* Papéis derivados: valem para toda paleta e tema; a paleta só troca os valores de cima. */
 :root {
   --cor-agora: var(--cor-acao); /* hoje, agora: mesmo azul cheio da ação */
-  --cor-aba-ativa: var(--cor-acao); /* aba atual da barra do topo */
-  --cor-sobre-aba-ativa: var(--cor-sobre-acao);
   --sup-recuada: color-mix(in srgb, var(--cor-cartao) 55%, var(--cor-fundo)); /* bloco sem cursor */
   --sup-peca: color-mix(in srgb, var(--cor-texto) 6%, transparent); /* peça dentro de bloco, aceso ou recuado */
   --cor-rastro: color-mix(in srgb, var(--cor-cursor) 30%, var(--cor-cartao)); /* para onde o Esc volta */
