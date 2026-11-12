@@ -137,6 +137,10 @@
   box-shadow: none;
 }
 
+.dia.fora {
+  color: var(--cor-texto-2);
+}
+
 .marca {
   position: absolute;
   bottom: 5px;

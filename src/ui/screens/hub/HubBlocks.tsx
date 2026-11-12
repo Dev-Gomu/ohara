@@ -9,7 +9,10 @@ import { isNow, subjectOf, type AssessmentDay } from '../../../core/study/querie
 import type { ClassEvent, Exam, Reminder } from '../../../core/study/types';
 import { Block } from '../../components/Block';
 import { AssessmentDayCard } from '../../components/Cards';
-import { NavItem } from '../../components/NavItem';
+import { Button } from '../../components/Button';
+import { Day } from '../../components/Controls';
+import { ListItem } from '../../components/ListItem';
+import { NowPill, StatePill, SubjectPill } from '../../components/Pill';
 import { dispatch } from '../../keyboard/store';
 import { openLesson } from '../../study/navigation';
 import { nowTime, today, useStudy } from '../../study/study';
@@ -64,6 +67,7 @@ interface CalendarProps {
 }
 
 export function CalendarBlock({ id, days, exams }: CalendarProps) {
+  const data = useStudy();
   const month = parseDay(today).getMonth();
   return (
     <Block id={id} title={monthName(today)} label="Calendário" count={today.slice(0, 4)} menu>
@@ -73,18 +77,21 @@ export function CalendarBlock({ id, days, exams }: CalendarProps) {
             {day}
           </span>
         ))}
-        {days.map((day, index) => (
-          <NavItem key={day} block={id} index={index} className={styles.dia} label={shortDate(day)}>
-            <span
-              className={styles.numero}
-              data-hoje={day === today}
-              data-prova={exams.some((exam) => exam.date === day)}
-              data-fora={parseDay(day).getMonth() !== month}
-            >
-              {parseDay(day).getDate()}
-            </span>
-          </NavItem>
-        ))}
+        {days.map((day, index) => {
+          const exam = exams.find((item) => item.date === day);
+          const color = exam ? subjectOf(data, exam.subjectId)?.color : undefined;
+          return (
+            <Day
+              key={day}
+              nav={{ block: id, index }}
+              label={shortDate(day)}
+              day={parseDay(day).getDate()}
+              today={day === today}
+              dim={parseDay(day).getMonth() !== month}
+              {...(color !== undefined && { subject: color })}
+            />
+          );
+        })}
       </div>
     </Block>
   );
@@ -99,30 +106,19 @@ export function TodayBlock({ id, events }: { id: string; events: readonly ClassE
         {events.map((event, index) => {
           const subject = subjectOf(data, event.subjectId);
           return (
-            <NavItem
+            <ListItem
               key={event.id}
-              block={id}
-              index={index}
-              className={styles.aula}
+              nav={{ block: id, index }}
+              time={`${event.start}–${event.end}`}
+              title={event.title}
+              quietSelection
               onOpen={() => {
                 if (event.lessonId) openLesson(event.lessonId);
               }}
             >
-              <span className={styles.aulaCorpo} data-agora={isNow(event, today, today, nowTime)}>
-                <span className={styles.hora}>
-                  {event.start}–{event.end}
-                </span>
-                <span className={styles.aulaTexto}>
-                  <b className={styles.aulaNome}>{subject?.name ?? event.title}</b>
-                  <span className={styles.aulaTema}>{event.title}</span>
-                </span>
-                {subject && (
-                  <span className={styles.sigla} data-materia={subject.color}>
-                    {subject.code}
-                  </span>
-                )}
-              </span>
-            </NavItem>
+              {isNow(event, today, today, nowTime) && <NowPill />}
+              {subject && <SubjectPill code={subject.code} color={subject.color} />}
+            </ListItem>
           );
         })}
       </div>
@@ -142,27 +138,23 @@ export function RemindersBlock({ id, reminders, onToggle }: RemindersProps) {
       <div className={styles.lista}>
         {reminders.length === 0 && <p className={styles.vazio}>Nada para hoje.</p>}
         {reminders.map((item, index) => (
-          <NavItem
+          <ListItem
             key={item.id}
-            block={id}
-            index={index}
-            className={styles.lembrete}
+            nav={{ block: id, index }}
+            title={item.text}
+            past={item.done}
+            quietSelection
             onOpen={() => onToggle(item.id)}
           >
-            <span className={styles.bola} data-feito={item.done} aria-hidden />
-            <span className={styles.lembreteTexto} data-feito={item.done}>
-              {item.text}
-            </span>
-          </NavItem>
+            {item.done && <StatePill state="ok">feito</StatePill>}
+          </ListItem>
         ))}
       </div>
-      <button
-        type="button"
-        className={styles.novo}
-        onClick={() => dispatch({ type: 'quickReminder' })}
-      >
-        Novo lembrete
-      </button>
+      <div className={styles.novo}>
+        <Button variant="primary" onPress={() => dispatch({ type: 'quickReminder' })}>
+          Novo lembrete
+        </Button>
+      </div>
     </Block>
   );
 }

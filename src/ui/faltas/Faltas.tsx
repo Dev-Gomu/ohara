@@ -36,11 +36,11 @@ const STATUS: Record<PresenceStatus, string> = {
 };
 
 function hours(value: number): string {
-  return `${String(value).replace('.', ',')} h`;
+  return `${String(value)} h`;
 }
 
 function percent(value: number | null): string {
-  return value === null ? '—' : `${(value * 100).toFixed(1).replace('.', ',')}%`;
+  return value === null ? '—' : `${(value * 100).toFixed(1)}%`;
 }
 
 function subjectsOf(data: StudyData): Subject[] {

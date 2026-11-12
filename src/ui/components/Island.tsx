@@ -18,16 +18,18 @@ interface TabProps {
   name: string;
   current?: boolean;
   cursor?: boolean;
+  menuItem?: boolean;
   onOpen?: () => void;
 }
 
 // Aba: só o número, que é o próprio atalho; a atual abre e mostra o nome.
-export function Tab({ number, name, current, cursor, onOpen }: TabProps) {
+export function Tab({ number, name, current, cursor, menuItem, onOpen }: TabProps) {
   return (
     <Target
       className={styles.aba}
       selected={current}
       cursor={cursor}
+      menuItem={menuItem}
       onOpen={onOpen}
       label={`${number} ${name}`}
     >

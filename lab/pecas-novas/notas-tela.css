@@ -1,0 +1,351 @@
+/* Notas como tela inteira (bancada). Só arranjo: as peças vêm de src/ui/components. */
+.nb-tela {
+  display: grid;
+  gap: var(--vao-mosaico);
+  min-height: 0;
+}
+
+.nb-tela[data-v='geral'] {
+  grid-template-rows: auto auto minmax(0, 1fr);
+}
+
+.nb-tela[data-v='materia'] {
+  grid-template-rows: auto auto minmax(0, 1fr);
+}
+
+.nb-ano {
+  padding: 0 var(--e1);
+  font: var(--ui-botao);
+  font-variant-numeric: tabular-nums;
+}
+
+.nb-apoio {
+  color: var(--cor-texto-2);
+  font: var(--ui-apoio);
+}
+
+.nb-vazio {
+  color: var(--cor-texto-2);
+  font-weight: 400;
+}
+
+/* ---------- Régua de matérias ---------- */
+.nb-regua {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: var(--e2) var(--e3);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.nb-regua > button {
+  flex: none;
+  height: var(--alvo);
+  padding: 0 var(--e4);
+  font-variant-numeric: tabular-nums;
+  white-space: pre;
+}
+
+.nb-busca {
+  flex: none;
+  width: 220px;
+  margin-left: auto;
+}
+
+/* ---------- Resumo ---------- */
+.nb-resumo {
+  display: flex;
+  align-items: center;
+  gap: var(--e4);
+  padding: 0 var(--e4) var(--e3);
+}
+
+.nb-numero {
+  font: var(--voz-numero-mini);
+  font-variant-numeric: tabular-nums;
+}
+
+.nb-pilha {
+  display: grid;
+  font: var(--ui-item);
+}
+
+.nb-contas {
+  display: flex;
+  align-items: center;
+  gap: var(--e2);
+  margin-left: var(--e5);
+}
+
+.nb-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--e1);
+  margin-left: auto;
+}
+
+.nb-meta b {
+  min-width: 36px;
+  text-align: center;
+  font: var(--voz-mini);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Boletim geral: faixas contínuas por trás das linhas ---------- */
+.nb-rola {
+  min-height: 0;
+  padding: 0 var(--e2) var(--e2);
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.nb-tabela {
+  --colunas: 96px repeat(3, minmax(0, 1fr)) 8px repeat(3, minmax(0, 1fr)) 8px minmax(0, 1.1fr) 8px
+    minmax(0, 1.5fr) minmax(0, 1.4fr);
+  position: relative;
+  display: grid;
+}
+
+.nb-faixas,
+.nb-linha {
+  display: grid;
+  grid-template-columns: var(--colunas);
+  padding: 0 var(--e2);
+}
+
+.nb-faixas {
+  position: absolute;
+  inset: 0;
+}
+
+.nb-faixas i {
+  grid-column: 2 / 5;
+  border-radius: var(--raio-item);
+  background: var(--sup-peca);
+}
+
+.nb-faixas i + i {
+  grid-column: 6 / 9;
+}
+
+.nb-faixas i[data-ano] {
+  grid-column: 10 / 11;
+  background: var(--sup-peca-viva);
+}
+
+.nb-linha {
+  position: relative;
+  align-items: center;
+  justify-items: center;
+  width: 100%;
+  font: var(--ui-item);
+  font-variant-numeric: tabular-nums;
+}
+
+.nb-cab,
+.nb-sub {
+  color: var(--cor-texto-2);
+  font: var(--ui-rotulo);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.nb-cab {
+  padding-top: var(--e2);
+}
+
+.nb-sub {
+  padding-bottom: var(--e1);
+  font: var(--ui-sigla);
+}
+
+.nb-cab .nb-s1 {
+  grid-column: 2 / 5;
+}
+
+.nb-cab .nb-s2 {
+  grid-column: 6 / 9;
+}
+
+.nb-cab .nb-an {
+  grid-column: 10 / 11;
+}
+
+.nb-cab .nb-fa {
+  grid-column: 12 / 13;
+  justify-self: end;
+  padding-right: var(--e3);
+}
+
+.nb-cab .nb-si {
+  grid-column: 13 / 14;
+  justify-self: start;
+}
+
+.nb-c1 {
+  justify-self: start;
+  padding-left: var(--e2);
+}
+
+.nb-item {
+  min-height: 52px;
+  border-radius: var(--raio-item);
+}
+
+.nb-total {
+  font: var(--ui-botao);
+}
+
+.nb-media {
+  font: var(--voz-mini);
+}
+
+.nb-baixa {
+  padding: var(--e1) 10px;
+  border-radius: var(--raio-pilula);
+  background: color-mix(in srgb, var(--cor-atencao) 22%, transparent);
+}
+
+.nb-falta {
+  justify-self: end;
+  padding-right: var(--e3);
+  color: var(--cor-texto-2);
+}
+
+.nb-falta b {
+  color: var(--cor-texto);
+}
+
+.nb-sit {
+  justify-self: start;
+}
+
+/* ---------- Por matéria: cada semestre abraça seus dois bimestres ---------- */
+.nm-faixas {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 3fr) minmax(0, 1.5fr);
+  gap: var(--e2);
+  padding: 0 var(--e2) var(--e2);
+}
+
+.nm-sem {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--e1);
+  padding: var(--e1) var(--e1) var(--e1);
+  border-radius: var(--raio-item);
+  background: var(--sup-peca);
+}
+
+.nm-rotulo {
+  display: flex;
+  align-items: center;
+  gap: var(--e2);
+  color: var(--cor-texto-2);
+  font: var(--ui-sigla);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.nm-nome {
+  grid-column: 1 / -1;
+  padding: var(--e1) var(--e3) 0;
+}
+
+.nm-bim,
+.nm-total,
+.nm-ano {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  min-height: 116px;
+  padding: var(--e2) var(--e3);
+  border-radius: var(--raio-minimo);
+  text-align: left;
+}
+
+.nm-bim {
+  background: var(--sup-peca);
+}
+
+.nm-bim[data-sel='true'] {
+  background: var(--cor-escolhido);
+}
+
+.nm-numero {
+  font: var(--voz-tela);
+  font-variant-numeric: tabular-nums;
+}
+
+.nm-ano {
+  gap: var(--e1);
+  padding: var(--e3) var(--e4);
+  border-radius: var(--raio-item);
+  background: var(--sup-peca-viva);
+}
+
+.nm-grande {
+  font: var(--voz-numero-mini);
+  font-variant-numeric: tabular-nums;
+}
+
+.nm-baixo {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: var(--vao-mosaico);
+  min-height: 0;
+}
+
+.nm-lista {
+  display: grid;
+  align-content: start;
+  gap: var(--e1);
+  flex: 1;
+  min-height: 0;
+  padding: 0 var(--e2);
+  overflow-y: auto;
+}
+
+.nm-nota {
+  min-width: 48px;
+  text-align: right;
+  font: var(--voz-item);
+  font-variant-numeric: tabular-nums;
+}
+
+.nm-pe {
+  display: flex;
+  align-items: center;
+  gap: var(--e3);
+  padding: var(--e2) var(--e3) var(--e3);
+}
+
+.nm-preciso {
+  display: grid;
+  align-content: start;
+  gap: var(--e1);
+  padding: 0 var(--e2) var(--e2);
+}
+
+.nm-alvo,
+.nm-conta {
+  display: flex;
+  align-items: center;
+  gap: var(--e4);
+  padding: var(--e3) var(--e4);
+  border-radius: var(--raio-item);
+  background: var(--sup-peca);
+  font: var(--ui-item);
+}
+
+.nm-conta {
+  justify-content: space-between;
+  min-height: 52px;
+}
+
+.nm-conta b {
+  font: var(--voz-item);
+  font-variant-numeric: tabular-nums;
+}

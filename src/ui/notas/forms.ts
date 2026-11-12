@@ -164,13 +164,13 @@ export function askScheme(subject: Subject): void {
       },
       {
         id: 'b1',
-        label: 'Peso do 1º bimestre no 1º semestre, em %',
-        value: String(scheme.bimester1[0]),
+        label: 'Quanto vale o 1º bimestre, de 10 (o 2º vale o resto: 5 + 5, 3 + 7)',
+        value: String(scheme.bimester1[0] / 10),
       },
       {
         id: 'b3',
-        label: 'Peso do 3º bimestre no 2º semestre, em %',
-        value: String(scheme.bimester1[1]),
+        label: 'Quanto vale o 3º bimestre, de 10 (o 4º vale o resto)',
+        value: String(scheme.bimester1[1] / 10),
       },
       { id: 'cap', label: 'Teto da nota com bônus', value: String(scheme.cap) },
       {
@@ -191,7 +191,10 @@ export function askScheme(subject: Subject): void {
         subjectId: subject.id,
         min: Math.min(10, Math.max(0, number(v.min, scheme.min))),
         semester1: percent('s1', scheme.semester1),
-        bimester1: [percent('b1', scheme.bimester1[0]), percent('b3', scheme.bimester1[1])],
+        bimester1: [
+          Math.min(100, Math.max(0, number(v.b1, scheme.bimester1[0] / 10) * 10)),
+          Math.min(100, Math.max(0, number(v.b3, scheme.bimester1[1] / 10) * 10)),
+        ],
         cap: Math.min(10, Math.max(1, number(v.cap, scheme.cap))),
         bonusBimester: list(v.bb, 4) as unknown as Scheme['bonusBimester'],
         bonusSemester: list(v.bs, 2) as unknown as Scheme['bonusSemester'],
@@ -236,10 +239,14 @@ export function askItem(
         value: String(base.bimester ?? 1),
         options: BIMESTERS.map((value) => ({ value: String(value), label: `${value}º bimestre` })),
       },
-      { id: 'weight', label: 'Peso dentro do bimestre', value: String(base.weight ?? 1) },
+      {
+        id: 'max',
+        label: 'Vale quanto (nota máxima da avaliação)',
+        value: String(base.max ?? 10),
+      },
       {
         id: 'grade',
-        label: 'Nota de 0 a 10 (escreva - se ainda estiver pendente)',
+        label: 'Nota que o professor deu (escreva - se ainda estiver pendente)',
         value: base.grade === undefined || base.grade === null ? '-' : String(base.grade),
       },
       { id: 'bonus', label: 'Bônus neste item', value: String(base.bonus ?? 0) },
@@ -259,14 +266,18 @@ export function askItem(
       },
     ],
     onSubmit: (v) => {
-      const grade = parseGrade(v.grade ?? '');
-      if (grade === undefined) return showNotice('Nota inválida: use um número de 0 a 10.');
+      const max = Math.max(0.1, number(v.max, 10));
+      const grade = parseGrade(v.grade ?? '', max);
+      if (grade === undefined) {
+        return showNotice(`Nota inválida: use um número de 0 a ${max}.`);
+      }
       void saveItem({
         id: item?.id ?? crypto.randomUUID(),
         subjectId: subject.id,
         bimester: Number(v.bimester ?? 1) as Bimester,
         name: (v.name ?? '').trim(),
-        weight: Math.max(0.1, number(v.weight, 1)),
+        weight: max,
+        max,
         grade,
         examId: item?.examId ?? presets?.examId ?? null,
         replaces: v.replaces === NONE ? null : (v.replaces ?? null),

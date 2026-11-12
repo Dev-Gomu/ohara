@@ -12,7 +12,7 @@ test.beforeEach(async ({ page }) => {
 });
 
 test('o Hub nasce na aula de agora, e Enter abre a aula na Mesa', async ({ page }) => {
-  await expect(selecionado(page, 'hub.agenda')).toContainText('Imunologia');
+  await expect(selecionado(page, 'hub.agenda')).toContainText('IMU');
   await page.keyboard.press('Enter');
   await expect(tela(page)).toHaveText('mesa');
   await expect(page.getByRole('textbox', { name: 'Anotações' })).toBeFocused();

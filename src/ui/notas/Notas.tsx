@@ -1,66 +1,16 @@
 import { useEffect } from 'react';
-import {
-  bimesterResult,
-  BIMESTERS,
-  formatGrade,
-  neededForSemester,
-  neededInFourthForYear,
-  neededInSecondSemester,
-  semesterResult,
-  statusOf,
-  yearResult,
-  type Item,
-  type Needed,
-  type Result,
-  type Status,
-} from '../../core/grades/grades';
-import type { StudyData, Subject } from '../../core/study/types';
 import { Block } from '../components/Block';
-import { NavItem, useSelectedIndex } from '../components/NavItem';
-import { getKeyboardState, type BlockOption } from '../keyboard/store';
+import { NavItem } from '../components/NavItem';
 import { useBlocks } from '../keyboard/useBlocks';
 import { ScreenFrame } from '../shell/ScreenFrame';
 import { closeNotes } from '../study/navigation';
 import { useStudy } from '../study/study';
-import {
-  askChangePass,
-  askCopyScheme,
-  askFromAgenda,
-  askItem,
-  askPin,
-  askPinUnlock,
-  askRecover,
-  askScheme,
-  askSetup,
-  askUnlock,
-  deleteItem,
-  dropPin,
-} from './forms';
+import { askPinUnlock, askRecover, askSetup, askUnlock } from './forms';
+import { NotasAberto } from './NotasAberto';
 import styles from './Notas.module.css';
-import { cancelDraft, confirmDraft, lock, readPin, schemeFor, useSecretView } from './session';
+import { cancelDraft, confirmDraft, lock, readPin, useSecretView } from './session';
 
 const VAULT = 'notas.cofre';
-const SUBJECTS = 'notas.materias';
-const ITEMS = 'notas.itens';
-const SUMMARY = 'notas.resumo';
-
-const STATUS: Record<Status, string> = {
-  'sem-notas': 'sem notas',
-  'em-andamento': 'em andamento',
-  aprovado: 'aprovado',
-  abaixo: 'abaixo do mínimo',
-};
-
-function show(result: Result): string {
-  return result.value === null
-    ? '—'
-    : `${formatGrade(result.value)}${result.partial ? ' (parcial)' : ''}`;
-}
-
-function need(value: Needed): string {
-  if (value.kind === 'precisa') return formatGrade(value.value);
-  return value.kind === 'impossivel' ? 'não dá' : '—';
-}
 
 interface Action {
   label: string;
@@ -103,7 +53,7 @@ export function Notas() {
       }
     >
       {open ? (
-        <Open data={data} items={secret.items} unreadable={secret.unreadable} />
+        <NotasAberto data={data} items={secret.items} unreadable={secret.unreadable} />
       ) : (
         <Closed hasVault={hasVault} code={secret.draft?.code ?? null} />
       )}
@@ -162,226 +112,6 @@ function Closed(props: { hasVault: boolean; code: string | null }) {
               {action.hint && <kbd>{action.hint}</kbd>}
             </NavItem>
           ))}
-        </div>
-      </Block>
-    </div>
-  );
-}
-
-function subjectsOf(data: StudyData): Subject[] {
-  const years = new Set(data.years.filter((year) => !year.archived).map((year) => year.id));
-  return data.subjects.filter((subject) => years.has(subject.yearId));
-}
-
-function Open(props: { data: StudyData; items: readonly Item[]; unreadable: number }) {
-  const { data, items, unreadable } = props;
-  const subjects = subjectsOf(data);
-  const subject = subjects[useSelectedIndex(SUBJECTS, subjects.length)];
-  const mine = items
-    .filter((item) => item.subjectId === subject?.id)
-    .sort((a, b) => a.bimester - b.bimester || a.name.localeCompare(b.name, 'pt-BR'));
-  const item = mine[useSelectedIndex(ITEMS, mine.length)];
-  const scheme = schemeFor(subject?.id ?? '');
-  const bimesters = BIMESTERS.map((number) => bimesterResult(mine, scheme, number));
-  const year = yearResult(mine, scheme);
-  const needed = neededInSecondSemester(mine, scheme);
-  // Só aparece o que ainda falta: a meta some quando o bimestre (ou semestre) alvo já tem nota.
-  const open = (result: Result) => result.value === null || result.partial;
-  const goals = [
-    {
-      label: '1º semestre, no 2º bimestre',
-      show: open(bimesters[1] ?? { value: null, partial: true }),
-      value: neededForSemester(mine, scheme, 1),
-    },
-    {
-      label: '2º semestre, no 4º bimestre',
-      show: open(bimesters[3] ?? { value: null, partial: true }),
-      value: neededForSemester(mine, scheme, 2),
-    },
-    {
-      label: 'Ano, no 4º bimestre',
-      show: open(bimesters[3] ?? { value: null, partial: true }),
-      value: neededInFourthForYear(mine, scheme),
-    },
-    {
-      label: 'Ano, média do 2º semestre',
-      show: open(semesterResult(mine, scheme, 2)),
-      value: needed,
-    },
-  ].filter((goal) => goal.show);
-  const inItems = () => getKeyboardState().focus.block === ITEMS;
-
-  const options = (): BlockOption[] => {
-    if (!subject) return [];
-    return [
-      { id: 'novo', label: 'Novo item', keys: 'Alt N', run: () => askItem(subject, mine) },
-      ...(item && inItems()
-        ? [
-            { id: 'editar', label: 'Editar item', run: () => askItem(subject, mine, item) },
-            { id: 'excluir', label: 'Excluir item', run: () => deleteItem(item) },
-          ]
-        : []),
-      { id: 'agenda', label: 'Trazer da Agenda', run: () => askFromAgenda(data, subject, mine) },
-      { id: 'esquema', label: 'Editar esquema de cálculo', run: () => askScheme(subject) },
-      {
-        id: 'copiar',
-        label: 'Copiar esquema de outra matéria',
-        run: () =>
-          askCopyScheme(
-            subject,
-            subjects.filter((other) => other.id !== subject.id),
-          ),
-      },
-      { id: 'frase', label: 'Trocar a frase de acesso', run: askChangePass },
-      { id: 'pin', label: readPin() ? 'Trocar o PIN' : 'Criar um PIN neste aparelho', run: askPin },
-      ...(readPin() ? [{ id: 'sem-pin', label: 'Apagar o PIN', run: dropPin }] : []),
-      { id: 'travar', label: 'Travar as Notas agora', run: lock },
-    ];
-  };
-
-  useBlocks({
-    blocks: [
-      {
-        id: SUBJECTS,
-        kind: 'nav',
-        nav: { axis: 'y', count: subjects.length },
-        neighbors: { right: ITEMS },
-        resets: [ITEMS],
-        enterGoesTo: ITEMS,
-      },
-      {
-        id: ITEMS,
-        kind: 'nav',
-        nav: { axis: 'y', count: mine.length },
-        neighbors: { left: SUBJECTS, right: SUMMARY },
-        onActivate: () => subject && item && askItem(subject, mine, item),
-      },
-      { id: SUMMARY, kind: 'none', neighbors: { left: ITEMS } },
-    ],
-    arrival: { block: SUBJECTS, level: 'nav', items: { [SUBJECTS]: 0 } },
-    back: closeNotes,
-    options,
-    actions: {
-      newItem: () => {
-        if (subject) askItem(subject, mine);
-      },
-    },
-  });
-
-  return (
-    <div className={styles.notas}>
-      <Block id={SUBJECTS} title="Matérias" className={styles.materias}>
-        <div className={styles.corpo}>
-          {subjects.length === 0 && <p className={styles.texto}>Crie uma matéria no Acervo.</p>}
-          {subjects.map((entry, index) => {
-            const result = yearResult(
-              items.filter((other) => other.subjectId === entry.id),
-              schemeFor(entry.id),
-            );
-            return (
-              <NavItem
-                key={entry.id}
-                block={SUBJECTS}
-                index={index}
-                className={`${styles.linha} ${styles.materia}`}
-                ring="anel-interno"
-              >
-                <b>{entry.code}</b>
-                <span>{entry.name}</span>
-                <span className={styles.nota}>{formatGrade(result.value)}</span>
-              </NavItem>
-            );
-          })}
-        </div>
-      </Block>
-      <Block
-        id={ITEMS}
-        title={subject ? `Itens de ${subject.code}` : 'Itens'}
-        className={styles.itens}
-        shortcut="Alt N"
-        menu
-      >
-        <div className={styles.corpo}>
-          {unreadable > 0 && (
-            <p className={styles.texto}>
-              {unreadable} registro(s) não puderam ser lidos com esta chave e foram ignorados.
-            </p>
-          )}
-          {mine.length === 0 && (
-            <p className={styles.texto}>
-              Nenhum item. Alt N cria uma prova ou um trabalho; o ⋮ traz as provas da Agenda.
-            </p>
-          )}
-          {mine.map((entry, index) => (
-            <div key={entry.id} style={{ display: 'contents' }}>
-              {(index === 0 || mine[index - 1]?.bimester !== entry.bimester) && (
-                <p className={styles.grupo}>{entry.bimester}º bimestre</p>
-              )}
-              <NavItem
-                block={ITEMS}
-                index={index}
-                className={styles.linha}
-                ring="anel-interno"
-                onOpen={() => subject && askItem(subject, mine, entry)}
-              >
-                <span className={styles.detalhe}>×{entry.weight}</span>
-                <span>
-                  {entry.name}
-                  {entry.replaces ? ' (reposição)' : ''}
-                </span>
-                <span className={styles.nota}>
-                  {entry.grade === null ? (
-                    <i className={styles.parcial}>pendente</i>
-                  ) : (
-                    formatGrade(entry.grade)
-                  )}
-                </span>
-                <span />
-              </NavItem>
-            </div>
-          ))}
-        </div>
-      </Block>
-      <Block id={SUMMARY} title="Resumo" className={styles.resumo}>
-        <div className={styles.corpo}>
-          {subject && (
-            <>
-              <dl className={styles.quadro}>
-                {BIMESTERS.map((number, index) => (
-                  <div key={number} style={{ display: 'contents' }}>
-                    <dt>{number}º bimestre</dt>
-                    <dd>{show(bimesters[index] ?? { value: null, partial: true })}</dd>
-                  </div>
-                ))}
-                <dt>1º semestre</dt>
-                <dd>{show(semesterResult(mine, scheme, 1))}</dd>
-                <dt>2º semestre</dt>
-                <dd>{show(semesterResult(mine, scheme, 2))}</dd>
-                <dt>
-                  <b>Ano</b>
-                </dt>
-                <dd>
-                  <b>{show(year)}</b>
-                </dd>
-              </dl>
-              <p className={styles.destaque}>
-                {STATUS[statusOf(year, scheme.min)]} · mínimo {formatGrade(scheme.min)}
-              </p>
-              {goals.length > 0 && (
-                <>
-                  <p className={styles.destaque}>Quanto preciso para fechar</p>
-                  <dl className={styles.quadro}>
-                    {goals.map((goal) => (
-                      <div key={goal.label} style={{ display: 'contents' }}>
-                        <dt>{goal.label}</dt>
-                        <dd>{need(goal.value)}</dd>
-                      </div>
-                    ))}
-                  </dl>
-                </>
-              )}
-            </>
-          )}
         </div>
       </Block>
     </div>

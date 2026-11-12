@@ -7,6 +7,8 @@ interface ButtonProps {
   variant?: 'primary' | 'plain' | 'quiet';
   shortcut?: string;
   cursor?: boolean;
+  // Item do menu do topo: `data-menu-item` e cursor em anel fino.
+  menuItem?: boolean;
   // Desabilitado continua focável, para poder explicar o motivo.
   disabled?: boolean;
   label?: string;
@@ -15,13 +17,14 @@ interface ButtonProps {
 }
 
 export function Button(props: ButtonProps) {
-  const { variant = 'plain', shortcut, cursor, disabled, label, onPress, children } = props;
+  const { variant = 'plain', shortcut, cursor, menuItem, disabled, label, onPress, children } = props;
   return (
     <button
       type="button"
-      className={styles.botao}
+      className={menuItem && cursor ? `${styles.botao} anel-fino` : styles.botao}
       data-tipo={variant}
-      data-cursor={cursor ? '' : undefined}
+      data-menu-item={menuItem ? '' : undefined}
+      data-cursor={cursor && !menuItem ? '' : undefined}
       aria-disabled={disabled || undefined}
       aria-label={label}
       onClick={disabled ? undefined : onPress}

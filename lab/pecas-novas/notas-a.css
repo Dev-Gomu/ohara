@@ -1,0 +1,426 @@
+/* Notas, proposta A. Peças novas: .na-nota (NotaPilula) e .na-medidor (Medidor).
+   Regra de cor: enchimento neutro (tinta do texto); abaixo da meta, tom de atenção. Sem azul: azul é ação, escolhido e cursor. */
+.na-tela {
+  display: grid;
+  gap: var(--vao-mosaico);
+  min-height: 0;
+}
+
+.na-tela[data-v='geral'] {
+  grid-template-rows: auto minmax(0, 1fr);
+}
+
+.na-tela[data-v='materia'] {
+  grid-template-rows: auto auto minmax(0, 1fr);
+}
+
+.na-apoio {
+  color: var(--cor-texto-2);
+  font: var(--ui-apoio);
+}
+
+.na-vazio {
+  color: var(--cor-texto-2);
+}
+
+.na-resumo {
+  display: flex;
+  align-items: center;
+  gap: var(--e3);
+}
+
+/* ---------- Peça nova: NotaMedida ---------- */
+.na-nota {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 60px;
+  font: var(--voz-mini);
+  font-variant-numeric: tabular-nums;
+}
+
+.na-nota[data-tam='m'] {
+  width: 76px;
+  font: var(--voz-item);
+}
+
+.na-nota[data-tam='g'] {
+  width: 84px;
+  font: var(--voz-titulo);
+}
+
+.na-nota[data-tam='linha'] {
+  flex-direction: row;
+  gap: var(--e3);
+  width: auto;
+  font: var(--voz-tela);
+}
+
+.na-nota[data-tam='linha'] .na-medidor {
+  width: 72px;
+}
+
+.na-nota[data-vazia] {
+  color: var(--cor-texto-2);
+}
+
+.na-nota[data-vazia] b {
+  font-weight: 400;
+}
+
+/* ---------- Peça nova: Medidor ---------- */
+.na-medidor {
+  --enchimento: color-mix(in srgb, var(--cor-texto) 42%, transparent);
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 6px;
+  border-radius: var(--raio-pilula);
+  background: var(--sup-peca-viva);
+}
+
+.na-medidor i {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: calc(var(--frac) * 100%);
+  border-radius: var(--raio-pilula);
+  background: var(--enchimento);
+}
+
+.na-medidor[data-baixa='true'] {
+  --enchimento: var(--cor-atencao);
+}
+
+/* Risquinho da meta: uma pílula em pé, um pouco maior que a barra. */
+.na-medidor u {
+  position: absolute;
+  top: -2px;
+  bottom: -2px;
+  left: calc(var(--meta) * 100%);
+  width: 3px;
+  margin-left: -1.5px;
+  border-radius: var(--raio-pilula);
+  background: var(--cor-texto);
+  text-decoration: none;
+}
+
+/* ---------- Boletim geral ---------- */
+.na-boletim {
+  --colunas: 96px repeat(3, minmax(0, 1fr)) repeat(3, minmax(0, 1fr)) minmax(0, 1.1fr)
+    minmax(0, 1.7fr) minmax(0, 1.3fr);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  padding: 0 var(--e2) var(--e2);
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.na-grade {
+  display: grid;
+  grid-template-columns: var(--colunas);
+  padding: 0 var(--e2);
+}
+
+.na-cab {
+  grid-template-rows: auto auto;
+  align-items: end;
+  padding-top: var(--e2);
+}
+
+.na-sem {
+  grid-row: 1;
+  padding: 0 var(--e4) var(--e1);
+  font: var(--voz-mini);
+}
+
+.na-sem small,
+.na-titulo small {
+  margin-left: var(--e1);
+  color: var(--cor-texto-2);
+  font: var(--ui-apoio);
+}
+
+.na-sem[data-g='1'] {
+  grid-column: 2 / 5;
+}
+.na-sem[data-g='2'] {
+  grid-column: 5 / 8;
+}
+.na-sem[data-g='ano'] {
+  grid-column: 8;
+  text-align: center;
+}
+
+.na-sub {
+  grid-row: 2;
+  padding: var(--e1) 0 var(--e2);
+  color: var(--cor-texto-2);
+  font: var(--ui-apoio);
+  text-align: center;
+}
+
+.na-sub[data-c='0'] {
+  grid-column: 2;
+}
+.na-sub[data-c='1'] {
+  grid-column: 3;
+}
+.na-sub[data-c='2'] {
+  grid-column: 4;
+}
+.na-sub[data-c='3'] {
+  grid-column: 5;
+}
+.na-sub[data-c='4'] {
+  grid-column: 6;
+}
+.na-sub[data-c='5'] {
+  grid-column: 7;
+}
+.na-sub[data-c='6'] {
+  grid-column: 8;
+}
+.na-sub[data-c='falta'] {
+  grid-column: 9;
+  padding-left: var(--e5);
+  text-align: left;
+}
+.na-sub[data-c='sit'] {
+  grid-column: 10;
+  padding-left: var(--e1);
+  text-align: left;
+}
+
+.na-corpo {
+  position: relative;
+  display: grid;
+  grid-auto-rows: 72px;
+}
+
+.na-faixas {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.na-faixas i {
+  border-radius: var(--raio-item);
+  background: var(--sup-peca);
+}
+
+.na-faixas i[data-g='1'] {
+  grid-column: 2 / 5;
+  margin-right: var(--e2);
+}
+.na-faixas i[data-g='2'] {
+  grid-column: 5 / 8;
+  margin-right: var(--e2);
+}
+.na-faixas i[data-g='ano'] {
+  grid-column: 8;
+}
+
+.na-linha {
+  position: relative;
+  align-items: center;
+  justify-items: center;
+  width: 100%;
+  border-radius: var(--raio-item);
+}
+
+.na-mat {
+  justify-self: start;
+  padding-left: var(--e2);
+}
+
+.na-falta {
+  display: grid;
+  justify-self: stretch;
+  gap: var(--e2);
+  padding: 0 var(--e3) 0 var(--e5);
+  color: var(--cor-texto-2);
+  font: var(--ui-item);
+  text-align: left;
+}
+
+.na-falta b {
+  color: var(--cor-texto);
+  font: var(--voz-mini);
+}
+
+.na-sit {
+  justify-self: start;
+  padding-left: var(--e1);
+}
+
+/* ---------- Por disciplina ---------- */
+.na-semestres {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--e5);
+  padding: var(--e1) var(--e4) var(--e4);
+}
+
+.na-semestre {
+  display: grid;
+  gap: var(--e2);
+  min-width: 0;
+}
+
+.na-titulo {
+  margin: 0;
+  padding-left: var(--e3);
+  font: var(--voz-mini);
+}
+
+.na-cartoes {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--e2);
+}
+
+.na-cartao {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--e2);
+  min-height: 150px;
+  padding: var(--e3) var(--e4) var(--e4);
+  border-radius: var(--raio-item);
+  background: var(--sup-peca);
+  text-align: left;
+}
+
+.na-cartao[data-sel='true'] {
+  background: var(--cor-escolhido);
+}
+
+.na-viva {
+  background: var(--sup-peca-viva);
+}
+
+.na-viva .na-medidor {
+  --enchimento: color-mix(in srgb, var(--cor-texto) 55%, transparent);
+}
+
+.na-rotulo {
+  color: var(--cor-texto-2);
+  font: var(--ui-sigla);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.na-numero {
+  font: var(--voz-tela);
+  font-variant-numeric: tabular-nums;
+}
+
+.na-baixo {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: var(--vao-mosaico);
+  min-height: 0;
+}
+
+.na-lista {
+  display: grid;
+  align-content: start;
+  gap: var(--e1);
+  padding: 0 var(--e2);
+}
+
+.na-aval {
+  display: flex;
+  align-items: center;
+  gap: var(--e4);
+  width: 100%;
+  min-height: 68px;
+  padding: var(--e2) var(--e4);
+  border-radius: var(--raio-item);
+  text-align: left;
+}
+
+.na-aval-texto {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.na-aval-texto strong {
+  font: var(--voz-mini);
+}
+
+.na-vale {
+  color: var(--cor-texto-2);
+  font: var(--ui-apoio);
+}
+
+.na-vale b {
+  color: var(--cor-texto);
+  font: var(--ui-botao);
+}
+
+.na-slot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 84px;
+  height: 40px;
+  border-radius: var(--raio-pilula);
+  background: var(--sup-peca-viva);
+  color: var(--cor-texto-2);
+  font: var(--voz-item);
+}
+
+.na-dica {
+  margin: 0;
+  padding: var(--e3) var(--e4) var(--e4);
+}
+
+.na-preciso {
+  display: grid;
+  align-content: start;
+  gap: var(--e1);
+  padding: 0 var(--e2) var(--e2);
+}
+
+.na-alvo,
+.na-conta {
+  border-radius: var(--raio-item);
+  background: var(--sup-peca);
+  font: var(--ui-item);
+}
+
+.na-alvo {
+  display: grid;
+  gap: var(--e3);
+  padding: var(--e4);
+}
+
+.na-alvo-topo {
+  display: flex;
+  align-items: baseline;
+  gap: var(--e3);
+}
+
+.na-grande {
+  font: var(--voz-numero-mini);
+  font-variant-numeric: tabular-nums;
+}
+
+.na-conta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 52px;
+  padding: var(--e3) var(--e4);
+}
+
+.na-conta b {
+  font: var(--voz-item);
+  font-variant-numeric: tabular-nums;
+}

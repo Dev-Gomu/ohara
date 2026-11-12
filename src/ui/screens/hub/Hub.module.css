@@ -21,40 +21,6 @@
   font: var(--ui-rotulo);
 }
 
-.dia {
-  width: var(--alvo);
-  height: var(--alvo);
-  border-radius: var(--raio-pilula);
-}
-
-.numero {
-  display: grid;
-  place-items: center;
-  width: 100%;
-  height: 100%;
-  border-radius: var(--raio-pilula);
-  font: var(--ui-botao);
-}
-
-.numero[data-prova='true'] {
-  background: var(--cor-cartao-2);
-}
-
-.numero[data-fora='true'] {
-  color: var(--cor-texto-2);
-  font-weight: 500;
-}
-
-[data-foco] .dia[data-sel='true'] .numero {
-  background: var(--cor-escolhido);
-}
-
-.numero[data-hoje='true'],
-[data-foco] .dia[data-sel='true'] .numero[data-hoje='true'] {
-  background: var(--cor-destaque);
-  color: var(--cor-tinta);
-}
-
 .lista {
   flex: 1;
   min-height: 0;
@@ -71,117 +37,12 @@
   font: var(--leitura-texto);
 }
 
-.aula {
-  flex: none;
-  border-radius: var(--raio-item);
-  text-align: left;
-}
-
-.aulaCorpo {
-  display: grid;
-  grid-template-columns: 104px minmax(0, 1fr) auto;
-  align-items: center;
-  gap: var(--e3);
-  min-height: 64px;
-  padding: 6px var(--e4);
-  border-radius: var(--raio-item);
-}
-
-[data-foco] .aula[data-sel='true'] .aulaCorpo {
-  background: var(--cor-escolhido);
-}
-
-.aula .aulaCorpo[data-agora='true'] {
-  background: var(--cor-destaque);
-  color: var(--cor-tinta);
-}
-
-.hora {
-  color: var(--cor-texto-2);
-}
-
-[data-foco] .aula[data-sel='true'] .hora,
-[data-foco] .aula[data-sel='true'] .aulaTema,
-.aulaCorpo[data-agora='true'] .hora,
-.aulaCorpo[data-agora='true'] .aulaTema {
-  color: inherit;
-}
-
-.aulaTexto {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-
-.aulaNome {
-  overflow: hidden;
-  font: var(--voz-item);
-  text-overflow: ellipsis;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-.aulaTema {
-  overflow: hidden;
-  color: var(--cor-texto-2);
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.sigla {
-  padding: 4px 11px;
-  border-radius: var(--raio-pilula);
-  background: var(--cor-materia);
-  color: var(--cor-tinta);
-  font: var(--ui-sigla);
-}
-
-.aulaCorpo[data-agora='true'] .sigla {
-  background: var(--cor-tinta);
-  color: var(--cor-sobre-tinta);
-}
-
-.lembrete {
-  display: grid;
-  flex: none;
-  grid-template-columns: 24px minmax(0, 1fr);
-  gap: var(--e3);
-  min-height: var(--alvo);
-  padding: 10px var(--e2);
-  border-radius: var(--raio-item);
-  text-align: left;
-}
-
-[data-foco] .lembrete[data-sel='true'] {
-  background: var(--cor-escolhido);
-}
-
-.bola {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: var(--cor-cartao-2);
-}
-
-.bola[data-feito='true'] {
-  background: var(--cor-ok);
-}
-
-.lembreteTexto {
-  font: var(--leitura-texto);
-}
-
-.lembreteTexto[data-feito='true'] {
-  color: var(--cor-texto-2);
-  text-decoration: line-through;
-}
-
 .novo {
+  display: flex;
   flex: none;
-  min-height: 48px;
   margin: 0 var(--bloco-pad-x) var(--bloco-pad-y);
-  border-radius: var(--raio-botao);
-  background: var(--cor-acao);
-  color: var(--cor-sobre-acao);
-  font: var(--ui-botao);
+}
+
+.novo > button {
+  flex: 1;
 }

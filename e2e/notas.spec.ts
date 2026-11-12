@@ -43,16 +43,21 @@ test('Notas: frase, código, itens com média parcial, trava, destrava e arquivo
     { timeout: 20000 },
   );
   await page.getByRole('button', { name: /Anotei o código/ }).click();
-  await expect(page.getByRole('heading', { name: 'Itens de CAR' })).toBeVisible({ timeout: 20000 });
+  await expect(page.getByRole('heading', { name: 'Boletim geral' })).toBeVisible({ timeout: 20000 });
 
+  // Régua: seta para a matéria, Enter nos bimestres, Enter na lista.
+  await page.keyboard.press('ArrowRight');
+  await page.keyboard.press('Enter');
+  await expect(page.getByRole('heading', { name: /Avaliações do 1º bim/ })).toBeVisible();
   await page.keyboard.press('Alt+KeyN');
-  await preencher(page, ['Prova segredo azul', '1', '1', '8', '0', 'nenhum']);
+  await preencher(page, ['Prova segredo azul', '1', '10', '8', '0', 'nenhum']);
   await page.keyboard.press('Enter');
   await expect(page.getByText('Prova segredo azul')).toBeVisible();
   await page.keyboard.press('Alt+KeyN');
-  await preencher(page, ['Prova pendente', '1', '1', '-', '0', 'nenhum']);
+  await preencher(page, ['Prova pendente', '1', '10', '-', '0', 'nenhum']);
   await page.keyboard.press('Enter');
-  await expect(page.getByText('8,0 (parcial)').first()).toBeVisible();
+  await expect(page.getByText('Prova pendente')).toBeVisible();
+  await expect(page.getByText('4.0').first()).toBeVisible();
 
   await page.waitForTimeout(600);
   const baixar = page.waitForEvent('download');
@@ -75,5 +80,7 @@ test('Notas: frase, código, itens com média parcial, trava, destrava e arquivo
   await page.getByRole('button', { name: 'Abrir com a frase' }).click();
   await preencher(page, [PHRASE]);
   await page.keyboard.press('Enter');
-  await expect(page.getByText('Prova segredo azul')).toBeVisible({ timeout: 20000 });
+  await expect(page.getByRole('heading', { name: 'Boletim geral' })).toBeVisible({ timeout: 20000 });
+  await page.keyboard.press('ArrowRight');
+  await expect(page.getByText('Prova segredo azul')).toBeVisible();
 });

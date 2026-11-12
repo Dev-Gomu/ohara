@@ -28,6 +28,15 @@ export interface Item {
   // Item que este repõe: a original sai da conta quando a reposição tem nota.
   replaces: string | null;
   bonus: number;
+  // Nota máxima da avaliação (D113). Itens antigos não têm: valem 10.
+  max?: number;
+}
+
+export const itemMax = (item: Item): number => (item.max !== undefined && item.max > 0 ? item.max : 10);
+
+// A nota digitada é a do professor; a conta trabalha sempre de 0 a 10.
+function onTen(item: Item): number {
+  return ((item.grade ?? 0) / itemMax(item)) * 10;
 }
 
 export function defaultScheme(subjectId: string): Scheme {
@@ -76,7 +85,7 @@ export function bimesterResult(items: readonly Item[], scheme: Scheme, bimester:
   const partial = graded.length < live.length;
   if (graded.length === 0 || weights <= 0) return { value: null, partial: true };
   const sum = graded.reduce(
-    (total, item) => total + item.weight * capped((item.grade ?? 0) + item.bonus, scheme.cap),
+    (total, item) => total + item.weight * capped(onTen(item) + item.bonus, scheme.cap),
     0,
   );
   const bonus = scheme.bonusBimester[bimester - 1] ?? 0;
@@ -173,12 +182,23 @@ export function neededInFourthForYear(items: readonly Item[], scheme: Scheme): N
 }
 
 export function formatGrade(value: number | null): string {
-  return value === null ? '—' : value.toFixed(1).replace('.', ',');
+  return value === null ? '—' : value.toFixed(1);
 }
 
-export function parseGrade(text: string): number | null | undefined {
+export function parseGrade(text: string, max = 10): number | null | undefined {
   const clean = text.trim().replace(',', '.');
   if (clean === '' || clean === '-') return null;
   const value = Number(clean);
-  return Number.isFinite(value) && value >= 0 && value <= 10 ? value : undefined;
+  return Number.isFinite(value) && value >= 0 && value <= max ? value : undefined;
 }
+
+// Quanto vale o bimestre no esquema, em pontos do semestre (3 + 7, 5 + 5): D113.
+export function bimesterValue(scheme: Scheme, bimester: Bimester): number {
+  const first = scheme.bimester1[bimester <= 2 ? 0 : 1] ?? 50;
+  return ((bimester % 2 === 1 ? first : 100 - first) / 100) * 10;
+}
+
+// Nota de 0 a 10 do bimestre em pontos do bimestre (8.0 de 10 num bimestre que vale 3 = 2.4).
+export const toPoints = (ten: number, value: number): number => (ten * value) / 10;
+export const fromPoints = (points: number, value: number): number =>
+  value > 0 ? (points * 10) / value : 0;

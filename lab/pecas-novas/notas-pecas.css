@@ -1,0 +1,269 @@
+.np-secao {
+  display: contents;
+}
+
+/* ---------- 1. Célula de nota ---------- */
+.np-cel {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 60px;
+  height: 32px;
+  padding: 0 var(--e3);
+  border-radius: var(--raio-pilula);
+  font: var(--ui-item);
+  font-variant-numeric: tabular-nums;
+}
+
+.np-cel[data-estado='pendente'] {
+  color: var(--cor-texto-2);
+  font-weight: 500;
+}
+
+.np-cel[data-estado='total'],
+.np-cel[data-estado='aberto'] {
+  font-weight: 700;
+}
+
+.np-cel[data-estado='aberto'] {
+  color: var(--cor-texto-2);
+}
+
+.np-cel[data-v='a'][data-estado='baixa'] {
+  background: color-mix(in srgb, var(--cor-atencao) 22%, transparent);
+}
+
+.np-cel:is([data-v='a'], [data-v='c']):is([data-estado='total'], [data-estado='aberto']) {
+  background: var(--sup-peca);
+}
+
+.np-cel[data-v='b']:is([data-estado='total'], [data-estado='aberto']) {
+  font: var(--voz-mini);
+}
+
+.np-marca {
+  flex: none;
+  width: 14px;
+  height: 6px;
+  border-radius: var(--raio-pilula);
+  background: var(--cor-atencao);
+}
+
+/* ---------- 2. Título de semestre ---------- */
+.np-sem {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e1);
+  align-self: flex-start;
+  padding: var(--e2);
+  border-radius: var(--raio-item);
+  background: var(--sup-peca);
+}
+
+.np-sem-grade {
+  display: grid;
+  grid-template-columns: repeat(3, 84px);
+  align-items: center;
+  justify-items: center;
+  font: var(--ui-item);
+  font-variant-numeric: tabular-nums;
+}
+
+.np-sem-linha {
+  height: var(--alvo);
+  border-radius: var(--raio-minimo);
+}
+
+.np-sem-linha b {
+  font-weight: 700;
+}
+
+.np-rot {
+  font: var(--ui-apoio);
+  color: var(--cor-texto-2);
+}
+
+.np-sem-titulo {
+  padding: var(--e1) var(--e3) 0;
+}
+
+.np-sem[data-v='a'] .np-sem-titulo {
+  font: var(--ui-rotulo);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--cor-texto-2);
+}
+
+.np-sem[data-v='b'] .np-rot[data-total] {
+  font: var(--ui-item);
+  font-weight: 700;
+  color: var(--cor-texto);
+}
+
+.np-sem[data-v='c'] .np-sem-titulo {
+  font: var(--ui-item);
+  font-weight: 700;
+}
+
+.np-sem-titulo small,
+.np-col small,
+.np-campo-par small {
+  font: var(--ui-apoio);
+  color: var(--cor-texto-2);
+}
+
+/* ---------- 3. Rótulo de coluna ---------- */
+.np-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--e2);
+  min-width: 76px;
+}
+
+.np-col-rot {
+  display: flex;
+  align-items: baseline;
+  gap: var(--e1);
+  font: var(--ui-apoio);
+  color: var(--cor-texto-2);
+  white-space: nowrap;
+}
+
+.np-col[data-v='b'] .np-col-rot {
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.np-col[data-v='b'] small {
+  font: var(--ui-tecla);
+}
+
+.np-col[data-v='c'] .np-col-rot > span {
+  font: var(--ui-item);
+  color: var(--cor-texto);
+}
+
+.np-col-valor {
+  font: var(--ui-item);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- 4. Campo de nota ---------- */
+.np-campo-par {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e2);
+}
+
+.np-campo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--e2);
+  width: 76px;
+  height: var(--alvo);
+  padding: 0 var(--e3);
+  border-radius: var(--raio-campo);
+  background: var(--sup-peca);
+}
+
+.np-campo[data-viva] {
+  background: var(--sup-peca-viva);
+}
+
+.np-campo-num {
+  display: inline-flex;
+  align-items: center;
+  font: var(--leitura-campo);
+  font-variant-numeric: tabular-nums;
+}
+
+.np-campo-num[data-vazio] {
+  color: var(--cor-texto-2);
+}
+
+.np-caret {
+  width: 2px;
+  height: 20px;
+  margin-left: 1px;
+  background: var(--cor-cursor);
+}
+
+.np-campo-par[data-v='b'] .np-campo {
+  justify-content: space-between;
+  width: 124px;
+  padding: 0 var(--e4);
+}
+
+.np-campo-par[data-v='c'] .np-campo {
+  flex-direction: column;
+  gap: 0;
+  width: 92px;
+  height: 64px;
+}
+
+.np-campo-par[data-v='c'] .np-campo-num {
+  font: var(--voz-titulo);
+}
+
+.np-campo-par[data-v='c'] small {
+  font: var(--ui-tecla);
+}
+
+.np-aviso {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e3);
+}
+
+/* ---------- 5. Ajuste da meta ---------- */
+.np-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e2);
+  font: var(--ui-botao);
+  font-variant-numeric: tabular-nums;
+}
+
+.np-meta-nome {
+  font: var(--ui-apoio);
+  color: var(--cor-texto-2);
+}
+
+.np-meta[data-v='a'] {
+  gap: var(--e1);
+  height: var(--alvo);
+  padding: 0 6px 0 var(--e4);
+  border-radius: var(--raio-pilula);
+  background: var(--sup-recuada);
+}
+
+.np-meta[data-v='a'] b {
+  min-width: 36px;
+  text-align: center;
+}
+
+.np-passo {
+  position: relative;
+  width: 40px;
+  height: 32px;
+  border-radius: var(--raio-pilula);
+  background: var(--sup-peca);
+  font: var(--ui-botao);
+}
+
+/* O alvo de toque ocupa a altura inteira da ilha. */
+.np-passo::after {
+  content: '';
+  position: absolute;
+  inset: -6px 0;
+}
+
+.np-meta[data-v='b'] b {
+  margin-right: var(--e2);
+  font: var(--voz-item);
+}

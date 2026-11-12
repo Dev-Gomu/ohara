@@ -66,11 +66,13 @@ interface DayProps extends TargetProps {
   today?: boolean;
   // Marca alongada com a cor da matéria (dia de prova ou de aula).
   subject?: number;
+  // Dia de outro mês, só de contexto.
+  dim?: boolean;
 }
 
-export function Day({ day, today, subject, ...target }: DayProps) {
+export function Day({ day, today, subject, dim, ...target }: DayProps) {
   return (
-    <Target className={`${styles.dia} ${today ? styles.hoje : ''}`} {...target}>
+    <Target className={`${styles.dia} ${today ? styles.hoje : ''} ${dim ? styles.fora : ''}`} {...target}>
       {day}
       {subject !== undefined && <i className={styles.marca} data-materia={subject} />}
     </Target>

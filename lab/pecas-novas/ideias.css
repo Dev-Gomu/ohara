@@ -1,0 +1,997 @@
+/* Ideias antigas na linguagem nova: só tokens, sem círculo, sem contorno, sem divisória. */
+
+/* ---------- Provas do Hub: bloco justo ---------- */
+.ip-quadro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e2);
+}
+
+.ip-cena {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e2);
+  padding: var(--e2);
+  border-radius: var(--raio-bloco);
+  background: var(--sup-recuada);
+}
+
+.ip-cena[data-alt='antes'] {
+  min-height: 270px;
+}
+
+.ip-cena[data-alt='depois'] {
+  min-height: 0;
+}
+
+.ip-rolo {
+  display: flex;
+  align-items: stretch;
+  gap: var(--e2);
+  overflow-x: auto;
+}
+
+.ip-rotulo {
+  padding: var(--e1) var(--e2) 0;
+  color: var(--cor-texto-2);
+  font: var(--ui-rotulo);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* ---------- Agenda de hoje ---------- */
+.hj-moldura {
+  position: relative;
+  height: 460px;
+  margin-left: 52px;
+}
+
+.hj-eixo {
+  position: absolute;
+  left: -52px;
+  width: 44px;
+  color: var(--cor-texto-2);
+  font: var(--ui-tecla);
+  font-variant-numeric: tabular-nums;
+  transform: translateY(-50%);
+}
+
+.hj-lugar {
+  position: absolute;
+  right: 0;
+  left: 0;
+  top: calc(var(--ini) / 10 * 100%);
+  height: calc(var(--dur) / 10 * 100%);
+  padding: 2px 0;
+}
+
+.hj-aula {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  width: 100%;
+  height: 100%;
+  padding: 0 var(--e3);
+  overflow: hidden;
+  border-radius: var(--raio-item);
+  background: var(--sup-peca);
+}
+
+.hj-aula[data-passou='true'] {
+  opacity: 0.62;
+}
+
+.hj-aula[data-sel='true'] {
+  background: var(--cor-escolhido);
+}
+
+.hj-tit {
+  overflow: hidden;
+  font: var(--voz-mini);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hj-fim {
+  display: flex;
+  align-items: center;
+  gap: var(--e2);
+  color: var(--cor-texto-2);
+  font: var(--ui-apoio);
+}
+
+.hj-fim > :last-child {
+  margin-left: auto;
+}
+
+/* O texto desce para a linha de agora não cortar o título. */
+.hj-aula[data-agora='true'] {
+  justify-content: flex-end;
+  padding-bottom: var(--e2);
+}
+
+/* Versão A: a aula de agora é o único bloco cheio, na cor da matéria. */
+.hj-a .hj-aula[data-agora='true'] {
+  background: var(--cor-materia);
+  color: var(--cor-tinta);
+}
+
+.hj-a .hj-aula[data-agora='true'] .hj-fim {
+  color: var(--cor-tinta);
+}
+
+.hj-tinta {
+  padding: 3px 10px;
+  border-radius: var(--raio-pilula);
+  background: var(--cor-tinta);
+  color: var(--cor-sobre-tinta);
+  font: var(--ui-sigla);
+  white-space: nowrap;
+}
+
+.hj-linha {
+  position: absolute;
+  right: 0;
+  left: 0;
+  z-index: 3;
+  top: calc(var(--ini) / 10 * 100%);
+  height: 3px;
+  margin-top: -1px;
+  border-radius: var(--raio-pilula);
+  background: var(--cor-agora);
+  pointer-events: none;
+}
+
+.hj-agora {
+  position: absolute;
+  left: -52px;
+  z-index: 4;
+  top: calc(var(--ini) / 10 * 100%);
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 9px;
+  border-radius: var(--raio-pilula);
+  background: var(--cor-agora);
+  color: var(--cor-sobre-acao);
+  font: var(--ui-tecla);
+  font-variant-numeric: tabular-nums;
+  transform: translateY(-50%);
+}
+
+.hj-lista {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e1);
+}
+
+/* ---------- Lixeira ---------- */
+.lx-lista {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e1);
+}
+
+.lx-barra {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--e3);
+}
+
+/* ---------- Notas ---------- */
+.nt-resumo {
+  display: flex;
+  align-items: center;
+  gap: var(--e6);
+  padding: var(--e3) var(--e5);
+  border-radius: var(--raio-item);
+  background: var(--sup-peca);
+}
+
+.nt-geral {
+  font: var(--voz-numero);
+}
+
+.nt-bloco {
+  display: grid;
+  gap: 2px;
+}
+
+.nt-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--e2);
+  margin-left: auto;
+}
+
+.nt-meta b {
+  min-width: 44px;
+  text-align: center;
+  font: var(--voz-titulo);
+}
+
+.nt-tabela {
+  display: grid;
+  gap: var(--e1);
+}
+
+.nt-linha {
+  display: grid;
+  grid-template-columns: 76px 3fr 3fr 1fr 1.3fr 1.5fr;
+  align-items: stretch;
+  gap: var(--e2);
+  min-height: 52px;
+}
+
+.nt-linha[data-sel='true'] {
+  border-radius: var(--raio-item);
+  background: var(--cor-escolhido);
+}
+
+.nt-cab {
+  min-height: 0;
+  color: var(--cor-texto-2);
+  font: var(--ui-rotulo);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.nt-cab > span {
+  padding: 0 var(--e3);
+}
+
+.nt-sigla {
+  display: flex;
+  align-items: center;
+}
+
+.nt-faixa {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.2fr;
+  align-items: center;
+  justify-items: center;
+  border-radius: var(--raio-item);
+  background: var(--sup-peca);
+  font: var(--ui-botao);
+  font-variant-numeric: tabular-nums;
+}
+
+.nt-faixa[data-ano='true'] {
+  grid-template-columns: 1fr;
+  font: var(--voz-titulo);
+}
+
+.nt-faixa .nt-total {
+  padding: 4px 12px;
+  border-radius: var(--raio-pilula);
+  background: var(--sup-peca-viva);
+  font-weight: 700;
+}
+
+.nt-vazio {
+  color: var(--cor-texto-2);
+  font-weight: 400;
+}
+
+.nt-baixa {
+  padding: 4px 10px;
+  border-radius: var(--raio-pilula);
+  background: color-mix(in srgb, var(--cor-atencao) 22%, transparent);
+}
+
+.nt-falta {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: var(--e3);
+  color: var(--cor-texto-2);
+  font: var(--ui-item);
+  font-variant-numeric: tabular-nums;
+}
+
+.nt-falta b {
+  margin-right: var(--e1);
+  color: var(--cor-texto);
+}
+
+.nt-sit {
+  display: flex;
+  align-items: center;
+  padding-left: var(--e3);
+  color: var(--cor-texto-2);
+  font: var(--ui-item);
+}
+
+/* ---------- Hub inteiro, 1920 x 1080 ---------- */
+.hl-tela {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: var(--vao-mosaico);
+  height: 100vh;
+  padding: var(--margem-tela);
+}
+
+.hl-tela[data-v='2'] {
+  grid-template-rows: 250px minmax(0, 1fr);
+}
+
+.hl-baixo {
+  display: grid;
+  grid-template-columns: 0.9fr 1.3fr 1fr;
+  gap: var(--vao-mosaico);
+  min-height: 0;
+}
+
+.hl-cal {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  justify-items: center;
+  gap: var(--e1) 0;
+  padding: 0 var(--e3) var(--e3);
+}
+
+.hl-sem {
+  font: var(--ui-rotulo);
+}
+
+.hl-lembretes {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--e1);
+  padding: var(--e1) 10px 10px;
+}
+
+.hl-novo {
+  display: flex;
+  margin: 0 var(--bloco-pad-x) var(--bloco-pad-y);
+}
+
+.hl-novo > button {
+  flex: 1;
+}
+
+.hl-provas-v {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e2);
+  padding: 0 var(--e2) var(--e2);
+  overflow: auto;
+}
+
+.hl-provas-v > button {
+  align-self: stretch;
+}
+
+.hl-agenda-v {
+  flex: 1;
+  min-height: 0;
+  padding: var(--e2) var(--e4) var(--e3);
+}
+
+.hl-alto {
+  height: 100%;
+}
+
+/* Agenda de hoje na horizontal: a mesma peça, o tempo corre para a direita. */
+.hl-agenda-h {
+  flex: 1;
+  min-height: 0;
+  padding: 0 var(--e4) var(--e3);
+}
+
+.hl-h-moldura {
+  position: relative;
+  height: 100%;
+  margin: var(--e5) var(--e5) 0;
+}
+
+.hl-h-moldura .hj-lugar[data-h='true'] {
+  top: 0;
+  bottom: 0;
+  left: calc(var(--ini) / 10 * 100%);
+  width: calc(var(--dur) / 10 * 100%);
+  height: auto;
+  padding: 0 2px;
+}
+
+.hl-h-eixo {
+  position: absolute;
+  top: calc(var(--e5) * -1);
+  left: calc(var(--ini) / 10 * 100%);
+  color: var(--cor-texto-2);
+  font: var(--ui-tecla);
+  font-variant-numeric: tabular-nums;
+  transform: translateX(-50%);
+}
+
+.hl-h-linha {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--ini) / 10 * 100%);
+  z-index: 3;
+  width: 3px;
+  margin-left: -1px;
+  border-radius: var(--raio-pilula);
+  background: var(--cor-agora);
+  pointer-events: none;
+}
+
+.hl-h-agora {
+  position: absolute;
+  top: calc(var(--e5) * -1);
+  left: calc(var(--ini) / 10 * 100%);
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 9px;
+  border-radius: var(--raio-pilula);
+  background: var(--cor-agora);
+  color: var(--cor-sobre-acao);
+  font: var(--ui-tecla);
+  font-variant-numeric: tabular-nums;
+  transform: translateX(-50%);
+}
+
+/* ---------- Hub, rodada nova: layouts 3, 4 e 5 ---------- */
+.hl-tela[data-v='3'] {
+  --lado: clamp(380px, 46vh, 520px);
+  grid-template-rows: minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) 420px var(--lado);
+}
+
+.hl-tela[data-v='4'] {
+  grid-template-rows: minmax(0, 1fr);
+  --lado: min(100vh - 160px, 30vw);
+  grid-template-columns: minmax(0, 0.65fr) minmax(0, 1.35fr);
+}
+
+.hl-tela[data-v='5'] {
+  grid-template-rows: minmax(0, 1fr);
+  --lado: min(100vh - 304px, 30vw);
+  grid-template-columns: minmax(0, 1fr) 420px;
+}
+
+.hl-pilha,
+.hl-andares {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: var(--vao-mosaico);
+  min-width: 0;
+  min-height: 0;
+}
+
+.hl-tela[data-v='4'] .hl-andares {
+  grid-template-rows: auto minmax(0, 1fr);
+}
+
+.hl-tela[data-v='5'] .hl-andares {
+  grid-template-rows: 280px minmax(0, 1fr);
+}
+
+.hl-par {
+  display: grid;
+  grid-template-columns: var(--lado) minmax(0, 1fr);
+  gap: var(--vao-mosaico);
+  min-height: 0;
+}
+
+/* Calendário sempre quadrado: o lado vem do layout, igual em largura e altura. */
+.hl-quadrado {
+  display: grid;
+  width: var(--lado);
+  height: var(--lado);
+}
+
+/* Calendário que cresce com o bloco: casas e números maiores (resposta ao defeito dos números pequenos). */
+.hl-cal[data-grande='true'] {
+  flex: 1;
+  grid-template-rows: auto;
+  grid-auto-rows: minmax(44px, 1fr);
+  align-items: center;
+}
+
+.hl-cal[data-grande='true'] > :not(.hl-sem) {
+  width: min(84%, 76px);
+  height: 44px;
+  font: var(--voz-mini);
+}
+
+/* ---------- Hub do zero (layout 6): hoje | próximas 6 semanas | avaliações ---------- */
+.hl-tela[data-v='6'] {
+  grid-template-rows: minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr) 400px;
+}
+
+.hz-hoje {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: var(--vao-mosaico);
+  min-width: 0;
+  min-height: 0;
+}
+
+.hz-data {
+  display: grid;
+  gap: var(--e1);
+  padding: 0 var(--bloco-pad-x) var(--e2);
+}
+
+.hz-data span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hz-data span {
+  color: var(--cor-texto-2);
+  font: var(--ui-item);
+}
+
+
+.hz-grade {
+  display: grid;
+  flex: 1;
+  grid-template-rows: auto;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  grid-auto-rows: minmax(0, 1fr);
+  gap: var(--e1);
+  min-height: 0;
+  padding: 0 var(--e2) var(--e2);
+}
+
+.hz-sem {
+  padding: 0 var(--e2) var(--e1);
+  color: var(--cor-texto-2);
+  font: var(--ui-rotulo);
+}
+
+.hz-dia {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e2);
+  min-height: 0;
+  padding: var(--e2);
+  overflow: hidden;
+  border-radius: var(--raio-item);
+}
+
+.hz-dia[data-cheio='true'] {
+  background: var(--sup-peca);
+}
+
+.hz-dia[data-hoje='true'] {
+  background: var(--cor-escolhido);
+}
+
+.hz-dia[data-passou='true'] {
+  opacity: 0.45;
+}
+
+.hz-num {
+  display: flex;
+  align-items: center;
+  gap: var(--e2);
+  font: var(--voz-mini);
+}
+
+.hz-num b {
+  display: grid;
+  place-items: center;
+  min-width: 36px;
+  height: 26px;
+  border-radius: var(--raio-pilula);
+}
+
+.hz-dia[data-hoje='true'] .hz-num b {
+  background: var(--cor-agora);
+  color: var(--cor-sobre-acao);
+}
+
+.hz-num small {
+  color: var(--cor-texto-2);
+  font: var(--ui-rotulo);
+  text-transform: uppercase;
+}
+
+.hz-siglas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e1);
+}
+
+/* Moldura do app na bancada: mesmas medidas de ScreenFrame (barra de 48px, vão e margem do mosaico). */
+.hz-app {
+  display: grid;
+  grid-template-rows: var(--barra-topo) minmax(0, 1fr);
+  gap: var(--vao-mosaico);
+  height: 100vh;
+  padding: var(--margem-tela);
+}
+
+.hz-app > .hl-tela {
+  height: auto;
+  min-height: 0;
+  padding: 0;
+}
+
+.hz-topo {
+  display: flex;
+  align-items: center;
+  gap: var(--e3);
+  min-width: 0;
+}
+
+.hz-titulo {
+  min-width: 0;
+  margin: 0 0 0 var(--e3);
+  overflow: hidden;
+  font: var(--voz-titulo);
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.hz-fim {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--e2);
+  margin-left: auto;
+}
+
+/* ---------- Hub do zero, segunda proposta (layout 7): o "agora" em letra grande ---------- */
+.hl-tela[data-v='7'] {
+  --lado: clamp(360px, 44vh, 500px);
+  grid-template-rows: minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) 420px var(--lado);
+}
+
+.hz-agora {
+  display: grid;
+  gap: var(--e2);
+  margin: 0 var(--e2) var(--e2);
+  padding: var(--e3) var(--e4) var(--e3);
+  border-radius: var(--raio-item);
+  background: var(--cor-escolhido);
+}
+
+.hz-agora-linha {
+  display: flex;
+  align-items: center;
+  gap: var(--e2);
+  color: var(--cor-texto-2);
+  font: var(--ui-apoio);
+}
+
+.hz-agora-linha > :last-child {
+  margin-left: auto;
+}
+
+.hz-agora-tit {
+  overflow: hidden;
+  font: var(--voz-titulo);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hz-trilho {
+  display: block;
+  height: 10px;
+  overflow: hidden;
+  border-radius: var(--raio-pilula);
+  background: var(--sup-peca-viva);
+}
+
+.hz-trilho-cheio {
+  display: block;
+  height: 100%;
+  border-radius: var(--raio-pilula);
+  background: var(--cor-agora);
+}
+
+.hz-horas {
+  font: var(--ui-tecla);
+  font-variant-numeric: tabular-nums;
+}
+
+.hz-prox {
+  display: grid;
+  gap: var(--e3);
+  margin: 0 var(--e2) var(--e2);
+  padding: var(--e3);
+  border-radius: var(--raio-bloco);
+  background: var(--sup-peca);
+}
+
+.hz-prox-topo {
+  display: flex;
+  align-items: center;
+  gap: var(--e3);
+  padding: var(--e1) var(--e2) 0;
+}
+
+.hz-prox-num {
+  font: var(--voz-numero);
+}
+
+.hz-prox-texto {
+  display: grid;
+  gap: 2px;
+  color: var(--cor-texto-2);
+  font: var(--ui-apoio);
+}
+
+.hz-prox-texto b {
+  color: var(--cor-texto);
+  font: var(--voz-mini);
+}
+
+.hz-prox-tijolos {
+  display: flex;
+  gap: var(--e1);
+  height: 64px;
+}
+
+.hz-tijolo {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  padding: 0 var(--e3);
+  border-radius: var(--raio-item);
+  background: var(--cor-materia);
+  color: var(--cor-tinta);
+  font: var(--ui-tecla);
+}
+
+.hz-tijolo b {
+  font: var(--voz-mini);
+}
+
+.hz-resto {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-content: start;
+  gap: var(--e2);
+  min-height: 0;
+  padding: 0 var(--e2) var(--e2);
+  overflow: auto;
+}
+
+@media (min-height: 900px) {
+  .hz-resto {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hz-agora-tit {
+    font: var(--voz-tela);
+  }
+}
+
+/* ---------- Layout 8: tamanho travado. Em tela grande o Hub não cresce, fica no centro. ---------- */
+.hz-teto {
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  min-height: 0;
+}
+
+.hz-teto > .hl-tela {
+  --lado: 380px;
+  grid-template-rows: minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) 420px var(--lado);
+  width: min(100%, 1360px);
+  height: min(100%, 760px);
+  padding: 0;
+}
+
+/* ---------- Layout 9: no PC, mais conteúdo com as peças no tamanho do tablet ---------- */
+.hl-tela[data-v='9'] {
+  --lado: 380px;
+  grid-template-rows: var(--lado) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) 420px var(--lado);
+  grid-template-areas:
+    'ag pr ca'
+    'ag pr le';
+}
+
+.hp-area {
+  display: grid;
+  min-width: 0;
+  min-height: 0;
+}
+
+.hp-ag {
+  grid-area: ag;
+}
+
+.hp-pr {
+  grid-area: pr;
+}
+
+.hp-ca {
+  grid-area: ca;
+}
+
+.hp-le {
+  grid-area: le;
+}
+
+.hp-dias {
+  display: grid;
+  flex: 1;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--e3);
+  min-height: 0;
+  padding: var(--e1) var(--e4) var(--e3);
+}
+
+.hp-dia {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e3);
+  min-height: 0;
+}
+
+.hp-dia-nome {
+  display: flex;
+  align-items: baseline;
+  gap: var(--e2);
+  color: var(--cor-texto-2);
+  font: var(--ui-apoio);
+}
+
+.hp-dia-nome b {
+  color: var(--cor-texto);
+  font: var(--voz-mini);
+}
+
+.hp-dia[data-extra='false'] .hp-dia-nome {
+  padding-left: 52px;
+}
+
+.hp-moldura {
+  flex: 1;
+  height: auto;
+  min-height: 0;
+}
+
+.hp-dia[data-extra='true'] .hp-moldura {
+  margin-left: 0;
+}
+
+.hp-meses {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--e3);
+  min-height: 0;
+}
+
+.hp-mes {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.hp-mes-nome {
+  padding: 0 var(--bloco-pad-x) var(--e1);
+  font: var(--voz-mini);
+}
+
+.hp-dia[data-extra='true'],
+.hp-mes[data-extra='true'] {
+  display: none;
+}
+
+@media (min-width: 1600px) {
+  .hl-tela[data-v='9'] {
+    --lado: 440px;
+    grid-template-rows: minmax(0, 1fr) auto;
+    grid-template-areas:
+      'ag pr ca'
+      'le pr ca';
+  }
+
+  .hp-dias {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .hp-dia[data-extra='true'],
+  .hp-mes[data-extra='true'] {
+    display: flex;
+  }
+
+  .hp-le .hl-lembretes {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-content: start;
+  }
+
+  .hp-le .hl-novo > button {
+    flex: none;
+  }
+}
+
+/* ---------- Layouts 10 e 11: as duas opções do usuário ---------- */
+.hl-tela[data-v='10'] {
+  --lado: clamp(380px, 27vw, 500px);
+  grid-template-rows: minmax(0, 1fr);
+  grid-template-columns: var(--lado) minmax(0, 1fr) 380px;
+}
+
+.hp-fluxo {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: var(--e2);
+  min-height: 0;
+  padding: 0 var(--e2) var(--e2);
+  overflow: auto;
+}
+
+.hl-tela[data-v='11'] {
+  --lado: 380px;
+}
+
+.hp-tres {
+  display: grid;
+  grid-template-columns: var(--lado) minmax(0, 1fr) 380px;
+  gap: var(--vao-mosaico);
+  min-height: 0;
+}
+
+@media (min-width: 1600px) {
+  .hl-tela[data-v='11'] {
+    --lado: 440px;
+  }
+}
+
+/* ---------- Layout 12: calendário quadrado no alto e a lista do dia escolhido embaixo ---------- */
+.hl-tela[data-v='12'] {
+  grid-template-rows: minmax(0, 1fr);
+  grid-template-columns: clamp(380px, 25vw, 460px) minmax(0, 1fr) 420px;
+}
+
+.hp-cal-q {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  aspect-ratio: 1;
+}
+
+.hp-do-dia {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--e2);
+  min-height: 0;
+  padding: var(--e3) 10px 10px;
+}
+
+.hp-do-dia > .hp-dia-nome {
+  padding: 0 var(--e2);
+}
+
+.hp-do-dia-lista {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e1);
+  min-height: 0;
+  overflow: auto;
+}
+
+.hp-direita {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: var(--vao-mosaico);
+  min-width: 0;
+  min-height: 0;
+}

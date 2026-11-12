@@ -217,6 +217,7 @@ function LessonDesk({ data, lessonId }: { data: StudyData; lessonId: string }) {
     <ScreenFrame
       title={lesson?.title}
       caps={false}
+      level={!mosaic.resizing}
       end={
         <>
           {subject && <SubjectPill code={subject.code} color={subject.color} />}

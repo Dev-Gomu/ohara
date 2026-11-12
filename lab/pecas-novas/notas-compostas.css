@@ -1,0 +1,362 @@
+.nc-de {
+  font: var(--ui-apoio);
+  color: var(--cor-texto-2);
+  white-space: nowrap;
+}
+
+.nc-par,
+.nc-num {
+  font: var(--ui-item);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.nc-par {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--e1);
+}
+
+.nc-par .np-marca {
+  align-self: center;
+  margin-right: 2px;
+}
+
+.nc-par b,
+.nc-num {
+  font-weight: 700;
+}
+
+.nc-par[data-pendente] b,
+[data-pendente] > b,
+b[data-pendente] {
+  color: var(--cor-texto-2);
+  font-weight: 500;
+}
+
+/* ---------- 1. Linha do boletim ---------- */
+.nc-boletim {
+  display: flex;
+  flex-direction: column;
+  align-self: flex-start;
+}
+
+.nc-linha {
+  display: grid;
+  grid-template-columns: 64px auto auto 76px 140px 116px;
+  align-items: center;
+  justify-items: center;
+  column-gap: var(--e3);
+  height: 52px;
+  padding: 0 var(--e3);
+  border-radius: var(--raio-item);
+}
+
+.nc-linha[data-v='c'] {
+  grid-template-columns: 64px auto auto 76px 140px;
+}
+
+.nc-linha > :first-child,
+.nc-linha:not([data-v='c']) > :last-child {
+  justify-self: start;
+}
+
+.nc-cab {
+  height: 36px;
+}
+
+/* A faixa do semestre atravessa as linhas: sem vão vertical, cantos só nas pontas. */
+.nc-faixa {
+  display: grid;
+  grid-template-columns: repeat(3, 72px);
+  align-items: center;
+  justify-items: center;
+  align-self: stretch;
+  padding: 0 var(--e1);
+  background: var(--sup-peca);
+}
+
+.nc-cab .nc-faixa {
+  border-radius: var(--raio-item) var(--raio-item) 0 0;
+}
+
+.nc-linha:last-child .nc-faixa {
+  border-radius: 0 0 var(--raio-item) var(--raio-item);
+}
+
+.nc-boletim[data-v='b'] {
+  gap: var(--e1);
+}
+
+.nc-linha[data-v='b'] {
+  column-gap: var(--e5);
+}
+
+.nc-linha[data-v='b']:not(.nc-cab) {
+  background: var(--sup-peca);
+}
+
+.nc-linha[data-v='b'] .nc-faixa {
+  padding: 0;
+  background: none;
+}
+
+.nc-rot {
+  font: var(--ui-apoio);
+  color: var(--cor-texto-2);
+  white-space: nowrap;
+}
+
+.nc-rot[data-forte] {
+  font: var(--ui-item);
+  font-weight: 700;
+  color: var(--cor-texto);
+}
+
+/* ---------- 2. Cartão de bimestre ---------- */
+.nc-cartoes {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: start;
+  gap: var(--e3);
+}
+
+.nc-cartoes > .v-amostra {
+  align-items: stretch;
+}
+
+.nc-cartao {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--e1);
+  padding: var(--e3);
+  border-radius: var(--raio-item);
+  background: var(--sup-peca);
+}
+
+.nc-cartao > button {
+  align-self: flex-start;
+}
+
+.nc-cartao-topo {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--e2);
+  padding: 0 var(--e2);
+  font: var(--ui-item);
+}
+
+.nc-cartao-topo > b {
+  font-weight: 700;
+}
+
+.nc-cartao-num {
+  display: flex;
+  align-items: baseline;
+  gap: var(--e2);
+  padding: var(--e1) var(--e2) var(--e2);
+}
+
+.nc-cartao-num > b {
+  font: var(--voz-pergunta);
+  font-variant-numeric: tabular-nums;
+}
+
+.nc-cartao-num .np-marca {
+  align-self: center;
+}
+
+.nc-cartao-sub {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 var(--e2);
+}
+
+.nc-cartao[data-v='b'] .nc-cartao-topo {
+  padding-bottom: var(--e1);
+}
+
+.nc-cartao-pe {
+  display: flex;
+  align-items: baseline;
+  gap: var(--e2);
+  min-height: 36px;
+  padding: var(--e2) var(--e2) 0;
+  font: var(--ui-item);
+  font-weight: 700;
+}
+
+.nc-cartao-pe > :first-child {
+  margin-right: auto;
+}
+
+.nc-vazio {
+  padding: var(--e2);
+}
+
+/* ---------- 3. Linha de avaliação ---------- */
+.nc-aval {
+  display: flex;
+  align-items: center;
+  gap: var(--e2);
+  min-height: var(--alvo);
+  padding: 0 var(--e2);
+  border-radius: var(--raio-minimo);
+}
+
+.nc-aval-nome {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  font: var(--ui-apoio);
+}
+
+.nc-aval[data-v='c'] {
+  min-height: 52px;
+}
+
+.nc-aval[data-v='c'] .nc-aval-nome > span {
+  font: var(--ui-item);
+}
+
+.nc-aval-nota {
+  font: var(--voz-mini);
+}
+
+/* O campo viaja dentro da linha: tira o recuo para alinhar com as notas vizinhas. */
+.nc-aval .np-campo-par {
+  margin-right: calc(-1 * var(--e2));
+}
+
+.nc-aval[data-v='b'] {
+  padding-right: 0;
+}
+
+.nc-campo-fixo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 124px;
+  height: 40px;
+  padding: 0 var(--e4);
+  border-radius: var(--raio-campo);
+  background: var(--sup-peca);
+  font: var(--leitura-campo);
+  font-variant-numeric: tabular-nums;
+}
+
+.nc-campo-fixo > b {
+  font-weight: 400;
+}
+
+/* ---------- 4. Resumo ---------- */
+.nc-resumo[data-v='a'],
+.nc-resumo[data-v='c'] {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--e3) var(--e5);
+}
+
+.nc-resumo > .np-meta {
+  margin-left: auto;
+}
+
+.nc-dado {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.nc-dado > b {
+  font: var(--voz-item);
+  font-variant-numeric: tabular-nums;
+}
+
+.nc-dado > small {
+  line-height: 22px;
+}
+
+.nc-dado[data-grande] > b {
+  font: var(--voz-pergunta);
+}
+
+.nc-lado {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e1);
+}
+
+.nc-par-linha {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--e3);
+  min-height: 36px;
+  padding: 0 var(--e2);
+  font: var(--ui-item);
+  font-variant-numeric: tabular-nums;
+}
+
+.nc-par-linha > span:first-child {
+  font: var(--ui-apoio);
+}
+
+.nc-par-linha > b {
+  font-weight: 700;
+}
+
+.nc-par-linha > .np-meta {
+  margin: var(--e1) calc(-1 * var(--e1)) 0 0;
+}
+
+/* ---------- 5. Quanto preciso ---------- */
+.nc-frase {
+  font: var(--leitura-compacta);
+}
+
+.nc-frase b {
+  font: var(--ui-item);
+  font-weight: 700;
+}
+
+.nc-frase[data-sinal] {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--e2);
+}
+
+.nc-quanto[data-v='b'] {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.nc-quanto[data-v='b'] > :last-child {
+  white-space: normal;
+}
+
+.nc-quanto-num {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--e2);
+}
+
+.nc-quanto-num > b {
+  font: var(--voz-pergunta);
+  font-variant-numeric: tabular-nums;
+}
+
+.nc-quanto[data-v='c'] {
+  align-self: stretch;
+  min-width: 300px;
+}
+
+.v-amostra:has(> .nc-quanto[data-v='c']) {
+  align-items: stretch;
+}

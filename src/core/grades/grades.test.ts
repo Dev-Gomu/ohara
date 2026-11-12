@@ -1,6 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import {
   bimesterResult,
+  bimesterValue,
+  fromPoints,
+  toPoints,
   copyScheme,
   defaultScheme,
   formatGrade,
@@ -158,7 +161,7 @@ describe('esquema', () => {
 
 describe('texto da nota', () => {
   it('formata com vírgula e aceita vírgula ou ponto', () => {
-    expect(formatGrade(7)).toBe('7,0');
+    expect(formatGrade(7)).toBe('7.0');
     expect(formatGrade(null)).toBe('—');
     expect(parseGrade('8,5')).toBe(8.5);
     expect(parseGrade('8.5')).toBe(8.5);
@@ -210,5 +213,30 @@ describe('preciso no bimestre', () => {
     expect(neededInFourthForYear([item(1, 8), item(2, 8)], scheme)).toEqual({
       kind: 'sem-dados',
     });
+  });
+});
+
+describe('notas em pontos (D113)', () => {
+  it('nota máxima: 2.4 de 3.0 vale 8.0 na conta de 0 a 10', () => {
+    const result = bimesterResult([item(1, 2.4, { max: 3, weight: 3 })], scheme, 1);
+    expect(result.value).toBeCloseTo(8);
+  });
+
+  it('itens sem máximo valem 10 e a mistura pesa pelo máximo', () => {
+    const items = [item(1, 2, { max: 2, weight: 2 }), item(1, 1, { max: 1, weight: 1 })];
+    expect(bimesterResult(items, scheme, 1).value).toBeCloseTo(10);
+    expect(bimesterResult([item(1, 8)], scheme, 1).value).toBe(8);
+  });
+
+  it('valor do bimestre: 5 + 5 e 3 + 7', () => {
+    expect([1, 2, 3, 4].map((b) => bimesterValue(scheme, b as 1 | 2 | 3 | 4))).toEqual([5, 5, 5, 5]);
+    const pro: Scheme = { ...scheme, bimester1: [30, 30] };
+    expect([1, 2, 3, 4].map((b) => bimesterValue(pro, b as 1 | 2 | 3 | 4))).toEqual([3, 7, 3, 7]);
+  });
+
+  it('pontos e nota de 0 a 10 se convertem', () => {
+    expect(toPoints(8, 3)).toBeCloseTo(2.4);
+    expect(fromPoints(4.2, 7)).toBeCloseTo(6);
+    expect(fromPoints(1, 0)).toBe(0);
   });
 });

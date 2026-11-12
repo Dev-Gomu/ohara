@@ -1,11 +1,12 @@
-import { useLayoutEffect, useRef, useSyncExternalStore, type ReactNode } from 'react';
+import { useSyncExternalStore, type ReactNode } from 'react';
 import { SCREENS } from '../../core/keyboard/actions';
 import { SCREEN_NAMES } from '../../core/keyboard/keys';
 import { PhoneBlock } from '../components/Block';
+import { Button } from '../components/Button';
+import { Island, LevelIndicator, Tab } from '../components/Island';
 import { dispatch, useKeyboardState } from '../keyboard/store';
 import { openFaults, openNotes } from '../study/navigation';
 import { storage } from '../study/study';
-import { placeTopBar } from './topAnimation';
 import styles from './ScreenFrame.module.css';
 
 interface ScreenFrameProps {
@@ -13,8 +14,16 @@ interface ScreenFrameProps {
   caps?: boolean;
   bar?: ReactNode;
   end?: ReactNode;
+  // Falso quando um modo passageiro (Redimensionar) toma o lugar do indicador de nível.
+  level?: boolean;
   children: ReactNode;
 }
+
+const LEVEL_KEYS = {
+  menu: ['Enter entra'],
+  block: ['Enter entra', 'Esc sobe'],
+  field: ['Esc sobe'],
+};
 
 interface Page {
   id: string;
@@ -52,80 +61,51 @@ function usePhonePages(focusBlock: string) {
   return { pages, current };
 }
 
-export function ScreenFrame({ title, caps = true, bar, end, children }: ScreenFrameProps) {
+export function ScreenFrame({ title, caps = true, bar, end, level = true, children }: ScreenFrameProps) {
   const { focus, screen } = useKeyboardState();
   const phone = usePhonePages(focus.block);
-  const nav = useRef<HTMLElement>(null);
-  const indicator = useRef<HTMLSpanElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
-
-  // Cada tela desenha a própria barra; a animação parte de onde a tela anterior deixou o indicador.
-  useLayoutEffect(() => {
-    if (!nav.current || !indicator.current) return;
-    placeTopBar(
-      {
-        indicator: indicator.current,
-        numbers: [...nav.current.querySelectorAll<HTMLElement>('[data-aba]')],
-        title: titleRef.current,
-      },
-      SCREENS.indexOf(screen),
-    );
-  }, [screen]);
-
-  const ringAt = (index: number) =>
-    focus.level === 'menu' && focus.menuIndex === index ? 'anel-fino' : '';
+  const cursorAt = (index: number) => focus.level === 'menu' && focus.menuIndex === index;
+  const levelName: keyof typeof LEVEL_KEYS = focus.level === 'nav' ? 'field' : focus.level;
 
   return (
     <main className={styles.tela}>
-      <nav ref={nav} className={styles.topo} data-menu aria-label="Telas">
-        <span ref={indicator} className={styles.indicador} aria-hidden="true" />
-        {SCREENS.map((id, index) => (
-          <button
-            key={id}
-            type="button"
-            className={`${styles.numero} ${ringAt(index)}`}
-            data-menu-item
-            data-aba
-            data-sel={id === screen}
-            aria-label={SCREEN_NAMES[id]}
-            aria-current={id === screen ? 'page' : undefined}
-            onClick={() => dispatch({ type: 'goToScreen', screen: id })}
-          >
-            {index + 1}
-          </button>
-        ))}
+      <nav className={styles.topo} data-menu aria-label="Telas">
+        <Island label="Telas">
+          {SCREENS.map((id, index) => (
+            <Tab
+              key={id}
+              number={index + 1}
+              name={SCREEN_NAMES[id]}
+              current={id === screen}
+              cursor={cursorAt(index)}
+              menuItem
+              onOpen={() => dispatch({ type: 'goToScreen', screen: id })}
+            />
+          ))}
+        </Island>
         {bar}
-        <h1 ref={titleRef} className={styles.titulo} data-caps={caps}>
+        <h1 className={styles.titulo} data-caps={caps}>
           {title}
         </h1>
         <div className={styles.fim}>
           {end}
+          {level && <LevelIndicator level={levelName} keys={LEVEL_KEYS[levelName]} />}
           {!storage.persistent && <span className={styles.aviso}>Dados de exemplo</span>}
-          <button
-            type="button"
-            className={`${styles.notas} ${ringAt(SCREENS.length)}`}
-            data-menu-item
-            onClick={openFaults}
-          >
+          <Button variant="quiet" menuItem cursor={cursorAt(SCREENS.length)} onPress={openFaults}>
             Faltas
-          </button>
-          <button
-            type="button"
-            className={`${styles.notas} ${ringAt(SCREENS.length + 1)}`}
-            data-menu-item
-            onClick={openNotes}
-          >
+          </Button>
+          <Button variant="quiet" menuItem cursor={cursorAt(SCREENS.length + 1)} onPress={openNotes}>
             Notas
-          </button>
-          <button
-            type="button"
-            className={`${styles.numero} ${ringAt(SCREENS.length + 2)}`}
-            data-menu-item
-            aria-label="Ajuda"
-            onClick={() => dispatch({ type: 'openHelp' })}
+          </Button>
+          <Button
+            variant="quiet"
+            menuItem
+            cursor={cursorAt(SCREENS.length + 2)}
+            label="Ajuda"
+            onPress={() => dispatch({ type: 'openHelp' })}
           >
             ?
-          </button>
+          </Button>
         </div>
       </nav>
       <div className={styles.corpo}>

@@ -10,40 +10,8 @@
   position: relative;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--e3);
   min-width: 0;
-}
-
-.indicador {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: var(--alvo);
-  height: var(--alvo);
-  border-radius: var(--raio-pilula);
-  background: var(--cor-aba-ativa, var(--cor-destaque));
-}
-
-.numero {
-  position: relative;
-  z-index: 1;
-  flex: none;
-  width: var(--alvo);
-  height: var(--alvo);
-  border-radius: var(--raio-pilula);
-  background: var(--cor-cartao);
-  color: var(--cor-texto-2);
-  font: var(--ui-botao);
-}
-
-.numero[data-sel='true'] {
-  background: transparent;
-  color: var(--cor-sobre-aba-ativa, var(--cor-tinta));
-}
-
-/* A aba atual é preenchida pelo indicador: o contorno claro (escuro no tema escuro) se vê nela. */
-.numero[data-sel='true']:global(.anel-fino) {
-  outline-color: var(--cor-cartao);
 }
 
 .titulo {
@@ -130,14 +98,4 @@
     background: var(--cor-escolhido);
     color: var(--cor-texto);
   }
-}
-
-.notas {
-  flex: none;
-  height: var(--alvo);
-  padding: 0 var(--e3);
-  border-radius: var(--raio-pilula);
-  background: var(--cor-cartao);
-  color: var(--cor-texto-2);
-  font: var(--ui-botao);
 }

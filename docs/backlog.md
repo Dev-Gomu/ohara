@@ -55,3 +55,5 @@ Lista curta do que foi **adiado ou ainda não decidido**. O que está no plano d
 - 2026-11-08: **Situação nova (No ritmo, Fora do alcance)** do ClaudeWeb: usuário ficou com a atual por ora. Reavaliar se a pergunta "ainda dá para salvar a matéria?" fizer falta.
 - 2026-11-08: **Identidade do ClaudeWeb (Papel Frio / Ardósia):** avaliar como paleta de teste. Recomendação: Ardósia como base, cor de alerta quente separada das matérias, seleção em tom suave e cobalto só em ação.
 - Tipo "Apresentação" na Agenda (hoje só aula, trabalho e compromisso), para aparecer no bloco de avaliações do Hub (D120).
+- 2026-11-10: **Layout do Hub em 1920x1080 (pendente, Fable):** agenda de hoje estilo B escolhida; provas em faixa ou lista vertical em aberto. Brief em `docs/plano/hub-layouts-brief.md`, bancada `lab/pecas-novas.html?peca=hublayout`.
+- Notas: busca `/` na régua, metas por semestre ("Precisa no 2º bim."), janela de esquema com modelos 5 + 5 / 3 + 7 e "Mais opções" (D114) ainda não levadas ao app.
