@@ -131,12 +131,15 @@ export async function createDbStorage(
     async loadLesson(lessonId) {
       await flush();
       const rows = await client.loadVersions(lessonId);
-      mirror = {
-        ...mirror,
-        noteVersions: rows.map((row) =>
-          fromRow<StudyData['noteVersions'][number]>('note_versions', row),
-        ),
-      };
+      const loaded = rows.map((row) =>
+        fromRow<StudyData['noteVersions'][number]>('note_versions', row),
+      );
+      // Uma edição feita durante o carregamento já criou versão na memória, ainda fora destas linhas.
+      const known = new Set(loaded.map((version) => version.id));
+      const fresh = mirror.noteVersions.filter(
+        (version) => version.lessonId === lessonId && !known.has(version.id),
+      );
+      mirror = { ...mirror, noteVersions: [...loaded, ...fresh] };
       notify();
     },
     async sweepBlobs() {
