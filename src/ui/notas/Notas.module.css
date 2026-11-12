@@ -1,0 +1,151 @@
+.notas {
+  height: 100%;
+  display: grid;
+  grid-template:
+    'materias itens resumo' minmax(0, 1fr)
+    / 260px minmax(0, 1fr) 340px;
+  gap: var(--vao-mosaico);
+}
+
+.cofreGrade {
+  grid-template:
+    'cofre' minmax(0, 1fr)
+    / minmax(0, 1fr);
+}
+
+.regua {
+  grid-area: regua;
+  display: flex;
+  align-items: center;
+}
+
+.regua > :first-child {
+  flex: 1;
+  min-width: 0;
+}
+
+.cofre {
+  grid-area: cofre;
+}
+
+.materias {
+  grid-area: materias;
+}
+
+.itens {
+  grid-area: itens;
+}
+
+.resumo {
+  grid-area: resumo;
+}
+
+.corpo {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  flex-direction: column;
+  gap: var(--e1);
+  padding: 0 var(--bloco-pad-x) var(--bloco-pad-y);
+  overflow: auto;
+}
+
+.texto {
+  max-width: 56ch;
+  margin: 0 0 var(--e2);
+  font: var(--leitura-texto);
+}
+
+.suave {
+  color: var(--cor-texto-2);
+}
+
+.codigo {
+  align-self: flex-start;
+  padding: var(--e3) var(--e4);
+  border-radius: var(--raio-item);
+  background: var(--cor-cartao-2);
+  font: 700 28px/36px var(--fonte-interface);
+  letter-spacing: 0.08em;
+  user-select: all;
+}
+
+.acao,
+.linha {
+  display: grid;
+  flex: none;
+  align-items: center;
+  gap: var(--e2);
+  min-height: var(--item-lista);
+  padding: 6px var(--e3);
+  border-radius: var(--raio-item);
+  text-align: left;
+  font: var(--ui-item);
+}
+
+.acao {
+  grid-template-columns: minmax(0, 1fr) auto;
+  max-width: 480px;
+  background: var(--cor-cartao-2);
+}
+
+.linha {
+  grid-template-columns: 44px minmax(0, 1fr) auto auto;
+}
+
+.materia {
+  grid-template-columns: 48px minmax(0, 1fr) auto;
+}
+
+.acao[data-sel='true'],
+.linha[data-sel='true'] {
+  background: var(--cor-escolhido);
+}
+
+.grupo {
+  margin: var(--e2) 0 0;
+  color: var(--cor-texto-2);
+  font: var(--ui-item);
+}
+
+.detalhe {
+  color: var(--cor-texto-2);
+}
+
+.nota {
+  min-width: 4ch;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.parcial {
+  color: var(--cor-texto-2);
+  font-style: italic;
+}
+
+.quadro {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--e1) var(--e3);
+  margin: 0;
+  font: var(--leitura-texto);
+}
+
+.quadro dd {
+  margin: 0;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.destaque {
+  margin: var(--e3) 0 0;
+  font: var(--ui-item);
+}
+
+.voltar {
+  height: var(--alvo);
+  padding: 0 var(--e3);
+  border-radius: var(--raio-pilula);
+  background: var(--cor-cartao);
+  font: var(--ui-botao);
+}

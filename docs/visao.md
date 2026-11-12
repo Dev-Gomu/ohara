@@ -19,7 +19,7 @@ Ohara é o app pessoal de estudo de um estudante de medicina. Reúne **slides da
 Uma única pessoa. Não será comercializado, publicado em loja nem compartilhado.
 
 - **Quem usa:** estudante de medicina, **não programa**.
-- **Onde usa:** Galaxy Tab S7 FE (principal, em sala, com teclado físico ABNT2), PC com Linux Mint (tela 1920x1200) e celular Android (consulta e uso leve).
+- **Onde usa:** Galaxy Tab S7 FE (principal, **sempre na horizontal, modo paisagem**, em sala, com teclado físico ABNT2), PC com Linux Mint (tela 1920x1200) e celular Android (consulta e uso leve).
 - **Como usa:** principalmente por **teclado, no estilo de gerenciador de janelas** (i3, Hyprland). Mouse e toque também funcionam, e o **toque é cidadão de primeira classe** (pinça, deslizar, alvos grandes).
 - **Endereço público:** o app fica aberto na internet. A privacidade vem de os dados ficarem no aparelho e de as Notas serem cifradas, não de esconder o endereço.
 
@@ -106,7 +106,7 @@ Cada termo tem **um único sentido** nos documentos e no código. Atenção: **A
 | **Aula** | Unidade de estudo, com slides, anotações e cartões. Pertence a uma matéria e, opcionalmente, a um bimestre |
 | **Aula atual** | A aula que a Grade ou a Agenda indica para o momento presente. Sem ela, "Mesa da aula atual" fica desativado |
 | **Slides** | O PDF ou as imagens da aula, exibidos no bloco Slides |
-| **Livro** | Material de estudo que não é uma aula (ex.: livro-texto em PDF). **PENDENTE:** confirmar o conceito e onde entra na hierarquia |
+| **Livro** | PDF de material de estudo (ex.: livro-texto), do mesmo tipo que os Slides. Pode ser anexado a uma **matéria** (livro inteiro) ou a uma **aula** (só o capítulo correspondente) |
 | **Mesa** | Tela de trabalho de uma aula, em mosaico |
 | **Hub** | Tela de visão do dia, também em mosaico |
 | **Acervo** | Biblioteca de matérias, aulas e cartões |

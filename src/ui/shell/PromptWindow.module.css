@@ -1,0 +1,53 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e3);
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.rotulo {
+  color: var(--cor-texto-2);
+  font: var(--ui-rotulo);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.entrada {
+  min-height: 48px;
+  padding: 0 14px;
+  border: 2px solid transparent;
+  border-radius: var(--raio-campo);
+  background: var(--cor-cartao-2);
+  font: var(--leitura-campo);
+}
+
+.entrada:focus {
+  border-color: var(--cor-cursor);
+}
+
+.enviar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  border-radius: var(--raio-botao);
+  background: var(--cor-acao);
+  color: var(--cor-sobre-acao);
+  font: var(--ui-botao);
+}
+
+.tecla {
+  font: var(--ui-tecla);
+  opacity: 0.75;
+}
+
+.area {
+  padding: 12px 14px;
+  resize: vertical;
+}

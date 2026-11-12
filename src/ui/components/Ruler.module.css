@@ -1,0 +1,61 @@
+.regua {
+  display: flex;
+  align-items: center;
+  gap: var(--e1);
+  height: 100%;
+  padding: 8px 10px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.item,
+.criar {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: var(--alvo);
+  padding: var(--e2) var(--e5);
+  border-radius: var(--raio-pilula);
+  color: var(--cor-texto-2);
+  text-align: left;
+}
+
+.item[data-sel='true'] {
+  background: var(--cor-escolhido);
+  color: var(--cor-texto);
+}
+
+.titulo {
+  font: var(--ui-item);
+}
+
+.detalhe {
+  font: var(--ui-sigla);
+  font-weight: 500;
+}
+
+/* "+" desenhado com duas barras: o glifo de texto desalinhava dentro da pílula. */
+.criar {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--e2);
+  font: var(--ui-item);
+}
+
+.criar::before {
+  content: '';
+  flex: none;
+  width: 12px;
+  height: 12px;
+  background:
+    linear-gradient(currentColor, currentColor) center / 100% 2px no-repeat,
+    linear-gradient(currentColor, currentColor) center / 2px 100% no-repeat;
+}
+
+@media (hover: hover) {
+  .item:not([data-sel='true']):hover,
+  .criar:hover {
+    background: var(--sup-peca);
+  }
+}

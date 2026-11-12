@@ -1,0 +1,127 @@
+.agenda {
+  height: 100%;
+  display: grid;
+  grid-template:
+    'regua regua' 84px
+    'conteudo previa' minmax(0, 1fr)
+    'conteudo materias' auto
+    'conteudo completar' auto
+    / minmax(0, 1fr) 340px;
+  gap: var(--vao-mosaico);
+}
+
+.regua {
+  grid-area: regua;
+}
+
+.conteudo {
+  grid-area: conteudo;
+}
+
+.previa {
+  grid-area: previa;
+}
+
+.barra {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.barra > :first-child {
+  flex: 1;
+  min-width: 0;
+}
+
+.periodo {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--e2);
+  padding-right: var(--e3);
+}
+
+.datas {
+  min-width: 128px;
+  font: var(--ui-item);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.filtro {
+  padding: 0 var(--bloco-pad-x) var(--bloco-pad-y);
+}
+
+.completar {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 180px;
+  padding: 0 var(--bloco-pad-x) var(--bloco-pad-y);
+  overflow: auto;
+}
+
+.mes {
+  flex: 1;
+  min-height: 0;
+  padding: 10px;
+  overflow: auto;
+}
+
+.mes {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  grid-template-rows: auto;
+  grid-auto-rows: minmax(96px, 1fr);
+  gap: var(--e1);
+}
+
+.dia {
+  display: flex;
+  flex-direction: column;
+  flex: none;
+  gap: 3px;
+  min-width: 0;
+  padding: 6px;
+  background: var(--sup-peca);
+  overflow: hidden;
+  border-radius: var(--raio-item);
+  text-align: left;
+}
+
+.dia[data-sel='true'] {
+  background: var(--cor-escolhido);
+}
+
+.eventos {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.diaSemana {
+  padding: 0 var(--e2);
+  color: var(--cor-texto-2);
+  font: var(--ui-rotulo);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.vazio {
+  padding: var(--e3);
+  color: var(--cor-texto-2);
+  font: var(--leitura-texto);
+}
+
+@media (max-width: 767px) {
+  .agenda {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .mes {
+    overflow-x: auto;
+    grid-template-columns: repeat(7, 96px);
+  }
+}

@@ -1,0 +1,44 @@
+.busca {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 14px;
+  border: 2px solid transparent;
+  border-radius: var(--raio-campo);
+  background: var(--cor-cartao-2);
+  font: var(--leitura-campo);
+}
+
+.busca[data-focused] {
+  border-color: var(--cor-cursor);
+}
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e1);
+  max-height: 420px;
+  margin-top: var(--e2);
+  overflow: auto;
+  outline: none;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--e3);
+  min-height: var(--alvo);
+  padding: 0 var(--e3);
+  border-radius: var(--raio-item);
+  font: var(--ui-item);
+  cursor: pointer;
+}
+
+.item[data-focused] {
+  background: var(--cor-escolhido);
+}
+
+.vazio {
+  padding: var(--e3);
+  color: var(--cor-texto-2);
+}

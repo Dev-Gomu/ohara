@@ -1,0 +1,72 @@
+.botao {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--e3);
+  min-height: var(--alvo);
+  padding: 0 var(--bloco-pad-x);
+  border-radius: var(--raio-botao);
+  background: var(--sup-peca);
+  font: var(--ui-botao);
+  white-space: nowrap;
+  transition: transform var(--tempo-toque);
+}
+
+.botao:active {
+  transform: scale(0.97);
+}
+
+.botao[data-tipo='primary'] {
+  --tecla-fundo: color-mix(in srgb, var(--cor-sobre-acao) 18%, transparent);
+  --tecla-relevo: color-mix(in srgb, var(--cor-sobre-acao) 30%, transparent);
+  --tecla-texto: var(--cor-sobre-acao);
+  background: var(--cor-acao);
+  color: var(--cor-sobre-acao);
+}
+
+/* Sobre azul cheio o cursor ganha um segundo aro, para não sumir. */
+.botao[data-tipo='primary'][data-cursor] {
+  box-shadow:
+    inset 0 0 0 var(--cursor) var(--cor-cursor),
+    inset 0 0 0 calc(var(--cursor) * 2) var(--cor-cartao);
+}
+
+.botao[data-tipo='quiet'] {
+  padding: 0 var(--e3);
+  background: none;
+  color: var(--cor-cursor);
+}
+
+.botao[aria-disabled='true'] {
+  background: none;
+  color: color-mix(in srgb, var(--cor-texto-2) 60%, transparent);
+  cursor: default;
+}
+
+.botao[aria-disabled='true']:active {
+  transform: none;
+}
+
+/* Mouse: sobe um degrau de superfície. Contorno é só do cursor do teclado. */
+@media (hover: hover) {
+  .botao:hover {
+    background: var(--sup-peca-viva);
+  }
+
+  .botao[data-tipo='primary']:hover {
+    background: var(--cor-acao-viva);
+  }
+
+  .botao[data-tipo='quiet']:hover {
+    background: var(--sup-peca);
+  }
+
+  .botao[aria-disabled='true']:hover {
+    background: none;
+  }
+}
+
+:global(:root[data-entrada='toque']) .botao[data-cursor] {
+  box-shadow: none;
+}

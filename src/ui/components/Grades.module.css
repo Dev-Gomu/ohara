@@ -1,0 +1,905 @@
+/* ---------- 1. Célula de nota ---------- */
+.np-cel {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 60px;
+  height: 32px;
+  padding: 0 var(--e3);
+  border-radius: var(--raio-pilula);
+  font: var(--ui-item);
+  font-variant-numeric: tabular-nums;
+}
+
+.np-cel[data-estado='pendente'] {
+  color: var(--cor-texto-2);
+  font-weight: 500;
+}
+
+.np-cel[data-estado='total'],
+.np-cel[data-estado='aberto'] {
+  font-weight: 700;
+}
+
+.np-cel[data-estado='aberto'] {
+  color: var(--cor-texto-2);
+}
+
+.np-cel[data-v='a'][data-estado='baixa'] {
+  background: color-mix(in srgb, var(--cor-atencao) 22%, transparent);
+}
+
+.np-cel:is([data-v='a'], [data-v='c']):is([data-estado='total'], [data-estado='aberto']) {
+  background: var(--sup-peca);
+}
+
+.np-cel[data-v='b']:is([data-estado='total'], [data-estado='aberto']) {
+  font: var(--voz-mini);
+}
+
+.np-marca {
+  flex: none;
+  width: 14px;
+  height: 6px;
+  border-radius: var(--raio-pilula);
+  background: var(--cor-atencao);
+}
+
+/* ---------- 2. Título de semestre ---------- */
+.np-sem {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e1);
+  align-self: flex-start;
+  padding: var(--e2);
+  border-radius: var(--raio-item);
+  background: var(--sup-peca);
+}
+
+.np-sem-grade {
+  display: grid;
+  grid-template-columns: repeat(3, 84px);
+  align-items: center;
+  justify-items: center;
+  font: var(--ui-item);
+  font-variant-numeric: tabular-nums;
+}
+
+.np-sem-linha {
+  height: var(--alvo);
+  border-radius: var(--raio-minimo);
+}
+
+.np-sem-linha b {
+  font-weight: 700;
+}
+
+.np-rot {
+  font: var(--ui-apoio);
+  color: var(--cor-texto-2);
+}
+
+.np-sem-titulo {
+  padding: var(--e1) var(--e3) 0;
+}
+
+.np-sem[data-v='a'] .np-sem-titulo {
+  font: var(--ui-rotulo);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--cor-texto-2);
+}
+
+.np-sem[data-v='b'] .np-rot[data-total] {
+  font: var(--ui-item);
+  font-weight: 700;
+  color: var(--cor-texto);
+}
+
+.np-sem[data-v='c'] .np-sem-titulo {
+  font: var(--ui-item);
+  font-weight: 700;
+}
+
+.np-sem-titulo small,
+.np-col small,
+.np-campo-par small {
+  font: var(--ui-apoio);
+  color: var(--cor-texto-2);
+}
+
+/* ---------- 3. Rótulo de coluna ---------- */
+.np-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--e2);
+  min-width: 76px;
+}
+
+.np-col-rot {
+  display: flex;
+  align-items: baseline;
+  gap: var(--e1);
+  font: var(--ui-apoio);
+  color: var(--cor-texto-2);
+  white-space: nowrap;
+}
+
+.np-col[data-v='b'] .np-col-rot {
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.np-col[data-v='b'] small {
+  font: var(--ui-tecla);
+}
+
+.np-col[data-v='c'] .np-col-rot > span {
+  font: var(--ui-item);
+  color: var(--cor-texto);
+}
+
+.np-col-valor {
+  font: var(--ui-item);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- 4. Campo de nota ---------- */
+.np-campo-par {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e2);
+}
+
+.np-campo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--e2);
+  width: 76px;
+  height: var(--alvo);
+  padding: 0 var(--e3);
+  border-radius: var(--raio-campo);
+  background: var(--sup-peca);
+}
+
+.np-campo[data-viva] {
+  background: var(--sup-peca-viva);
+}
+
+.np-campo-num {
+  display: inline-flex;
+  align-items: center;
+  font: var(--leitura-campo);
+  font-variant-numeric: tabular-nums;
+}
+
+.np-campo-num[data-vazio] {
+  color: var(--cor-texto-2);
+}
+
+.np-caret {
+  width: 2px;
+  height: 20px;
+  margin-left: 1px;
+  background: var(--cor-cursor);
+}
+
+.np-campo-par[data-v='b'] .np-campo {
+  justify-content: space-between;
+  width: 124px;
+  padding: 0 var(--e4);
+}
+
+.np-campo-par[data-v='c'] .np-campo {
+  flex-direction: column;
+  gap: 0;
+  width: 92px;
+  height: 64px;
+}
+
+.np-campo-par[data-v='c'] .np-campo-num {
+  font: var(--voz-titulo);
+}
+
+.np-campo-par[data-v='c'] small {
+  font: var(--ui-tecla);
+}
+
+.np-aviso {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e3);
+}
+
+/* ---------- 5. Ajuste da meta ---------- */
+.np-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e2);
+  font: var(--ui-botao);
+  font-variant-numeric: tabular-nums;
+}
+
+.np-meta-nome {
+  font: var(--ui-apoio);
+  color: var(--cor-texto-2);
+}
+
+.np-meta[data-v='a'] {
+  gap: var(--e1);
+  height: var(--alvo);
+  padding: 0 6px 0 var(--e4);
+  border-radius: var(--raio-pilula);
+  background: var(--sup-recuada);
+}
+
+.np-meta[data-v='a'] b {
+  min-width: 36px;
+  text-align: center;
+}
+
+.np-passo {
+  position: relative;
+  width: 40px;
+  height: 32px;
+  border-radius: var(--raio-pilula);
+  background: var(--sup-peca);
+  font: var(--ui-botao);
+}
+
+/* O alvo de toque ocupa a altura inteira da ilha. */
+.np-passo::after {
+  content: '';
+  position: absolute;
+  inset: -6px 0;
+}
+
+.np-meta[data-v='b'] b {
+  margin-right: var(--e2);
+  font: var(--voz-item);
+}
+.nd-de {
+  font: var(--ui-apoio);
+  color: var(--cor-texto-2);
+}
+
+.nd-par {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--e2);
+}
+
+.nd-sinal {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 6px;
+  padding: var(--e1) var(--e3) var(--e1) var(--e1);
+  border-radius: var(--raio-pilula);
+  background: var(--sup-peca);
+  font: var(--ui-sigla);
+  white-space: nowrap;
+}
+
+.nd-sinal i {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 16px;
+  border-radius: var(--raio-pilula);
+  background: var(--cor-ok);
+}
+
+.nd-sinal[data-tipo='atencao'] i {
+  background: var(--cor-atencao);
+}
+
+.nd-sinal svg {
+  width: 10px;
+  height: 10px;
+  fill: none;
+  stroke: var(--cor-cartao);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.nc-de {
+  font: var(--ui-apoio);
+  color: var(--cor-texto-2);
+  white-space: nowrap;
+}
+
+.nc-par,
+.nc-num {
+  font: var(--ui-item);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.nc-par {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--e1);
+}
+
+.nc-par .np-marca {
+  align-self: center;
+  margin-right: 2px;
+}
+
+.nc-par b,
+.nc-num {
+  font-weight: 700;
+}
+
+.nc-par[data-pendente] b,
+[data-pendente] > b,
+b[data-pendente] {
+  color: var(--cor-texto-2);
+  font-weight: 500;
+}
+
+/* ---------- 1. Linha do boletim ---------- */
+.nc-boletim {
+  display: flex;
+  flex-direction: column;
+  align-self: flex-start;
+}
+
+.nc-linha {
+  display: grid;
+  width: 100%;
+  text-align: left;
+  grid-template-columns: 64px auto auto 76px 140px;
+  align-items: center;
+  justify-items: center;
+  column-gap: var(--e3);
+  height: 52px;
+  padding: 0 var(--e3);
+  border-radius: var(--raio-item);
+}
+
+.nc-linha[data-v='c'] {
+  grid-template-columns: 64px auto auto 76px 140px;
+}
+
+.nc-linha > :first-child {
+  justify-self: start;
+}
+
+.nc-cab {
+  height: 36px;
+}
+
+/* A faixa do semestre atravessa as linhas: sem vão vertical, cantos só nas pontas. */
+.nc-faixa {
+  display: grid;
+  grid-template-columns: repeat(3, 72px);
+  align-items: center;
+  justify-items: center;
+  align-self: stretch;
+  padding: 0 var(--e1);
+  background: var(--sup-peca);
+}
+
+.nc-cab .nc-faixa {
+  border-radius: var(--raio-item) var(--raio-item) 0 0;
+}
+
+.nc-linha:last-child .nc-faixa {
+  border-radius: 0 0 var(--raio-item) var(--raio-item);
+}
+
+.nc-boletim[data-v='b'] {
+  gap: var(--e1);
+}
+
+.nc-linha[data-v='b'] {
+  column-gap: var(--e5);
+}
+
+.nc-linha[data-v='b']:not(.nc-cab) {
+  background: var(--sup-peca);
+}
+
+.nc-linha[data-v='b'] .nc-faixa {
+  padding: 0;
+  background: none;
+}
+
+.nc-rot {
+  font: var(--ui-apoio);
+  color: var(--cor-texto-2);
+  white-space: nowrap;
+}
+
+.nc-rot[data-forte] {
+  font: var(--ui-item);
+  font-weight: 700;
+  color: var(--cor-texto);
+}
+
+/* ---------- 2. Cartão de bimestre ---------- */
+.nc-cartoes {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: start;
+  gap: var(--e3);
+}
+
+.nc-cartoes > .v-amostra {
+  align-items: stretch;
+}
+
+.nc-cartao {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--e1);
+  padding: var(--e3);
+  border-radius: var(--raio-item);
+  background: var(--sup-peca);
+}
+
+.nc-cartao > button {
+  align-self: flex-start;
+}
+
+.nc-cartao-topo {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--e2);
+  padding: 0 var(--e2);
+  font: var(--ui-item);
+}
+
+.nc-cartao-topo > b {
+  font-weight: 700;
+}
+
+.nc-cartao-num {
+  display: flex;
+  align-items: baseline;
+  gap: var(--e2);
+  padding: var(--e1) var(--e2) var(--e2);
+}
+
+.nc-cartao-num > b {
+  font: var(--voz-pergunta);
+  font-variant-numeric: tabular-nums;
+}
+
+.nc-cartao-num .np-marca {
+  align-self: center;
+}
+
+.nc-cartao-sub {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 var(--e2);
+}
+
+.nc-cartao[data-v='b'] .nc-cartao-topo {
+  padding-bottom: var(--e1);
+}
+
+.nc-cartao-pe {
+  display: flex;
+  align-items: baseline;
+  gap: var(--e2);
+  min-height: 36px;
+  padding: var(--e2) var(--e2) 0;
+  font: var(--ui-item);
+  font-weight: 700;
+}
+
+.nc-cartao-pe > :first-child {
+  margin-right: auto;
+}
+
+.nc-vazio {
+  padding: var(--e2);
+}
+
+/* ---------- 3. Linha de avaliação ---------- */
+.nc-aval {
+  display: flex;
+  width: 100%;
+  text-align: left;
+  align-items: center;
+  gap: var(--e2);
+  min-height: var(--alvo);
+  padding: 0 var(--e2);
+  border-radius: var(--raio-minimo);
+}
+
+.nc-aval-nome {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  font: var(--ui-apoio);
+}
+
+.nc-aval[data-v='c'] {
+  min-height: 52px;
+}
+
+.nc-aval[data-v='c'] .nc-aval-nome > span {
+  font: var(--ui-item);
+}
+
+.nc-aval-nota {
+  font: var(--voz-mini);
+}
+
+/* O campo viaja dentro da linha: tira o recuo para alinhar com as notas vizinhas. */
+.nc-aval .np-campo-par {
+  margin-right: calc(-1 * var(--e2));
+}
+
+.nc-aval[data-v='b'] {
+  padding-right: 0;
+}
+
+.nc-campo-fixo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 124px;
+  height: 40px;
+  padding: 0 var(--e4);
+  border-radius: var(--raio-campo);
+  background: var(--sup-peca);
+  font: var(--leitura-campo);
+  font-variant-numeric: tabular-nums;
+}
+
+.nc-campo-fixo > b {
+  font-weight: 400;
+}
+
+/* ---------- 4. Resumo ---------- */
+.nc-resumo[data-v='a'],
+.nc-resumo[data-v='c'] {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--e3) var(--e5);
+}
+
+.nc-resumo > .np-meta {
+  margin-left: auto;
+}
+
+.nc-dado {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.nc-dado > b {
+  font: var(--voz-item);
+  font-variant-numeric: tabular-nums;
+}
+
+.nc-dado > small {
+  line-height: 22px;
+}
+
+.nc-dado[data-grande] > b {
+  font: var(--voz-pergunta);
+}
+
+.nc-lado {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e1);
+}
+
+.nc-par-linha {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--e3);
+  min-height: 36px;
+  padding: 0 var(--e2);
+  font: var(--ui-item);
+  font-variant-numeric: tabular-nums;
+}
+
+.nc-par-linha > span:first-child {
+  font: var(--ui-apoio);
+}
+
+.nc-par-linha > b {
+  font-weight: 700;
+}
+
+.nc-par-linha > .np-meta {
+  margin: var(--e1) calc(-1 * var(--e1)) 0 0;
+}
+
+/* ---------- 5. Quanto preciso ---------- */
+.nc-frase {
+  font: var(--leitura-compacta);
+}
+
+.nc-frase b {
+  font: var(--ui-item);
+  font-weight: 700;
+}
+
+.nc-frase[data-sinal] {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--e2);
+}
+
+.nc-quanto[data-v='b'] {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.nc-quanto[data-v='b'] > :last-child {
+  white-space: normal;
+}
+
+.nc-quanto-num {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--e2);
+}
+
+.nc-quanto-num > b {
+  font: var(--voz-pergunta);
+  font-variant-numeric: tabular-nums;
+}
+
+.nc-quanto[data-v='c'] {
+  align-self: stretch;
+}
+
+.v-amostra:has(> .nc-quanto[data-v='c']) {
+  align-items: stretch;
+}
+.nt-rola {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e3);
+  padding: 0 var(--bloco-pad-x) var(--bloco-pad-y);
+  overflow: auto;
+}
+
+.nt-materia {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: var(--vao-mosaico);
+  min-height: 0;
+}
+
+.nt-cartoes {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-content: start;
+  gap: var(--e3);
+  padding: 0 var(--bloco-pad-x) var(--bloco-pad-y);
+  overflow: auto;
+}
+
+.nt-lado {
+  display: flex;
+  flex-direction: column;
+  gap: var(--vao-mosaico);
+  min-height: 0;
+}
+
+.nt-pad {
+  padding: 0 var(--bloco-pad-x) var(--bloco-pad-y);
+}
+
+.nt-aviso {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--e3);
+  padding: 0 var(--bloco-pad-x) var(--bloco-pad-y);
+}
+
+.nt-aviso p {
+  max-width: 56ch;
+  margin: 0;
+  font: var(--leitura-texto);
+}
+
+@media (max-width: 900px) {
+  .nt-materia {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) auto;
+  }
+  .nt-lado {
+    flex-direction: row;
+  }
+  .nt-lado > * {
+    flex: 1;
+  }
+}
+
+.nb-tela[data-v='erro'],
+.nb-tela[data-v='vazio'] {
+  grid-template-rows: auto minmax(0, 1fr);
+}
+
+.nb-tela[data-v='vazio'] {
+  grid-template-rows: minmax(0, 1fr);
+}
+
+/* ---------- Disciplina: seletor de bimestre + lista do bimestre em foco ---------- */
+.nt-m1 {
+  display: grid;
+  grid-template:
+    'faixas faixas' auto
+    'lista lado' minmax(0, 1fr)
+    / minmax(0, 1fr) 320px;
+  gap: var(--vao-mosaico);
+  min-height: 0;
+}
+
+.nt-m1 > :nth-child(1) { grid-area: faixas; }
+.nt-m1 > :nth-child(2) { grid-area: lista; }
+.nt-m1 > :nth-child(3) { grid-area: lado; }
+
+.nt-m2 {
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr) 320px;
+  gap: var(--vao-mosaico);
+  min-height: 0;
+}
+
+.nt-faixas {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--e3);
+  padding: 0 var(--bloco-pad-x) var(--bloco-pad-y);
+}
+
+.nt-sem {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e1);
+}
+
+.nt-sem-nome {
+  color: var(--cor-texto-2);
+  font: var(--ui-apoio);
+}
+
+.nt-sem-fichas {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--e1);
+}
+
+.nt-total {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--e3);
+  border-radius: var(--raio-item);
+  background: var(--sup-peca);
+}
+
+.nt-total > b {
+  font: var(--voz-pergunta);
+  font-variant-numeric: tabular-nums;
+}
+
+.nt-ficha {
+  display: flex;
+  text-align: left;
+  flex-direction: column;
+  gap: var(--e1);
+  padding: var(--e3);
+  border-radius: var(--raio-item);
+  background: var(--sup-peca);
+}
+
+.nt-ficha[data-sel='true'] {
+  background: var(--cor-escolhido);
+}
+
+.nt-ficha[data-cursor] {
+  outline: 2px solid var(--cor-cursor);
+}
+
+.nt-pilha {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e2);
+  padding: 0 var(--bloco-pad-x) var(--bloco-pad-y);
+  overflow: auto;
+}
+
+.nt-lista {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 0 var(--bloco-pad-x) var(--bloco-pad-y);
+  overflow: auto;
+}
+
+@media (max-width: 900px) {
+  .nt-m1 {
+    grid-template:
+      'faixas' auto
+      'lista' minmax(0, 1fr)
+      'lado' auto
+      / minmax(0, 1fr);
+  }
+  .nt-m2 {
+    grid-template-columns: 150px minmax(0, 1fr);
+  }
+  .nt-m2 > :nth-child(3) {
+    grid-column: 1 / -1;
+  }
+}
+
+.nt-ficha .nc-cartao-topo {
+  flex-wrap: wrap;
+  padding: 0;
+}
+
+.nt-ficha .nc-cartao-topo > b {
+  white-space: nowrap;
+}
+
+.nt-ficha .nc-cartao-num {
+  flex-wrap: wrap;
+  padding: 0;
+}
+.nb-regua {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: var(--e2) var(--e3);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+/* Régua de matérias */
+.nb-regua {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: var(--e2) var(--e3);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.nb-regua > button {
+  flex: none;
+  height: var(--alvo);
+  padding: 0 var(--e4);
+  font-variant-numeric: tabular-nums;
+  white-space: pre;
+}
+
+.nb-busca {
+  flex: none;
+  width: 220px;
+  margin-left: auto;
+}
+
+.nb-apoio {
+  color: var(--cor-texto-2);
+  font: var(--ui-apoio);
+}

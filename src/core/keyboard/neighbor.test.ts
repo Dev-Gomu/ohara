@@ -34,14 +34,13 @@ describe('neighbor', () => {
     expect(neighbor(row, 'from', 'right')).toBe('aligned');
   });
 
-  // Limite herdado do protótipo: só os centros contam. Ver o backlog antes da Etapa 4.
-  it('com blocos mais altos que largos, o bloco alto ao lado empata com o de baixo', () => {
+  it('com blocos mais altos que largos, escolhe quem encosta embaixo', () => {
     const narrow: Record<string, Rect> = {
       left: { x: 0, y: 0, w: 100, h: 200 },
       top: { x: 100, y: 0, w: 100, h: 100 },
       bottom: { x: 100, y: 100, w: 100, h: 100 },
     };
-    expect(neighbor(narrow, 'top', 'down')).toBe('left');
+    expect(neighbor(narrow, 'top', 'down')).toBe('bottom');
   });
 
   it('ignora quem está alinhado no eixo pedido', () => {

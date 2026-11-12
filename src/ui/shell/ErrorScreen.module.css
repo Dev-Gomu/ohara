@@ -1,0 +1,52 @@
+.tela {
+  display: grid;
+  place-items: center;
+  min-height: 100dvh;
+  padding: var(--margem-tela);
+  background: var(--cor-fundo);
+}
+
+.cartao {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e4);
+  width: min(520px, 100%);
+  padding: var(--e5);
+  border-radius: var(--raio-bloco);
+  background: var(--cor-cartao);
+  color: var(--cor-texto);
+}
+
+.titulo {
+  font: var(--voz-pergunta);
+}
+
+.detalhe {
+  color: var(--cor-texto-2);
+  font: var(--ui-apoio);
+}
+
+.detalhe pre {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.botoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e3);
+}
+
+.botao {
+  min-height: 48px;
+  padding: 0 var(--e4);
+  border-radius: var(--raio-botao);
+  background: var(--cor-acao);
+  color: var(--cor-sobre-acao);
+  font: var(--ui-botao);
+}
+
+.botao:focus-visible {
+  outline: 3px solid var(--cor-foco);
+  outline-offset: 2px;
+}

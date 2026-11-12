@@ -1,0 +1,28 @@
+.aviso {
+  position: fixed;
+  left: 50%;
+  bottom: var(--e4);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: var(--e3);
+  padding: var(--e2) var(--e2) var(--e2) var(--e4);
+  border-radius: var(--raio-pilula);
+  background: var(--cor-acao);
+  color: var(--cor-sobre-acao);
+  font: var(--ui-item);
+  transform: translateX(-50%);
+}
+
+/* Tecla sobre o botão amarelo do aviso. */
+.botao {
+  --tecla-fundo: color-mix(in srgb, var(--cor-tinta) 14%, transparent);
+  --tecla-relevo: color-mix(in srgb, var(--cor-tinta) 28%, transparent);
+  --tecla-texto: var(--cor-tinta);
+  min-height: var(--alvo);
+  padding: 0 var(--e4);
+  border-radius: var(--raio-pilula);
+  background: var(--cor-destaque);
+  color: var(--cor-tinta);
+  font: var(--ui-botao);
+}

@@ -1,0 +1,116 @@
+.dia,
+.materia {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border-radius: var(--raio-item);
+  text-align: left;
+  transition: transform var(--tempo-toque);
+}
+
+.dia:active,
+.materia:active {
+  transform: scale(0.97);
+}
+
+/* Dia de avaliação: peça recuada com os bloquinhos das matérias. */
+.dia {
+  flex: none;
+  gap: var(--e2);
+  min-width: 112px;
+  padding: var(--e2);
+  border-radius: var(--raio-bloco);
+  background: var(--sup-peca);
+}
+
+.cabecalho {
+  display: flex;
+  align-items: center;
+  gap: var(--e3);
+  padding: var(--e1) var(--e1) 0 var(--e2);
+  white-space: nowrap;
+}
+
+.numero {
+  font: var(--voz-tela);
+  font-variant-numeric: tabular-nums;
+}
+
+.data {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font: var(--ui-rotulo);
+  letter-spacing: 0.06em;
+  line-height: 14px;
+  text-transform: uppercase;
+}
+
+.data small {
+  color: var(--cor-texto-2);
+  font: var(--ui-tecla);
+  letter-spacing: 0.05em;
+  line-height: 14px;
+}
+
+.prazo {
+  margin-left: auto;
+  padding: 3px 10px;
+  border-radius: var(--raio-pilula);
+  background: var(--cor-acao);
+  color: var(--cor-sobre-acao);
+  font: var(--ui-tecla);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.pilulas {
+  display: flex;
+  gap: var(--e1);
+  padding: 0 var(--e1) var(--e1) var(--e2);
+}
+
+.pilulaSigla {
+  padding: 3px 10px;
+  border-radius: var(--raio-pilula);
+  background: var(--cor-materia);
+  color: var(--cor-tinta);
+  font: var(--ui-sigla);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.materia {
+  justify-content: space-between;
+  gap: var(--e4);
+  min-height: 118px;
+  padding: var(--e3) var(--e4);
+  background: var(--cor-materia);
+  color: var(--cor-tinta);
+}
+
+.sigla {
+  font: var(--voz-tela);
+  text-transform: uppercase;
+}
+
+.apoio {
+  font: var(--ui-tecla);
+}
+
+/* Sobre a cor da matéria o cursor ganha um segundo aro, como no botão principal. */
+.materia[data-cursor] {
+  box-shadow:
+    inset 0 0 0 var(--cursor-bloco) var(--cor-cursor),
+    inset 0 0 0 calc(var(--cursor-bloco) + var(--cursor)) var(--cor-cartao);
+}
+
+:global(:root[data-entrada='toque']) .materia[data-cursor] {
+  box-shadow: none;
+}
+
+@media (hover: hover) {
+  .dia:hover {
+    background: var(--sup-peca-viva);
+  }
+}

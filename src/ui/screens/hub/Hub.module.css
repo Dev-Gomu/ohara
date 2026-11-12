@@ -1,0 +1,113 @@
+.provas {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--e2);
+  padding: var(--e2);
+  overflow-x: auto;
+}
+
+.calendario {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  justify-items: center;
+  gap: var(--e1) 0;
+  flex: none;
+  aspect-ratio: 1 / 1;
+  grid-template-rows: auto;
+  grid-auto-rows: minmax(0, 1fr);
+  align-items: center;
+  padding: 0 var(--e3) var(--e2);
+}
+
+.semana {
+  color: var(--cor-texto-2);
+  font: var(--ui-rotulo);
+}
+
+.lista {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--e1);
+  padding: var(--e1) 10px 10px;
+  overflow: auto;
+}
+
+.vazio {
+  padding: var(--e3);
+  color: var(--cor-texto-2);
+  font: var(--leitura-texto);
+}
+
+.novo {
+  display: flex;
+  flex: none;
+  margin: 0 var(--bloco-pad-x) var(--bloco-pad-y);
+}
+
+.novo > button {
+  flex: 1;
+}
+
+.faltas {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-content: start;
+  gap: var(--e1) var(--e2);
+  padding: var(--e1) 10px 10px;
+  overflow: auto;
+}
+
+.doDia {
+  flex: none;
+  padding: var(--e2) var(--bloco-pad-x) var(--e1);
+  color: var(--cor-texto-2);
+  font: var(--ui-apoio);
+}
+
+.doDia b {
+  color: var(--cor-texto);
+  font: var(--voz-mini);
+}
+
+.eventos {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--e1);
+  padding: 0 10px 10px;
+  overflow: auto;
+}
+
+.evento {
+  display: flex;
+  align-items: center;
+  gap: var(--e3);
+  min-height: 48px;
+  padding: 0 var(--e3);
+  border-radius: var(--raio-item);
+  background: var(--sup-peca);
+  font: var(--ui-item);
+}
+
+.evento time {
+  flex: none;
+  width: 44px;
+  color: var(--cor-texto-2);
+  font: var(--ui-apoio);
+  font-variant-numeric: tabular-nums;
+}
+
+.eventoTitulo {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

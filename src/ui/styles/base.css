@@ -1,0 +1,138 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  background: var(--cor-fundo);
+  color: var(--cor-texto);
+  font: var(--ui-apoio);
+  font-variant-numeric: tabular-nums;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+/* O app desenha o próprio foco: o anel fica onde as teclas agem, não onde o navegador acha. */
+:focus {
+  outline: none;
+}
+
+.anel {
+  outline: var(--anel-traco) solid var(--cor-foco);
+  outline-offset: var(--anel-afastamento);
+}
+
+/* Item de lista em foco: 2px por dentro (itens de 56px não comportam mais); o fundo (marca ao
+   selecionar) continua com a tela de cada lista. Os 4px ficam para blocos e cartões de matéria. */
+.anel-interno {
+  outline: 2px solid var(--cor-contorno-foco);
+  outline-offset: -2px;
+}
+
+.anel-fino {
+  outline: 2px solid var(--cor-contorno-foco);
+  outline-offset: -2px;
+}
+
+/* Cursor das peças novas (diretrizes 3.2): um só na tela, contorno por dentro. */
+[data-cursor] {
+  box-shadow: inset 0 0 0 var(--cursor) var(--cor-cursor);
+}
+
+:root[data-entrada='toque'] [data-cursor] {
+  box-shadow: none;
+}
+
+:root[data-entrada='toque'] .anel,
+:root[data-entrada='toque'] .anel-fino,
+:root[data-entrada='toque'] .anel-interno {
+  outline: none;
+}
+
+/* Barra de rolagem em pílula solta, nunca a do sistema */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 3px solid transparent;
+  border-radius: var(--raio-pilula);
+  background: var(--cor-cartao-2);
+  background-clip: padding-box;
+}
+
+.so-leitor {
+  position: fixed;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* A cor da matéria é guardada como posição na paleta. */
+[data-materia='0'] {
+  --cor-materia: var(--cor-materia-0);
+}
+
+[data-materia='1'] {
+  --cor-materia: var(--cor-materia-1);
+}
+
+[data-materia='2'] {
+  --cor-materia: var(--cor-materia-2);
+}
+
+[data-materia='3'] {
+  --cor-materia: var(--cor-materia-3);
+}
+
+[data-materia='4'] {
+  --cor-materia: var(--cor-materia-4);
+}
+
+[data-materia='5'] {
+  --cor-materia: var(--cor-materia-5);
+}
+
+[data-materia='6'] {
+  --cor-materia: var(--cor-materia-6);
+}
+
+[data-materia='7'] {
+  --cor-materia: var(--cor-materia-7);
+}

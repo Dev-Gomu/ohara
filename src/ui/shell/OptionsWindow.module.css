@@ -1,0 +1,48 @@
+.veu {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  padding: var(--e4);
+  background: var(--cor-veu);
+}
+
+.caixa {
+  width: min(360px, 100%);
+}
+
+.janela {
+  padding: var(--e2);
+  border-radius: var(--raio-bloco);
+  background: var(--cor-cartao);
+  outline: none;
+}
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e1);
+  outline: none;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--e3);
+  min-height: var(--alvo);
+  padding: 0 var(--e3);
+  border-radius: var(--raio-item);
+  font: var(--ui-item);
+  cursor: pointer;
+}
+
+.item[data-focused] {
+  background: var(--cor-escolhido);
+}
+
+.vazio {
+  padding: var(--e3);
+  color: var(--cor-texto-2);
+}

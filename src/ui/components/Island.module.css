@@ -1,0 +1,88 @@
+.ilha {
+  --tecla-fundo: var(--cor-cartao);
+  position: relative;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e1);
+  height: var(--alvo);
+  padding: 0 6px;
+  border-radius: var(--raio-pilula);
+  background: var(--sup-recuada);
+}
+
+.aba {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 40px;
+  height: 32px;
+  padding: 0 var(--e3);
+  border-radius: var(--raio-pilula);
+  color: var(--cor-texto-2);
+  font: var(--ui-botao);
+}
+
+/* O ícone acompanha o tamanho do número. */
+.aba svg {
+  flex: none;
+  width: 18px;
+  height: 18px;
+}
+
+/* Ícone com o número pequeno no canto: em cima (sobrescrito) ou embaixo (subscrito). */
+.canto {
+  position: relative;
+  display: inline-flex;
+  margin-right: 6px;
+}
+
+.pequeno {
+  position: absolute;
+  right: -8px;
+  font: var(--ui-tecla);
+  line-height: 1;
+}
+
+.canto[data-canto='sobrescrito'] .pequeno {
+  top: -5px;
+}
+
+.canto[data-canto='subscrito'] .pequeno {
+  bottom: -5px;
+}
+
+/* O alvo de toque ocupa a altura inteira da ilha. */
+.aba::after {
+  content: '';
+  position: absolute;
+  inset: -6px 0;
+}
+
+.aba[data-sel='true'] {
+  background: var(--cor-escolhido);
+  color: var(--cor-texto);
+}
+
+.ilha[data-desliza] .aba[data-sel='true'] {
+  background: none;
+}
+
+.nivel {
+  padding: 0 6px 0 10px;
+  font: var(--ui-rotulo);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.ilha > kbd:last-child {
+  margin-right: 6px;
+}
+
+@media (hover: hover) {
+  .aba:not([data-sel='true']):hover {
+    background: var(--sup-peca);
+  }
+}

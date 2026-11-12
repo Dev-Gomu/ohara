@@ -1,0 +1,152 @@
+.cartoes {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: min-content;
+  gap: var(--e2);
+  padding: var(--e1) var(--e3) var(--e3);
+  overflow: auto;
+}
+
+.cartao {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e1);
+  padding: var(--e3);
+  border-radius: var(--raio-item);
+  color: var(--cor-tinta);
+  text-align: left;
+}
+
+.cartao[data-cor='roxo'] {
+  background: var(--cor-materia-1);
+}
+
+.cartao[data-cor='rosa'] {
+  background: var(--cor-materia-4);
+}
+
+.cartao[data-cor='azul'] {
+  background: var(--cor-materia-2);
+}
+
+.cartao[data-cor='verde'] {
+  background: var(--cor-materia-3);
+}
+
+.pergunta {
+  font: var(--voz-mini);
+}
+
+/* Editor de cartões: texto à esquerda e prévia à direita; em bloco estreito, um sobre o outro. */
+.criar {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  container-type: inline-size;
+}
+
+.criarGrade {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--e2);
+  padding: var(--e1) var(--e3) 0;
+}
+
+@container (min-width: 620px) {
+  .criarGrade {
+    grid-template-rows: none;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
+.texto {
+  min-height: 0;
+  padding: var(--e3);
+  border: 2px solid transparent;
+  border-radius: var(--raio-campo);
+  background: var(--cor-cartao-2);
+  color: var(--cor-texto);
+  font: var(--leitura-campo);
+  resize: none;
+}
+
+.texto:focus {
+  outline: none;
+  border-color: var(--cor-cursor);
+}
+
+.texto::placeholder {
+  color: var(--cor-texto-2);
+}
+
+.rascunhos {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--e2);
+  padding: 0 0 var(--e2);
+  overflow: auto;
+}
+
+.rascunho {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e2);
+  padding: var(--e3) var(--e4);
+  border-radius: var(--raio-item);
+  background: var(--cor-cartao-2);
+}
+
+.rascunho[data-incompleto='true'] {
+  outline: 2px dashed var(--cor-texto-2);
+  outline-offset: -2px;
+}
+
+.frente {
+  font: var(--voz-mini);
+}
+
+.falta {
+  color: var(--cor-texto-2);
+  font: var(--ui-apoio);
+}
+
+.rodape {
+  display: flex;
+  align-items: center;
+  gap: var(--e3);
+  padding: var(--e2) var(--e3) var(--e3);
+}
+
+.dica {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--cor-texto-2);
+  font: var(--ui-apoio);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Segura o foco do editor ao tocar em Salvar. */
+.salvar {
+  display: contents;
+}
+
+.vazio {
+  grid-column: 1 / -1;
+  padding: var(--e3);
+  color: var(--cor-texto-2);
+  font: var(--leitura-texto);
+}
+
+/* Abas e Salvar recebem o foco do teclado (Alt T, Alt B): mesmo contorno dos controles pequenos. */
+.salvar:focus-visible {
+  outline: 2px solid var(--cor-contorno-foco);
+  outline-offset: -2px;
+}

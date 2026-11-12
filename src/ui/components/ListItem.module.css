@@ -1,0 +1,67 @@
+.item {
+  display: flex;
+  align-items: center;
+  gap: var(--e3);
+  width: 100%;
+  min-height: var(--item-lista);
+  padding: var(--e2) var(--e4);
+  border-radius: var(--raio-item);
+  text-align: left;
+}
+
+.item[data-sel='true']:not(.discreta),
+:global([data-foco]) .item.discreta[data-sel='true'] {
+  background: var(--cor-escolhido);
+}
+
+/* Largura fixa: as horas alinham de uma linha para a outra. */
+.hora {
+  flex: none;
+  width: 104px;
+  color: var(--cor-texto-2);
+  font: var(--ui-item);
+  white-space: nowrap;
+}
+
+.item[data-sel='true'] .hora {
+  color: var(--cor-texto);
+}
+
+.texto {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.titulo {
+  overflow: hidden;
+  font: var(--voz-mini);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.apoio {
+  overflow: hidden;
+  color: var(--cor-texto-2);
+  font: var(--ui-apoio);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.passada .titulo {
+  color: var(--cor-texto-2);
+}
+
+.fim {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: var(--e1);
+}
+
+@media (hover: hover) {
+  .item:not([data-sel='true']):hover {
+    background: var(--sup-peca);
+  }
+}

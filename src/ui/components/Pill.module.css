@@ -1,0 +1,82 @@
+.pilula {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: var(--e1) var(--e3);
+  border-radius: var(--raio-pilula);
+  font: var(--ui-sigla);
+  white-space: nowrap;
+}
+
+.materia {
+  background: var(--cor-materia);
+  color: var(--cor-tinta);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.estado {
+  background: var(--sup-peca);
+}
+
+.marca {
+  width: 14px;
+  height: 8px;
+  border-radius: var(--raio-pilula);
+  background: var(--cor-ok);
+}
+
+.estado[data-estado='atencao'] .marca {
+  background: var(--cor-atencao);
+}
+
+.agora {
+  background: var(--cor-agora);
+  color: var(--cor-sobre-acao);
+}
+
+.evento {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--cor-texto-2);
+  font: var(--ui-apoio);
+  white-space: nowrap;
+}
+
+.evento b {
+  color: var(--cor-texto);
+  font: var(--ui-sigla);
+}
+
+.evento span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.marcaMateria {
+  flex: none;
+  width: 12px;
+  height: 6px;
+  border-radius: var(--raio-pilula);
+  background: var(--cor-materia, var(--cor-texto-2));
+}
+
+.dia {
+  flex: none;
+  align-self: flex-start;
+  padding: 3px 10px;
+  border-radius: var(--raio-pilula);
+  color: var(--cor-texto);
+  font: var(--ui-item);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.dia[data-hoje='true'] {
+  background: var(--cor-agora);
+  color: var(--cor-sobre-acao);
+}

@@ -96,7 +96,7 @@ describe('Ctrl fora do campo', () => {
 
 describe('repetição', () => {
   it('movimento e troca de página repetem', () => {
-    const move = { type: 'moveFocus', direction: 'left' };
+    const move = { type: 'moveFocus', direction: 'left', step: true };
     expect(resolve(press('KeyH', { repeat: true }), at('block'))).toEqual(move);
     const page = { type: 'changePage', step: 1 };
     expect(resolve(press('PageDown', { alt: true, repeat: true }), at('block'))).toEqual(page);

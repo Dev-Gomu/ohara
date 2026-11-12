@@ -1,0 +1,145 @@
+/* Tokens do Ohara: docs/diretrizes-visuais.md explica cada regra.
+   Tela nenhuma usa valor solto: só estas variáveis. Cores-base: Gelo suave (D132); Gelo e Índigo em paletas.css. */
+
+:root {
+  /* Matérias: --cor-materia-0 a 7 (posição guardada no banco), iguais nos dois temas, sempre com --cor-tinta por cima.
+     Valores trocáveis: cada paleta só redefine estas variáveis. Cor repete; a sigla distingue. */
+  --cor-destaque: #94b4ea;
+  --cor-materia-1: #94b4ea;
+  --cor-destaque-forte: #7fa2e0; /* só em texto grande ou estado tocado */
+  --cor-materia-4: #a3d3a4;
+  --cor-materia-2: #b3a2e6;
+  --cor-materia-0: #7fc8ba;
+  --cor-materia-3: #86c6e0;
+  --cor-tinta: #0f1a24;
+  --cor-sobre-tinta: #f2f6fb;
+  --cor-materia-5: #cfa0dc;
+  --cor-materia-6: #a3b1c6;
+  --cor-materia-7: #c5d8f2;
+
+  /* Fontes (D67) */
+  --fonte-voz: 'Nunito', system-ui, sans-serif;
+  --fonte-interface: 'Inter', system-ui, sans-serif;
+  --fonte-leitura: 'Source Sans 3', 'Inter', system-ui, sans-serif;
+
+  /* Escala de texto: peso, tamanho/linha */
+  --voz-numero: 800 66px/54px var(--fonte-voz);
+  --voz-numero-mini: 800 48px/40px var(--fonte-voz);
+  --voz-pergunta: 800 32px/40px var(--fonte-voz);
+  --voz-tela: 800 30px/32px var(--fonte-voz);
+  --voz-titulo: 800 22px/24px var(--fonte-voz);
+  --voz-item: 800 20px/22px var(--fonte-voz);
+  --voz-mini: 800 17px/20px var(--fonte-voz);
+  --ui-botao: 700 15px/20px var(--fonte-interface);
+  --ui-item: 600 15px/20px var(--fonte-interface);
+  --ui-apoio: 500 14px/20px var(--fonte-interface);
+  --ui-rotulo: 700 13px/20px var(--fonte-interface); /* caixa-alta, espaçamento .06em */
+  --ui-sigla: 700 12.5px/16px var(--fonte-interface);
+  --ui-tecla: 600 12px/18px var(--fonte-interface);
+  --leitura-texto: 400 16.5px/25px var(--fonte-leitura);
+  --leitura-compacta: 400 15.5px/23px var(--fonte-leitura);
+  --leitura-campo: 400 16px/24px var(--fonte-leitura);
+  --nota-t1: 700 22px/28px var(--fonte-leitura);
+  --nota-t2: 700 18px/24px var(--fonte-leitura);
+  --nota-t3: 600 16.5px/25px var(--fonte-leitura);
+
+  /* Espaços: grade de 4 px */
+  --e1: 4px;
+  --e2: 8px;
+  --e3: 12px;
+  --e4: 16px;
+  --e5: 24px;
+  --e6: 32px;
+  --vao-mosaico: 8px; /* cabe o anel: 3 de traço + 3 de afastamento */
+  --margem-tela: 8px;
+  --barra-topo: 48px;
+  --bloco-pad-y: 14px;
+  --bloco-pad-x: 18px;
+  --texto-max: 72ch;
+
+  /* Raios */
+  --raio-bloco: 22px;
+  --raio-item: 14px;
+  --raio-botao: 14px;
+  --raio-campo: 16px;
+  --raio-minimo: 8px;
+  --raio-pilula: 999px;
+
+  /* Toque e foco */
+  --alvo: 44px;
+  --item-lista: 56px;
+  --anel-traco: 3px;
+  --anel-afastamento: 3px;
+  --borda-bloco: 2px;
+  --cursor: 2px; /* cursor do teclado em peça, por dentro */
+  --cursor-bloco: 3px; /* cursor no bloco inteiro */
+
+  /* Movimento */
+  --tempo-borda: 200ms;
+  --tempo-toque: 120ms;
+  --abrir-escala: 0.87;
+}
+
+:root,
+:root[data-tema='claro'] {
+  --cor-fundo: #e7edf4;
+  --cor-cartao: #f7fafd;
+  --cor-cartao-2: #e0e8f1;
+  --cor-texto: #152030;
+  --cor-texto-2: #4f5f76;
+  --cor-acao: #426cc0;
+  --cor-sobre-acao: #ffffff;
+  --cor-escolhido: #d3e0f4;
+  --cor-foco: #152030;
+  --cor-cursor: #426cc0;
+  --cor-ok: #2a9d74; /* concluído, feito */
+  --cor-atencao: #d9527a; /* erro e aviso */
+  --cor-nota-titulo: #152030;
+  --cor-veu: rgb(21 32 48 / 40%);
+  color-scheme: light;
+}
+
+:root[data-tema='escuro'] {
+  --cor-fundo: #0c121c;
+  --cor-cartao: #141c2a;
+  --cor-cartao-2: #1e2838;
+  --cor-texto: #e8eff9;
+  --cor-texto-2: #9dafc8;
+  --cor-acao: #94b4ea;
+  --cor-sobre-acao: #0f1a24;
+  --cor-escolhido: #2f4878;
+  --cor-foco: #e8eff9;
+  --cor-cursor: #94b4ea;
+  --cor-ok: #6fcf9f;
+  --cor-atencao: #f27a9f;
+  --cor-nota-titulo: #e8eff9;
+  --cor-veu: rgb(12 18 28 / 60%);
+  color-scheme: dark;
+}
+
+/* Papéis derivados: valem para toda paleta e tema; a paleta só troca os valores de cima. */
+:root {
+  --cor-agora: var(--cor-acao); /* hoje, agora: mesmo azul cheio da ação */
+  --sup-recuada: color-mix(in srgb, var(--cor-cartao) 55%, var(--cor-fundo)); /* bloco sem cursor */
+  --sup-peca: color-mix(in srgb, var(--cor-texto) 6%, transparent); /* peça dentro de bloco, aceso ou recuado */
+  --cor-rastro: color-mix(in srgb, var(--cor-cursor) 30%, var(--cor-cartao)); /* para onde o Esc volta */
+  --cor-relevo: color-mix(in srgb, var(--cor-texto) 16%, var(--cor-cartao-2)); /* tecla com relevo */
+  --sup-peca-viva: color-mix(in srgb, var(--cor-texto) 11%, transparent); /* peça sob o mouse: um degrau acima */
+  --cor-acao-viva: color-mix(in srgb, var(--cor-acao) 88%, var(--cor-texto)); /* botão principal sob o mouse */
+  --cor-slide: #fff; /* o slide é conteúdo: continua claro no tema escuro */
+  --cor-slide-texto: #152030;
+  --sombra-flutuante: 0 4px 16px rgb(0 0 0 / 0.3); /* barra que flutua sobre o conteúdo */
+}
+
+/* Cor sólida (70% da ativa sobre o cartão): resolvida aqui vale para toda paleta e tema. */
+:root {
+  --cor-contorno-foco: color-mix(in srgb, var(--cor-cursor) 70%, var(--cor-cartao));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --tempo-borda: 0ms;
+    --tempo-toque: 0ms;
+    --abrir-escala: 1;
+  }
+}

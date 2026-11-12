@@ -4,7 +4,7 @@ import { KEYS, type KeyRow } from './keys';
 import { findConflicts, helpSections } from './keyTools';
 import { resolve, type KeyInput } from './resolve';
 
-const LEVELS: readonly Level[] = ['menu', 'block', 'field'];
+const LEVELS: readonly Level[] = ['menu', 'block', 'field', 'nav'];
 
 // Transcrito de docs/teclado.md: a tabela não pode perder nem ganhar tecla em silêncio.
 const LABELS_IN_DOC = [
@@ -13,12 +13,13 @@ const LABELS_IN_DOC = [
   ...['H', 'J', 'K', 'L'].map((k) => `Alt Shift ${k}`),
   ...['H', 'J', 'K', 'L', '←', '↓', '↑', '→'],
   ...['Enter', 'Esc', 'Tab', 'Shift Tab'],
-  ...['S', 'A', 'C', 'M', 'W', 'R', 'X', 'O', 'T', 'F', 'B', ',', '.', 'N', '0'].map(
+  ...['S', 'A', 'C', 'D', 'M', 'W', 'R', 'X', 'O', 'T', 'F', 'B', ',', '.', 'N', '0'].map(
     (k) => `Alt ${k}`,
   ),
   'Alt Shift 0',
-  ...['Alt P', 'Ctrl P', 'Alt I', 'Alt /', 'F1'],
+  ...['Alt P', 'Ctrl P', 'Alt I', 'Alt Z', 'Alt /', 'F1'],
   ...['Alt [', 'Alt Page Up', 'Alt ]', 'Alt Page Down'],
+  ...['Espaço', '1', '2', '3', '4'],
   ...['B', 'I', 'U', 'K', 'E', 'M'].map((k) => `Ctrl ${k}`),
   ...['Ctrl Shift H', 'Ctrl Shift X'],
   ...['1', '2', '3'].map((n) => `Ctrl Alt ${n}`),
@@ -41,8 +42,8 @@ function pressOf(key: KeyRow): KeyInput {
 }
 
 describe('tabela de teclas', () => {
-  it('tem as 70 teclas de teclado.md', () => {
-    expect(KEYS).toHaveLength(70);
+  it('tem as 77 teclas de teclado.md', () => {
+    expect(KEYS).toHaveLength(77);
     expect(KEYS.map((key) => key.label).sort()).toEqual([...LABELS_IN_DOC].sort());
   });
 
@@ -91,6 +92,7 @@ describe('ajuda', () => {
       'Blocos',
       'Sistema',
       'Slides',
+      'Treino',
       'Editor',
     ]);
   });

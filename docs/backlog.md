@@ -30,7 +30,6 @@ Lista curta do que foi **adiado ou ainda não decidido**. O que está no plano d
 
 | ID | Item | Pergunta |
 |---|---|---|
-| B08 | **Livro** | O que é e onde entra na hierarquia (matéria, aula ou à parte)? Ver glossário em `visao.md` |
 
 ## Cortados (não voltam sem decisão explícita do usuário)
 
@@ -44,4 +43,14 @@ Lista curta do que foi **adiado ou ainda não decidido**. O que está no plano d
 - 2026-11-05: **B09 Importar o backup .zip do app antigo** (matérias, aulas, anotações, cartões, provas) para o app novo, sem migrar código. Só depois da Fase B.
 - 2026-11-05: Ideias que sobraram do legado, sem decisão: cloze nos cartões, suspender cartão, estudar só uma prova, limite de novos por dia, pomodoro, paleta de comandos no gerenciador de cartões, escolha do ícone de atalhos (o "?" do legado não agradou).
 - 2026-11-05: Manter o app antigo no ar até o novo ter tudo o que o usuário usa.
-- 2026-11-06: **Antes da Etapa 4:** rever `neighbor`. Ele compara só os centros, então com blocos mais altos que largos (tablet em pé) o bloco alto ao lado pode ganhar do bloco de baixo. Há um teste que documenta o caso.
+- 2026-11-07: **Agenda (Etapa 9, regras em `regras.md`):** Mover e Sem aula na Prévia, aula avulsa, inverter quinzenal, editar a Grade pelo cronograma, prova só com a matéria, campos de prova (bimestre, conteúdo, local, observação), atrasados no topo da Lista, importar .ics como atalho da Grade.
+- 2026-11-07: **Busca FTS** do SQLite quando a busca em memória ficar lenta. Fora da Etapa 7.
+- 2026-11-07: **Busca dentro do PDF.** Fora da Etapa 10. (Anotar sobre o PDF: descartado pelo usuário.)
+- 2026-11-07: **Lixeira visível:** hoje o que se exclui some da tela e fica marcado no banco (`deleted = 1`), com Desfazer por 10 s (Alt Z). Falta uma tela para ver e restaurar depois disso. Também falta o ⋮ por toque na régua de pastas (hoje só Alt O).
+- 2026-11-07: **Ler o livro numa tela:** hoje o livro só se anexa e remove pelo ⋮ da matéria. Recomendação: janela de consulta. Também: anexar capítulo a uma aula.
+- 2026-11-08: **Situação nova (No ritmo, Fora do alcance)** do ClaudeWeb: usuário ficou com a atual por ora. Reavaliar se a pergunta "ainda dá para salvar a matéria?" fizer falta.
+- Tipo "Apresentação" na Agenda (hoje só aula, trabalho e compromisso), para aparecer no bloco de avaliações do Hub (D120).
+- Notas: busca `/` na régua, metas por semestre ("Precisa no 2º bim."), janela de esquema com modelos 5 + 5 / 3 + 7 e "Mais opções" (D114) ainda não levadas ao app.
+- 2026-11-12: Botões "Registrar falta" e "Novo evento" no calendário do Hub.
+- 2026-11-12: Três botões fora das peças da vitrine (Atualizar, ErrorScreen, Criar): trocar por peças.
+- 2026-11-12: Dividir `Grades.module.css` (passa de 300 linhas).
