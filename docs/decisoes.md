@@ -188,4 +188,5 @@ Aqui "Notas" são as do boletim (média, pesos, itens), **não** as Anotações.
 | ID | Decisão | Motivo | Status |
 |---|---|---|---|
 | D130 | **Identidade única: Ardósia refinada** (D115, D117, D119), como está em `src/ui/styles/tokens.css`, `src/ui/components`, `lab/vitrine.html` e `docs/diretrizes-visuais.md`. Todas as outras identidades, bancadas e direções anteriores estão **descartadas** (cores lima e damasco também). A bolinha das Faltas (D128) é exceção registrada ao "sem círculos" | O usuário cansou de re-escolher; menos papel velho para reler | Decidida (usuário) |
-| D131 | **Três paletas oficiais na mesma linguagem:** Ardósia padrão, A (azul-gelo) e B (cinza-índigo). Paleta só troca cor, nunca forma. A sessão 3 de `plano/faxina.md` confere o refino | Escolha do usuário entre elas em Configs | Decidida (usuário) |
+| D131 | ~~Três paletas: Ardósia, A e B~~ Substituída pela D132 | | Substituída |
+| D132 | **Três paletas oficiais:** Gelo suave (padrão, em `tokens.css`; era a A versão 3), Gelo (A refinada: botões escuros no claro, azuis no escuro) e Índigo (B), em `paletas.css`. A cor Ardósia saiu; as formas e peças da D130 não mudam. Lavanda, Creme e Gelo lilás recusadas. Paleta só troca cor | Escolha do usuário em 12/11 na bancada | Decidida (usuário) |

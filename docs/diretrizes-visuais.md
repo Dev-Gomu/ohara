@@ -1,6 +1,6 @@
 # Ohara: diretrizes visuais (resumo de uma página)
 
-Detalhes, navegação e tabela de peças: `diretrizes-visuais-referencia.md`. Valores exatos: `src/ui/styles/tokens.css`. Identidade: **Ardósia refinada** (D130).
+Detalhes, navegação e tabela de peças: `diretrizes-visuais-referencia.md`. Valores exatos: `src/ui/styles/tokens.css`. Identidade: **Ardósia refinada** (D130, formas e peças); cores: **Gelo suave** (D132).
 
 **Antes de desenhar:** abra `lab/vitrine.html` (`npm run tela -- "lab/vitrine.html"`) e monte só com as peças de `src/ui/components`. Peça nova só em bancada (`lab/provas-dias.html` é o modelo), até 3 versões, com aceite do usuário.
 

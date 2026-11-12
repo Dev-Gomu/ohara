@@ -6,7 +6,7 @@
 |---|---|---|---|
 | 1 | Faxina de papel | Sonnet | feita (12/11/2026) |
 | 2 | Faxina visual (lab, protótipos, tokens, diretrizes) | Sonnet | feita (12/11/2026) |
-| 3 | Três paletas oficiais (Ardósia, A, B) | Fable na bancada, Sonnet no código | próxima |
+| 3 | Três paletas oficiais (Gelo suave, Gelo, Índigo) | Fable na bancada, Sonnet no código | feita |
 | 4 | Publicação (teste da Agenda, roteiro de 5 min, main) | Sonnet | |
 | 5 | Etapa 11, Treino com FSRS (`etapa-11.md`) | Opus | |
 | 6 | Etapa 12, sincronização (`etapa-12.md`) | Opus, modo de plano | |

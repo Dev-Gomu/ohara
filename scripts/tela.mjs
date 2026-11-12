@@ -82,14 +82,14 @@ async function principal() {
   const escala = Number(opcoes.escala);
   const folha = await navegador.newPage({ viewport: { width: 400, height: 300 } });
   await folha.setContent(
-    `<body style="margin:0;display:flex;gap:6px;background:#888;width:max-content">${imagens
+    `<body style="margin:0;display:flex;align-items:flex-start;gap:6px;background:#888;width:max-content;height:max-content">${imagens
       .map((img) => `<img src="data:image/png;base64,${img.dados}" style="zoom:${escala}">`)
       .join('')}</body>`,
   );
   await folha.waitForLoadState('load');
   mkdirSync(PASTA, { recursive: true });
   const arquivo = `${PASTA}/${opcoes.saida}.jpg`;
-  await folha.locator('body').screenshot({ path: arquivo, type: 'jpeg', quality: 70 });
+  await folha.screenshot({ path: arquivo, type: 'jpeg', quality: 70, fullPage: true });
   await navegador.close();
   console.log(`${arquivo} (${imagens.map((img) => img.tema).join(' | ')})`);
 }

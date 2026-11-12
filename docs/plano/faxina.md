@@ -44,7 +44,7 @@
 
 **Pronta quando:** busca por "giz", "anil" e "paleta c" não acha nada fora de `docs/arquivo/`; `check` e `e2e:curto` passam; commit feito.
 
-## Sessão 3: três paletas (Fable na bancada, Sonnet no código)
+## Sessão 3: três paletas (Fable na bancada, Sonnet no código). FEITA em 12/11/2026 (D132)
 
 Bancada única com Ardósia padrão, A e B lado a lado, dois temas, foco testado. Refinar A e B só onde destoarem (contraste, azul de ação, cores de matéria). Dar nome a cada uma em Configs e mostrar na vitrine.
 **Pronta quando:** o usuário aceitou as três; Configs mostra três opções com nome; lint visual passa; decisão registrada.

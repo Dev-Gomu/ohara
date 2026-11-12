@@ -1,21 +1,21 @@
 /* Tokens do Ohara: docs/diretrizes-visuais.md explica cada regra.
-   Tela nenhuma usa valor solto: só estas variáveis. As cores são as da Ardósia refinada (D115, D119). */
+   Tela nenhuma usa valor solto: só estas variáveis. Cores-base: Gelo suave (D132); Gelo e Índigo em paletas.css. */
 
 :root {
   /* Matérias: --cor-materia-0 a 7 (posição guardada no banco), iguais nos dois temas, sempre com --cor-tinta por cima.
      Valores trocáveis: cada paleta só redefine estas variáveis. Cor repete; a sigla distingue. */
-  --cor-destaque: #8aa0f8;
-  --cor-materia-1: #8aa0f8;
-  --cor-destaque-forte: #7389ea; /* só em texto grande ou estado tocado */
-  --cor-materia-4: #e48ae8;
-  --cor-materia-2: #5eb6ee;
-  --cor-materia-0: #f27a9f;
-  --cor-materia-3: #7fdcb0;
-  --cor-tinta: #0e1428;
-  --cor-sobre-tinta: #f3f5ff;
-  --cor-materia-5: #ab94f4;
-  --cor-materia-6: #3fd0c4;
-  --cor-materia-7: #a3b0c4;
+  --cor-destaque: #94b4ea;
+  --cor-materia-1: #94b4ea;
+  --cor-destaque-forte: #7fa2e0; /* só em texto grande ou estado tocado */
+  --cor-materia-4: #a3d3a4;
+  --cor-materia-2: #b3a2e6;
+  --cor-materia-0: #7fc8ba;
+  --cor-materia-3: #86c6e0;
+  --cor-tinta: #0f1a24;
+  --cor-sobre-tinta: #f2f6fb;
+  --cor-materia-5: #cfa0dc;
+  --cor-materia-6: #a3b1c6;
+  --cor-materia-7: #c5d8f2;
 
   /* Fontes (D67) */
   --fonte-voz: 'Nunito', system-ui, sans-serif;
@@ -82,38 +82,38 @@
 
 :root,
 :root[data-tema='claro'] {
-  --cor-fundo: #dfe4ea;
-  --cor-cartao: #f7f9fb;
-  --cor-cartao-2: #e6ebf0;
-  --cor-texto: #0f1e27;
-  --cor-texto-2: #465a68;
-  --cor-acao: #4a62dc;
+  --cor-fundo: #e7edf4;
+  --cor-cartao: #f7fafd;
+  --cor-cartao-2: #e0e8f1;
+  --cor-texto: #152030;
+  --cor-texto-2: #4f5f76;
+  --cor-acao: #426cc0;
   --cor-sobre-acao: #ffffff;
-  --cor-escolhido: #d6defa;
-  --cor-foco: #0f1e27;
-  --cor-cursor: #4a62dc;
+  --cor-escolhido: #d3e0f4;
+  --cor-foco: #152030;
+  --cor-cursor: #426cc0;
   --cor-ok: #2a9d74; /* concluído, feito */
   --cor-atencao: #d9527a; /* erro e aviso */
-  --cor-nota-titulo: #0f1e27;
-  --cor-veu: rgb(15 30 39 / 40%);
+  --cor-nota-titulo: #152030;
+  --cor-veu: rgb(21 32 48 / 40%);
   color-scheme: light;
 }
 
 :root[data-tema='escuro'] {
-  --cor-fundo: #0e1519;
-  --cor-cartao: #172026;
-  --cor-cartao-2: #222e36;
-  --cor-texto: #e8f0f4;
-  --cor-texto-2: #93a7b3;
-  --cor-acao: #8ea4fa;
-  --cor-sobre-acao: #0e1428;
-  --cor-escolhido: #2a3660;
-  --cor-foco: #e8f0f4;
-  --cor-cursor: #8ea4fa;
+  --cor-fundo: #0c121c;
+  --cor-cartao: #141c2a;
+  --cor-cartao-2: #1e2838;
+  --cor-texto: #e8eff9;
+  --cor-texto-2: #9dafc8;
+  --cor-acao: #94b4ea;
+  --cor-sobre-acao: #0f1a24;
+  --cor-escolhido: #2f4878;
+  --cor-foco: #e8eff9;
+  --cor-cursor: #94b4ea;
   --cor-ok: #6fcf9f;
   --cor-atencao: #f27a9f;
-  --cor-nota-titulo: #e8f0f4;
-  --cor-veu: rgb(14 21 25 / 60%);
+  --cor-nota-titulo: #e8eff9;
+  --cor-veu: rgb(12 18 28 / 60%);
   color-scheme: dark;
 }
 
@@ -127,7 +127,7 @@
   --sup-peca-viva: color-mix(in srgb, var(--cor-texto) 11%, transparent); /* peça sob o mouse: um degrau acima */
   --cor-acao-viva: color-mix(in srgb, var(--cor-acao) 88%, var(--cor-texto)); /* botão principal sob o mouse */
   --cor-slide: #fff; /* o slide é conteúdo: continua claro no tema escuro */
-  --cor-slide-texto: #0f1e27;
+  --cor-slide-texto: #152030;
   --sombra-flutuante: 0 4px 16px rgb(0 0 0 / 0.3); /* barra que flutua sobre o conteúdo */
 }
 

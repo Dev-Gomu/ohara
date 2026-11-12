@@ -54,7 +54,7 @@
 - L5 ## Onde estamos
 - L10 ## Próximo passo
 - L13 ## Esperando o usuário
-- L18 ## Iniciativas abertas (máx. 3)
+- L17 ## Iniciativas abertas (máx. 3)
 
 ### docs/mapa.md
 - L1 # Mapa do projeto
@@ -132,7 +132,7 @@
 - L13 ## Decisões do usuário (12/11/2026)
 - L21 ## Sessão 1: faxina de papel (Sonnet). FEITA em 12/11/2026. Não toca em `src/`
 - L35 ## Sessão 2: faxina visual (Sonnet)
-- L47 ## Sessão 3: três paletas (Fable na bancada, Sonnet no código)
+- L47 ## Sessão 3: três paletas (Fable na bancada, Sonnet no código). FEITA em 12/11/2026 (D132)
 - L52 ## Sessão 4: publicação (Sonnet)
 - L57 ## Sessão 5: Etapa 11, Treino com FSRS (Opus)
 - L61 ## Sessão 6: Etapa 12, sincronização (Opus, modo de plano)
@@ -335,6 +335,6 @@
 - src/ui/study/undo.ts: D: exclusão é lógica no banco e tem Desfazer (regras.md G8). `label` aparece no aviso.
 - src/ui/styles/base.css: (sem comentário nem export no topo)
 - src/ui/styles/fonts.css: Fontes da D67, servidas pelo app (D68). Licença OFL.
-- src/ui/styles/paletas.css: Paletas alternativas (sem cores quentes). A Ardósia é a base, sem atributo (tokens.css); Configs e ?paleta=a|b trocam.
+- src/ui/styles/paletas.css: Paletas oficiais além da base (Gelo suave, sem atributo, em tokens.css; D132). Configs e ?paleta=a|b trocam.
 - src/ui/styles/tokens.css: Tokens do Ohara: docs/diretrizes-visuais.md explica cada regra.
 - src/ui/theme.ts: Preferência de aparelho, não dado: se o armazenamento falhar, vale o tema do sistema.

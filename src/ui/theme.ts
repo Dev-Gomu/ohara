@@ -32,16 +32,16 @@ export function toggleTheme(): void {
   }
 }
 
-// 'original' é a Ardósia (tokens.css) e não põe atributo. ?paleta=a|b|original escolhe e fica guardada.
+// 'original' é o Gelo suave (tokens.css, D132) e não põe atributo. ?paleta=a|b|original escolhe e fica guardada.
 export type Palette = 'original' | 'a' | 'b';
 
 const PALETTES: readonly Palette[] = ['original', 'a', 'b'];
 const PALETTE_KEY = prefixed('paleta');
 
 export const PALETTE_NAMES: Readonly<Record<Palette, string>> = {
-  original: 'Ardósia',
-  a: 'A · Azul-gelo',
-  b: 'B · Cinza-índigo',
+  original: 'Gelo suave',
+  a: 'Gelo',
+  b: 'Índigo',
 };
 
 function asPalette(value: string | null): Palette | null {
