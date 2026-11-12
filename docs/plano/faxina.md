@@ -49,7 +49,7 @@
 Bancada única com Ardósia padrão, A e B lado a lado, dois temas, foco testado. Refinar A e B só onde destoarem (contraste, azul de ação, cores de matéria). Dar nome a cada uma em Configs e mostrar na vitrine.
 **Pronta quando:** o usuário aceitou as três; Configs mostra três opções com nome; lint visual passa; decisão registrada.
 
-## Sessão 4: publicação (Sonnet)
+## Sessão 4: publicação (Sonnet) — FEITA em 12/11/2026
 
 Resolver o teste "Agenda: prova nova aparece no Hub" (descobrir se é defeito do app ou do teste; o CI roda o e2e antes do deploy). O usuário cumpre `roteiro-5min-publicacao.md`. Juntar `telas-3-a-9` ao `main` e publicar **só com pedido explícito do usuário**.
 **Pronta quando:** todos os testes passam; o site no ar mostra a versão nova.

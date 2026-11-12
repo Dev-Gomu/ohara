@@ -133,7 +133,7 @@
 - L21 ## Sessão 1: faxina de papel (Sonnet). FEITA em 12/11/2026. Não toca em `src/`
 - L35 ## Sessão 2: faxina visual (Sonnet)
 - L47 ## Sessão 3: três paletas (Fable na bancada, Sonnet no código). FEITA em 12/11/2026 (D132)
-- L52 ## Sessão 4: publicação (Sonnet)
+- L52 ## Sessão 4: publicação (Sonnet) — FEITA em 12/11/2026
 - L57 ## Sessão 5: Etapa 11, Treino com FSRS (Opus)
 - L61 ## Sessão 6: Etapa 12, sincronização (Opus, modo de plano)
 - L66 ## Sessão 7 em diante: varredura (Sonnet)
