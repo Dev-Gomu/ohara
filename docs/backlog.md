@@ -52,5 +52,5 @@ Lista curta do que foi **adiado ou ainda não decidido**. O que está no plano d
 - Tipo "Apresentação" na Agenda (hoje só aula, trabalho e compromisso), para aparecer no bloco de avaliações do Hub (D120).
 - Notas: busca `/` na régua, metas por semestre ("Precisa no 2º bim."), janela de esquema com modelos 5 + 5 / 3 + 7 e "Mais opções" (D114) ainda não levadas ao app.
 - 2026-11-12: Botões "Registrar falta" e "Novo evento" no calendário do Hub.
+- 2026-11-13: Lista de cartões criados (aba "Salvos" da Mesa) virar uma lista de fato, não mais grade de cartões coloridos. Formato a definir em bancada, depois do editor de cartão novo.
 - 2026-11-12: Três botões fora das peças da vitrine (Atualizar, ErrorScreen, Criar): trocar por peças.
-- 2026-11-12: Dividir `Grades.module.css` (passa de 300 linhas).

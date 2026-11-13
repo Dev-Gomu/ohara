@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cartão de estudo (flashcard)</title>
+    <style>
+      /* Bancada do novo visual do cartão. Cores escopadas aqui (a bancada não passa pelo lint);
+         na aplicação viram tokens em src/ui/styles. Duas chaves independentes no <html>:
+         data-cor-titulos="on|off" (tecla C) e, por variante, a classe .padrao / .compacta. */
+      :root {
+        --cf-bloco: #f7fafd;
+        --cf-texto: #152030;
+        --cf-texto2: #4f5f76;
+        --cf-accent: #426cc0;
+        --cf-frente: #94b4ea;
+        --cf-sobre-frente: #0f1a24;
+      }
+      :root[data-tema='escuro'] {
+        --cf-bloco: #141c2a;
+        --cf-texto: #e8eff9;
+        --cf-texto2: #9dafc8;
+        --cf-accent: #94b4ea;
+      }
+      :root[data-cor-titulos='on'] {
+        --cf-hcor: var(--cf-accent);
+      }
+
+      .cf {
+        width: 400px;
+        max-width: 100%;
+      }
+      .cf.padrao {
+        --fs-f: 19px;
+        --lh-f: 25px;
+        --pf: 14px;
+        --fs-b: 16.5px;
+        --lh-b: 25px;
+        --fs-h: 12px;
+        --lh-h: 18px;
+        --fs-s: 11.5px;
+        --lh-s: 18px;
+        --gs: 24px;
+        --gsub: 10px;
+      }
+      .cf.compacta {
+        --fs-f: 16px;
+        --lh-f: 21px;
+        --pf: 11px;
+        --fs-b: 15px;
+        --lh-b: 21px;
+        --fs-h: 11px;
+        --lh-h: 16px;
+        --fs-s: 11px;
+        --lh-s: 16px;
+        --gs: 14px;
+        --gsub: 6px;
+      }
+
+      .cf-card {
+        margin-bottom: 14px;
+        overflow: hidden;
+        border: 1px solid var(--cf-frente);
+        border-radius: 16px;
+        background: var(--cf-bloco);
+        color: var(--cf-texto);
+        font:
+          400 var(--fs-b) / var(--lh-b) 'Source Sans 3',
+          system-ui,
+          sans-serif;
+        text-align: left;
+      }
+      .cf-frente {
+        padding: var(--pf) 16px;
+        background: var(--cf-frente);
+        color: var(--cf-sobre-frente);
+        font:
+          700 var(--fs-f) / var(--lh-f) Inter,
+          system-ui,
+          sans-serif;
+        letter-spacing: -0.01em;
+      }
+      .cf-verso {
+        padding: 16px 16px 20px;
+      }
+      .cf-verso section {
+        margin-top: var(--gs);
+      }
+      .cf-verso section:first-child {
+        margin-top: 0;
+      }
+      .cf-verso h3 {
+        margin-bottom: 2px;
+        color: var(--cf-hcor, var(--cf-texto));
+        font:
+          700 var(--fs-h) / var(--lh-h) Inter,
+          system-ui,
+          sans-serif;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+      .cf-sub {
+        margin-top: var(--gsub);
+        margin-left: 8px;
+      }
+      .cf-st {
+        color: var(--cf-texto2);
+        font:
+          600 var(--fs-s) / var(--lh-s) Inter,
+          system-ui,
+          sans-serif;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+      .cf-b {
+        font-weight: 700;
+      }
+      .cf-h {
+        display: grid;
+        grid-template-columns: 1.1em 1fr;
+      }
+      .cf-h.n {
+        grid-template-columns: 1.45em 1fr;
+      }
+      /* Candidatas novas (catálogo): cada uma só vale se aprovada. */
+      .cf-verso u {
+        text-underline-offset: 2px;
+      }
+      .cf-verso em {
+        font-style: italic;
+      }
+      .cf-verso .chave {
+        color: var(--cf-accent);
+        font-weight: 700;
+      }
+      .cf-verso .nota {
+        color: var(--cf-texto2);
+      }
+      .cf-verso .num {
+        font-variant-numeric: tabular-nums;
+      }
+      .cf-verso .h2 {
+        padding-left: 1.1em;
+      }
+      .cf-verso mark {
+        padding: 0 2px;
+        border-radius: 4px;
+        background: var(--cf-frente);
+        color: var(--cf-sobre-frente);
+      }
+
+      .catalogo {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 28px 32px;
+        align-items: start;
+      }
+      .item-rotulo {
+        margin-bottom: 8px;
+        color: var(--cor-texto);
+        font:
+          700 13px / 18px Inter,
+          system-ui,
+          sans-serif;
+      }
+      .item-rotulo small {
+        display: block;
+        color: var(--cor-texto-2);
+        font-weight: 500;
+      }
+      .etq {
+        margin-left: 6px;
+        padding: 1px 8px;
+        border-radius: 999px;
+        background: var(--cor-fundo);
+        font-size: 11px;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+      .colunas {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 32px;
+        align-items: flex-start;
+      }
+      .par {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 24px 32px;
+        align-items: flex-start;
+      }
+      .anki-col {
+        width: 400px;
+        max-width: 100%;
+      }
+      .anki-rot {
+        margin: 0 0 4px;
+        color: var(--cor-texto-2);
+        font: 600 11px / 14px Inter, system-ui, sans-serif;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+      /* Aparência padrão do Anki, sem nenhum CSS nosso. */
+      .anki {
+        margin-bottom: 8px;
+        padding: 14px;
+        border: 1px solid #c8c8c8;
+        border-radius: 8px;
+        background: #fff;
+        color: #000;
+        font: 20px / 1.3 Arial, Helvetica, sans-serif;
+        text-align: left;
+      }
+      :root[data-tema='escuro'] .anki {
+        border-color: #444;
+        background: #2c2c2c;
+        color: #fff;
+      }
+      .anki ul,
+      .anki ol {
+        margin: 1em 0;
+        padding-left: 40px;
+      }
+      .anki li > ul {
+        margin: 0;
+      }
+      .codigo {
+        margin: 0 0 14px;
+        color: var(--cor-texto-2);
+        font: 11px / 15px ui-monospace, monospace;
+        white-space: pre-wrap;
+        word-break: break-all;
+      }
+      .item-rotulo code {
+        margin-left: 6px;
+        padding: 1px 6px;
+        border-radius: 6px;
+        background: var(--cor-fundo);
+        font: 12px ui-monospace, monospace;
+      }
+    </style>
+  </head>
+  <body>
+    <script type="module">
+      import { Sala } from './_sala.js';
+
+      const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+      // Mesmo conjunto de marcas do app (**negrito**, ==destaque==) mais as candidatas do catálogo.
+      const inline = (s) =>
+        esc(s)
+          .replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>')
+          .replace(/\*([^*]+)\*/g, '<em>$1</em>')
+          .replace(/__([^_]+)__/g, '<u>$1</u>')
+          .replace(/==([^=]+)==/g, '<mark>$1</mark>')
+          .replace(/\^([^^]+)\^/g, '<sup>$1</sup>')
+          .replace(/~([^~]+)~/g, '<sub>$1</sub>');
+
+      function linha(x) {
+        if (x.b) return `<div class="cf-b">${inline(x.b)}</div>`;
+        if (x.m)
+          return `<div class="cf-h${x.n ? ' n' : ''}${x.n2 ? ' h2' : ''}"><span>${esc(x.m)}</span><span>${inline(x.p)}</span></div>`;
+        return `<div${x.cls ? ` class="${x.cls}"` : ''}>${inline(x.p)}</div>`;
+      }
+      function secao(s) {
+        let h = `<section>${s.t ? `<h3>${esc(s.t)}</h3>` : ''}`;
+        for (const x of s.c) {
+          if (x.sub)
+            h += `<div class="cf-sub"><div class="cf-st">${esc(x.sub)}</div>${x.c.map(linha).join('')}</div>`;
+          else h += linha(x);
+        }
+        return `${h}</section>`;
+      }
+      const cartao = (c) =>
+        `<div class="cf-card"><div class="cf-frente">${esc(c.f)}</div><div class="cf-verso">${c.s.map(secao).join('')}</div></div>`;
+      const versoso = (s) =>
+        `<div class="cf-card"><div class="cf-verso">${s.map(secao).join('')}</div></div>`;
+
+      const exemplos = [
+        {
+          f: 'Testes de Weber e Rinne',
+          s: [
+            {
+              t: 'Conceito',
+              c: [
+                {
+                  p: 'Avaliam a acuidade auditiva e ajudam a diferenciar perda condutiva de sensorioneural.',
+                },
+              ],
+            },
+            {
+              t: 'Weber',
+              c: [
+                { sub: 'Execução', c: [{ p: 'Diapasão vibrando no topo da cabeça.' }] },
+                {
+                  sub: 'Achados',
+                  c: [
+                    { b: 'Normal' },
+                    { m: '→', p: 'Som percebido igualmente nos dois lados.' },
+                    { b: 'Alteração' },
+                    { m: '→', p: 'Lateralização do som.' },
+                    { m: '•', p: 'Perda condutiva → lateraliza para o lado afetado.' },
+                    { m: '•', p: 'Perda sensorioneural → lateraliza para o lado saudável.' },
+                  ],
+                },
+              ],
+            },
+            {
+              t: 'Realizados em conjunto',
+              c: [
+                { p: 'Weber → identifica para qual lado o som lateraliza' },
+                { p: 'Rinne → determina o tipo de perda auditiva' },
+              ],
+            },
+          ],
+        },
+        {
+          f: 'Sinal de Blumberg',
+          s: [
+            {
+              t: 'Execução',
+              c: [
+                { m: '1.', n: 1, p: 'Paciente em decúbito dorsal' },
+                { m: '2.', n: 1, p: 'Compressão lenta e profunda no ponto de McBurney' },
+              ],
+            },
+            { t: 'Achado', c: [{ p: 'Dor aguda no momento exato da descompressão.' }] },
+          ],
+        },
+      ];
+
+// Catálogo de marcas nossas. Cada uma tem o visual do Ohara e o HTML que seria gravado no Anki.
+// O HTML do Anki só usa tags e estilos em linha que o Anki preserva (b, i, sup, sub, ul, ol, div, span).
+const inlineAnki = (s) =>
+        esc(s)
+          .replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>')
+          .replace(/\*([^*]+)\*/g, '<i>$1</i>')
+          .replace(/__([^_]+)__/g, '<u>$1</u>')
+          .replace(/==([^=]+)==/g, '<span style="background:#94b4ea;color:#0f1a24">$1</span>')
+          .replace(/\^([^^]+)\^/g, '<sup>$1</sup>')
+          .replace(/~([^~]+)~/g, '<sub>$1</sub>');
+
+      function ankiLinhas(cs) {
+  let h = "";
+  let i = 0;
+  while (i < cs.length) {
+    const x = cs[i];
+    if (x.sub) {
+      h += `<div style="margin-left:8px"><div><i>${esc(x.sub.toUpperCase())}</i></div>${ankiLinhas(x.c)}</div>`;
+      i++;
+    } else if (x.m === "•" || x.n) {
+      const ordenada = Boolean(x.n);
+      let itens = "";
+      let j = i;
+      while (j < cs.length && (ordenada ? cs[j].n : cs[j].m === "•")) {
+        const texto = inlineAnki(cs[j].p);
+        j++;
+        let filhos = "";
+        while (j < cs.length && cs[j].n2)
+          filhos += `<li>${inlineAnki(cs[j++].p)}</li>`;
+        itens += `<li>${texto}${filhos ? `<ul>${filhos}</ul>` : ""}</li>`;
+      }
+      h += ordenada ? `<ol>${itens}</ol>` : `<ul>${itens}</ul>`;
+      i = j;
+    } else {
+      if (x.b) h += `<div><b>${inlineAnki(x.b)}</b></div>`;
+      else if (x.m) h += `<div>${esc(x.m)} ${inlineAnki(x.p)}</div>`;
+      else h += `<div>${inlineAnki(x.p)}</div>`;
+      i++;
+    }
+  }
+  return h;
+}
+const ankiVerso = (secoes) =>
+  secoes
+    .map(
+      (s, k) =>
+        `<div${k ? ' style="margin-top:12px"' : ""}>${s.t ? `<div><b>${esc(s.t.toUpperCase())}</b></div>` : ""}${ankiLinhas(s.c)}</div>`,
+    )
+    .join("");
+const caixaAnki = (rotulo, html) =>
+  `<div class="anki-rot">${rotulo}</div><div class="anki">${html}</div><pre class="codigo">${esc(html)}</pre>`;
+
+const M = (id, nome, atalho, marca, nota, s) => ({ id, nome, atalho, marca, nota, s });
+const catalogo = [
+        M('F1', 'Negrito', 'Ctrl B', '**termo**', 'Dentro de qualquer linha ou na linha inteira.', [{ t: 'Conceito', c: [{ p: 'Perda **condutiva** lateraliza para o lado afetado.' }, { b: 'Linha inteira em negrito' }] }]),
+        M('F2', 'Itálico', 'Ctrl I', '*termo*', 'Sinais, nomes em latim.', [{ t: 'Conceito', c: [{ p: 'Sinal de *Rovsing* e *psoas* também podem estar presentes.' }] }]),
+        M('F3', 'Sublinhado', 'Ctrl U', '__termo__', 'Ênfase leve.', [{ t: 'Conceito', c: [{ p: 'O achado é __patognomônico__ da doença.' }] }]),
+        M('F4', 'Marca-texto', 'Ctrl Shift H', '==termo==', 'Único fundo atrás de palavra. No Anki: <span> com fundo azul.', [{ t: 'Conceito', c: [{ p: 'Dor ==no momento da descompressão== sugere irritação peritoneal.' }] }]),
+        M('F5', 'Sobrescrito', 'Ctrl . (novo)', '^termo^', 'O editor de anotações ainda não tem esse atalho.', [{ t: 'Fisiologia', c: [{ p: 'Entrada de Ca^2+^ e Na^+^ na célula; área em cm^2^.' }] }]),
+        M('F6', 'Subscrito', 'Ctrl , (novo)', '~termo~', 'O editor de anotações ainda não tem esse atalho.', [{ t: 'Fisiologia', c: [{ p: 'Queda de PaO~2~ e aumento de PaCO~2~.' }] }]),
+        M('F7', 'Lista com tópicos', 'Ctrl Shift 8', '- item', 'No Anki vira lista de verdade (<ul>).', [{ t: 'Achados', c: [{ m: '•', p: 'Perda condutiva lateraliza para o lado afetado, com quebra de linha longa para ver o recuo.' }, { m: '•', p: 'Perda sensorioneural.' }] }]),
+        M('F8', 'Lista numerada', 'Ctrl Shift 7', '1. passo', 'No Anki vira <ol>; a numeração é automática.', [{ t: 'Execução', c: [{ m: '1.', n: 1, p: 'Paciente em decúbito dorsal' }, { m: '2.', n: 1, p: 'Compressão lenta e profunda no ponto de McBurney, com quebra de linha' }] }]),
+        M('F9', 'Sub-item', 'Tab no item', '  - item', 'Segundo nível da lista; no Anki, <ul> dentro do item.', [{ t: 'Achados', c: [{ m: '•', p: 'Alteração' }, { m: '•', n2: 1, p: 'Perda condutiva' }, { m: '•', n2: 1, p: 'Perda sensorioneural' }] }]),
+        M('F10', 'Título de seção', '(só o marcador)', '# Conceito', 'Caixa-alta no Ohara. No Anki: negrito em caixa-alta.', [{ t: 'Conceito', c: [{ p: 'Texto da seção.' }] }, { t: 'Achado', c: [{ p: 'Outro texto.' }] }]),
+        M('F11', 'Subtítulo', '(só o marcador)', '## Execução', 'Cinza, recuo de 8 px com tudo abaixo. No Anki: itálico em caixa-alta, recuado.', [{ t: 'Weber', c: [{ sub: 'Execução', c: [{ p: 'Diapasão no topo da cabeça.' }] }, { sub: 'Achados', c: [{ p: 'Som percebido nos dois lados.' }] }] }]),
+        M('F12', 'Seta', '(símbolo ao digitar)', '->', 'Vira → pela tabela de símbolos. No Anki perde o recuo na quebra de linha.', [{ t: 'Achados', c: [{ m: '→', p: 'Som percebido igualmente nos dois lados, com quebra de linha longa para ver a diferença.' }] }]),
+        M('F13', 'Marcas clínicas', '(só o marcador)', '+  --  ?', 'A favor, contra, dúvida. No Anki, caracteres no começo da linha.', [{ t: 'Diagnóstico', c: [{ m: '+', p: 'Dor em fossa ilíaca direita' }, { m: '−', p: 'Ausência de febre' }, { m: '?', p: 'Leucocitose discreta' }] }]),
+      ];
+      const par = (ohara, anki) =>
+  `<div class="par"><div class="cf padrao">${ohara}</div><div class="anki-col">${anki}</div></div>`;
+
+Sala.montar({
+  titulo: "Cartão de estudo (flashcard)",
+  dados: exemplos,
+  variantes: [
+    {
+      id: "a",
+      nome: "A · padrão: frente 19 · corpo 16,5 · linha 25 (tecla C liga a cor nos títulos)",
+      html: (d) => `<div class="cf padrao">${d.map(cartao).join("")}</div>`,
+    },
+    {
+      id: "b",
+      nome: "B · compacta: frente 16 · corpo 15 · linha 21 (tecla C liga a cor nos títulos)",
+      html: (d) => `<div class="cf compacta">${d.map(cartao).join("")}</div>`,
+    },
+    {
+      id: "c",
+      nome: "C · formatações com atalho e marcador: Ohara (esquerda) e Anki simulado (direita, com o HTML gravado)",
+      html: (d) =>
+        `<div class="catalogo">${par(cartao(d[0]), `${caixaAnki("Frente", `<div><b>${esc(d[0].f)}</b></div>`)}${caixaAnki("Verso", ankiVerso(d[0].s))}`)}${catalogo
+          .map(
+            (m) =>
+              `<div><div class="item-rotulo">${m.id} · ${esc(m.nome)} <code>${esc(m.atalho)}</code> <code>${esc(m.marca)}</code><small>${esc(m.nota)}</small></div>${par(versoso(m.s), caixaAnki("Verso", ankiVerso(m.s)))}</div>`,
+          )
+          .join("")}</div>`,
+    },
+  ],
+});
+
+      // Chave independente da cor nos títulos: botão na barra e tecla C.
+      const raiz = document.documentElement;
+      const url = new URLSearchParams(location.search);
+      raiz.dataset.corTitulos = url.get('cor') === 'on' ? 'on' : 'off';
+      const botao = document.createElement('button');
+      botao.type = 'button';
+      botao.className = 'sala-botao';
+      const rotulo = () =>
+        (botao.textContent = `Cor nos títulos: ${raiz.dataset.corTitulos === 'on' ? 'ligada' : 'desligada'}`);
+      const alternar = () => {
+        raiz.dataset.corTitulos = raiz.dataset.corTitulos === 'on' ? 'off' : 'on';
+        rotulo();
+      };
+      botao.onclick = alternar;
+      rotulo();
+      document.querySelector('.sala-barra')?.append(botao);
+      document.addEventListener('keydown', (e) => {
+        if (
+          e.code === 'KeyC' &&
+          !e.altKey &&
+          !e.ctrlKey &&
+          !e.metaKey &&
+          !(e.target instanceof HTMLSelectElement)
+        )
+          alternar();
+      });
+    </script>
+  </body>
+</html>
