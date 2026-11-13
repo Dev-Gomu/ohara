@@ -1,7 +1,7 @@
 import Highlight from '@tiptap/extension-highlight';
 import Subscript from '@tiptap/extension-subscript';
 import Superscript from '@tiptap/extension-superscript';
-import { Table, TableCell, TableHeader, TableRow } from '@tiptap/extension-table';
+import { Table, TableCell, TableHeader } from '@tiptap/extension-table';
 import TaskItem from '@tiptap/extension-task-item';
 import TaskList from '@tiptap/extension-task-list';
 import { useEffect } from 'react';
@@ -11,6 +11,9 @@ import type { KeyAction } from '../../../core/keyboard/actions';
 import { addVersion } from '../../../core/study/versions';
 import { ask } from '../../shell/PromptWindow';
 import { storage } from '../../study/study';
+import { isAdjusting, setAdjusting } from '../../keyboard/tableAdjust';
+import { SizedRow, TableAdjust } from './tableAdjustExtension';
+import { measure, setSize, spotOf } from './tableOps';
 import styles from './Mesa.module.css';
 
 type EditorHandler = (change: KeyAction) => boolean | void;
@@ -45,7 +48,8 @@ export function useNotesEditor(lessonId: string, html: string): Editor | null {
       Subscript,
       Superscript,
       Table,
-      TableRow,
+      SizedRow,
+      TableAdjust,
       TableHeader,
       TableCell,
       TaskList,
@@ -95,6 +99,17 @@ export function editorActions(
     bulletList: () => void run().toggleBulletList().run(),
     taskList: () => void run().toggleTaskList().run(),
     link: () => askLink(editor),
+    // Alt R na tabela liga o modo Ajustar; fora dela a tecla segue para o mosaico.
+    resizeMode: () => {
+      if (!spotOf(editor.state)) return false;
+      setAdjusting(!isAdjusting());
+    },
+    tableAdjust: (change) => {
+      const spot = spotOf(editor.state);
+      if (change.type !== 'tableAdjust' || !spot) return;
+      setSize(editor.view, spot, change.axis, measure(editor.view, spot, change.axis) + change.delta);
+    },
+    tableAdjustEnd: () => setAdjusting(false),
     markSlidePage: () => void run().insertContent(`[slide ${page}] `).run(),
     heading: (change) => {
       if (change.type === 'heading') run().toggleHeading({ level: change.level }).run();

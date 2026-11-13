@@ -1,0 +1,53 @@
+/* Mini-barra da tabela (D149): fina, no pé do bloco, nunca cobre a tabela. */
+.barra {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--e2);
+  width: fit-content;
+  max-width: calc(100% - var(--bloco-pad-x) * 2);
+  margin: 0 var(--bloco-pad-x) var(--e2);
+  padding: 2px;
+  border-radius: var(--raio-botao);
+  background: var(--cor-cartao-2);
+}
+
+.barra > button {
+  min-height: 34px;
+  border-radius: var(--raio-item);
+}
+
+.rotulo {
+  padding-left: var(--e2);
+  color: var(--cor-texto-2);
+  font: var(--ui-apoio);
+}
+
+.par {
+  display: inline-flex;
+  align-items: center;
+}
+
+.par > button {
+  width: 34px;
+  min-height: 34px;
+  padding: 0;
+  background: none;
+  border-radius: var(--raio-item);
+}
+
+.par b {
+  min-width: 40px;
+  text-align: center;
+  font: var(--ui-item);
+  font-variant-numeric: tabular-nums;
+}
+
+[data-entrada='toque'] .barra > button,
+[data-entrada='toque'] .par > button {
+  min-height: var(--alvo);
+}
+
+[data-entrada='toque'] .par > button {
+  width: var(--alvo);
+}

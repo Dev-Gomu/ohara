@@ -129,6 +129,11 @@ function LessonDesk({ data, lessonId }: { data: StudyData; lessonId: string }) {
     actions: withBarActions({
       ...mosaic.actions,
       ...editorActions(editor, page),
+      // Na tabela, Alt R é o modo Ajustar; fora dela, o redimensionar do mosaico.
+      resizeMode: (change) =>
+        editorActions(editor, page).resizeMode?.(change) === false
+          ? mosaic.actions.resizeMode?.(change)
+          : true,
       saveCards: () => {
         if (!inCards()) return false;
         cardsEditor.save();

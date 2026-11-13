@@ -236,3 +236,59 @@
 .texto .selectedCell {
   background: color-mix(in srgb, var(--cor-cursor) 18%, transparent);
 }
+
+/* Células com o cursor no modo Ajustar (D149): a coluna e a linha que vão mudar. */
+.texto td,
+.texto th {
+  position: relative;
+}
+
+.texto table:has(col[style^='width']) {
+  width: auto;
+}
+
+.texto :global(.adj-tabela) {
+  touch-action: none;
+  user-select: none;
+}
+
+.texto :global(.adj-lin) {
+  background: var(--sup-peca);
+}
+
+.texto :global(.adj-col)::after,
+.texto :global(.adj-lin)::before {
+  content: '';
+  position: absolute;
+  background: var(--cor-cursor);
+  transition:
+    width var(--tempo-borda),
+    height var(--tempo-borda),
+    right var(--tempo-borda),
+    bottom var(--tempo-borda);
+}
+
+.texto :global(.adj-col)::after {
+  top: 0;
+  right: -1px;
+  bottom: 0;
+  width: 2px;
+}
+
+.texto :global(.adj-lin)::before {
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: 2px;
+}
+
+/* Sem alça: a linha engrossa de 2 para 4 px com o mouse perto e durante o arrasto. */
+.texto[data-perto='width'] :global(.adj-col)::after {
+  right: -2px;
+  width: 4px;
+}
+
+.texto[data-perto='height'] :global(.adj-lin)::before {
+  bottom: -2px;
+  height: 4px;
+}

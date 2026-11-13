@@ -18,6 +18,9 @@ export type KeyAction =
   | { type: 'maximizeBlock' }
   | { type: 'closeBlock' }
   | { type: 'resizeMode' }
+  // Modo Ajustar da tabela (D149): delta em pixels, já com o passo pequeno ou grande.
+  | { type: 'tableAdjust'; axis: 'width' | 'height'; delta: number }
+  | { type: 'tableAdjustEnd' }
   | { type: 'swapHiddenBlock' }
   | { type: 'openOptions' }
   | { type: 'goToTopBar' }

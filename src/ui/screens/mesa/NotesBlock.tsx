@@ -11,6 +11,7 @@ import { Window } from '../../components/Window';
 import { dispatch } from '../../keyboard/store';
 import { useStudy } from '../../study/study';
 import { notesBar, notesStyles } from './notesTools';
+import { TableBar } from './TableBar';
 import styles from './Mesa.module.css';
 
 interface Tool {
@@ -179,6 +180,7 @@ export function NotesBlock({ id, editor }: { id: string; editor: Editor | null }
         onOptions={() => dispatch({ type: 'openOptions' })}
       />
       <EditorContent editor={editor} className={styles.editor} />
+      <TableBar editor={editor} keep={id} />
       {bubble &&
         createPortal(
           <Tools

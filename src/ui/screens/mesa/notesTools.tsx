@@ -38,6 +38,20 @@ function askLink(e: Editor): void {
   });
 }
 
+// Dentro da tabela o botão Tabela leva o cursor para o parágrafo depois dela (cria um se não houver):
+// nada se perde e o texto continua de onde a tabela termina (D154).
+function leaveTable(e: Editor): void {
+  const { $from } = e.state.selection;
+  for (let depth = $from.depth; depth > 0; depth--) {
+    if ($from.node(depth).type.name !== 'table') continue;
+    const after = $from.after(depth);
+    const next = e.state.doc.nodeAt(after);
+    if (next?.isTextblock) chain(e).setTextSelection(after + 1).run();
+    else chain(e).insertContentAt(after, { type: 'paragraph' }).setTextSelection(after + 1).run();
+    return;
+  }
+}
+
 const BAR: readonly Spec[] = [
   { id: 'titulo', label: 'Título', active: (e) => e.isActive('heading'), run: cycleHeading },
   { id: 'negrito', label: 'Negrito', active: (e) => e.isActive('bold'), run: (e) => void chain(e).toggleBold().run() },
@@ -50,7 +64,8 @@ const BAR: readonly Spec[] = [
     label: 'Tabela',
     active: (e) => e.isActive('table'),
     run: (e) => {
-      if (!e.isActive('table')) chain(e).insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run();
+      if (e.isActive('table')) leaveTable(e);
+      else chain(e).insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run();
     },
   },
   {

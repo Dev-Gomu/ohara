@@ -1,5 +1,5 @@
 import type { Level, Resolved } from './actions';
-import { KEYS, type KeyRow, type Mods } from './keys';
+import { ADJUST_KEYS, KEYS, type KeyRow, type Mods } from './keys';
 
 export interface KeyInput {
   code: string;
@@ -18,6 +18,8 @@ export type Overlay = 'none' | 'window' | 'menu';
 export interface KeyContext {
   level: Level;
   overlay: Overlay;
+  // Modo Ajustar da tabela: setas, Enter e Esc passam a ser dele.
+  adjusting?: boolean;
 }
 
 function modsOf(input: KeyInput): string {
@@ -52,6 +54,12 @@ export function resolve(
 ): Resolved | null {
   if (isText(input)) return null;
   const mods = modsOf(input);
+  if (context.adjusting && context.overlay === 'none') {
+    const adjust = ADJUST_KEYS.find(
+      (key) => key.code === input.code && key.shift === input.shift && mods === (input.shift ? 's' : ''),
+    );
+    if (adjust) return input.repeat && adjust.action.type === 'tableAdjustEnd' ? { type: 'swallow' } : adjust.action;
+  }
   const rows = keys.filter((key) => key.code === input.code && key.mods === mods);
   if (context.overlay !== 'none') return resolveInOverlay(input, rows);
   const row = rows.find((key) => key.levels.includes(context.level));

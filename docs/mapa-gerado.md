@@ -193,9 +193,11 @@
 - src/core/keyboard/neighbor.test.ts: (sem comentário nem export no topo)
 - src/core/keyboard/neighbor.ts: Folga para vãos e arredondamento: tocar a borda ainda conta como estar daquele lado.
 - src/core/keyboard/resolve.test.ts: (sem comentário nem export no topo)
-- src/core/keyboard/resolve.ts: No ABNT2 o AltGr digita ¹ ² ³ e /, e pode chegar como Ctrl+Alt. Acentos e o teclado
+- src/core/keyboard/resolve.ts: Modo Ajustar da tabela: setas, Enter e Esc passam a ser dele.
 - src/core/mosaic/tree.test.ts: a e c à esquerda, um sobre o outro; b à direita
 - src/core/mosaic/tree.ts: `export interface Leaf`
+- src/core/notes/tableSize.test.ts: (sem comentário nem export no topo)
+- src/core/notes/tableSize.ts: Tamanho das células de uma tabela (D149). Largura é por coluna; altura é só mínima, por linha.
 - src/core/secret/codec.ts: RFC 4648: 32 letras, então um byte & 31 é uniforme, sem viés.
 - src/core/secret/vault.test.ts: Poucas iterações só nos testes, para não demorar; o padrão de verdade é conferido abaixo.
 - src/core/secret/vault.ts: D87: PBKDF2-SHA256 com 600 000 iterações. O valor fica gravado na vault para poder subir depois.
@@ -290,6 +292,7 @@
 - src/ui/keyboard/bars.ts: Barras de um bloco: a de cima é o cabeçalho (abas, ferramentas) e a de baixo é o rodapé
 - src/ui/keyboard/listener.ts: Painel flutuante de um campo (a bolha das Anotações): tocar nele mantém o cursor no texto.
 - src/ui/keyboard/store.ts: Devolver false deixa a tecla seguir o caminho normal.
+- src/ui/keyboard/tableAdjust.ts: Modo Ajustar da tabela (D149). Fora do React: o listener precisa saber na hora da tecla.
 - src/ui/keyboard/useBlocks.ts: Cada tela declara seus blocos. Sem deps: a contagem de itens muda com o filtro.
 - src/ui/mosaic/Mosaic.module.css: Ampliado cobre o mosaico sem desmontar os outros blocos: nada digitado se perde.
 - src/ui/mosaic/Mosaic.tsx: (sem comentário nem export no topo)
@@ -324,7 +327,11 @@
 - src/ui/screens/mesa/Mesa.tsx: (sem comentário nem export no topo)
 - src/ui/screens/mesa/NotesBlock.tsx: (sem comentário nem export no topo)
 - src/ui/screens/mesa/SlidesViewer.tsx: (sem comentário nem export no topo)
+- src/ui/screens/mesa/TableBar.module.css: Mini-barra da tabela (D149): fina, no pé do bloco, nunca cobre a tabela.
+- src/ui/screens/mesa/TableBar.tsx: Mini-barra (D149): só aparece com o cursor na tabela; no modo Ajustar vira uma linha única.
 - src/ui/screens/mesa/notesTools.tsx: Título é um botão só: 1º toque Título 1, 2º Título 2, 3º volta ao texto.
+- src/ui/screens/mesa/tableAdjustExtension.ts: Altura é só mínima (D149): a linha guarda `minHeight` e a mostra como `height` (na tabela, mínimo).
+- src/ui/screens/mesa/tableOps.ts: Onde está o cursor dentro de uma tabela (sem células mescladas: o app não as cria).
 - src/ui/screens/mesa/useNotesEditor.ts: `export function useNotesEditor(lessonId: string, html: string): Editor | null`
 - src/ui/screens/treino/Inicio.module.css: Tela inicial do Treino: uma coluna de blocos no centro; "Ajustar" abre a lista ao lado.
 - src/ui/screens/treino/TrainingChoice.tsx: `export function TrainingChoice({ onStart }: TrainingChoiceProps)`

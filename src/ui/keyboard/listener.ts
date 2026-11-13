@@ -2,6 +2,7 @@ import { overlayOf, type TouchTarget } from '../../core/keyboard/focus';
 import { resolve, type KeyInput } from '../../core/keyboard/resolve';
 import { disarmBar } from './bars';
 import { dispatch, getKeyboardState } from './store';
+import { isAdjusting } from './tableAdjust';
 
 function inputOf(event: KeyboardEvent): KeyInput {
   return {
@@ -19,7 +20,7 @@ function inputOf(event: KeyboardEvent): KeyInput {
 
 function onKeyDown(event: KeyboardEvent): void {
   const { focus } = getKeyboardState();
-  const context = { level: focus.level, overlay: overlayOf(focus) };
+  const context = { level: focus.level, overlay: overlayOf(focus), adjusting: isAdjusting() };
   const resolved = resolve(inputOf(event), context);
   if (!resolved) return;
   event.preventDefault();

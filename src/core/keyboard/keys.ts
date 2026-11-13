@@ -1,5 +1,6 @@
 import { SCREENS as SCREEN_IDS } from './actions';
 import type { BlockKind, Direction, KeyAction, Level, Screen } from './actions';
+import { SIZE_BIG_STEP, SIZE_STEP } from '../notes/tableSize';
 
 // a = Alt, c = Ctrl, s = Shift
 export type Mods = '' | 'a' | 'c' | 's' | 'as' | 'ca' | 'cs';
@@ -177,7 +178,7 @@ export const KEYS: readonly KeyRow[] = [
   ),
   row('Blocos', 'Alt M', 'KeyM', 'a', BLOCK_FIELD, { type: 'maximizeBlock' }, 'Amplia o bloco'),
   row('Blocos', 'Alt W', 'KeyW', 'a', BLOCK_FIELD, { type: 'closeBlock' }, 'Fecha o bloco'),
-  row('Blocos', 'Alt R', 'KeyR', 'a', BLOCK_FIELD, { type: 'resizeMode' }, 'Modo de redimensionar'),
+  row('Blocos', 'Alt R', 'KeyR', 'a', BLOCK_FIELD, { type: 'resizeMode' }, 'Modo de redimensionar; na tabela, modo Ajustar'),
   row(
     'Blocos',
     'Alt X',
@@ -334,4 +335,33 @@ export const KEYS: readonly KeyRow[] = [
   ),
   row('Editor', 'Ctrl Shift 9', 'Digit9', 'cs', FIELD, { type: 'taskList' }, 'Lista de tarefas'),
   row('Editor', 'Ctrl Enter', 'Enter', 'c', FIELD, { type: 'saveCards' }, 'Salvar cartões'),
+];
+
+// Só valem com o modo Ajustar da tabela ligado (D149); por isso ficam fora de KEYS.
+export interface AdjustRow {
+  label: string;
+  code: string;
+  shift: boolean;
+  action: KeyAction;
+}
+
+const ADJUST_ARROWS = [
+  ['←', 'ArrowLeft', 'width', -1],
+  ['→', 'ArrowRight', 'width', 1],
+  ['↑', 'ArrowUp', 'height', -1],
+  ['↓', 'ArrowDown', 'height', 1],
+] as const;
+
+export const ADJUST_KEYS: readonly AdjustRow[] = [
+  ...ADJUST_ARROWS.flatMap(([label, code, axis, sign]) => [
+    { label, code, shift: false, action: { type: 'tableAdjust', axis, delta: sign * SIZE_STEP } },
+    {
+      label: `Shift ${label}`,
+      code,
+      shift: true,
+      action: { type: 'tableAdjust', axis, delta: sign * SIZE_BIG_STEP },
+    },
+  ] as const),
+  { label: 'Enter', code: 'Enter', shift: false, action: { type: 'tableAdjustEnd' } },
+  { label: 'Esc', code: 'Escape', shift: false, action: { type: 'tableAdjustEnd' } },
 ];

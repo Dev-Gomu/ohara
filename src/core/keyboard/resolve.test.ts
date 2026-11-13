@@ -150,3 +150,24 @@ describe.each([
     expect(resolve(press('KeyA', { ctrl: true }), context)).toBeNull();
   });
 });
+
+describe('modo Ajustar da tabela (D149)', () => {
+  const press = (code: string, shift = false): KeyInput => ({
+    code, key: 'x', alt: false, ctrl: false, shift, meta: false, altGraph: false, isComposing: false, repeat: false,
+  });
+  const on = { level: 'field', overlay: 'none', adjusting: true } as const;
+
+  it('setas mudam o tamanho, com Shift o passo é grande', () => {
+    expect(resolve(press('ArrowRight'), on)).toEqual({ type: 'tableAdjust', axis: 'width', delta: 8 });
+    expect(resolve(press('ArrowUp', true), on)).toEqual({ type: 'tableAdjust', axis: 'height', delta: -24 });
+  });
+
+  it('Enter e Esc terminam', () => {
+    expect(resolve(press('Escape'), on)).toEqual({ type: 'tableAdjustEnd' });
+    expect(resolve(press('Enter'), on)).toEqual({ type: 'tableAdjustEnd' });
+  });
+
+  it('fora do modo as setas são do texto', () => {
+    expect(resolve(press('ArrowRight'), { level: 'field', overlay: 'none' })).toBeNull();
+  });
+});
