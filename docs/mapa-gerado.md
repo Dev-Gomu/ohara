@@ -95,11 +95,11 @@
 - L1 # Ohara: teclado
 - L8 ## Regras de uso
 - L19 ## Tabela final
-- L80 ## Decisões desta etapa
-- L86 ## Testado (PC, Linux, Chrome instalado como app)
-- L92 ## Testado no tablet (Galaxy Tab S7 FE, na horizontal)
-- L98 ## Checkpoint da Etapa 6 (07/11/2026)
-- L102 ## Pendências
+- L81 ## Decisões desta etapa
+- L87 ## Testado (PC, Linux, Chrome instalado como app)
+- L93 ## Testado no tablet (Galaxy Tab S7 FE, na horizontal)
+- L99 ## Checkpoint da Etapa 6 (07/11/2026)
+- L103 ## Pendências
 
 ### docs/telas.md
 - L1 # Ohara: telas
@@ -260,7 +260,8 @@
 - src/ui/components/Filter.module.css: (sem comentário nem export no topo)
 - src/ui/components/Filter.tsx: Filtro de uma escolha por matéria: marca na cor da matéria sempre à vista (serve de legenda);
 - src/ui/components/FormatBar.module.css: (sem comentário nem export no topo)
-- src/ui/components/FormatBar.tsx: Desenho do botão: ícone ou letras (H1, B).
+- src/ui/components/FormatBar.tsx: Nome do desenho em FormatIcons (quando falta, usa o id).
+- src/ui/components/FormatIcons.tsx: Conjunto próprio (D147): ícones da barra de formatação, do menu Aa e o caderno, desenhados juntos na grade 24.
 - src/ui/components/Grades.tsx: Peças de Notas aprovadas nos degraus 1 a 3 (D121 a D124). Só desenho: as contas vêm da tela.
 - src/ui/components/GradesCelulas.module.css: ---------- 1. Célula de nota ----------
 - src/ui/components/GradesDisciplina.module.css: ---------- Disciplina: seletor de bimestre + lista do bimestre em foco ----------
@@ -323,7 +324,7 @@
 - src/ui/screens/mesa/Mesa.tsx: (sem comentário nem export no topo)
 - src/ui/screens/mesa/NotesBlock.tsx: (sem comentário nem export no topo)
 - src/ui/screens/mesa/SlidesViewer.tsx: (sem comentário nem export no topo)
-- src/ui/screens/mesa/notesTools.tsx: (sem comentário nem export no topo)
+- src/ui/screens/mesa/notesTools.tsx: Título é um botão só: 1º toque Título 1, 2º Título 2, 3º volta ao texto.
 - src/ui/screens/mesa/useNotesEditor.ts: `export function useNotesEditor(lessonId: string, html: string): Editor | null`
 - src/ui/screens/treino/Inicio.module.css: Tela inicial do Treino: uma coluna de blocos no centro; "Ajustar" abre a lista ao lado.
 - src/ui/screens/treino/TrainingChoice.tsx: `export function TrainingChoice({ onStart }: TrainingChoiceProps)`

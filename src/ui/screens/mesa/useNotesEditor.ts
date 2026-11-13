@@ -1,4 +1,7 @@
 import Highlight from '@tiptap/extension-highlight';
+import Subscript from '@tiptap/extension-subscript';
+import Superscript from '@tiptap/extension-superscript';
+import { Table, TableCell, TableHeader, TableRow } from '@tiptap/extension-table';
 import TaskItem from '@tiptap/extension-task-item';
 import TaskList from '@tiptap/extension-task-list';
 import { useEffect } from 'react';
@@ -39,6 +42,12 @@ export function useNotesEditor(lessonId: string, html: string): Editor | null {
     extensions: [
       StarterKit.configure({ link: { openOnClick: false } }),
       Highlight,
+      Subscript,
+      Superscript,
+      Table,
+      TableRow,
+      TableHeader,
+      TableCell,
       TaskList,
       TaskItem.configure({ nested: true }),
     ],
@@ -80,6 +89,8 @@ export function editorActions(
     code: () => void run().toggleCode().run(),
     highlight: () => void run().toggleHighlight().run(),
     strikethrough: () => void run().toggleStrike().run(),
+    superscript: () => void run().toggleSuperscript().run(),
+    subscript: () => void run().toggleSubscript().run(),
     orderedList: () => void run().toggleOrderedList().run(),
     bulletList: () => void run().toggleBulletList().run(),
     taskList: () => void run().toggleTaskList().run(),

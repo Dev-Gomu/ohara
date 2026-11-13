@@ -42,6 +42,8 @@ export type KeyAction =
   | { type: 'markSlidePage' }
   | { type: 'highlight' }
   | { type: 'strikethrough' }
+  | { type: 'superscript' }
+  | { type: 'subscript' }
   | { type: 'heading'; level: 1 | 2 | 3 }
   | { type: 'orderedList' }
   | { type: 'bulletList' }

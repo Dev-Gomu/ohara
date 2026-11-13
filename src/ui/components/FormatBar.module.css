@@ -4,42 +4,46 @@
   flex: none;
   align-items: center;
   gap: var(--e2);
-  margin: var(--e2) var(--e2) 0;
-  padding: 2px;
-  border-radius: var(--raio-botao);
-  background: var(--cor-cartao-2);
+  height: 40px;
+  margin-top: var(--e2);
+  padding-inline: var(--e3);
+}
+
+.caderno {
+  display: inline-flex;
+  flex: none;
+  width: 18px;
+  height: 18px;
+  color: var(--cor-cursor);
+}
+
+.caderno svg {
+  width: 100%;
+  height: 100%;
 }
 
 .grupos {
   display: flex;
   flex: 1;
   align-items: center;
-  gap: var(--e2);
+  gap: 2px;
   min-width: 0;
 }
 
-.grupo,
 .fim {
   display: flex;
   flex: none;
-}
-
-.fim {
   margin-left: auto;
 }
 
 .botao {
-  display: inline-flex;
+  display: grid;
   flex: none;
-  align-items: center;
-  justify-content: center;
-  min-width: 36px;
-  height: 34px;
-  padding: 0 var(--e1);
+  place-items: center;
+  width: 36px;
+  height: 36px;
   border-radius: var(--raio-item);
   color: var(--cor-texto-2);
-  font: var(--ui-apoio);
-  font-weight: 700;
 }
 
 .botao svg {
@@ -52,8 +56,9 @@
   color: var(--cor-texto);
 }
 
-.botao[aria-pressed='true'] {
-  background: var(--cor-cartao);
+.botao[aria-pressed='true'],
+.botao[aria-expanded='true'] {
+  background: var(--cor-cartao-2);
   color: var(--cor-cursor);
 }
 
@@ -63,7 +68,7 @@
 }
 
 :global(:root[data-entrada='toque']) .botao {
-  min-width: var(--alvo);
+  width: var(--alvo);
   height: var(--alvo);
 }
 
@@ -75,26 +80,64 @@
 .menu {
   position: absolute;
   z-index: 5;
-  top: calc(100% + var(--e1));
-  left: 0;
-  display: flex;
-  flex-direction: column;
-  min-width: 208px;
+  top: calc(100% + 4px);
+  right: 0;
   padding: var(--e1);
   border-radius: var(--raio-botao);
   background: var(--cor-cartao-2);
   box-shadow: var(--sombra-flutuante);
 }
 
-.menu button {
-  min-height: 40px;
-  padding: 0 var(--e3);
-  border-radius: var(--raio-minimo);
+.menu .botao[aria-pressed='true'] {
+  background: var(--cor-cartao);
+}
+
+.fileira {
+  display: flex;
+  gap: 2px;
+  margin-bottom: var(--e2);
+}
+
+.fileira .botao {
+  width: 40px;
+  height: 40px;
+}
+
+.lista {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  width: 272px;
+}
+
+.linha {
+  display: flex;
+  align-items: center;
+  gap: var(--e2);
+  height: 40px;
+  padding: 0 var(--e2);
+  border-radius: var(--raio-item);
   color: var(--cor-texto);
   font: var(--ui-apoio);
   text-align: left;
 }
 
-.menu button:hover {
+.linha svg {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  color: var(--cor-texto-2);
+}
+
+.linha:hover {
   background: var(--sup-peca-viva);
+}
+
+.linha[aria-pressed='true'] {
+  background: var(--cor-cartao);
+  color: var(--cor-cursor);
+}
+
+.linha[aria-pressed='true'] svg {
+  color: inherit;
 }

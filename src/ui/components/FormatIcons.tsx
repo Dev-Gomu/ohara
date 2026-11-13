@@ -1,4 +1,4 @@
-// Conjunto próprio (Fable, 13/11, D147): todos os ícones da barra, do menu Aa e o caderno, desenhados juntos na grade 24.
+// Conjunto próprio (D147): ícones da barra de formatação, do menu Aa e o caderno, desenhados juntos na grade 24.
 // Regras do conjunto: tinta sempre entre 4 e 20 (margem de 4); letras com 12 de largura e 16 de altura;
 // figuras "cheias" (listas, tabela) com 16 de largura e 14 de altura, para pesarem igual às letras;
 // um só traço, pontas redondas; algarismos pequenos com 80% do traço para não empastarem.
@@ -8,8 +8,10 @@ const LINHAS = 'M10 6.5h9M10 12h9M10 17.5h9';
 const DOIS_ALTO = 'M16.2 6.3a1.8 1.8 0 0 1 3.4.8c0 1.4-3.4 2-3.4 3.9h3.6';
 const DOIS_BAIXO = 'M16.2 14.3a1.8 1.8 0 0 1 3.4.8c0 1.4-3.4 2-3.4 3.9h3.6';
 
-export function fable(traco: number): Record<string, ReactNode> {
-  const fino = traco * 0.8;
+const TRACO = 2;
+
+function paths(): Record<string, ReactNode> {
+  const fino = TRACO * 0.8;
   return {
     titulo: <path d="M7 5v14M17 5v14M7 12h10" />,
     negrito: <path d="M7.5 5h6a3.5 3.5 0 0 1 0 7h-6zM7.5 12h7a3.5 3.5 0 0 1 0 7h-7z" />,
@@ -97,4 +99,24 @@ export function fable(traco: number): Record<string, ReactNode> {
       </>
     ),
   };
+}
+
+const PATHS = paths();
+
+export type FormatIconName = keyof typeof PATHS;
+
+export function FormatIcon({ name }: { name: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={TRACO}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      {PATHS[name]}
+    </svg>
+  );
 }

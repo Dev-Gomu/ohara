@@ -1,82 +1,91 @@
-import type { ReactNode } from 'react';
 import type { Editor } from '@tiptap/react';
 import type { FormatTool } from '../../components/FormatBar';
 import { ask } from '../../shell/PromptWindow';
 
-const Icon = ({ children }: { children: ReactNode }) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-    {children}
-  </svg>
-);
-
 interface Spec {
   id: string;
   label: string;
-  glyph: ReactNode;
-  name: string;
-  attrs?: Record<string, unknown>;
-  priority: FormatTool['priority'];
+  icon?: (e: Editor) => string;
+  active?: (e: Editor) => boolean;
   run: (e: Editor) => void;
 }
 
-const GROUPS: readonly (readonly Spec[])[] = [
-  [
-    { id: 'h1', label: 'Título 1', glyph: <b>H1</b>, name: 'heading', attrs: { level: 1 }, priority: 1, run: (e) => e.chain().focus().toggleHeading({ level: 1 }).run() },
-    { id: 'h2', label: 'Título 2', glyph: <b>H2</b>, name: 'heading', attrs: { level: 2 }, priority: 1, run: (e) => e.chain().focus().toggleHeading({ level: 2 }).run() },
-  ],
-  [
-    { id: 'negrito', label: 'Negrito', glyph: <b>B</b>, name: 'bold', priority: 1, run: (e) => e.chain().focus().toggleBold().run() },
-    { id: 'italico', label: 'Itálico', glyph: <i>I</i>, name: 'italic', priority: 2, run: (e) => e.chain().focus().toggleItalic().run() },
-    { id: 'sublinhado', label: 'Sublinhado', glyph: <u>U</u>, name: 'underline', priority: 2, run: (e) => e.chain().focus().toggleUnderline().run() },
-    {
-      id: 'marca', label: 'Marca-texto', name: 'highlight', priority: 1,
-      glyph: <Icon><path d="M13 4l5 5-7 7H6v-5zM4 21h16" /></Icon>,
-      run: (e) => e.chain().focus().toggleHighlight().run(),
+const chain = (e: Editor) => e.chain().focus();
+
+// Título é um botão só: 1º toque Título 1, 2º Título 2, 3º volta ao texto.
+function cycleHeading(e: Editor): void {
+  if (e.isActive('heading', { level: 1 })) chain(e).toggleHeading({ level: 2 }).run();
+  else if (e.isActive('heading', { level: 2 })) chain(e).setParagraph().run();
+  else chain(e).toggleHeading({ level: 1 }).run();
+}
+
+// Sobrescrito, depois subscrito, depois normal (D145: o mais usado vem primeiro).
+function cycleScript(e: Editor): void {
+  if (e.isActive('superscript')) chain(e).unsetSuperscript().setSubscript().run();
+  else if (e.isActive('subscript')) chain(e).unsetSubscript().run();
+  else chain(e).setSuperscript().run();
+}
+
+function askLink(e: Editor): void {
+  if (e.isActive('link')) return void chain(e).unsetLink().run();
+  ask({
+    title: 'Link',
+    action: 'Aplicar',
+    fields: [{ id: 'href', label: 'Endereço do link' }],
+    onSubmit: ({ href }) => {
+      if (href) chain(e).setLink({ href }).run();
     },
-  ],
-  [
-    {
-      id: 'topicos', label: 'Lista com tópicos', name: 'bulletList', priority: 3,
-      glyph: <Icon><path d="M10 6h10M10 12h10M10 18h10M4.5 6h.01M4.5 12h.01M4.5 18h.01" /></Icon>,
-      run: (e) => e.chain().focus().toggleBulletList().run(),
+  });
+}
+
+const BAR: readonly Spec[] = [
+  { id: 'titulo', label: 'Título', active: (e) => e.isActive('heading'), run: cycleHeading },
+  { id: 'negrito', label: 'Negrito', active: (e) => e.isActive('bold'), run: (e) => void chain(e).toggleBold().run() },
+  { id: 'italico', label: 'Itálico', active: (e) => e.isActive('italic'), run: (e) => void chain(e).toggleItalic().run() },
+  { id: 'marca', label: 'Marca-texto', active: (e) => e.isActive('highlight'), run: (e) => void chain(e).toggleHighlight().run() },
+  { id: 'topicos', label: 'Lista com tópicos', active: (e) => e.isActive('bulletList'), run: (e) => void chain(e).toggleBulletList().run() },
+  { id: 'numerada', label: 'Lista numerada', active: (e) => e.isActive('orderedList'), run: (e) => void chain(e).toggleOrderedList().run() },
+  {
+    id: 'tabela',
+    label: 'Tabela',
+    active: (e) => e.isActive('table'),
+    run: (e) => {
+      if (!e.isActive('table')) chain(e).insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run();
     },
-    {
-      id: 'numerada', label: 'Lista numerada', name: 'orderedList', priority: 3,
-      glyph: <Icon><path d="M11 6h9M11 12h9M11 18h9M4 5l1.5-1v5M4 14.5a1.3 1.3 0 012.4.6c0 1-2.4 1.4-2.4 2.9h2.6" /></Icon>,
-      run: (e) => e.chain().focus().toggleOrderedList().run(),
-    },
-    {
-      id: 'tarefas', label: 'Lista de tarefas', name: 'taskList', priority: 3,
-      glyph: <Icon><rect x="3.5" y="4" width="6" height="6" rx="1.5" /><path d="M4.8 15.5l1.7 1.7 2.8-3M13 7h7M13 17h7" /></Icon>,
-      run: (e) => e.chain().focus().toggleTaskList().run(),
-    },
-    {
-      id: 'link', label: 'Link', name: 'link', priority: 4,
-      glyph: <Icon><path d="M10 14a4 4 0 005.7 0l3-3a4 4 0 00-5.7-5.7l-1 1M14 10a4 4 0 00-5.7 0l-3 3a4 4 0 005.7 5.7l1-1" /></Icon>,
-      run: (e) => {
-        if (e.isActive('link')) return void e.chain().focus().unsetLink().run();
-        ask({
-          title: 'Link',
-          action: 'Aplicar',
-          fields: [{ id: 'href', label: 'Endereço do link' }],
-          onSubmit: ({ href }) => {
-            if (href) e.chain().focus().setLink({ href }).run();
-          },
-        });
-      },
-    },
-  ],
+  },
+  {
+    id: 'sobre',
+    label: 'Sobrescrito / subscrito',
+    icon: (e) => (e.isActive('subscript') ? 'sub' : 'sobre'),
+    active: (e) => e.isActive('superscript') || e.isActive('subscript'),
+    run: cycleScript,
+  },
+  { id: 'desfazer', label: 'Desfazer', run: (e) => void chain(e).undo().run() },
 ];
 
-export function notesGroups(editor: Editor | null): FormatTool[][] {
-  return GROUPS.map((group) =>
-    group.map((spec) => ({
-      id: spec.id,
-      label: spec.label,
-      glyph: spec.glyph,
-      priority: spec.priority,
-      sel: editor?.isActive(spec.name, spec.attrs) ?? false,
-      run: () => editor && spec.run(editor),
-    })),
-  );
+const STYLES: readonly Spec[] = [
+  { id: 'sublinhado', label: 'Sublinhado', active: (e) => e.isActive('underline'), run: (e) => void chain(e).toggleUnderline().run() },
+  { id: 'tachado', label: 'Tachado', active: (e) => e.isActive('strike'), run: (e) => void chain(e).toggleStrike().run() },
+  { id: 'link', label: 'Link', active: (e) => e.isActive('link'), run: askLink },
+  { id: 'tarefas', label: 'Tarefas', active: (e) => e.isActive('taskList'), run: (e) => void chain(e).toggleTaskList().run() },
+  { id: 'recuo1', label: 'Recuar mais', run: (e) => void (chain(e).sinkListItem('listItem').run() || chain(e).sinkListItem('taskItem').run()) },
+  { id: 'recuo2', label: 'Recuar menos', run: (e) => void (chain(e).liftListItem('listItem').run() || chain(e).liftListItem('taskItem').run()) },
+  { id: 'citacao', label: 'Citação', active: (e) => e.isActive('blockquote'), run: (e) => void chain(e).toggleBlockquote().run() },
+  { id: 'codigo', label: 'Código', active: (e) => e.isActive('code'), run: (e) => void chain(e).toggleCode().run() },
+  { id: 'linha', label: 'Divisória', run: (e) => void chain(e).setHorizontalRule().run() },
+  { id: 'limpar', label: 'Limpar', run: (e) => void chain(e).unsetAllMarks().clearNodes().run() },
+  { id: 'refazer', label: 'Refazer', run: (e) => void chain(e).redo().run() },
+];
+
+function toTools(specs: readonly Spec[], editor: Editor | null): FormatTool[] {
+  return specs.map((spec) => ({
+    id: spec.id,
+    label: spec.label,
+    ...(editor && spec.icon && { icon: spec.icon(editor) }),
+    sel: editor ? (spec.active?.(editor) ?? false) : false,
+    run: () => editor && spec.run(editor),
+  }));
 }
+
+export const notesBar = (editor: Editor | null) => toTools(BAR, editor);
+export const notesStyles = (editor: Editor | null) => toTools(STYLES, editor);

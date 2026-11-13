@@ -73,6 +73,7 @@ Esta é a tabela de atalhos que a Etapa 2 implementa. Cada linha vira um teste (
 | Ctrl B · Ctrl I · Ctrl U | Negrito, itálico, sublinhado |
 | Ctrl K · Ctrl E · Ctrl M | Link · código · marcar a página do slide |
 | Ctrl Shift H · Ctrl Shift X | Marca-texto · riscado |
+| Ctrl . · Ctrl , | Sobrescrito · subscrito (na barra, um botão só que alterna: sobrescrito, subscrito, normal) |
 | Ctrl Alt 1 · 2 · 3 | Título 1, 2, 3 |
 | Ctrl Shift 7 · 8 · 9 | Lista numerada, com marcadores, de tarefas |
 | Ctrl Enter | Salvar cartões |

@@ -10,7 +10,7 @@ import { FormatBar } from '../../components/FormatBar';
 import { Window } from '../../components/Window';
 import { dispatch } from '../../keyboard/store';
 import { useStudy } from '../../study/study';
-import { notesGroups } from './notesTools';
+import { notesBar, notesStyles } from './notesTools';
 import styles from './Mesa.module.css';
 
 interface Tool {
@@ -173,7 +173,8 @@ export function NotesBlock({ id, editor }: { id: string; editor: Editor | null }
     <Block id={id} label="Anotações">
       <FormatBar
         bar="top"
-        groups={notesGroups(editor)}
+        tools={notesBar(editor)}
+        styleTools={notesStyles(editor)}
         onExpand={() => dispatch({ type: 'maximizeBlock' })}
         onOptions={() => dispatch({ type: 'openOptions' })}
       />

@@ -206,3 +206,33 @@
   outline: 2px dashed var(--cor-escolhido);
   outline-offset: -6px;
 }
+
+/* Tabela (D149, V2): linha de 1 px em cima, sob o cabeçalho e embaixo; só cor de texto. */
+.texto table {
+  width: 100%;
+  margin: var(--e3) 0;
+  border-collapse: collapse;
+  border-block: 1px solid color-mix(in srgb, var(--cor-texto-2) 45%, transparent);
+  table-layout: fixed;
+}
+
+.texto th,
+.texto td {
+  padding: var(--e2) 12px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.texto th {
+  border-bottom: 1px solid color-mix(in srgb, var(--cor-texto-2) 45%, transparent);
+  font-weight: 700;
+}
+
+.texto th p,
+.texto td p {
+  margin: 0;
+}
+
+.texto .selectedCell {
+  background: color-mix(in srgb, var(--cor-cursor) 18%, transparent);
+}

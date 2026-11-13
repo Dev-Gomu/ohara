@@ -54,7 +54,6 @@ test('Mesa: Alt B vai à barra de formatação, Alt . anda e Enter aplica', asyn
   const bar = page.getByRole('toolbar', { name: 'Formatação' });
   await expect(bar.getByRole('button').first()).toBeFocused();
   await page.keyboard.press('Alt+Period');
-  await page.keyboard.press('Alt+Period');
   await expect(bar.getByRole('button', { name: 'Negrito' })).toBeFocused();
   await page.keyboard.press('Enter');
   await expect(editor.locator('strong')).toHaveText('texto');

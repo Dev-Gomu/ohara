@@ -21,6 +21,9 @@
   "dependencies": {
     "@sqlite.org/sqlite-wasm": "^3.54.1-build1",
     "@tiptap/extension-highlight": "^3.33.0",
+    "@tiptap/extension-subscript": "3.33.0",
+    "@tiptap/extension-superscript": "3.33.0",
+    "@tiptap/extension-table": "3.33.0",
     "@tiptap/extension-task-item": "^3.33.0",
     "@tiptap/extension-task-list": "^3.33.0",
     "@tiptap/pm": "^3.33.0",

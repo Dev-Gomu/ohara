@@ -309,6 +309,8 @@ export const KEYS: readonly KeyRow[] = [
   ),
   row('Editor', 'Ctrl Shift H', 'KeyH', 'cs', FIELD, { type: 'highlight' }, 'Marca-texto'),
   row('Editor', 'Ctrl Shift X', 'KeyX', 'cs', FIELD, { type: 'strikethrough' }, 'Riscado'),
+  row('Editor', 'Ctrl .', 'Period', 'c', FIELD, { type: 'superscript' }, 'Sobrescrito'),
+  row('Editor', 'Ctrl ,', 'Comma', 'c', FIELD, { type: 'subscript' }, 'Subscrito'),
   ...HEADINGS.map((level) =>
     row(
       'Editor',
