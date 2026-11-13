@@ -59,9 +59,9 @@
 
   /* Raios */
   --raio-bloco: 22px;
-  --raio-item: 14px;
-  --raio-botao: 14px;
-  --raio-campo: 16px;
+  --raio-item: 10px;
+  --raio-botao: 12px;
+  --raio-campo: 12px;
   --raio-minimo: 8px;
   --raio-pilula: 999px;
 

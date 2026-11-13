@@ -26,6 +26,16 @@ Lista curta do que foi **adiado ou ainda não decidido**. O que está no plano d
 | B06 | **Otimizador de parâmetros do FSRS no navegador** | Etapa 11, se for viável rodar sem servidor (ver D44) |
 | B07 | **Novos blocos de mosaico** (ex.: Lembretes ou Agenda como bloco da Mesa) | Depois do checkpoint da Etapa 6, se as janelas de consulta não bastarem |
 
+## Propostas visuais pedidas (13/11/2026, o usuário vai mandar o prompt; bancadas de até 3 versões, claro e escuro)
+
+- **Tela de Configs/ajustes:** hoje só texto puro.
+- **Janelas de cada mosaico** (opções ⋮, consulta, diálogos).
+- **Barra de formatação do editor de anotações:** os botões parecem infantis.
+- **Treino (revisão):** o cartão dentro do treino segue o visual do cartão novo (D138).
+- **Erros visuais da Agenda:** título do painel do dia ("Sexta, 13") sem margem, vazando a borda do bloco; na visão de mês, os itens passam do tamanho do quadradinho e vazam (precisa limitar, por exemplo "+N").
+- **Janela de atalhos (Alt /):** abre nos atalhos da tela atual, com navegação entre Todos, Só desta tela e Universais (os de toda tela, que não são todos os atalhos do app), tudo dividido por seção.
+- **Aplicação do cartão novo (D138, D139):** adiada, ver `estado.md`.
+
 ## Conceitos a esclarecer
 
 | ID | Item | Pergunta |
@@ -54,3 +64,6 @@ Lista curta do que foi **adiado ou ainda não decidido**. O que está no plano d
 - 2026-11-12: Botões "Registrar falta" e "Novo evento" no calendário do Hub.
 - 2026-11-13: Lista de cartões criados (aba "Salvos" da Mesa) virar uma lista de fato, não mais grade de cartões coloridos. Formato a definir em bancada, depois do editor de cartão novo.
 - 2026-11-12: Três botões fora das peças da vitrine (Atualizar, ErrorScreen, Criar): trocar por peças.
+- 2026-11-13: Estilo de cantos "Contido" (bloco 16) como opção nas Configs (D143). Última tarefa do app, depois de todas as outras.
+
+- Ajuda (Alt /): trocar de lista com ← → e Esc em dois passos pelo resolvedor central (hoje as abas só respondem a toque e Tab+Enter) (13/11).

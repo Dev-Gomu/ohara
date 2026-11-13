@@ -6,10 +6,11 @@ import { shortDate } from '../../../core/study/dates';
 import { isoDay } from '../../../core/study/dates';
 import { versionsOf } from '../../../core/study/versions';
 import { Block } from '../../components/Block';
+import { FormatBar } from '../../components/FormatBar';
 import { Window } from '../../components/Window';
 import { dispatch } from '../../keyboard/store';
-import { useNotesBar } from '../../study/notesBar';
 import { useStudy } from '../../study/study';
+import { notesGroups } from './notesTools';
 import styles from './Mesa.module.css';
 
 interface Tool {
@@ -77,14 +78,13 @@ function Tools({
   editor: Editor | null;
   className: string;
   style?: CSSProperties;
-  keepField?: string;
+  keepField: string;
 }) {
   return (
     <div
       className={className}
       style={style}
       data-keep-field={keepField}
-      data-bar={keepField === undefined ? 'bottom' : undefined}
       role="toolbar"
       aria-label="Formatação"
     >
@@ -107,12 +107,12 @@ function Tools({
   );
 }
 
-// Modo fantasma: sem barra, a bolha aparece sobre o trecho selecionado, mas só depois que a
-// seleção assenta (sem arraste em curso), e some ao rolar ou ao limpar a seleção.
-function useBubble(editor: Editor | null, active: boolean): Bubble | null {
+// No toque, a bolha aparece sobre o trecho selecionado, mas só depois que a seleção assenta
+// (sem arraste em curso), e some ao rolar ou ao limpar a seleção. Com teclado e mouse, nunca.
+function useBubble(editor: Editor | null): Bubble | null {
   const [bubble, setBubble] = useState<Bubble | null>(null);
   useEffect(() => {
-    if (!editor || !active) return;
+    if (!editor) return;
     let timer: ReturnType<typeof setTimeout> | undefined;
     let pressed = false;
     const hide = () => {
@@ -121,6 +121,7 @@ function useBubble(editor: Editor | null, active: boolean): Bubble | null {
     };
     const settle = () => {
       hide();
+      if (document.documentElement.dataset.entrada !== 'toque') return;
       if (!pressed) timer = setTimeout(() => setBubble(bubbleAt(editor)), SETTLE_MS);
     };
     // Tocar na própria bolha não é arrastar a seleção: mexer nela cancelaria o clique.
@@ -151,7 +152,7 @@ function useBubble(editor: Editor | null, active: boolean): Bubble | null {
       document.removeEventListener('scroll', hide, true);
       hide();
     };
-  }, [editor, active]);
+  }, [editor]);
   return bubble;
 }
 
@@ -167,12 +168,16 @@ function bubbleStyle(bubble: Bubble): CSSProperties {
 }
 
 export function NotesBlock({ id, editor }: { id: string; editor: Editor | null }) {
-  const barVisible = useNotesBar();
-  const bubble = useBubble(editor, !barVisible);
+  const bubble = useBubble(editor);
   return (
-    <Block id={id} title="Anotações" icon="notas" shortcut="Alt A" menu>
+    <Block id={id} label="Anotações">
+      <FormatBar
+        bar="top"
+        groups={notesGroups(editor)}
+        onExpand={() => dispatch({ type: 'maximizeBlock' })}
+        onOptions={() => dispatch({ type: 'openOptions' })}
+      />
       <EditorContent editor={editor} className={styles.editor} />
-      {barVisible && <Tools editor={editor} className={styles.ferramentas ?? ''} />}
       {bubble &&
         createPortal(
           <Tools
@@ -204,7 +209,7 @@ export function HistoryWindow({ lessonId, editor }: { lessonId: string; editor: 
   }
 
   return (
-    <Window id="historico" title="Histórico" testId="historico">
+    <Window id="historico" context="Anotações" title="Histórico" testId="historico">
       <Menu
         autoFocus="first"
         aria-label="Versões"

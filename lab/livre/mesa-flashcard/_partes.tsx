@@ -13,7 +13,7 @@ const pedido = new URLSearchParams(location.search);
 document.documentElement.dataset.corTitulos = pedido.get('cor') === 'on' ? 'on' : 'off';
 
 type Tipo = 'frente' | 'secao' | 'sub' | 'item' | 'numero' | 'seta' | 'pro' | 'con' | 'duvida' | 'texto';
-interface Linha {
+export interface Linha {
   tipo: Tipo;
   marca: string;
   texto: string;
@@ -32,7 +32,7 @@ const MARCAS: readonly [Tipo, RegExp][] = [
 ];
 const SIMBOLO: Partial<Record<Tipo, string>> = { item: '•', seta: '→', pro: '+', con: '−', duvida: '?' };
 
-function ler(cru: string): Linha {
+export function ler(cru: string): Linha {
   for (const [tipo, marca] of MARCAS) {
     const achou = marca.exec(cru);
     if (achou) return { tipo, marca: achou[0].trim(), texto: cru.slice(achou[0].length) };
@@ -74,7 +74,7 @@ interface Grupo {
 }
 
 // "##" abre um sub-bloco que guarda as linhas seguintes até o próximo "#" ou "##".
-function agrupar(linhas: Linha[]): Grupo[] {
+export function agrupar(linhas: Linha[]): Grupo[] {
   const grupos: Grupo[] = [];
   linhas.forEach((linha, i) => {
     if (linha.tipo === 'frente') return;
@@ -87,7 +87,7 @@ function agrupar(linhas: Linha[]): Grupo[] {
   return grupos;
 }
 
-const html = (s: string) =>
+export const html = (s: string) =>
   s
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')

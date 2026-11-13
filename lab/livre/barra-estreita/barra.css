@@ -1,0 +1,140 @@
+.be-pagina {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e5, 24px);
+  padding: var(--e3) 0;
+}
+.be-fila {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--e4);
+}
+.be-amostra h3 {
+  margin: 0 0 var(--e2);
+  color: var(--cor-texto-2);
+  font: var(--ui-rotulo);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.be-bloco {
+  position: relative;
+  max-width: 100%;
+  overflow: visible;
+}
+
+.be-cab {
+  position: relative;
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--e2);
+  height: 40px;
+  margin-top: var(--e2);
+  padding-inline: var(--e3);
+}
+.be-caderno {
+  display: inline-flex;
+  flex: none;
+  width: 18px;
+  height: 18px;
+  color: var(--cor-cursor);
+}
+.be-caderno svg {
+  width: 100%;
+  height: 100%;
+}
+.be-barra {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 2px;
+  min-width: 0;
+}
+
+.be-b {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--raio-item);
+  color: var(--cor-texto-2);
+}
+.be-b svg {
+  width: 20px;
+  height: 20px;
+}
+.be-b:hover {
+  background: var(--sup-peca-viva);
+  color: var(--cor-texto);
+}
+.be-b[aria-pressed='true'],
+.be-b[aria-expanded='true'] {
+  background: var(--cor-cartao-2);
+  color: var(--cor-cursor);
+}
+.be-opcoes {
+  width: 32px;
+  margin-left: auto;
+}
+
+.be-menu {
+  position: absolute;
+  z-index: 5;
+  top: calc(100% + 4px);
+  right: var(--e3);
+  padding: var(--e1);
+  border-radius: var(--raio-botao);
+  background: var(--cor-cartao-2);
+  box-shadow: var(--sombra-flutuante);
+}
+.be-menu .be-b[aria-pressed='true'] {
+  background: var(--cor-cartao);
+}
+.be-bandeja,
+.be-fileira {
+  display: flex;
+  gap: 2px;
+}
+.be-bandeja .be-b,
+.be-fileira .be-b {
+  width: 40px;
+  height: 40px;
+}
+.be-vao {
+  height: var(--e2);
+}
+.be-lista {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  width: 272px;
+}
+.be-linha {
+  display: flex;
+  align-items: center;
+  gap: var(--e2);
+  height: 40px;
+  padding: 0 var(--e2);
+  border-radius: var(--raio-item);
+  color: var(--cor-texto);
+  font: var(--ui-apoio);
+  text-align: left;
+}
+.be-linha svg {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  color: var(--cor-texto-2);
+}
+.be-linha:hover {
+  background: var(--sup-peca-viva);
+}
+.be-linha[aria-pressed='true'] {
+  background: var(--cor-cartao);
+  color: var(--cor-cursor);
+}
+.be-linha[aria-pressed='true'] svg {
+  color: inherit;
+}

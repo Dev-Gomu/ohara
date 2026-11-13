@@ -1,0 +1,100 @@
+.faixa {
+  position: relative;
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--e2);
+  margin: var(--e2) var(--e2) 0;
+  padding: 2px;
+  border-radius: var(--raio-botao);
+  background: var(--cor-cartao-2);
+}
+
+.grupos {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: var(--e2);
+  min-width: 0;
+}
+
+.grupo,
+.fim {
+  display: flex;
+  flex: none;
+}
+
+.fim {
+  margin-left: auto;
+}
+
+.botao {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 34px;
+  padding: 0 var(--e1);
+  border-radius: var(--raio-item);
+  color: var(--cor-texto-2);
+  font: var(--ui-apoio);
+  font-weight: 700;
+}
+
+.botao svg {
+  width: 20px;
+  height: 20px;
+}
+
+.botao:hover {
+  background: var(--sup-peca-viva);
+  color: var(--cor-texto);
+}
+
+.botao[aria-pressed='true'] {
+  background: var(--cor-cartao);
+  color: var(--cor-cursor);
+}
+
+.botao:focus-visible {
+  outline: 2px solid var(--cor-contorno-foco);
+  outline-offset: -2px;
+}
+
+:global(:root[data-entrada='toque']) .botao {
+  min-width: var(--alvo);
+  height: var(--alvo);
+}
+
+.mais {
+  position: relative;
+  display: flex;
+}
+
+.menu {
+  position: absolute;
+  z-index: 5;
+  top: calc(100% + var(--e1));
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  min-width: 208px;
+  padding: var(--e1);
+  border-radius: var(--raio-botao);
+  background: var(--cor-cartao-2);
+  box-shadow: var(--sombra-flutuante);
+}
+
+.menu button {
+  min-height: 40px;
+  padding: 0 var(--e3);
+  border-radius: var(--raio-minimo);
+  color: var(--cor-texto);
+  font: var(--ui-apoio);
+  text-align: left;
+}
+
+.menu button:hover {
+  background: var(--sup-peca-viva);
+}

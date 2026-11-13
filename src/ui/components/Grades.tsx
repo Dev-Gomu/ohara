@@ -3,9 +3,11 @@ import type { ReactNode } from 'react';
 import { formatGrade } from '../../core/grades/grades';
 import { StatePill, SubjectPill } from './Pill';
 import { NavItem } from './NavItem';
-import styles from './Grades.module.css';
+import celulas from './GradesCelulas.module.css';
+import disciplina from './GradesDisciplina.module.css';
+import linhas from './GradesLinhas.module.css';
 
-const s = styles as Record<string, string>;
+const s = { ...celulas, ...linhas, ...disciplina } as Record<string, string>;
 export const cx = (names: string): string =>
   names
     .split(' ')

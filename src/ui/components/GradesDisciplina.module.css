@@ -1,0 +1,160 @@
+/* ---------- Disciplina: seletor de bimestre + lista do bimestre em foco ---------- */
+.nt-m1 {
+  display: grid;
+  grid-template:
+    'faixas faixas' auto
+    'lista lado' minmax(0, 1fr)
+    / minmax(0, 1fr) 320px;
+  gap: var(--vao-mosaico);
+  min-height: 0;
+}
+
+.nt-m1 > :nth-child(1) { grid-area: faixas; }
+.nt-m1 > :nth-child(2) { grid-area: lista; }
+.nt-m1 > :nth-child(3) { grid-area: lado; }
+
+.nt-m2 {
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr) 320px;
+  gap: var(--vao-mosaico);
+  min-height: 0;
+}
+
+.nt-faixas {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--e3);
+  padding: 0 var(--bloco-pad-x) var(--bloco-pad-y);
+}
+
+.nt-sem {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e1);
+}
+
+.nt-sem-nome {
+  color: var(--cor-texto-2);
+  font: var(--ui-apoio);
+}
+
+.nt-sem-fichas {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--e1);
+}
+
+.nt-total {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--e3);
+  border-radius: var(--raio-item);
+  background: var(--sup-peca);
+}
+
+.nt-total > b {
+  font: var(--voz-pergunta);
+  font-variant-numeric: tabular-nums;
+}
+
+.nt-ficha {
+  display: flex;
+  text-align: left;
+  flex-direction: column;
+  gap: var(--e1);
+  padding: var(--e3);
+  border-radius: var(--raio-item);
+  background: var(--sup-peca);
+}
+
+.nt-ficha[data-sel='true'] {
+  background: var(--cor-escolhido);
+}
+
+.nt-ficha[data-cursor] {
+  outline: 2px solid var(--cor-cursor);
+}
+
+.nt-pilha {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e2);
+  padding: 0 var(--bloco-pad-x) var(--bloco-pad-y);
+  overflow: auto;
+}
+
+.nt-lista {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 0 var(--bloco-pad-x) var(--bloco-pad-y);
+  overflow: auto;
+}
+
+@media (max-width: 900px) {
+  .nt-m1 {
+    grid-template:
+      'faixas' auto
+      'lista' minmax(0, 1fr)
+      'lado' auto
+      / minmax(0, 1fr);
+  }
+  .nt-m2 {
+    grid-template-columns: 150px minmax(0, 1fr);
+  }
+  .nt-m2 > :nth-child(3) {
+    grid-column: 1 / -1;
+  }
+}
+
+.nt-ficha .nc-cartao-topo {
+  flex-wrap: wrap;
+  padding: 0;
+}
+
+.nt-ficha .nc-cartao-topo > b {
+  white-space: nowrap;
+}
+
+.nt-ficha .nc-cartao-num {
+  flex-wrap: wrap;
+  padding: 0;
+}
+.nb-regua {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: var(--e2) var(--e3);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+/* Régua de matérias */
+.nb-regua {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: var(--e2) var(--e3);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.nb-regua > button {
+  flex: none;
+  height: var(--alvo);
+  padding: 0 var(--e4);
+  font-variant-numeric: tabular-nums;
+  white-space: pre;
+}
+
+.nb-busca {
+  flex: none;
+  width: 220px;
+  margin-left: auto;
+}
+
+.nb-apoio {
+  color: var(--cor-texto-2);
+  font: var(--ui-apoio);
+}

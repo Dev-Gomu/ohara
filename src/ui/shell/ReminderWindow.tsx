@@ -18,7 +18,7 @@ export function ReminderWindow() {
   }
 
   return (
-    <Window id="reminder" title="Lembrete rápido" testId="lembrete">
+    <Window id="reminder" context="Lembretes" title="Lembrete rápido" testId="lembrete">
       <form onSubmit={save}>
         <input
           className={styles.busca}

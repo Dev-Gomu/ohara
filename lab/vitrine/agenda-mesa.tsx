@@ -3,6 +3,7 @@ import { ModeIndicator } from '../../src/ui/components/Island';
 import { FilterChip, FilterGrid } from '../../src/ui/components/Filter';
 import { DayPill, SubjectMark } from '../../src/ui/components/Pill';
 import { DayItem } from '../../src/ui/components/DayItem';
+import { FormatBar, type FormatTool } from '../../src/ui/components/FormatBar';
 import { FaultCell } from '../../src/ui/components/FaultCell';
 import { BlockTab, BlockTabs, BlockToggle, ToggleGroup } from '../../src/ui/components/Toggles';
 import { Amostra, Ficha, Linha, Secao } from './moldura';
@@ -16,6 +17,14 @@ const MATERIAS = [
 ] as const;
 
 const nada = () => undefined;
+const ferr = (id: string, label: string, glyph: string, priority: FormatTool['priority'], sel = false): FormatTool => ({
+  id, label, glyph, priority, sel, run: nada,
+});
+const FORMATOS = [
+  [ferr('h1', 'Título 1', 'H1', 1), ferr('h2', 'Título 2', 'H2', 1)],
+  [ferr('b', 'Negrito', 'B', 1, true), ferr('i', 'Itálico', 'I', 2), ferr('u', 'Sublinhado', 'U', 2)],
+  [ferr('l', 'Lista', '•', 3), ferr('k', 'Link', '↗', 4)],
+];
 
 export function AgendaMesa() {
   return (
@@ -116,6 +125,16 @@ export function AgendaMesa() {
         </Amostra>
         <Amostra estado="sem aula">
           <FaultCell code="PRO" missed={null} limit={null} attention={false} />
+        </Amostra>
+      </Ficha>
+      <Ficha
+        nome="Faixa de formatação"
+        arquivo="FormatBar"
+        largura={8}
+        uso="Faixa aninhada no topo do bloco Anotações: formatação à esquerda, ampliar e ⋮ à direita. No bloco estreito o que não cabe vai para o menu ☰."
+      >
+        <Amostra estado="bloco largo, Negrito ligado">
+          <FormatBar groups={FORMATOS} onExpand={nada} onOptions={nada} />
         </Amostra>
       </Ficha>
       <Ficha

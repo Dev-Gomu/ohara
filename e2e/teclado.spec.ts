@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
-import { KEYS } from '../src/core/keyboard/keys';
+import { helpLines } from '../src/core/keyboard/keyTools';
 
 const nivel = (page: Page) => page.getByTestId('nivel');
 const bloco = (page: Page) => page.getByTestId('bloco');
@@ -135,7 +135,8 @@ test('Alt R redimensiona com as setas até Esc', async ({ page }) => {
 test('Alt / abre a ajuda com toda a tabela, e Esc fecha sem mudar o nível', async ({ page }) => {
   await pressAltSlash(page);
   await expect(ajuda(page)).toBeVisible();
-  await expect(page.getByTestId('atalho')).toHaveCount(KEYS.length);
+  await page.getByRole('button', { name: /^Todos/ }).click();
+  await expect(page.getByTestId('atalho')).toHaveCount(helpLines().length);
   await page.keyboard.press('Escape');
   await expect(ajuda(page)).toBeHidden();
   await expect(nivel(page)).toHaveText('campo');

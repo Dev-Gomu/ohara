@@ -29,11 +29,51 @@
   background: var(--cor-escolhido);
 }
 
+.grupo {
+  margin: 0;
+  padding: var(--e4) var(--e3) var(--e1);
+  color: var(--cor-texto-2);
+  font: var(--ui-rotulo);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.grupo:first-child {
+  padding-top: var(--e2);
+}
+
+.texto {
+  display: flex;
+  flex: 1 1 200px;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.valor {
+  flex: 0 1 auto;
+  min-width: 0;
+  padding: 4px var(--e3);
+  border-radius: var(--raio-pilula);
+  background: var(--sup-peca);
+  font: var(--ui-apoio);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+.aviso {
+  color: var(--cor-atencao);
+  font: var(--ui-apoio);
+  font-weight: 700;
+}
+
 .linha {
   display: flex;
   flex: none;
-  flex-direction: column;
-  justify-content: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--e2) var(--e4);
   min-height: 64px;
   padding: 6px var(--e3);
   border-radius: var(--raio-item);

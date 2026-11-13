@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import type { Level } from './actions';
 import { KEYS, type KeyRow } from './keys';
-import { findConflicts, helpSections } from './keyTools';
+import { findConflicts, groupLines, helpLines, helpSections, linesOf } from './keyTools';
 import { resolve, type KeyInput } from './resolve';
 
 const LEVELS: readonly Level[] = ['menu', 'block', 'field', 'nav'];
@@ -95,5 +95,29 @@ describe('ajuda', () => {
       'Treino',
       'Editor',
     ]);
+  });
+});
+
+describe('listas da ajuda', () => {
+  const total = helpLines().length;
+
+  it('juntam teclas iguais, sem perder nenhuma', () => {
+    const labels = helpLines().flatMap((line) => line.labels);
+    expect(total).toBeLessThan(KEYS.length);
+    expect(labels).toContain('Alt H J K L');
+  });
+
+  it('Todos tem tudo; Universais e Só desta tela se completam', () => {
+    for (const screen of ['hub', 'mesa', 'treino', 'agenda'] as const) {
+      expect(linesOf('all', screen)).toHaveLength(total);
+      const sum = linesOf('universal', screen).length + linesOf('screen', screen).length;
+      expect(sum).toBeLessThanOrEqual(total);
+    }
+  });
+
+  it('Treino só aparece no Treino; Agenda e Configs não têm atalho só deles', () => {
+    expect(groupLines(linesOf('screen', 'treino')).map((s) => s.group)).toEqual(['Treino']);
+    expect(linesOf('screen', 'agenda')).toHaveLength(0);
+    expect(linesOf('screen', 'configs')).toHaveLength(0);
   });
 });

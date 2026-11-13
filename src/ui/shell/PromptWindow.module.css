@@ -34,7 +34,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
   min-height: 48px;
   border-radius: var(--raio-botao);
   background: var(--cor-acao);
@@ -42,9 +41,14 @@
   font: var(--ui-botao);
 }
 
-.tecla {
-  font: var(--ui-tecla);
-  opacity: 0.75;
+.cancelar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  border-radius: var(--raio-botao);
+  background: var(--sup-peca);
+  font: var(--ui-botao);
 }
 
 .area {

@@ -13,6 +13,7 @@
     "format": "prettier --write .",
     "check": "npm run typecheck && npm run lint && npm run test",
     "e2e": "npm run build && playwright test",
+    "pecas": "node scripts/pecas.mjs",
     "tela": "node scripts/tela.mjs",
     "salvar": "bash scripts/salvar.sh",
     "e2e:curto": "npm run build --silent >/dev/null && playwright test --reporter=dot"

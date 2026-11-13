@@ -54,10 +54,20 @@ Bancada única com Ardósia padrão, A e B lado a lado, dois temas, foco testado
 Resolver o teste "Agenda: prova nova aparece no Hub" (descobrir se é defeito do app ou do teste; o CI roda o e2e antes do deploy). O usuário cumpre `roteiro-5min-publicacao.md`. Juntar `telas-3-a-9` ao `main` e publicar **só com pedido explícito do usuário**.
 **Pronta quando:** todos os testes passam; o site no ar mostra a versão nova.
 
-## Sessão R: refinos das telas (Sonnet, antes da 5)
+## Sessão R: refinos das telas (uma etapa por tela, antes da 5)
 
-Decidido em 12/11/2026: ainda há ajustes e refinos a fazer nas telas, e isso vem **antes** da Etapa 11 e da sincronização. O usuário lista as telas e os ajustes; uma tela por sessão, só com peças da vitrine, dois temas desde a primeira versão. Faça Acervo e Configs primeiro. **Treino fica para depois da Etapa 11** (a tela ganha a lógica FSRS e refinar antes seria retrabalho). Junto: dividir `Grades.module.css`.
-**Pronta quando:** cada tela listada foi aplicada, recusada ou adiada; `check` passa; publicado só com pedido do usuário.
+Decidido em 12/11/2026: reformular cada tela restante com a linguagem visual nova (Ardósia refinada, três paletas), **antes** da Etapa 11. Hub, Agenda, Faltas e Notas já estão refinados (D121 a D129). Cada etapa: bancada com até 3 versões (`lab/livre`), usuário escolhe, depois aplica só com peças da vitrine, dois temas desde o início. Bancada e aplicação em sessões separadas. Treino fica para depois da Etapa 11.
+
+| Etapa | Tela | Bancada (modelo) | Aplicação (modelo) |
+|---|---|---|---|
+| R1 | Acervo (início e matéria aberta) | Fable | Sonnet |
+| R2 | Configs (seções e detalhe) | Sonnet | Sonnet |
+| R3 | Mesa (4 blocos; a mais complexa) | Fable | Opus |
+| R4 | Janelas de consulta (Paleta, Lembretes, Calendário) | Sonnet | Sonnet |
+| R5 | Treino (só depois da Etapa 11) | Fable | Sonnet |
+
+Junto da R1: dividir `Grades.module.css` (feito em 12/11).
+**Pronta quando:** cada tela foi aplicada, recusada ou adiada; `check` passa; publicado só com pedido do usuário.
 
 ## Sessão 5: Etapa 11, Treino com FSRS (Opus)
 

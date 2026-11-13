@@ -60,7 +60,12 @@ function columnsFor(data: StudyData, view: number, anchor: string, subjectId: st
   return weekColumns(data, mondayWeekOf(anchor), subjectId);
 }
 
+const MONTH_MAX = 3;
+
 function DayCell({ column }: { column: AgendaColumn }) {
+  const items = column.items.slice(1);
+  const shown = items.length > MONTH_MAX ? items.slice(0, MONTH_MAX - 1) : items;
+  const rest = items.length - shown.length;
   return (
     <>
       <DayPill
@@ -69,7 +74,7 @@ function DayCell({ column }: { column: AgendaColumn }) {
         today={column.day === today}
       />
       <span className={styles.eventos}>
-        {column.items.slice(1).map((item) => (
+        {shown.map((item) => (
           <SubjectMark
             key={item.id}
             code={item.subject?.code ?? item.title}
@@ -78,6 +83,7 @@ function DayCell({ column }: { column: AgendaColumn }) {
             {item.kind === 'prova' ? `Prova ${item.start}` : item.start}
           </SubjectMark>
         ))}
+        {rest > 0 && <span className={styles.mais}>+{rest} {rest === 1 ? 'item' : 'itens'}</span>}
       </span>
     </>
   );

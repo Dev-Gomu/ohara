@@ -116,26 +116,14 @@
   font: var(--ui-apoio);
 }
 
-.rodape {
-  display: flex;
-  align-items: center;
-  gap: var(--e3);
-  padding: var(--e2) var(--e3) var(--e3);
-}
-
-.dica {
-  flex: 1;
-  min-width: 0;
-  overflow: hidden;
-  color: var(--cor-texto-2);
-  font: var(--ui-apoio);
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
 /* Segura o foco do editor ao tocar em Salvar. */
 .salvar {
   display: contents;
+}
+
+.salvou {
+  color: var(--cor-texto-2);
+  font: var(--ui-apoio);
 }
 
 .vazio {

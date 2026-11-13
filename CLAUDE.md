@@ -17,6 +17,7 @@ Estudante de medicina, **não programa**, é o Product Owner. Responda em **port
 - `npm run check`: tipos (`tsc --noEmit`), lint e testes. **Portão único**, igual no CI e no hook.
 - `npm run e2e`: build e roteiros do Playwright. Fora do `check`, roda no CI antes do deploy (D66).
 - `npm run dev`: servidor local (http://localhost:5173/ohara/). `npm run build`: build de produção.
+- Lab livre (ideias novas): http://localhost:5173/ohara/lab/livre.html?ideia=<pasta>, versões em `lab/livre/<ideia>/v1..v3.tsx` (TSX, máx. 3), dados de mentira em `lab/_dados.ts`, fora do lint (D133). Aprovada vira peça em `src/ui/components` e entra na vitrine; ao decidir, a pasta sai.
 - Sala de protótipos: `npm run dev` e abrir http://localhost:5173/ohara/lab/. Um HTML por experimento em `lab/`, usando os CSS reais do app; fora do build e do `check`. Teste visual antes de mexer em `src/`: veja `lab/_sala.js` (barra de tema, paleta, largura) e copie `lab/provas-dias.html`.
 - Prefixo de tudo que fica no navegador: **`ohara2-`** (`src/core/appInfo.ts`). Base do site: `/ohara/`. Node: `.nvmrc`.
 - O hook e o `npm run salvar` já rodam o `check`: não o rode à mão a cada passo. Saída curta: não cole logs longos.
@@ -28,6 +29,7 @@ Estudante de medicina, **não programa**, é o Product Owner. Responda em **port
 - **Testes:** `npm run check` ao fim de cada mudança; `npm run e2e:curto` só ao fim da etapa (a falha "Agenda: prova nova aparece no Hub" já existe e não é sua).
 - **Commit:** `npm run salvar -- "mensagem" "Co-Authored-By: ..."` roda o check e commita só as pastas do app. Só quando o usuário pedir.
 - **Edição:** prefira Edit em arquivo já lido. Script Python de substituição só com `assert` em cada troca (falha silenciosa custou retrabalho).
+- **Fechamento (D135):** ao fim da sessão atualize só `docs/estado.md` (e `decisoes.md` se houver decisão). Plano, índice e backlog só quando mudarem de fato.
 - **Sessão curta:** uma etapa por sessão; ao fechar uma, sugira `/clear`. Não releia docs que já estão no contexto.
 
 ## Camadas (o lint falha o CI se violadas)
@@ -59,6 +61,7 @@ Versões marcadas `A VERIFICAR` em `decisoes.md`: confirme antes de fixar e regi
 - Notas do boletim são **cifradas** antes de gravar e sincronizar. Não confunda com **Anotações** (texto das aulas).
 
 ## Visual: use a vitrine (obrigatório)
+- Para saber o que uma peça, a store ou `ui/study` aceitam (props, ações), leia `docs/pecas.md`, não o código. Regere com `npm run pecas` ao criar ou mudar peça (D134).
 - Antes de montar ou mudar qualquer tela, abra `lab/vitrine.html` (`npm run tela -- "lab/vitrine.html"`) e monte **só com as peças de `src/ui/components`**. Não redesenhe peça dentro da tela. Peça nova só em bancada, com aceite do usuário.
 - Cor só por papel (`--cor-*`) e raio só por token (`--raio-*`). `npm run lint` roda `scripts/lint-visual.mjs` e falha com cor, raio ou tamanho de letra solto em CSS fora de `src/ui/styles/`. Exceção rara: comentário `lint-visual-ok: motivo` na linha.
 
@@ -91,13 +94,10 @@ O mesmo domínio do GitHub Pages já hospeda o app antigo. Use **nomes de banco 
 - Não use `localStorage` para dados que importam (use o banco).
 - Não publique nem faça `git push --force` sem pedido do usuário.
 
-## Pendências abertas (ver `decisoes.md` e `estado.md`)
-Argon2 ou PBKDF2 (Etapa 12), conta Dropbox (só se o teste favorecer), formato do hook de parada. Paleta e componente da Paleta já decididos (D13, D130, D131).
-
 ## Disciplina de sessão
 - Feche a sessão ao passar de ~35% do contexto; não troque de modelo no meio.
 - Bancada e aplicação no app ficam em sessões separadas.
 - Toda iniciativa termina como **aplicada, recusada ou adiada** (nada fica "em estudo").
 
-## Referência rápida do legado (acréscimo de 05/11/2026)
-Há um kit de consulta barato em `referencia-legado/` (fora deste repositório, em `../Dev_Ohara/referencia-legado/`). Comece por `referencia-legado/LEIA-ME.md`: ele diz o que abrir. Contém resumo dos gostos do usuário, capturas de cada tela (tablet e PC, claro e escuro), cores e medidas (`tokens-legado.css`), atalhos (`teclado-legado.js`) e o histórico de decisões antigo (só com `grep`). É **só referência de comportamento e visual**: não copie código nem dados. Projeto antigo completo: `../PROJETO ESTUDO` (tag `legado-2026-11-05`), somente leitura. Proibido no visual, herdado do legado: tarja/faixa colada na lateral ou no topo e "lua minguante" em blocos; cartões de uma peça, cantos bem arredondados; sem divisórias, sem gradiente.
+## Referência do legado
+Kit de consulta em `../Dev_Ohara/referencia-legado/` (comece por `LEIA-ME.md`; histórico antigo só com `grep`). Só referência de comportamento e visual: não copie código nem dados. Projeto antigo completo: `../PROJETO ESTUDO` (tag `legado-2026-11-05`), somente leitura. Proibido no visual: tarja/faixa colada na lateral ou no topo, "lua minguante" em blocos; cartões de uma peça, cantos bem arredondados; sem divisórias, sem gradiente.

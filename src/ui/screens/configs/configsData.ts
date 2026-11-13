@@ -18,6 +18,12 @@ import { currentPalette, cyclePalette, PALETTE_NAMES, toggleTheme } from '../../
 export interface Row {
   label: string;
   detail: string;
+  // Valor de hoje, na ponta da linha (D144): o que a Enter troca fica à vista.
+  value?: string;
+  // Título do grupo, escrito antes desta linha.
+  group?: string;
+  // Aviso em palavras (nunca só a cor) para ação que apaga ou substitui.
+  warning?: string;
   run?: () => void;
 }
 
@@ -100,20 +106,30 @@ export function buildSections(diag: Diagnostics | null): readonly Section[] {
     {
       name: 'Aparência',
       rows: [
-        { label: 'Trocar tema', detail: 'Claro ou escuro, neste aparelho.', run: toggleTheme },
         {
-          label: 'Trocar paleta de cores',
-          detail: `Gelo suave, Gelo ou Índigo. Agora: ${PALETTE_NAMES[currentPalette()]}.`,
+          group: 'Cores',
+          label: 'Tema',
+          detail: 'Claro ou escuro, neste aparelho.',
+          value: document.documentElement.dataset.tema === 'escuro' ? 'Escuro' : 'Claro',
+          run: toggleTheme,
+        },
+        {
+          label: 'Paleta de cores',
+          detail: 'Gelo suave, Gelo ou Índigo.',
+          value: PALETTE_NAMES[currentPalette()],
           run: () => showNotice(`Paleta: ${PALETTE_NAMES[cyclePalette()]}.`),
         },
         {
-          label: 'Animação da barra do topo',
-          detail: `Troca de tela: Elástico ou Nenhuma. Agora: ${TOP_ANIMATION_NAMES[currentTopAnimation()]}.`,
+          group: 'Barra do topo',
+          label: 'Animação',
+          detail: 'Ao trocar de tela: Elástico ou Nenhuma.',
+          value: TOP_ANIMATION_NAMES[currentTopAnimation()],
           run: () => showNotice(`Animação: ${TOP_ANIMATION_NAMES[cycleTopAnimation()]}.`),
         },
         {
-          label: 'Menu de telas da barra do topo',
-          detail: `Só números, número com ícone, só ícones, ícone com número pequeno em cima ou embaixo. Agora: ${TOP_TABS_NAMES[currentTopTabs()]}.`,
+          label: 'Menu de telas',
+          detail: 'Só números, número com ícone, só ícones, ou número pequeno em cima ou embaixo.',
+          value: TOP_TABS_NAMES[currentTopTabs()],
           run: () => showNotice(`Menu de telas: ${TOP_TABS_NAMES[cycleTopTabs()]}.`),
         },
       ],
@@ -133,13 +149,15 @@ export function buildSections(diag: Diagnostics | null): readonly Section[] {
       name: 'Backup',
       rows: [
         {
+          group: 'Cópia dos dados',
           label: 'Exportar banco',
           detail: 'Baixa uma cópia dos dados, em um arquivo .sqlite3.',
           run: () => void exportDatabase(),
         },
         {
           label: 'Importar banco',
-          detail: 'Restaura um arquivo .sqlite3 exportado antes. Substitui os dados atuais.',
+          detail: 'Restaura um arquivo .sqlite3 exportado antes.',
+          warning: 'Substitui todos os dados deste aparelho.',
           run: askImport,
         },
         {

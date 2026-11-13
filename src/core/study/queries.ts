@@ -160,3 +160,21 @@ export function currentEventIndex(events: readonly ClassEvent[], time: string): 
 export function isNow(event: ClassEvent, day: string, today: string, time: string): boolean {
   return day === today && event.start <= time && time < event.end;
 }
+
+// Começo da anotação em texto corrido (a anotação é guardada como HTML do editor).
+export function notesExcerpt(notes: string, max = 220): string {
+  const text = notes
+    .replace(/^\s*<h[1-6][^>]*>.*?<\/h[1-6]>/is, '')
+    .replace(/<\/(p|div|li|h[1-6])>/gi, ' ')
+    .replace(/<[^>]*>/g, '')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/\s+/g, ' ')
+    .trim();
+  if (text.length <= max) return text;
+  const cut = text.slice(0, max);
+  const lastSpace = cut.lastIndexOf(' ');
+  return `${(lastSpace > max / 2 ? cut.slice(0, lastSpace) : cut).trimEnd()}…`;
+}

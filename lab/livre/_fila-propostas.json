@@ -1,0 +1,41 @@
+{
+  "descricao": "Fila das propostas visuais da noite de 13/11/2026. A tarefa 'ohara-fila-propostas' lê este arquivo a cada tique, trabalha na primeira frente não concluída e atualiza o status. O briefing de cada frente está no SKILL.md da tarefa antiga indicada em 'briefing'.",
+  "frentes": [
+    {
+      "n": 7,
+      "pasta": "mesa-blocos",
+      "briefing": "ohara-proposta-7-mesa-blocos",
+      "status": "concluida",
+      "notas": "Feita pela fila às 01:30; LEIA-ME pronto. Recomendada V1 (segura) ou V3."
+    },
+    {
+      "n": 3,
+      "pasta": "barra-formatacao",
+      "briefing": "ohara-proposta-3-barra-formatacao",
+      "status": "concluida",
+      "notas": "Feita pela fila às 01:45; recomendada V3."
+    },
+    {
+      "n": 4,
+      "pasta": "treino-cartao",
+      "briefing": "ohara-proposta-4-treino-cartao",
+      "status": "concluida",
+      "notas": "Feita pela fila às 02:05; recomendada V1 (V3 em tela larga)."
+    },
+    {
+      "n": 5,
+      "pasta": "agenda-ajustes",
+      "briefing": "ohara-proposta-5-agenda",
+      "status": "concluida",
+      "notas": "Feita pela fila; recomendada V2 (mês e prévia)."
+    },
+    {
+      "n": 6,
+      "pasta": "atalhos",
+      "briefing": "ohara-proposta-6-atalhos",
+      "status": "concluida",
+      "notas": "Feita pela fila; recomendada V1 (V3 para Todos)."
+    }
+  ],
+  "resumo_final_feito": true
+}

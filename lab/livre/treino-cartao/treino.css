@@ -1,0 +1,102 @@
+/* Treino com o cartão novo (D138). Reaproveita cartao.css; aqui só layout da sessão e escala maior. */
+.tc-tela { container-type: inline-size; display: flex; flex-direction: column; height: min(760px, 78vh); min-height: 560px; border-radius: 16px; background: var(--cf-bloco); color: var(--cf-texto); overflow: hidden; }
+.tc-topo { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; font: 600 15px Inter, system-ui, sans-serif; }
+.tc-pilula { padding: 4px 11px; border-radius: 999px; background: color-mix(in srgb, var(--cf-frente) 28%, var(--cf-bloco)); font: 600 12px Inter, system-ui, sans-serif; }
+.tc-palco { flex: 1; min-height: 0; display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 4px 20px 20px; }
+.tc-escala { --fs-f: 28px; --lh-f: 36px; --pf: 22px; --fs-b: 19px; --lh-b: 29px; --fs-h: 13px; --lh-h: 20px; --fs-s: 12.5px; --lh-s: 20px; --gs: 28px; --gsub: 12px; }
+.tc-escala.fc-compacta { --fs-f: 23px; --lh-f: 30px; --pf: 16px; --fs-b: 16.5px; --lh-b: 24px; --fs-h: 12px; --lh-h: 18px; --fs-s: 11.5px; --lh-s: 18px; --gs: 18px; --gsub: 8px; }
+.tc-cartao { width: min(760px, 100%); display: flex; flex-direction: column; min-height: 0; }
+.tc-cartao .fc-card { display: flex; flex-direction: column; min-height: 0; flex: 1; }
+.tc-cartao .fc-verso { overflow: auto; flex: 1; min-height: 0; }
+.tc-cartao .fc-frente { flex: none; }
+.tc-cartao .fc-frente.so { padding: 56px 28px; text-align: center; }
+.tc-ver, .tc-nota { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 52px; border: 0; border-radius: 16px; font: 600 16px Inter, system-ui, sans-serif; cursor: pointer; color: inherit; }
+.tc-ver { padding: 0 28px; background: var(--cf-accent); color: var(--cf-bloco); }
+:root[data-tema='escuro'] .tc-ver { color: var(--cf-sobre-frente); background: var(--cf-frente); }
+.tc-notas { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; width: min(760px, 100%); }
+/* Notas sóbrias: só a cor de destaque (nada de rosa/verde). */
+.tc-nota { background: color-mix(in srgb, var(--cf-accent) 14%, var(--cf-bloco)); color: var(--cf-accent); }
+.tc-nota kbd { color: var(--cf-texto2); opacity: 1; }
+/* V2: contorno, só "Bom" preenchido */
+.tc-n2 .tc-nota { background: none; box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--cf-accent) 55%, transparent); }
+.tc-n2 .tc-nota[data-g='3'] { background: var(--cf-accent); color: var(--cf-bloco); box-shadow: none; }
+:root[data-tema='escuro'] .tc-n2 .tc-nota[data-g='3'] { color: var(--cf-sobre-frente); }
+.tc-n2 .tc-nota[data-g='3'] kbd { color: inherit; opacity: .7; }
+/* V3: rampa de intensidade da cor de destaque, de Errei (mais fraca) a Fácil (mais forte) */
+.tc-n3 .tc-nota[data-g='1'] { background: color-mix(in srgb, var(--cf-accent) 8%, var(--cf-bloco)); }
+.tc-n3 .tc-nota[data-g='2'] { background: color-mix(in srgb, var(--cf-accent) 16%, var(--cf-bloco)); }
+.tc-n3 .tc-nota[data-g='3'] { background: color-mix(in srgb, var(--cf-accent) 26%, var(--cf-bloco)); }
+.tc-n3 .tc-nota[data-g='4'] { background: color-mix(in srgb, var(--cf-accent) 38%, var(--cf-bloco)); }
+.tc-nota:focus-visible, .tc-ver:focus-visible { outline: 2px solid var(--cf-accent); outline-offset: 2px; }
+.tc-nota kbd, .tc-ver kbd { font: 500 12px Inter, system-ui, sans-serif; opacity: .7; }
+.tc-nota small { display: block; font: 400 11px Inter, system-ui, sans-serif; opacity: .7; }
+.tc-estados { display: flex; gap: 6px; margin-bottom: 8px; font: 12px Inter, system-ui, sans-serif; }
+.tc-estados button { padding: 3px 10px; border: 1px solid var(--cf-frente); border-radius: 999px; background: none; color: inherit; cursor: pointer; }
+.tc-estados button[aria-pressed='true'] { background: var(--cf-frente); color: var(--cf-sobre-frente); }
+/* V2: botões dentro do cartão, rodapé */
+.tc-dentro { border-top: 1px solid color-mix(in srgb, var(--cf-frente) 55%, transparent); padding: 12px; background: var(--cf-bloco); flex: none; display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.tc-dentro .tc-nota { min-height: 48px; }
+/* V3: dois colunas em tela larga: frente fixa à esquerda, verso à direita */
+.tc-duas { width: min(1180px, 100%); display: grid; grid-template-columns: minmax(300px, 4fr) minmax(0, 6fr); gap: 20px; flex: 1; min-height: 0; }
+.tc-lado { display: flex; flex-direction: column; min-height: 0; }
+.tc-verso-card { border: 1px solid var(--cf-frente); border-radius: 16px; background: var(--cf-bloco); overflow: auto; padding: 18px 22px 24px; font: 400 var(--fs-b) / var(--lh-b) 'Source Sans 3', system-ui, sans-serif; }
+.tc-vazio { display: grid; place-items: center; height: 100%; border: 1px dashed var(--cf-frente); border-radius: 16px; color: var(--cf-texto2); font: 500 15px Inter, system-ui, sans-serif; }
+.tc-dica { font: 500 12px Inter, system-ui, sans-serif; color: var(--cf-texto2); }
+@container (max-width: 640px) { .tc-duas { grid-template-columns: 1fr; overflow: auto; } }
+/* Rodada 3: topo (frente) do cartão sem a faixa azul. Contorno do cartão mais calmo nas três. */
+.tc-f1 .fc-card, .tc-f2 .fc-card, .tc-f3 .fc-card { border-color: color-mix(in srgb, var(--cf-accent) 32%, transparent); }
+.tc-f1 .fc-frente, .tc-f2 .fc-frente, .tc-f3 .fc-frente { background: none; color: var(--cf-texto); padding: 22px 24px 6px; }
+.tc-f1 .fc-verso, .tc-f2 .fc-verso, .tc-f3 .fc-verso { padding: 14px 24px 24px; }
+/* V2: pergunta na cor de destaque */
+.tc-f2 .fc-frente { color: var(--cf-accent); }
+/* V3: pergunta numa peça interna, com folga e canto próprio (não encosta na borda) */
+.tc-f3 .fc-frente { margin: 10px 10px 0; padding: 16px 18px; border-radius: 12px; background: color-mix(in srgb, var(--cf-accent) 13%, var(--cf-bloco)); }
+.tc-f3 .fc-frente.so { margin: 10px; flex: 1; display: grid; place-items: center; }
+.tc-f1 .fc-frente.so, .tc-f2 .fc-frente.so { flex: 1; display: grid; place-items: center; }
+/* Rodada 4: a partir da referência do usuário. Frente cheia e centrada; verso em duas colunas. */
+:root { --tc-cheia: #426cc0; --tc-sobre: #f7fafd; }
+:root[data-tema='escuro'] { --tc-cheia: #35549a; --tc-sobre: #e8eff9; }
+.tc-cartao.tc-ref { width: min(920px, 100%); --fs-b: 17px; --lh-b: 25px; }
+.tc-ref .fc-card { border-color: color-mix(in srgb, var(--cf-accent) 32%, transparent); }
+.tc-rot { padding: 16px 22px 0; color: var(--cf-texto2); font: 700 11px Inter, system-ui, sans-serif; letter-spacing: .08em; text-transform: uppercase; text-align: left; }
+.tc-cartao .tc-rf { display: grid; grid-template-rows: auto 1fr auto; width: 100%; cursor: pointer; text-align: center; }
+.tc-ref-forte .tc-rf { border-color: transparent; background: var(--tc-cheia); color: var(--tc-sobre); }
+.tc-ref-suave .tc-rf { background: color-mix(in srgb, var(--cf-accent) 14%, var(--cf-bloco)); color: var(--cf-texto); }
+.tc-rf .tc-rot { color: inherit; opacity: .75; }
+.tc-rq { align-self: center; padding: 0 48px; font: 700 var(--fs-f) / var(--lh-f) Inter, system-ui, sans-serif; letter-spacing: -0.01em; }
+.tc-rdica { padding-bottom: 18px; font: 500 12.5px Inter, system-ui, sans-serif; opacity: .75; }
+.tc-rf:focus-visible { outline: 2px solid var(--cf-accent); outline-offset: 2px; }
+.tc-ref .tc-rv .fc-verso { padding: 8px 22px 24px; }
+.tc-rtit { margin-bottom: 16px; font: 700 21px / 28px Inter, system-ui, sans-serif; letter-spacing: -0.01em; }
+.tc-cols { columns: 2; column-gap: 28px; }
+.tc-cols section { break-inside: avoid; margin: 0 0 18px; }
+.tc-ref .fc-verso h3 { margin-bottom: 4px; color: var(--cf-accent); }
+.tc-peca { margin-top: 6px; }
+.tc-ref-pecas .tc-peca { padding: 8px 12px; border-radius: 10px; background: color-mix(in srgb, var(--cf-texto) 6%, transparent); }
+@container (max-width: 640px) { .tc-cols { columns: 1; } }
+/* Rodada 5: título do verso (a pergunta) em três graus de destaque. tc-t2 é o tamanho base (21px). */
+.tc-t1 .tc-rtit { font: 600 17px / 24px Inter, system-ui, sans-serif; color: var(--cf-texto2); margin-bottom: 14px; }
+.tc-t2 .tc-rtit { font: 700 24px / 31px Inter, system-ui, sans-serif; margin-bottom: 18px; }
+.tc-t3 .tc-rtit { margin: 4px -10px 20px; padding: 14px 16px; border-radius: 12px; background: var(--tc-cheia); color: var(--tc-sobre); font: 700 24px / 31px Inter, system-ui, sans-serif; }
+/* Rodada 6 (estilo Anki): ao revelar, a pergunta fica no topo da tela e o verso vem num cartão abaixo. */
+.tc-cartao.tc-ref { gap: 12px; }
+.tc-q { flex: none; padding: 12px 22px 16px; border-radius: 16px; font: 700 22px / 29px Inter, system-ui, sans-serif; letter-spacing: -0.01em; }
+.tc-q .tc-rot { padding: 0 0 6px; color: inherit; opacity: .75; }
+.tc-q-cartao { background: var(--tc-cheia); color: var(--tc-sobre); }
+.tc-q-suave { background: color-mix(in srgb, var(--cf-accent) 14%, var(--cf-bloco)); }
+.tc-q-texto { padding: 6px 22px 4px; text-align: center; }
+.tc-q-texto + .tc-rv .fc-verso { padding-top: 20px; }
+/* Estresse: pergunta longa encolhe a letra (m, g); a do topo ocupa no máximo ~1/3 do palco e rola dentro. */
+.tc-rq { min-height: 0; max-height: 100%; overflow: auto; }
+.tc-rq[data-tam='m'] { font-size: 23px; line-height: 31px; }
+.tc-rq[data-tam='g'] { font: 600 19px / 28px Inter, system-ui, sans-serif; text-align: left; }
+.tc-q { max-height: 38%; overflow: auto; }
+.tc-q[data-tam='m'] { font-size: 18px; line-height: 25px; }
+.tc-q[data-tam='g'] { font: 600 15.5px / 23px Inter, system-ui, sans-serif; text-align: left; }
+/* &cheia=1: a tela de Treino cobre a bancada inteira, para testar no tablet. Dar a nota volta para a frente. */
+.tc-cheia .tc-tela { position: fixed; inset: 0; z-index: 100; height: 100dvh; min-height: 0; border-radius: 0; }
+.tc-cheia .tc-estados { display: none; }
+.tc-cheia .tc-palco { padding: 4px clamp(12px, 3cqi, 28px) clamp(12px, 3cqi, 24px); }
+@container (max-width: 640px) { .tc-notas { gap: 6px; } .tc-nota kbd { display: none; } .tc-rq { padding: 0 20px; } }
+/* Só da bancada: botão que esconde a barra do navegador no tablet. */
+.tc-fs { margin-left: auto; margin-right: 10px; min-height: 36px; padding: 0 14px; border: 0; border-radius: 999px; background: color-mix(in srgb, var(--cf-accent) 14%, var(--cf-bloco)); color: var(--cf-accent); font: 600 13px Inter, system-ui, sans-serif; cursor: pointer; }

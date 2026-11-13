@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Treino no tablet</title>
+<!-- Atalho curto para testar o cartão de Treino no tablet (bancada treino-cartao). Sai junto com a pasta. -->
+<style>
+  body { margin: 0; padding: 24px; background: #e7edf4; color: #152030; font: 500 17px Inter, system-ui, sans-serif; }
+  @media (prefers-color-scheme: dark) { body { background: #0c121c; color: #e8eff9; } a { background: #141c2a !important; } }
+  h1 { font-size: 22px; margin: 0 0 16px; }
+  h2 { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; opacity: .7; margin: 24px 0 8px; }
+  div { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+  a { display: grid; place-items: center; min-height: 64px; border-radius: 16px; background: #f7fafd; color: inherit; text-decoration: none; text-align: center; padding: 0 12px; }
+</style>
+</head>
+<body>
+<h1>Cartão de Treino</h1>
+<script>
+  const versoes = [['1', 'V1 · Dois cartões'], ['2', 'V2 · Texto solto'], ['3', 'V3 · Frente suave']];
+  const casos = [['', 'Cartão normal'], ['&extremo=1', 'Cartão longo'], ['&extremo=2', 'Pergunta enorme']];
+  for (const [tema, nome] of [['claro', 'Tema claro'], ['escuro', 'Tema escuro']])
+    for (const [extra, caso] of casos) {
+      document.body.insertAdjacentHTML('beforeend', `<h2>${nome} · ${caso}</h2><div>` + versoes.map(([v, r]) =>
+        `<a href="livre.html?ideia=treino-cartao&v=${v}&cheia=1&estado=frente&tema=${tema}${extra}">${r}</a>`).join('') + '</div>');
+    }
+</script>
+</body>
+</html>

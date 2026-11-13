@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react';
-import { Window } from '../components/Window';
+import { Window, WindowFooter } from '../components/Window';
 import { dispatch } from '../keyboard/store';
 import { setScreenMemory, useScreenMemory } from '../study/screenMemory';
 import styles from './PromptWindow.module.css';
@@ -76,9 +76,14 @@ function Form({ prompt }: { prompt: Prompt }) {
           )}
         </label>
       ))}
-      <button type="submit" className={styles.enviar}>
-        {prompt.action} <kbd className={styles.tecla}>Enter</kbd>
-      </button>
+      <WindowFooter>
+        <button type="button" className={styles.cancelar} onClick={() => dispatch({ type: 'escape' })}>
+          Cancelar
+        </button>
+        <button type="submit" className={styles.enviar}>
+          {prompt.action}
+        </button>
+      </WindowFooter>
     </form>
   );
 }

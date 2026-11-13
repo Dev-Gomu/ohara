@@ -1,0 +1,44 @@
+/* Bancada barra-formatacao: só tokens. */
+.bf-pagina { display: flex; flex-direction: column; gap: var(--e4); padding: var(--e3); }
+.bf-pagina > section { display: flex; flex-direction: column; min-width: 0; }
+.bf-leg { font: var(--ui-rotulo); color: var(--cor-texto-2); text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 var(--e2); }
+.bf-quadro { display: flex; flex-direction: column; height: 340px; max-width: 100%; }
+.bf-quadro > section { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+
+.bf-barra { display: flex; align-items: center; flex: none; gap: var(--e3); padding: var(--e2) var(--e3) var(--e3); overflow-x: auto; scrollbar-width: none; }
+.bf-grupo { display: flex; gap: 2px; flex: none; }
+.bf-btn { position: relative; flex: none; display: inline-flex; align-items: center; justify-content: center; min-width: var(--alvo); height: var(--alvo); padding: 0 var(--e2); border-radius: var(--raio-pilula); color: var(--cor-texto-2); font: var(--ui-botao); }
+.bf-btn:hover { color: var(--cor-texto); background: var(--cor-cartao-2); }
+.bf-btn[data-sel='true'] { background: var(--cor-escolhido); color: var(--cor-texto); }
+.bf-btn:focus-visible { outline: 2px solid var(--cor-contorno-foco); outline-offset: -2px; }
+.bf-ico { display: inline-flex; width: 22px; height: 22px; }
+.bf-ico svg { width: 100%; height: 100%; }
+.bf-rot { font: var(--ui-botao); line-height: 1; white-space: nowrap; }
+.bf-rot sup, .bf-rot sub { font-size: 0.7em; }
+.bf-marca { background: var(--cor-escolhido); color: var(--cor-texto); padding: 0 4px; border-radius: var(--raio-minimo); }
+.bf-btn[data-sel='true'] .bf-marca { background: transparent; padding: 0; }
+
+/* V1: grupos separados só por espaço. */
+.bf-v1 { gap: var(--e4); }
+
+/* V2: uma pílula só, recuada do bloco. */
+.bf-fora { flex: none; padding: 0 var(--e3) var(--e3); overflow-x: auto; scrollbar-width: none; }
+.bf-v2 { width: max-content; padding: var(--e1); gap: var(--e2); background: var(--cor-cartao-2); border-radius: var(--raio-pilula); overflow: visible; }
+.bf-v2 .bf-btn { min-width: 40px; height: 40px; }
+.bf-v2 .bf-btn[data-sel='true'] { background: var(--cor-cursor); color: var(--cor-sobre-acao); }
+
+/* V3: pílula por grupo. */
+.bf-v3 { gap: var(--e2); }
+.bf-pilula { padding: 2px; background: var(--cor-cartao-2); border-radius: var(--raio-pilula); }
+[data-toque] .bf-btn { min-width: var(--alvo); height: var(--alvo); }
+
+/* Referência (_ref.tsx): igual ao print do usuário (13/11). */
+.bf-ref { gap: var(--e3); padding: var(--e3) var(--e4); }
+.bf-ref .bf-grupo { gap: 0; }
+.bf-ref .bf-dir { margin-left: auto; gap: var(--e1); }
+.bf-ref .bf-btn { min-width: 36px; height: 36px; padding: 0 var(--e1); }
+.bf-ref .bf-ico { width: 20px; height: 20px; }
+.bf-ref .bf-rot { font: var(--ui-apoio); font-weight: 600; letter-spacing: 0.02em; }
+.bf-ref .bf-btn[data-sel='true'] { background: var(--cor-escolhido); color: var(--cor-texto); }
+.bf-ref .bf-dir .bf-btn[data-sel='true'] { min-width: 40px; }
+.bf-r1 { box-shadow: 0 1px 0 var(--cor-cartao-2); }

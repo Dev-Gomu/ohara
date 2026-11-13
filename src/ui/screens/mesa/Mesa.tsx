@@ -13,7 +13,6 @@ import { useBlocks } from '../../keyboard/useBlocks';
 import { Mosaic } from '../../mosaic/Mosaic';
 import { useMosaic } from '../../mosaic/useMosaic';
 import { ScreenFrame } from '../../shell/ScreenFrame';
-import { notesBarVisible, setNotesBar } from '../../study/notesBar';
 import { cardOptions } from '../../study/editOptions';
 import { MESA_LESSON } from '../../study/navigation';
 import { useScreenMemory } from '../../study/screenMemory';
@@ -49,8 +48,6 @@ export function Mesa() {
   const [lessonId] = useScreenMemory(MESA_LESSON, defaultLesson(data));
   return <LessonDesk key={lessonId} data={data} lessonId={lessonId} />;
 }
-
-const toggleBar = () => setNotesBar(!notesBarVisible());
 
 function LessonDesk({ data, lessonId }: { data: StudyData; lessonId: string }) {
   const lesson = data.lessons.find((item) => item.id === lessonId);
@@ -108,14 +105,6 @@ function LessonDesk({ data, lessonId }: { data: StudyData; lessonId: string }) {
       ...(block === NOTES
         ? [
             {
-              id: 'barra',
-              label: notesBarVisible()
-                ? 'Ocultar barra de formatação'
-                : 'Mostrar barra de formatação',
-              keys: 'Alt T',
-              run: toggleBar,
-            },
-            {
               id: 'historico',
               label: 'Histórico de versões',
               run: () => dispatch({ type: 'openWindow', window: 'historico' }),
@@ -149,18 +138,10 @@ function LessonDesk({ data, lessonId }: { data: StudyData; lessonId: string }) {
         if (!mosaic.isOpen(CARDS)) mosaic.toggle(CARDS);
         cardsEditor.newCard();
       },
-      // Nas Anotações, Alt T mostra ou oculta a barra (modo fantasma) e Alt B vai a ela,
-      // mostrando-a se preciso. Nos outros blocos, vão ao cabeçalho e ao rodapé.
-      goToTopBar: () => {
-        if (!inNotes()) return focusBar(getKeyboardState().focus.block, 'top');
-        toggleBar();
-      },
-      goToBottomBar: () => {
-        if (!inNotes()) return focusBar(getKeyboardState().focus.block, 'bottom');
-        if (notesBarVisible()) return focusBar(NOTES, 'bottom');
-        setNotesBar(true);
-        setTimeout(() => focusBar(NOTES, 'bottom'), 0);
-      },
+      // Nas Anotações, a barra de formatação fica no topo: Alt T e Alt B vão a ela.
+      goToTopBar: () => focusBar(getKeyboardState().focus.block, 'top'),
+      goToBottomBar: () =>
+        focusBar(getKeyboardState().focus.block, inNotes() ? 'top' : 'bottom'),
       previousControl: () => stepBar(-1),
       nextControl: () => stepBar(1),
       changePage: (change) => {

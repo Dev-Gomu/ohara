@@ -116,11 +116,12 @@ export function AgendaPreview({ block, item, dayItems, actions }: PreviewProps) 
         dayItems.map((entry) => (
           <ListItem
             key={entry.id}
-            time={entry.start || '—'}
             title={entry.kind === 'prova' ? 'Prova' : entry.title || (entry.subject?.name ?? '')}
-          >
-            {entry.subject && <SubjectPill code={entry.subject.code} color={entry.subject.color} />}
-          </ListItem>
+            detail={entry.start || '—'}
+            lead={
+              entry.subject && <SubjectPill code={entry.subject.code} color={entry.subject.color} />
+            }
+          />
         ))}
     </Preview>
   );

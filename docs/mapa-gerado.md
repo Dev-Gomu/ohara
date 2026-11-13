@@ -3,13 +3,22 @@
 
 ## Docs (títulos # e ## com a linha)
 
+### docs/auditoria-arquitetura.md
+- L1 # Auditoria de arquitetura e custo (12/11/2026)
+- L5 ## 1. Diagnóstico (onde os créditos vão)
+- L20 ## 2. Simulação de 5 tarefas-tipo (leitura para entender)
+- L30 ## 3. Opções comparadas para o ambiente de experimento
+- L40 ## 4. Recomendação (em ordem, uma sessão curta cada, Sonnet basta)
+- L53 ## 5. Decisões para registrar (só com o seu aceite)
+
 ### docs/backlog.md
 - L1 # Ohara: backlog
 - L12 ## Adiados (entram no fim do projeto, nesta ordem)
 - L20 ## Condicionais e técnicos
-- L29 ## Conceitos a esclarecer
-- L34 ## Cortados (não voltam sem decisão explícita do usuário)
-- L40 ## Ideias novas
+- L29 ## Propostas visuais pedidas (13/11/2026, o usuário vai mandar o prompt; bancadas de até 3 versões, claro e escuro)
+- L39 ## Conceitos a esclarecer
+- L44 ## Cortados (não voltam sem decisão explícita do usuário)
+- L50 ## Ideias novas
 
 ### docs/decisoes-arquivo.md
 - L1 # Decisões substituídas
@@ -53,12 +62,26 @@
 - L1 # Estado do Ohara (atualizado em 12/11/2026)
 - L5 ## Onde estamos
 - L10 ## Próximo passo
-- L13 ## Esperando o usuário
-- L17 ## Iniciativas abertas (máx. 3)
+- L28 ## A conferir (aplicado em 13/11, só check e e2e)
+- L31 ## Esperando o usuário
+- L35 ## Iniciativas abertas (máx. 3)
 
 ### docs/mapa.md
 - L1 # Mapa do projeto
 - L7 ## Se o assunto é X, abra Y
+
+### docs/pecas.md
+- L2 # Cartão de peças
+- L4 ## Peças (src/ui/components)
+- L180 ## Store do teclado e das telas (src/ui/keyboard)
+- L196 ## Estudo (src/ui/study)
+
+### docs/prompt-propostas-visuais.md
+- L1 # Prompt: propostas visuais do Ohara (6 frentes)
+- L9 ## Como trabalhar (regras do projeto, resumo)
+- L16 ## O que não pode aparecer (aprendido nas rodadas anteriores)
+- L19 ## As frentes
+- L36 ## Ao terminar
 
 ### docs/regras.md
 - L1 # Regras herdadas do legado: Agenda e Grade
@@ -134,11 +157,11 @@
 - L35 ## Sessão 2: faxina visual (Sonnet)
 - L47 ## Sessão 3: três paletas (Fable na bancada, Sonnet no código). FEITA em 12/11/2026 (D132)
 - L52 ## Sessão 4: publicação (Sonnet) — FEITA em 12/11/2026
-- L57 ## Sessão R: refinos das telas (Sonnet, antes da 5)
-- L62 ## Sessão 5: Etapa 11, Treino com FSRS (Opus)
-- L66 ## Sessão 6: Etapa 12, sincronização (Opus, modo de plano)
-- L71 ## Sessão 7 em diante: varredura (Sonnet)
-- L75 ## O que é só do usuário
+- L57 ## Sessão R: refinos das telas (uma etapa por tela, antes da 5)
+- L72 ## Sessão 5: Etapa 11, Treino com FSRS (Opus)
+- L76 ## Sessão 6: Etapa 12, sincronização (Opus, modo de plano)
+- L81 ## Sessão 7 em diante: varredura (Sonnet)
+- L85 ## O que é só do usuário
 
 ### docs/plano/roteiro-5min-publicacao.md
 - L1 # Roteiro de 5 minutos: antes de publicar no main
@@ -193,6 +216,7 @@
 - src/core/study/fixtures.ts: Título, dias antes de hoje, pasta (1, 2 ou 0 para sem pasta)
 - src/core/study/ics.test.ts: (sem comentário nem export no topo)
 - src/core/study/ics.ts: O formato limita a linha a 75 caracteres; a continuação começa com espaço.
+- src/core/study/notesExcerpt.test.ts: (sem comentário nem export no topo)
 - src/core/study/queries.test.ts: (sem comentário nem export no topo)
 - src/core/study/queries.ts: `export const ALL_FOLDERS = 'todas';`
 - src/core/study/scope.test.ts: (sem comentário nem export no topo)
@@ -235,8 +259,12 @@
 - src/ui/components/FaultCell.tsx: Horas faltadas e limite até agora; null enquanto não houve aula.
 - src/ui/components/Filter.module.css: (sem comentário nem export no topo)
 - src/ui/components/Filter.tsx: Filtro de uma escolha por matéria: marca na cor da matéria sempre à vista (serve de legenda);
-- src/ui/components/Grades.module.css: ---------- 1. Célula de nota ----------
+- src/ui/components/FormatBar.module.css: (sem comentário nem export no topo)
+- src/ui/components/FormatBar.tsx: Desenho do botão: ícone ou letras (H1, B).
 - src/ui/components/Grades.tsx: Peças de Notas aprovadas nos degraus 1 a 3 (D121 a D124). Só desenho: as contas vêm da tela.
+- src/ui/components/GradesCelulas.module.css: ---------- 1. Célula de nota ----------
+- src/ui/components/GradesDisciplina.module.css: ---------- Disciplina: seletor de bimestre + lista do bimestre em foco ----------
+- src/ui/components/GradesLinhas.module.css: ---------- 1. Linha do boletim ----------
 - src/ui/components/Island.module.css: O ícone acompanha o tamanho do número.
 - src/ui/components/Island.tsx: Ilha: agrupa controles na barra do topo (telas, nível, módulos).
 - src/ui/components/Key.module.css: Quem hospeda a tecla pode trocar o fundo e o relevo (botão principal, ilha).
@@ -255,7 +283,7 @@
 - src/ui/components/Toggles.module.css: O alvo de toque ocupa a altura inteira da ilha.
 - src/ui/components/Toggles.tsx: Grupo de alternadores ou de abas: a mesma ilha recuada da barra do topo.
 - src/ui/components/Window.module.css: (sem comentário nem export no topo)
-- src/ui/components/Window.tsx: O Esc é do listener: ele fecha pelo estado, e o React Aria nem chega a ver a tecla (D08).
+- src/ui/components/Window.tsx: De onde a janela veio (bloco ou tela): rótulo pequeno acima do título.
 - src/ui/faltas/Faltas.tsx: (sem comentário nem export no topo)
 - src/ui/faltas/summary.ts: Horas faltadas e o limite até agora; null enquanto não houve aula.
 - src/ui/keyboard/bars.ts: Barras de um bloco: a de cima é o cabeçalho (abas, ferramentas) e a de baixo é o rodapé
@@ -271,7 +299,7 @@
 - src/ui/notas/forms.ts: `export function askSetup(): void`
 - src/ui/notas/model.ts: Contas de tela de Notas: transforma itens e esquema nos números que as peças mostram (D123).
 - src/ui/notas/session.ts: D41: a chave mestra só existe em memória e some depois de 2 minutos sem uso.
-- src/ui/screens/acervo/Acervo.module.css: (sem comentário nem export no topo)
+- src/ui/screens/acervo/Acervo.module.css: A grade de matérias não tem fundo: o foco fica só no cartão, sem contorno em volta do bloco.
 - src/ui/screens/acervo/Acervo.tsx: `export function Acervo()`
 - src/ui/screens/acervo/AcervoHome.tsx: (sem comentário nem export no topo)
 - src/ui/screens/acervo/SubjectView.tsx: (sem comentário nem export no topo)
@@ -284,8 +312,8 @@
 - src/ui/screens/agenda/agendaData.ts: Vazio na Grade, que é regra semanal e não tem data.
 - src/ui/screens/agenda/agendaForms.ts: (sem comentário nem export no topo)
 - src/ui/screens/configs/Configs.module.css: (sem comentário nem export no topo)
-- src/ui/screens/configs/Configs.tsx: `export function Configs()`
-- src/ui/screens/configs/configsData.ts: `export interface Row`
+- src/ui/screens/configs/Configs.tsx: Quem troca um ajuste muda o valor da linha: o número sobe para a lista ser montada de novo.
+- src/ui/screens/configs/configsData.ts: Valor de hoje, na ponta da linha (D144): o que a Enter troca fica à vista.
 - src/ui/screens/hub/Hub.module.css: (sem comentário nem export no topo)
 - src/ui/screens/hub/Hub.tsx: Altura que as Provas precisam: cartão de 86 px mais a margem de 8 px dos dois lados.
 - src/ui/screens/hub/HubBlocks.tsx: `export function ExamsBlock({ id, days }: { id: string; days: readonly AssessmentDay[] })`
@@ -295,6 +323,7 @@
 - src/ui/screens/mesa/Mesa.tsx: (sem comentário nem export no topo)
 - src/ui/screens/mesa/NotesBlock.tsx: (sem comentário nem export no topo)
 - src/ui/screens/mesa/SlidesViewer.tsx: (sem comentário nem export no topo)
+- src/ui/screens/mesa/notesTools.tsx: (sem comentário nem export no topo)
 - src/ui/screens/mesa/useNotesEditor.ts: `export function useNotesEditor(lessonId: string, html: string): Editor | null`
 - src/ui/screens/treino/Inicio.module.css: Tela inicial do Treino: uma coluna de blocos no centro; "Ajustar" abre a lista ao lado.
 - src/ui/screens/treino/TrainingChoice.tsx: `export function TrainingChoice({ onStart }: TrainingChoiceProps)`
@@ -328,7 +357,6 @@
 - src/ui/study/download.ts: `export function downloadBytes(bytes: Uint8Array, filename: string): void`
 - src/ui/study/editOptions.ts: `export function folderOptions(folder: { id: string; name: string } | undefined): BlockOption[]`
 - src/ui/study/navigation.ts: O bloco vazio faz a matéria aplicar o foco de chegada, com a pasta inicial da D76.
-- src/ui/study/notesBar.ts: Preferência de aparelho, como o tema: sem armazenamento, vale o padrão (barra oculta, modo fantasma).
 - src/ui/study/notice.ts: Aviso curto sem ação (ex.: arquivo grande demais).
 - src/ui/study/pdf.ts: pdf.js só carrega quando o primeiro PDF é aberto; o worker dele vai no precache do PWA.
 - src/ui/study/screenMemory.ts: Estado de tela que sobrevive à troca de tela, só enquanto o app está aberto (D26).

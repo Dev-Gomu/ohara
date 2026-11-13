@@ -65,3 +65,17 @@
     background: var(--sup-peca);
   }
 }
+
+/* Sigla à esquerda (prévia do dia da Agenda): título inteiro, hora embaixo. */
+.sigla {
+  flex: none;
+  display: flex;
+  width: 52px;
+}
+
+.comSigla .titulo {
+  overflow: visible;
+  text-overflow: clip;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}

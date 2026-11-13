@@ -19,7 +19,7 @@
 .editor {
   flex: 1;
   min-height: 0;
-  padding: 0 var(--bloco-pad-x) var(--e2);
+  padding: var(--e2) var(--bloco-pad-x) var(--e2);
   overflow: auto;
 }
 
@@ -84,15 +84,6 @@
   padding: 1px 4px;
   border-radius: var(--raio-minimo);
   background: var(--cor-cartao-2);
-}
-
-.ferramentas {
-  display: flex;
-  flex: none;
-  gap: var(--e1);
-  padding: 0 var(--e3) var(--e3);
-  overflow-x: auto;
-  scrollbar-width: none;
 }
 
 .ferramenta {

@@ -7,13 +7,18 @@ import {
   folderTabs,
   initialTabIndex,
   lessonsOf,
+  notesExcerpt,
   NO_FOLDER,
   ALL_FOLDERS,
   subjectOf,
 } from '../../../core/study/queries';
 import { Block } from '../../components/Block';
-import { NavItem, useSelectedIndex } from '../../components/NavItem';
+import { Button } from '../../components/Button';
+import { ListItem } from '../../components/ListItem';
+import { useNavCursor, useSelectedIndex } from '../../components/NavItem';
+import { Preview } from '../../components/Preview';
 import { Ruler } from '../../components/Ruler';
+import { BlockTab, BlockTabs } from '../../components/Toggles';
 import { dispatch, getKeyboardState } from '../../keyboard/store';
 import { useBlocks } from '../../keyboard/useBlocks';
 import { ask } from '../../shell/PromptWindow';
@@ -60,6 +65,10 @@ function askLesson(subjectId: string, folderId: string | null) {
   });
 }
 
+const folderDetail = (count: number) =>
+  count === 0 ? 'vazia' : `${count} ${count === 1 ? 'aula' : 'aulas'}`;
+const cardsLabel = (count: number) => (count === 0 ? 'sem cartões' : `${count} cartões`);
+
 export function SubjectView({ subjectId, onBack }: SubjectViewProps) {
   const data = useStudy();
   const [mode, setMode] = useScreenMemory<'aulas' | 'cartoes'>('acervo.modo', 'aulas');
@@ -67,7 +76,8 @@ export function SubjectView({ subjectId, onBack }: SubjectViewProps) {
   const tabs = folderTabs(data, subjectId);
   const tabIndex = useSelectedIndex(FOLDERS, tabs.length);
   const tab = tabs[tabIndex]?.id ?? ALL_FOLDERS;
-  const lessons = filterLessons(lessonsOf(data, subjectId), tab);
+  const allLessons = lessonsOf(data, subjectId);
+  const lessons = filterLessons(allLessons, tab);
   const cards = data.cards.filter((card) => lessons.some((item) => item.id === card.lessonId));
   const showCards = mode === 'cartoes';
   const count = showCards ? cards.length : lessons.length;
@@ -76,6 +86,7 @@ export function SubjectView({ subjectId, onBack }: SubjectViewProps) {
   const lesson = showCards
     ? lessons.find((item) => item.id === card?.lessonId)
     : lessons[itemIndex];
+  const openCursor = useNavCursor(PREVIEW, 0);
   const open = () => {
     if (lesson) openLesson(lesson.id);
   };
@@ -149,9 +160,6 @@ export function SubjectView({ subjectId, onBack }: SubjectViewProps) {
       }
       end={
         <>
-          <button type="button" className={styles.modo} data-sel={showCards} onClick={toggleMode}>
-            Cartões <kbd className={styles.tecla}>Alt C</kbd>
-          </button>
           <span className={styles.siglaTopo} data-materia={subject?.color}>
             {subject?.code}
           </span>
@@ -165,6 +173,7 @@ export function SubjectView({ subjectId, onBack }: SubjectViewProps) {
             items={tabs.map((item) => ({
               id: item.id,
               title: item.name,
+              detail: folderDetail(item.count),
             }))}
             createLabel="Nova pasta"
             onCreate={() => askFolder(subjectId)}
@@ -176,6 +185,20 @@ export function SubjectView({ subjectId, onBack }: SubjectViewProps) {
           count={String(count)}
           shortcut="Alt N"
           menu
+          tools={
+            <BlockTabs label="Mostrar">
+              <BlockTab selected={!showCards} onPress={() => showCards && toggleMode()}>
+                Aulas
+              </BlockTab>
+              <BlockTab
+                selected={showCards}
+                count={data.cards.filter((c) => allLessons.some((l) => l.id === c.lessonId)).length}
+                onPress={() => !showCards && toggleMode()}
+              >
+                Cartões
+              </BlockTab>
+            </BlockTabs>
+          }
         >
           <div className={styles.lista}>
             {count === 0 && (
@@ -185,26 +208,40 @@ export function SubjectView({ subjectId, onBack }: SubjectViewProps) {
             )}
             {!showCards &&
               lessons.map((item, index) => (
-                <NavItem key={item.id} block={LESSONS} index={index} className={styles.aula}>
-                  <b className={styles.aulaNome}>{item.title}</b>
-                  <span className={styles.aulaDados}>
-                    {shortDate(item.date)} · {folderName(data, item)}
-                  </span>
-                  <span className={styles.aulaCartoes}>{cardCount(data, item.id)} cartões</span>
-                </NavItem>
+                <ListItem
+                  key={item.id}
+                  nav={{ block: LESSONS, index }}
+                  time={shortDate(item.date)}
+                  title={item.title}
+                  detail={cardsLabel(cardCount(data, item.id))}
+                />
               ))}
             {showCards &&
               cards.map((item, index) => (
-                <NavItem key={item.id} block={LESSONS} index={index} className={styles.aula}>
-                  <b className={styles.aulaNome}>{item.question}</b>
-                  <span className={styles.aulaDados}>{item.answer}</span>
-                </NavItem>
+                <ListItem
+                  key={item.id}
+                  nav={{ block: LESSONS, index }}
+                  title={item.question}
+                  detail={item.answer}
+                />
               ))}
           </div>
         </Block>
         <Block id={PREVIEW} title="Prévia">
           {lesson ? (
-            <div className={styles.previa}>
+            <Preview
+              title={card?.question ?? lesson.title}
+              detail={
+                card
+                  ? `${card.answer} · aula: ${lesson.title}`
+                  : `${shortDate(lesson.date)} · ${folderName(data, lesson)} · ${cardsLabel(cardCount(data, lesson.id))}`
+              }
+              actions={
+                <Button variant="primary" shortcut="Enter" cursor={openCursor} onPress={open}>
+                  Abrir na Mesa
+                </Button>
+              }
+            >
               <div className={styles.capa} data-materia={subject?.color}>
                 <span className={styles.sigla}>{subject?.code}</span>
                 <span className={styles.capaIcone}>
@@ -215,16 +252,8 @@ export function SubjectView({ subjectId, onBack }: SubjectViewProps) {
                   sem capa ainda
                 </span>
               </div>
-              <h2 className={styles.previaTitulo}>{card?.question ?? lesson.title}</h2>
-              <p className={styles.aulaDados}>
-                {card
-                  ? `${card.answer} · aula: ${lesson.title}`
-                  : `${shortDate(lesson.date)} · ${folderName(data, lesson)} · ${cardCount(data, lesson.id)} cartões`}
-              </p>
-              <NavItem block={PREVIEW} index={0} className={styles.abrir} ring="anel" onOpen={open}>
-                Abrir na Mesa <kbd className={styles.teclaAbrir}>Enter</kbd>
-              </NavItem>
-            </div>
+              {!card && <p className={styles.trecho}>{notesExcerpt(lesson.notes)}</p>}
+            </Preview>
           ) : (
             <p className={styles.vazio}>Escolha uma aula para ver a prévia.</p>
           )}

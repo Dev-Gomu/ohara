@@ -40,8 +40,8 @@ export interface CardsEditor {
 export function useCardsEditor(blockId: string, lessonId: string): CardsEditor {
   const [mode, setMode] = useScreenMemory<CardsMode>('mesa.cartoes.modo', 'novo');
   const [source, setSource] = useScreenMemory(`mesa.cartoes.rascunho.${lessonId}`, '');
-  const [saved, setSaved] = useState<number | null>(null);
   const [caret, setCaret] = useState<number | null>(null);
+  const [saved, setSaved] = useState<number | null>(null);
   const field = useRef<HTMLTextAreaElement>(null);
   const drafts = parseDrafts(source);
   const ready = drafts.filter(isComplete).length;
@@ -57,8 +57,8 @@ export function useCardsEditor(blockId: string, lessonId: string): CardsEditor {
     setMode,
     source,
     setSource: (next) => {
-      setSaved(null);
       setSource(next);
+      setSaved(null);
     },
     drafts,
     ready,
@@ -77,8 +77,8 @@ export function useCardsEditor(blockId: string, lessonId: string): CardsEditor {
     newCard: () => {
       const next = appendCard(source);
       setMode('novo');
-      setSaved(null);
       setSource(next.source);
+      setSaved(null);
       setCaret(next.caret);
       dispatch({ type: 'jump', block: blockId, level: 'field' });
     },
@@ -92,7 +92,7 @@ interface CardsBlockProps {
 }
 
 export function CardsBlock({ id, cards, editor }: CardsBlockProps) {
-  const { mode, setMode } = editor;
+  const { mode, setMode, ready, save } = editor;
   const tabs = (
     <BlockTabs label="Cartões">
       <BlockTab selected={mode === 'novo'} onPress={() => setMode('novo')}>
@@ -103,15 +103,32 @@ export function CardsBlock({ id, cards, editor }: CardsBlockProps) {
       </BlockTab>
     </BlockTabs>
   );
+  // Salvar fica no cabeçalho, ao lado do ⋮ (D140); sem rodapé, a área de digitação ganha a altura.
+  const tools = (
+    <>
+      {tabs}
+      {mode === 'novo' && (
+        <span
+          className={styles.salvar}
+          data-bar="bottom"
+          onPointerDown={(event) => event.preventDefault()}
+        >
+          <Button variant="primary" shortcut="Ctrl Enter" disabled={ready === 0} onPress={save}>
+            {ready > 0 ? `Salvar ${ready}` : 'Salvar'}
+          </Button>
+        </span>
+      )}
+    </>
+  );
   return (
-    <Block id={id} title="Cartões" icon="cartoes" tools={tabs} shortcut="Alt C" menu>
+    <Block id={id} title="Cartões" icon="cartoes" tools={tools} shortcut="Alt C" menu>
       {mode === 'novo' ? <Writer editor={editor} /> : <Saved id={id} cards={cards} />}
     </Block>
   );
 }
 
 function Writer({ editor }: { editor: CardsEditor }) {
-  const { source, setSource, drafts, ready, saved, save, field } = editor;
+  const { source, setSource, drafts, saved, field } = editor;
   return (
     <div className={styles.criar}>
       <div className={styles.criarGrade}>
@@ -128,8 +145,15 @@ function Writer({ editor }: { editor: CardsEditor }) {
           onChange={(event) => setSource(event.target.value)}
         />
         <div className={styles.rascunhos} aria-label="Prévia">
+          {saved !== null && (
+            <p className={styles.salvou}>
+              {saved} {saved === 1 ? 'cartão salvo' : 'cartões salvos'}.
+            </p>
+          )}
           {drafts.length === 0 && (
-            <p className={styles.vazio}>A prévia dos cartões aparece aqui.</p>
+            <p className={styles.vazio}>
+              A prévia dos cartões aparece aqui. {HINT}
+            </p>
           )}
           {drafts.map((draft, index) => (
             <article key={index} className={styles.rascunho} data-incompleto={!isComplete(draft)}>
@@ -145,16 +169,6 @@ function Writer({ editor }: { editor: CardsEditor }) {
           ))}
         </div>
       </div>
-      <footer className={styles.rodape} data-bar="bottom">
-        <p className={styles.dica}>
-          {saved !== null ? `${saved} ${saved === 1 ? 'cartão salvo' : 'cartões salvos'}.` : HINT}
-        </p>
-        <span className={styles.salvar} onPointerDown={(event) => event.preventDefault()}>
-          <Button variant="primary" shortcut="Ctrl Enter" disabled={ready === 0} onPress={save}>
-            {ready > 0 ? `Salvar ${ready}` : 'Salvar'}
-          </Button>
-        </span>
-      </footer>
     </div>
   );
 }

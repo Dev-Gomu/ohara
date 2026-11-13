@@ -15,6 +15,7 @@ export interface KeyRow {
   action: KeyAction;
   text: string;
   repeats: boolean; // age ao segurar a tecla
+  screens: readonly Screen[] | 'all'; // em que telas a tecla existe
 }
 
 const ALL: readonly Level[] = ['menu', 'block', 'field', 'nav'];
@@ -22,6 +23,14 @@ const OUTSIDE_TEXT: readonly Level[] = ['menu', 'block', 'nav'];
 const BLOCK_FIELD: readonly Level[] = ['block', 'field', 'nav'];
 const FIELD: readonly Level[] = ['field'];
 const NAV: readonly Level[] = ['nav'];
+
+// Só estes grupos são de algumas telas; o resto vale em todas.
+const GROUP_SCREENS: Readonly<Partial<Record<KeyGroup, readonly Screen[]>>> = {
+  Blocos: ['hub', 'mesa', 'acervo'],
+  Slides: ['mesa', 'acervo'],
+  Editor: ['mesa', 'acervo'],
+  Treino: ['treino'],
+};
 
 const row = (
   group: KeyGroup,
@@ -32,7 +41,17 @@ const row = (
   action: KeyAction,
   text: string,
   repeats = false,
-): KeyRow => ({ group, label, code, mods, levels, action, text, repeats });
+): KeyRow => ({
+  group,
+  label,
+  code,
+  mods,
+  levels,
+  action,
+  text,
+  repeats,
+  screens: GROUP_SCREENS[group] ?? 'all',
+});
 
 export const SCREEN_NAMES: Readonly<Record<Screen, string>> = {
   hub: 'Hub',
@@ -176,7 +195,7 @@ export const KEYS: readonly KeyRow[] = [
     'a',
     BLOCK_FIELD,
     { type: 'goToTopBar' },
-    'Barra de cima; nas Anotações, mostra ou oculta a de formatação',
+    'Barra de cima; nas Anotações, a de formatação',
   ),
   row('Blocos', 'Alt F', 'KeyF', 'a', BLOCK_FIELD, { type: 'goToField' }, 'Vai ao campo'),
   row(

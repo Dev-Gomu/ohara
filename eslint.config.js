@@ -36,6 +36,8 @@ export default tseslint.config(
   {
     ignores: [
       'dist',
+      'lab/livre',
+      'lab/_dados.ts',
       'dev-dist',
       'node_modules',
       'playwright-report',

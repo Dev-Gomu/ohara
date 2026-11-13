@@ -46,12 +46,12 @@ export function Block(props: BlockProps) {
       data-foco={onBlock ? 'bloco' : inside ? 'dentro' : undefined}
       data-pagina={page}
       data-celular={shown}
-      aria-label={title}
+      aria-label={title ?? label}
     >
       {title !== undefined && (
         <header className={styles.titulo}>
           {icon ? (
-            <h2 className={`${styles.nome} ${styles.icone}`} aria-label={title} title={title}>
+            <h2 className={`${styles.nome} ${styles.icone}`} aria-label={title ?? label} title={title}>
               <BlockIcon name={icon} />
             </h2>
           ) : (
