@@ -2,7 +2,7 @@
 // O bloco Anotações ganha o ícone de caderno (sem caneta). A barra é a decidida em D145 (barra-8, V2).
 // V1: minimalista, ícone + barra na mesma linha (fundida). V2: faixa aninhada sem ícone (D142). V3: ícone + barra fundida numa pílula.
 import { useState } from 'react';
-import { LUCIDE } from '../icones-formatacao/lucide';
+import { LUCIDE } from './_lucide';
 import {
   Abas,
   Caixa,

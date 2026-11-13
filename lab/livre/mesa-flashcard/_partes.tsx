@@ -163,11 +163,6 @@ function Editor({ densidade }: { densidade: Densidade }) {
           <CartaoEditor key={c} linhas={linhas} c={c} cursor={cursor} mover={(cartao, linha) => setCursor({ cartao, linha })} />
         ))}
       </div>
-      <footer className="fc-rodape">
-        <Button variant="primary" shortcut="Ctrl Enter">
-          Salvar 1
-        </Button>
-      </footer>
     </div>
   );
 }
@@ -211,7 +206,12 @@ export function MesaFlashcard() {
         <Block id="notas" title="Anotações" icon="notas" shortcut="Alt A" menu fixed={fixo('notas')}>
           <Nota />
         </Block>
-        <Block id="cartoes" title="Cartões" icon="cartoes" tools={<AbasCartoes />} shortcut="Alt C" menu fixed={fixo('cartoes')}>
+        <Block id="cartoes" title="Cartões" icon="cartoes" tools={
+            <>
+              <AbasCartoes />
+              <Button variant="quiet" shortcut="Ctrl Enter">Salvar 1</Button>
+            </>
+          } shortcut="Alt C" menu fixed={fixo('cartoes')}>
           <Editor densidade={densidade} />
         </Block>
       </Tela>
