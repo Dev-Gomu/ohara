@@ -203,6 +203,8 @@
 - src/core/secret/vault.ts: D87: PBKDF2-SHA256 com 600 000 iterações. O valor fica gravado na vault para poder subir depois.
 - src/core/study/agenda.test.ts: (sem comentário nem export no topo)
 - src/core/study/agenda.ts: A semana mostra de 7h às 19h; aula fora disso alarga a faixa em vez de sumir.
+- src/core/study/ankiExport.test.ts: (sem comentário nem export no topo)
+- src/core/study/ankiExport.ts: Preparação da exportação para o Anki (B02, D139): cada marca do texto vira HTML simples
 - src/core/study/attendance.test.ts: 2026-11-02 é segunda-feira.
 - src/core/study/attendance.ts: Aprovação por frequência: pelo menos 75% de presença (D100).
 - src/core/study/cardFormat.test.ts: (sem comentário nem export no topo)
