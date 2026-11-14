@@ -30,6 +30,9 @@ function change(key: string, value: boolean): void {
 
 export const toggleCompact = (): void => change(COMPACT, !current().compact);
 export const toggleColorTitles = (): void => change(COLOR, !current().colorTitles);
+export const setCompact = (on: boolean): void => change(COMPACT, on);
+export const setColorTitles = (on: boolean): void => change(COLOR, on);
+export const currentCardView = (): CardView => current();
 
 export function useCardView(): CardView {
   return useSyncExternalStore(

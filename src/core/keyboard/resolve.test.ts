@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { Level } from './actions';
+import { OPTION_KEYS } from './keys';
 import { resolve, type KeyContext, type KeyInput } from './resolve';
 
 const press = (code: string, extra: Partial<KeyInput> = {}): KeyInput => ({
@@ -199,5 +200,28 @@ describe('linha do cartão novo', () => {
   });
   it('com modificador a tabela de teclas continua valendo', () => {
     expect(resolve(press('Enter', { ctrl: true }), at('any'))?.type).toBe('saveCards');
+  });
+});
+
+describe('linha com opções curtas (D160)', () => {
+  const choosing = { level: 'nav', overlay: 'none', choosing: true } as const;
+
+  it.each(OPTION_KEYS.map((key) => [key.label, key.code, key.action] as const))(
+    '%s troca a opção',
+    (_label, code, action) => {
+      expect(resolve(press(code), choosing)).toEqual(action);
+    },
+  );
+  it.each(OPTION_KEYS.map((key) => [key.label, key.code] as const))(
+    'sem opções, %s volta a andar entre blocos',
+    (_label, code) => {
+      expect(resolve(press(code), at('nav'))?.type).toBe('moveFocus');
+    },
+  );
+  it('com Alt, a seta continua indo ao bloco vizinho', () => {
+    expect(resolve(press('ArrowLeft', { alt: true }), choosing)?.type).toBe('moveFocus');
+  });
+  it('dentro de uma janela as setas são dela', () => {
+    expect(resolve(press('ArrowLeft'), { ...choosing, overlay: 'window' })).toBeNull();
   });
 });

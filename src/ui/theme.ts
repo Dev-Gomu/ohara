@@ -22,8 +22,15 @@ export function applyTheme(theme: Theme = storedTheme() ?? systemTheme()): void 
   document.documentElement.dataset.tema = theme;
 }
 
+export function currentTheme(): Theme {
+  return document.documentElement.dataset.tema === 'escuro' ? 'escuro' : 'claro';
+}
+
 export function toggleTheme(): void {
-  const theme = document.documentElement.dataset.tema === 'escuro' ? 'claro' : 'escuro';
+  setTheme(currentTheme() === 'escuro' ? 'claro' : 'escuro');
+}
+
+export function setTheme(theme: Theme): void {
   applyTheme(theme);
   try {
     localStorage.setItem(KEY, theme);

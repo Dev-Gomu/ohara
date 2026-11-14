@@ -22,12 +22,16 @@ export function currentTopAnimation(): TopAnimation {
 
 export function cycleTopAnimation(): TopAnimation {
   const next = MODES[(MODES.indexOf(currentTopAnimation()) + 1) % MODES.length] ?? 'elastico';
+  setTopAnimation(next);
+  return next;
+}
+
+export function setTopAnimation(next: TopAnimation): void {
   try {
     localStorage.setItem(KEY, next);
   } catch {
     // Vale só até recarregar.
   }
-  return next;
 }
 
 // Cada tela desenha a própria barra, então o índice da tela anterior vive aqui.

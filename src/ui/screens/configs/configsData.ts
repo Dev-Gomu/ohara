@@ -7,21 +7,16 @@ import { downloadBytes } from '../../study/download';
 import { showNotice } from '../../study/notice';
 import { ask } from '../../shell/PromptWindow';
 import { storage } from '../../study/study';
-import {
-  currentTopAnimation,
-  cycleTopAnimation,
-  TOP_ANIMATION_NAMES,
-} from '../../shell/topAnimation';
-import { currentTopTabs, cycleTopTabs, TOP_TABS_NAMES } from '../../shell/topTabs';
-import {
-  CORNER_NAMES,
-  currentCorners,
-  currentPalette,
-  cycleCorners,
-  cyclePalette,
-  PALETTE_NAMES,
-  toggleTheme,
-} from '../../theme';
+import { appearanceRows } from './appearanceRows';
+
+// Opções curtas da linha (D160): ← → ou toque escolhem; Enter passa para a próxima.
+export interface Choice {
+  // 'curta': opções escritas à direita; 'paleta' e 'menu': amostras com marca e nome embaixo.
+  look: 'curta' | 'paleta' | 'menu';
+  options: readonly { id: string; name: string }[];
+  current: string;
+  set: (id: string) => void;
+}
 
 export interface Row {
   label: string;
@@ -32,11 +27,14 @@ export interface Row {
   group?: string;
   // Aviso em palavras (nunca só a cor) para ação que apaga ou substitui.
   warning?: string;
+  choice?: Choice;
   run?: () => void;
 }
 
 export interface Section {
   name: string;
+  // Uma linha de resumo sob o nome da seção (D160).
+  summary: string;
   rows: readonly Row[];
 }
 
@@ -111,45 +109,10 @@ function aboutRows(diag: Diagnostics | null): Row[] {
 
 export function buildSections(diag: Diagnostics | null): readonly Section[] {
   return [
-    {
-      name: 'Aparência',
-      rows: [
-        {
-          group: 'Cores',
-          label: 'Tema',
-          detail: 'Claro ou escuro, neste aparelho.',
-          value: document.documentElement.dataset.tema === 'escuro' ? 'Escuro' : 'Claro',
-          run: toggleTheme,
-        },
-        {
-          label: 'Paleta de cores',
-          detail: 'Gelo suave, Gelo ou Índigo.',
-          value: PALETTE_NAMES[currentPalette()],
-          run: () => showNotice(`Paleta: ${PALETTE_NAMES[cyclePalette()]}.`),
-        },
-        {
-          label: 'Cantos',
-          detail: 'Arredondado ou Contido (cantos mais retos).',
-          value: CORNER_NAMES[currentCorners()],
-          run: () => showNotice(`Cantos: ${CORNER_NAMES[cycleCorners()]}.`),
-        },
-        {
-          group: 'Barra do topo',
-          label: 'Animação',
-          detail: 'Ao trocar de tela: Elástico ou Nenhuma.',
-          value: TOP_ANIMATION_NAMES[currentTopAnimation()],
-          run: () => showNotice(`Animação: ${TOP_ANIMATION_NAMES[cycleTopAnimation()]}.`),
-        },
-        {
-          label: 'Menu de telas',
-          detail: 'Só números, número com ícone, só ícones, ou número pequeno em cima ou embaixo.',
-          value: TOP_TABS_NAMES[currentTopTabs()],
-          run: () => showNotice(`Menu de telas: ${TOP_TABS_NAMES[cycleTopTabs()]}.`),
-        },
-      ],
-    },
+    { name: 'Aparência', summary: 'Tema, paleta, barra do topo, cartões', rows: appearanceRows() },
     {
       name: 'Atalhos',
+      summary: 'Lista gerada da tabela de teclas',
       rows: [
         {
           label: 'Ver todos os atalhos',
@@ -158,9 +121,10 @@ export function buildSections(diag: Diagnostics | null): readonly Section[] {
         },
       ],
     },
-    { name: 'Sincronização', rows: [{ label: 'Google Drive', detail: LATER }] },
+    { name: 'Sincronização', summary: 'Google Drive · em breve', rows: [{ label: 'Google Drive', detail: LATER }] },
     {
       name: 'Backup',
+      summary: 'Exportar, importar, limpar arquivos',
       rows: [
         {
           group: 'Cópia dos dados',
@@ -181,7 +145,7 @@ export function buildSections(diag: Diagnostics | null): readonly Section[] {
         },
       ],
     },
-    { name: 'Segurança', rows: [{ label: 'Frase de acesso das Notas', detail: LATER }] },
-    { name: 'Sobre', rows: aboutRows(diag) },
+    { name: 'Segurança', summary: 'Frase de acesso das Notas · em breve', rows: [{ label: 'Frase de acesso das Notas', detail: LATER }] },
+    { name: 'Sobre', summary: 'Versão, banco e espaço usado', rows: aboutRows(diag) },
   ];
 }

@@ -1,0 +1,133 @@
+/* Opções da linha de Configs (D160, bancada configs-amostra V1). */
+.par {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+}
+
+.op {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0 var(--e3);
+  border-radius: var(--raio-pilula);
+  color: var(--cor-texto-2);
+  font: var(--ui-apoio);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.op[data-on='true'] {
+  background: var(--cor-escolhido);
+  color: var(--cor-texto);
+  font-weight: 700;
+}
+
+.amostras {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e2);
+}
+
+.amostra {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--e2);
+  min-width: 72px;
+  padding: var(--e2) var(--e3);
+  border-radius: var(--raio-campo);
+  color: var(--cor-texto);
+  font: var(--ui-apoio);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.amostra[data-on='true'] {
+  background: var(--cor-escolhido);
+  font-weight: 700;
+}
+
+.cores {
+  display: flex;
+  gap: 3px;
+}
+
+.cores i {
+  width: 16px;
+  height: 8px;
+  border-radius: var(--raio-pilula);
+  outline: 1px solid color-mix(in srgb, var(--cor-texto) 16%, transparent);
+}
+
+.cores[data-amostra='original'] i:nth-child(1) { background: var(--amostra-original-1); }
+.cores[data-amostra='original'] i:nth-child(2) { background: var(--amostra-original-2); }
+.cores[data-amostra='original'] i:nth-child(3) { background: var(--amostra-original-3); }
+.cores[data-amostra='a'] i:nth-child(1) { background: var(--amostra-a-1); }
+.cores[data-amostra='a'] i:nth-child(2) { background: var(--amostra-a-2); }
+.cores[data-amostra='a'] i:nth-child(3) { background: var(--amostra-a-3); }
+.cores[data-amostra='b'] i:nth-child(1) { background: var(--amostra-b-1); }
+.cores[data-amostra='b'] i:nth-child(2) { background: var(--amostra-b-2); }
+.cores[data-amostra='b'] i:nth-child(3) { background: var(--amostra-b-3); }
+
+.nome {
+  display: flex;
+  align-items: center;
+  gap: var(--e2);
+}
+
+.marca {
+  flex: none;
+  width: 12px;
+  height: 5px;
+  border: 1.5px solid var(--cor-texto-2);
+  border-radius: var(--raio-pilula);
+}
+
+.amostra[data-on='true'] .marca {
+  border-color: var(--cor-acao);
+  background: var(--cor-acao);
+}
+
+.abas {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 26px;
+}
+
+.aba {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  min-height: 22px;
+  padding: 0 6px;
+  border-radius: var(--raio-pilula);
+  color: var(--cor-texto);
+  font: var(--ui-apoio);
+  font-weight: 700;
+}
+
+.aba[data-on='true'] {
+  background: var(--cor-cartao);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--cor-texto) 14%, transparent);
+}
+
+.aba svg {
+  width: 13px;
+  height: 13px;
+}
+
+.aba sup,
+.aba sub {
+  font-size: 0.7em; /* lint-visual-ok: número pequeno da amostra do menu */
+}
+
+/* Cartão real a 70%: zoom (e não transform) para a altura seguir o conteúdo, sem sobra no Compacto. */
+.cartao {
+  flex: none;
+  display: block;
+  width: 300px;
+  zoom: 0.7;
+  pointer-events: none;
+}

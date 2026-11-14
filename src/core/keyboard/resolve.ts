@@ -1,5 +1,5 @@
 import type { Level, Resolved } from './actions';
-import { ADJUST_KEYS, KEYS, LINE_KEYS, type KeyRow, type LineSpot, type Mods } from './keys';
+import { ADJUST_KEYS, KEYS, LINE_KEYS, OPTION_KEYS, type KeyRow, type LineSpot, type Mods } from './keys';
 
 export interface KeyInput {
   code: string;
@@ -22,6 +22,8 @@ export interface KeyContext {
   adjusting?: boolean;
   // Cursor numa linha do cartão novo: onde ele está na linha decide se Enter, Backspace e setas são do cartão.
   cardLine?: readonly LineSpot[];
+  // A linha acesa tem opções curtas: ← → trocam a opção em vez de ir ao bloco vizinho.
+  choosing?: boolean;
 }
 
 function modsOf(input: KeyInput): string {
@@ -61,6 +63,10 @@ export function resolve(
       (key) => key.code === input.code && key.shift === input.shift && mods === (input.shift ? 's' : ''),
     );
     if (adjust) return input.repeat && adjust.action.type === 'tableAdjustEnd' ? { type: 'swallow' } : adjust.action;
+  }
+  if (context.choosing && context.level === 'nav' && context.overlay === 'none' && mods === '') {
+    const option = OPTION_KEYS.find((key) => key.code === input.code);
+    if (option) return option.action;
   }
   if (context.cardLine && context.overlay === 'none' && mods === '') {
     const line = LINE_KEYS.find((key) => key.code === input.code && context.cardLine?.includes(key.when));

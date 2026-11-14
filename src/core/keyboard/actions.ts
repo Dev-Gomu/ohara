@@ -21,6 +21,8 @@ export type KeyAction =
   // Modo Ajustar da tabela (D149): delta em pixels, já com o passo pequeno ou grande.
   | { type: 'tableAdjust'; axis: 'width' | 'height'; delta: number }
   | { type: 'tableAdjustEnd' }
+  // Linha com opções curtas (Configs, D160): ← → trocam a opção escolhida.
+  | { type: 'optionStep'; delta: -1 | 1 }
   | { type: 'cardLineSplit' }
   | { type: 'cardLineBack' }
   | { type: 'cardLineMove'; delta: -1 | 1 }

@@ -7,17 +7,20 @@ export type TopTabs = 'numeros' | 'ambos' | 'icones' | 'sobrescrito' | 'subscrit
 
 const MODES: readonly TopTabs[] = ['numeros', 'ambos', 'icones', 'sobrescrito', 'subscrito'];
 const KEY = prefixed('abas-topo');
+const listeners = new Set<() => void>();
+let memory: TopTabs | null = null;
 
 export const TOP_TABS_NAMES: Readonly<Record<TopTabs, string>> = {
   numeros: 'Só números',
-  ambos: 'Número com ícone',
+  ambos: 'Número e ícone',
   icones: 'Só ícones',
-  sobrescrito: 'Ícone com número pequeno em cima',
-  subscrito: 'Ícone com número pequeno embaixo',
+  sobrescrito: 'Número em cima',
+  subscrito: 'Número embaixo',
 };
 
 // Preferência de aparelho, como o tema: sem armazenamento vale o padrão.
 export function currentTopTabs(): TopTabs {
+  if (memory) return memory;
   try {
     const value = localStorage.getItem(KEY);
     return MODES.find((mode) => mode === value) ?? 'ambos';
@@ -26,15 +29,15 @@ export function currentTopTabs(): TopTabs {
   }
 }
 
-const listeners = new Set<() => void>();
-let memory: TopTabs | null = null;
-
-function read(): TopTabs {
-  return memory ?? currentTopTabs();
-}
+const read = currentTopTabs;
 
 export function cycleTopTabs(): TopTabs {
   const next = MODES[(MODES.indexOf(read()) + 1) % MODES.length] ?? 'ambos';
+  setTopTabs(next);
+  return next;
+}
+
+export function setTopTabs(next: TopTabs): void {
   memory = next;
   try {
     localStorage.setItem(KEY, next);
@@ -42,7 +45,6 @@ export function cycleTopTabs(): TopTabs {
     // Vale só até recarregar.
   }
   listeners.forEach((listener) => listener());
-  return next;
 }
 
 export function useTopTabs(): TopTabs {

@@ -305,7 +305,8 @@
 - src/ui/faltas/summary.ts: Horas faltadas e o limite até agora; null enquanto não houve aula.
 - src/ui/keyboard/bars.ts: Barras de um bloco: a de cima é o cabeçalho (abas, ferramentas) e a de baixo é o rodapé
 - src/ui/keyboard/cardLine.ts: Uma linha visual cabe em ~1,6 vezes a altura da letra; acima disso o texto quebrou em mais linhas.
-- src/ui/keyboard/listener.ts: Painel flutuante de um campo (a bolha das Anotações): tocar nele mantém o cursor no texto.
+- src/ui/keyboard/choice.ts: A linha acesa tem opções curtas (D160)? A tela marca o item com data-choice; o listener precisa saber na hora da tecla.
+- src/ui/keyboard/listener.ts: (sem comentário nem export no topo)
 - src/ui/keyboard/store.ts: Devolver false deixa a tecla seguir o caminho normal.
 - src/ui/keyboard/tableAdjust.ts: Modo Ajustar da tabela (D149). Fora do React: o listener precisa saber na hora da tecla.
 - src/ui/keyboard/useBlocks.ts: Cada tela declara seus blocos. Sem deps: a contagem de itens muda com o filtro.
@@ -330,9 +331,12 @@
 - src/ui/screens/agenda/AgendaWeek.tsx: Semana com horas: o dia e as provas no alto, as aulas na altura do horário.
 - src/ui/screens/agenda/agendaData.ts: Vazio na Grade, que é regra semanal e não tem data.
 - src/ui/screens/agenda/agendaForms.ts: (sem comentário nem export no topo)
-- src/ui/screens/configs/Configs.module.css: (sem comentário nem export no topo)
-- src/ui/screens/configs/Configs.tsx: Quem troca um ajuste muda o valor da linha: o número sobe para a lista ser montada de novo.
-- src/ui/screens/configs/configsData.ts: Valor de hoje, na ponta da linha (D144): o que a Enter troca fica à vista.
+- src/ui/screens/configs/ChoiceView.tsx: Tocar numa opção escolhe só ela: o clique não chega à linha, que passaria para a próxima.
+- src/ui/screens/configs/Choices.module.css: Opções da linha de Configs (D160, bancada configs-amostra V1).
+- src/ui/screens/configs/Configs.module.css: Grupo Cartões: linhas à esquerda e o cartão real ao lado (D160).
+- src/ui/screens/configs/Configs.tsx: Grupo que mostra, ao lado das linhas, o cartão real que muda com elas (D160).
+- src/ui/screens/configs/appearanceRows.ts: Enter passa à próxima opção, voltando à primeira no fim.
+- src/ui/screens/configs/configsData.ts: Opções curtas da linha (D160): ← → ou toque escolhem; Enter passa para a próxima.
 - src/ui/screens/hub/Hub.module.css: (sem comentário nem export no topo)
 - src/ui/screens/hub/Hub.tsx: Altura que as Provas precisam: cartão de 86 px mais a margem de 8 px dos dois lados.
 - src/ui/screens/hub/HubBlocks.tsx: `export function ExamsBlock({ id, days }: { id: string; days: readonly AssessmentDay[] })`

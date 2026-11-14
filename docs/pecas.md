@@ -151,7 +151,7 @@
   Cursor de peças que não são NavItem (Button): o item escolhido de um bloco em nível de navegação.
 - `function NavItem(props: NavItemProps)`
   Item de campo navegável. Quem desenha a seleção é a tela, pelo atributo data-sel.
-  `interface NavItemProps { block: string; index: number; className?: string; ring?: 'anel' | 'anel-interno' | 'nenhum' | 'cursor'; onOpen?: () => void; label?: string; color?: string; subject?: number | undefined; children: ReactNode; }`
+  `interface NavItemProps { block: string; index: number; className?: string; ring?: 'anel' | 'anel-interno' | 'nenhum' | 'cursor'; onOpen?: () => void; label?: string; color?: string; subject?: number | undefined; choice?: boolean; children: ReactNode; }`
 
 ### Pill.tsx
 - `function SubjectPill({ code, color }: { code: string; color: number })`
@@ -256,6 +256,9 @@
 - `interface CardView { compact: boolean; colorTitles: boolean; }`
 - `const toggleCompact = (): void =>`
 - `const toggleColorTitles = (): void =>`
+- `const setCompact = (on: boolean): void =>`
+- `const setColorTitles = (on: boolean): void =>`
+- `const currentCardView = (): CardView =>`
 - `function useCardView(): CardView`
 
 ### download.ts

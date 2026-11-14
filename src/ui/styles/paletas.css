@@ -86,3 +86,28 @@
   --cor-nota-titulo: #e9ecf8;
   --cor-veu: rgb(15 17 25 / 60%);
 }
+
+/* Amostras das paletas em Configs (D160): fundo, cartão e ação de cada uma, no tema atual. */
+:root {
+  --amostra-original-1: #e7edf4;
+  --amostra-original-2: #f7fafd;
+  --amostra-original-3: #426cc0;
+  --amostra-a-1: #e9eef5;
+  --amostra-a-2: #f8fafd;
+  --amostra-a-3: #121a2b;
+  --amostra-b-1: #e9ecf2;
+  --amostra-b-2: #f8f9fc;
+  --amostra-b-3: #5766c0;
+}
+
+:root[data-tema='escuro'] {
+  --amostra-original-1: #0c121c;
+  --amostra-original-2: #141c2a;
+  --amostra-original-3: #94b4ea;
+  --amostra-a-1: #0b111c;
+  --amostra-a-2: #131b2a;
+  --amostra-a-3: #86a8ee;
+  --amostra-b-1: #0f1119;
+  --amostra-b-2: #181b26;
+  --amostra-b-3: #9aa6ea;
+}

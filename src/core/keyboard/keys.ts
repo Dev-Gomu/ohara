@@ -368,6 +368,18 @@ export const ADJUST_KEYS: readonly AdjustRow[] = [
   { label: 'Esc', code: 'Escape', shift: false, action: { type: 'tableAdjustEnd' } },
 ];
 
+// Só valem com a linha acesa de uma lista que tem opções curtas (Configs, D160); por isso ficam fora de KEYS.
+export interface OptionRow {
+  label: string;
+  code: string;
+  action: KeyAction;
+}
+
+export const OPTION_KEYS: readonly OptionRow[] = [
+  { label: '←', code: 'ArrowLeft', action: { type: 'optionStep', delta: -1 } },
+  { label: '→', code: 'ArrowRight', action: { type: 'optionStep', delta: 1 } },
+];
+
 // Só valem com o cursor numa linha do cartão novo (D138); por isso ficam fora de KEYS. "when" diz em que
 // ponto da linha a tecla é do cartão: Enter sempre; Backspace no começo do texto; ↑ na primeira linha visual
 // (ou no começo); ↓ na última (ou no fim).
