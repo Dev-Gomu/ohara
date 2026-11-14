@@ -15,3 +15,14 @@ export function downloadText(text: string, filename: string): void {
   link.click();
   setTimeout(() => URL.revokeObjectURL(link.href), 1000);
 }
+
+export function fileSlug(text: string, fallback: string): string {
+  return (
+    text
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-|-$/g, '') || fallback
+  );
+}

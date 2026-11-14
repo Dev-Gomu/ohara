@@ -4,8 +4,6 @@ import { leaf, leaves, split } from '../../../core/mosaic/tree';
 import { currentEventIndex, eventsOn, subjectOf } from '../../../core/study/queries';
 import type { StudyData } from '../../../core/study/types';
 import { Block } from '../../components/Block';
-import { ankiTsv } from '../../../core/study/ankiExport';
-import { downloadText } from '../../study/download';
 import { Button } from '../../components/Button';
 import { SubjectPill } from '../../components/Pill';
 import { ModeIndicator } from '../../components/Island';
@@ -52,14 +50,6 @@ export function Mesa() {
   const [lessonId] = useScreenMemory(MESA_LESSON, defaultLesson(data));
   return <LessonDesk key={lessonId} data={data} lessonId={lessonId} />;
 }
-
-const slug = (text: string): string =>
-  text
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '') || 'aula';
 
 function LessonDesk({ data, lessonId }: { data: StudyData; lessonId: string }) {
   const lesson = data.lessons.find((item) => item.id === lessonId);
@@ -143,16 +133,6 @@ function LessonDesk({ data, lessonId }: { data: StudyData; lessonId: string }) {
               label: cardView.colorTitles ? 'Desligar cor nos títulos' : 'Ligar cor nos títulos',
               run: toggleColorTitles,
             },
-            ...(cards.length > 0
-              ? [
-                  {
-                    id: 'anki',
-                    label: 'Exportar para o Anki',
-                    run: () =>
-                      downloadText(ankiTsv(cards), `anki-${slug(lesson?.title ?? 'aula')}.txt`),
-                  },
-                ]
-              : []),
             cardsEditor.mode === 'novo'
               ? {
                   id: 'salvos',

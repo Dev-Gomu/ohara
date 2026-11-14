@@ -10,6 +10,7 @@ import {
   togglePick,
   type Scope,
 } from '../../../core/study/scope';
+import { ankiTsv } from '../../../core/study/ankiExport';
 import { capTiles, subjectTiles } from '../../../core/study/subjectTiles';
 import { Block } from '../../components/Block';
 import { NavItem, useSelectedIndex } from '../../components/NavItem';
@@ -17,6 +18,7 @@ import { dispatch } from '../../keyboard/store';
 import { useBlocks } from '../../keyboard/useBlocks';
 import { ScreenFrame } from '../../shell/ScreenFrame';
 import { useScreenMemory } from '../../study/screenMemory';
+import { downloadText, fileSlug } from '../../study/download';
 import { today, useStudy } from '../../study/study';
 import styles from './Treino.module.css';
 import inicio from './Inicio.module.css';
@@ -79,6 +81,11 @@ export function TrainingChoice({ onStart }: TrainingChoiceProps) {
   const start = () => {
     if (queue.length > 0) onStart(queue.map((card) => card.id));
   };
+  // Exporta todos os cartões do recorte (não só os de hoje), prontos para importar no Anki (B02).
+  const exportAnki = () => {
+    if (cards.length === 0) return;
+    downloadText(ankiTsv(cards), `anki-${fileSlug(describeScope(data, scope), 'cartoes')}.txt`);
+  };
   const goToSubjects = () =>
     dispatch({ type: 'jump', block: SUBJECTS, level: 'nav', items: { [SUBJECTS]: 0 } });
 
@@ -94,9 +101,10 @@ export function TrainingChoice({ onStart }: TrainingChoiceProps) {
       {
         id: SUMMARY,
         kind: 'nav',
-        nav: { axis: 'y', count: 2 },
+        nav: { axis: 'y', count: 3 },
         neighbors: { down: PERIOD, ...(adjust ? { right: ROWS } : {}) },
-        onActivate: (index) => (index === 0 ? start() : setAdjust(!adjust)),
+        onActivate: (index) =>
+          index === 0 ? start() : index === 1 ? setAdjust(!adjust) : exportAnki(),
       },
       {
         id: PERIOD,
@@ -182,6 +190,15 @@ export function TrainingChoice({ onStart }: TrainingChoiceProps) {
             >
               {adjust ? 'Ocultar o que treinar' : 'Ajustar o que treinar'}
               <span aria-hidden="true">{adjust ? ' ‹' : ' ›'}</span>
+            </NavItem>
+            <NavItem
+              block={SUMMARY}
+              index={2}
+              className={inicio.ajustar}
+              ring="anel"
+              onOpen={exportAnki}
+            >
+              Exportar para o Anki
             </NavItem>
           </Block>
 
