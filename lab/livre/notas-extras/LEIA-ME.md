@@ -1,5 +1,7 @@
 # Bancada notas-extras (noite 14/11, terminada às 13h)
 
+**Decisão (14/11): V1 aprovada pelo usuário (D165), com a meta do ano na linha do 2º semestre.**
+
 **Link:** http://localhost:5173/ohara/lab/livre.html?ideia=notas-extras (vale depois que a branch for trazida ao main)
 
 ## O problema
