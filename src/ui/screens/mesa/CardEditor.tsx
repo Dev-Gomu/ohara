@@ -1,6 +1,7 @@
 import { useLayoutEffect } from 'react';
 import { imageIdOf, isFrontImage } from '../../../core/study/cardImages';
 import { groupLines, markLength, splitLines } from '../../../core/study/cardLines';
+import { hasCloze } from '../../../core/study/cloze';
 import { parseLine, type LineKind } from '../../../core/study/cardText';
 import { Inline } from '../../components/CardBack';
 import { CardPicture, ImageAttach } from '../../components/CardImages';
@@ -13,7 +14,7 @@ const BULLET: Partial<Record<LineKind, string>> = { item: '•', pro: '+', con: 
 
 function Formatted({ raw, front, onPress }: { raw: string; front: boolean; onPress: () => void }) {
   const { kind, text } = parseLine(raw);
-  const body = text === '' ? null : <Inline text={text} />;
+  const body = text === '' ? null : <Inline text={text} cloze={front ? 'esconde' : undefined} />;
   const press = { onMouseDown: (event: React.MouseEvent) => event.preventDefault(), onClick: onPress };
   if (front) {
     return (
@@ -145,7 +146,7 @@ export function CardEditor({ editor, images }: { editor: CardsEditor; images: Ca
               {frontImages.map((index) => render(index, true, false))}
             </div>
             <div className={styles.verso} data-cor-titulos={view.colorTitles}>
-              {rest.length === 0 && line !== first && (
+              {rest.length === 0 && line !== first && !hasCloze(lines[first] ?? '') && (
                 <p className={styles.falta}>Falta o verso</p>
               )}
               {rest.map((index) => render(index, false, index === rest.at(-1)))}

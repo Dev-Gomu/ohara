@@ -28,6 +28,9 @@
   background: var(--cor-acao);
   color: var(--cor-sobre-acao);
   font: var(--voz-mini);
+  font-family: var(--fonte-leitura);
+  font-weight: 600;
+  line-height: 1.45;
 }
 
 .verso {

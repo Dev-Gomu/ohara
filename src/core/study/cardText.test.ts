@@ -3,8 +3,9 @@ import {
   appendCard,
   backBlocks,
   backPreview,
-  backLines,
+  expandDrafts,
   isComplete,
+  backLines,
   keepIncomplete,
   parseDrafts,
   parseLine,
@@ -97,5 +98,14 @@ describe('texto do editor de cartões', () => {
   it('Alt N abre um cartão novo no fim', () => {
     expect(appendCard('')).toEqual({ source: '@ ', caret: 2 });
     expect(appendCard('@ IL-6\nFígado\n').source).toBe('@ IL-6\nFígado\n\n@ ');
+  });
+});
+
+describe('cloze nos rascunhos', () => {
+  it('cloze sem verso é completo e vira um cartão por número', () => {
+    const drafts = parseDrafts('@ A {{c1::IL-6}} e {{c2::PCR}}');
+    expect(drafts.every(isComplete)).toBe(true);
+    expect(expandDrafts(drafts).map((d) => d.front)).toEqual(['A {{c1::IL-6}} e PCR', 'A IL-6 e {{c1::PCR}}']);
+    expect(isComplete({ front: 'sem lacuna', back: '' })).toBe(false);
   });
 });

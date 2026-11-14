@@ -18,13 +18,17 @@
   `interface ButtonProps { variant?: 'primary' | 'plain' | 'quiet'; shortcut?: string; cursor?: boolean; menuItem?: boolean; disabled?: boolean; label?: string; onPress?: () => void; children: ReactNode; }`
 
 ### CardBack.tsx
-- `function Inline({ text }: { text: string })`
+- `function Inline({ text, cloze }: InlineProps)`
+  `interface InlineProps { text: string; cloze?: 'esconde' | 'revela'; }`
 - `function CardBack({ back, compact, colorTitles = true, images }: CardBackProps)`
   Verso: seção (#), subtítulo (##, recuado) e texto; em duas colunas quando o cartão é largo.
   `interface CardBackProps { back: string; compact?: boolean; colorTitles?: boolean; images?: ImageSource | undefined; }`
 - `function StudyCard({ front, back, compact, colorTitles, images }: StudyCardProps)`
   Uma peça só (D138, D155): frente cheia no azul de ação e verso no mesmo contorno.
   `interface StudyCardProps extends CardBackProps { front: string; }`
+- `function ClozeFace({ text, side }: { text: string; side: 'frente' | 'verso' })`
+  Cartão cloze (D157, D159): frente azul cheia com a lacuna e verso claro com a resposta, lado a lado.
+- `function ClozeCard({ text }: { text: string })`
 
 ### CardImages.tsx
 - `interface ImageSource { sideOf: SideOf; src: (id: string) => string | undefined; onZoom?: (id: string) => void; }`

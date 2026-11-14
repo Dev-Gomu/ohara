@@ -1,6 +1,7 @@
 // Texto do editor de cartões. Cada cartão começa numa linha "@ frente"; as linhas
 // seguintes são o verso. Marcas no começo da linha dão forma ao verso, como no app antigo.
 // Tudo fica em texto puro: quem desenha é a tela, sem HTML vindo do usuário.
+import { expandCloze, hasCloze } from './cloze';
 import { replaceSymbols } from './symbols';
 
 export type LineKind =
@@ -67,7 +68,17 @@ export function parseDrafts(source: string): Draft[] {
     .filter((draft) => draft.front || draft.back);
 }
 
-export const isComplete = (draft: Draft): boolean => draft.front !== '' && draft.back !== '';
+// Cloze (D157): a frase com lacuna já basta; o verso é a própria frase.
+export const isComplete = (draft: Draft): boolean =>
+  draft.front !== '' && (draft.back !== '' || hasCloze(draft.front));
+
+// Rascunho cloze vira um cartão por número (cada um com a lacuna da vez).
+export const expandDrafts = (drafts: readonly Draft[]): Draft[] =>
+  drafts.flatMap((draft) =>
+    hasCloze(draft.front)
+      ? expandCloze(draft.front).map((front) => ({ front, back: draft.back }))
+      : [draft],
+  );
 
 export interface BackLine extends Line {
   // Posição na lista numerada atual; recomeça a cada lista.

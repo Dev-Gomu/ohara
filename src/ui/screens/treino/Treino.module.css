@@ -187,15 +187,149 @@
   padding: 0 var(--e6);
   overflow: auto;
   font: var(--voz-pergunta);
+  font-family: var(--fonte-leitura);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+  text-wrap: balance;
 }
 
 .perguntaCheia[data-tam='m'] {
   font: var(--voz-titulo);
-  line-height: 1.35;
+  font-family: var(--fonte-leitura);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
 }
 
 .perguntaCheia[data-tam='g'] {
   font: var(--ui-botao);
+  font-family: var(--fonte-leitura);
+  font-weight: 600;
+  line-height: 1.5;
+  text-align: left;
+}
+
+@media (min-width: 768px) {
+  .perguntaCheia {
+    font-size: var(--texto-treino-pergunta);
+  }
+
+  .perguntaCheia[data-tam='m'] {
+    font-size: var(--texto-treino-longa);
+  }
+}
+
+.dica {
+  padding-bottom: var(--e4);
+  font: var(--ui-apoio);
+  opacity: 0.75;
+}
+
+/* Depois de virar (D159): o cartão único da Mesa; no tablet a escala é grande (faixa 24, verso 22, título 15,5). */
+.virado {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.virado > article {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+.virado[data-cloze='true'] > article {
+  aspect-ratio: auto;
+}
+
+@media (min-width: 768px) {
+  .virado > article > div:first-child {
+    padding: var(--e4) var(--e5);
+  }
+
+  .virado > article > div:first-child > p {
+    font-size: var(--texto-treino-faixa);
+  }
+
+  .virado > article > div:nth-child(2) {
+    padding: var(--e4) var(--e5) var(--e5);
+    font-size: var(--texto-treino-verso);
+    line-height: 1.45;
+  }
+
+  .virado > article h3 {
+    font-size: var(--texto-treino-secao);
+  }
+
+  .virado[data-cloze='true'] > article > p {
+    font-size: var(--texto-treino-pergunta);
+  }
+}
+
+.tecla {
+  color: inherit;
+  opacity: 0.75;
+}
+
+/* Cartão do Treino (D150): antes de virar, a frente enche a tela; ao virar, ela sobe e o verso vem abaixo. */
+.palco {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--e3);
+  width: min(920px, 100%);
+  min-height: 0;
+  margin: 0 auto;
+  padding: var(--e3);
+}
+
+.frenteCheia {
+  display: grid;
+  flex: 1;
+  grid-template-rows: auto 1fr auto;
+  min-height: 0;
+  border-radius: var(--raio-bloco);
+  background: var(--cor-acao);
+  color: var(--cor-sobre-acao);
+  text-align: center;
+}
+
+.rotulo {
+  padding: var(--e4) var(--e5) 0;
+  font: var(--ui-rotulo);
+  letter-spacing: 0.08em;
+  opacity: 0.75;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.perguntaCheia {
+  align-self: center;
+  max-height: 100%;
+  padding: 0 var(--e6);
+  overflow: auto;
+  font: var(--voz-pergunta);
+  font-family: var(--fonte-leitura);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+.perguntaCheia[data-tam='m'] {
+  font: var(--voz-titulo);
+  font-family: var(--fonte-leitura);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+
+.perguntaCheia[data-tam='g'] {
+  font: var(--ui-botao);
+  font-family: var(--fonte-leitura);
+  font-weight: 600;
   line-height: 1.5;
   text-align: left;
 }

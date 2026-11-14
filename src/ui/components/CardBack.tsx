@@ -1,5 +1,6 @@
 import { backWithoutFront, imagesBySide } from '../../core/study/cardImages';
 import { backBlocks, spans, type BackLine, type LineKind } from '../../core/study/cardText';
+import { clozeParts, hasCloze } from '../../core/study/cloze';
 import { CardPicture, type ImageSource } from './CardImages';
 import styles from './CardBack.module.css';
 
@@ -10,7 +11,7 @@ const BULLETS: Partial<Record<LineKind, string>> = {
   doubt: '?',
 };
 
-export function Inline({ text }: { text: string }) {
+function Marked({ text }: { text: string }) {
   return (
     <>
       {spans(text).map((span, index) =>
@@ -30,6 +31,29 @@ export function Inline({ text }: { text: string }) {
           </mark>
         ) : (
           <span key={index}>{span.text}</span>
+        ),
+      )}
+    </>
+  );
+}
+
+interface InlineProps {
+  text: string;
+  // Cloze (D157): "esconde" mostra […]; "revela" mostra a resposta. Sem isso, o texto vai como está.
+  cloze?: 'esconde' | 'revela';
+}
+
+export function Inline({ text, cloze }: InlineProps) {
+  if (!cloze || !hasCloze(text)) return <Marked text={text} />;
+  return (
+    <>
+      {clozeParts(text, cloze === 'revela').map((part, index) =>
+        part.kind === 'plain' ? (
+          <Marked key={index} text={part.text} />
+        ) : (
+          <b key={index} className={part.kind === 'hole' ? styles.lacuna : styles.resposta}>
+            {part.kind === 'hole' ? part.text : <Marked text={part.text} />}
+          </b>
         ),
       )}
     </>
@@ -90,6 +114,7 @@ interface StudyCardProps extends CardBackProps {
 
 // Uma peça só (D138, D155): frente cheia no azul de ação e verso no mesmo contorno.
 export function StudyCard({ front, back, compact, colorTitles, images }: StudyCardProps) {
+  if (hasCloze(front)) return <ClozeCard text={front} />;
   const frontImages = images ? imagesBySide(back, images.sideOf).front : [];
   return (
     <article className={styles.carta} data-compacto={compact}>
@@ -106,5 +131,25 @@ export function StudyCard({ front, back, compact, colorTitles, images }: StudyCa
         <p className={styles.falta}>Falta o verso</p>
       )}
     </article>
+  );
+}
+
+// Cartão cloze (D157, D159): frente azul cheia com a lacuna e verso claro com a resposta, lado a lado.
+export function ClozeFace({ text, side }: { text: string; side: 'frente' | 'verso' }) {
+  return (
+    <article className={styles.cloze} data-lado={side}>
+      <p>
+        <Inline text={text} cloze={side === 'frente' ? 'esconde' : 'revela'} />
+      </p>
+    </article>
+  );
+}
+
+export function ClozeCard({ text }: { text: string }) {
+  return (
+    <div className={styles.clozePar}>
+      <ClozeFace text={text} side="frente" />
+      <ClozeFace text={text} side="verso" />
+    </div>
   );
 }

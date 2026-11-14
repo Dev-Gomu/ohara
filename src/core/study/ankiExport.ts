@@ -1,5 +1,6 @@
 // Preparação da exportação para o Anki (B02, D139): cada marca do texto vira HTML simples
 // que o Anki preserva. Só funções puras; a tela de exportar vem depois.
+import { hasCloze } from './cloze';
 import { backBlocks, spans, type BackLine, type Span } from './cardText';
 
 const escape = (text: string): string =>
@@ -63,7 +64,11 @@ export function backHtml(back: string): string {
 }
 
 // Texto separado por tabulação, uma linha por cartão, como o Anki importa ("Frente<TAB>Verso").
+// Cloze (D157) já está no formato do Anki, "{{c1::resposta}}", no primeiro campo. Quando todos os cartões
+// são cloze, o cabeçalho pede o tipo "Cloze" ao importar; misturados, ficam no formato básico.
 export function ankiTsv(cards: readonly { question: string; answer: string }[]): string {
   const cell = (html: string): string => html.replace(/[\t\r\n]+/g, ' ');
-  return cards.map((card) => `${cell(inlineHtml(card.question))}\t${cell(backHtml(card.answer))}`).join('\n');
+  const rows = cards.map((card) => `${cell(inlineHtml(card.question))}\t${cell(backHtml(card.answer))}`).join('\n');
+  const allCloze = cards.length > 0 && cards.every((card) => hasCloze(card.question));
+  return allCloze ? `#separator:tab\n#html:true\n#notetype:Cloze\n${rows}` : rows;
 }

@@ -11,6 +11,7 @@ import {
 } from '../../../core/study/cardLines';
 import {
   appendCard,
+  expandDrafts,
   isComplete,
   keepIncomplete,
   parseDrafts,
@@ -75,7 +76,7 @@ export function useCardsEditor(blockId: string, lessonId: string): CardsEditor {
   const line = active < 0 || active >= lines.length ? lines.length - 1 : active;
   const raw = lines[line] ?? '';
   const drafts = parseDrafts(source);
-  const ready = drafts.filter(isComplete).length;
+  const ready = expandDrafts(drafts.filter(isComplete)).length;
 
   useLayoutEffect(() => {
     if (request === null) return;
@@ -140,7 +141,7 @@ export function useCardsEditor(blockId: string, lessonId: string): CardsEditor {
       setRequest({ start: prefix + caret, end: prefix + caret });
     },
     save: () => {
-      const complete = drafts.filter(isComplete);
+      const complete = expandDrafts(drafts.filter(isComplete));
       if (complete.length === 0) return;
       const ids = complete.map(() => crypto.randomUUID());
       storage.write((data) => addCards(data, lessonId, complete, ids, today));

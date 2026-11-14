@@ -1,4 +1,5 @@
 import { imagesBySide } from '../../../core/study/cardImages';
+import { hasCloze } from '../../../core/study/cloze';
 import { backPreview } from '../../../core/study/cardText';
 import type { Card } from '../../../core/study/types';
 import { Block } from '../../components/Block';
@@ -113,10 +114,14 @@ function Saved({ id, cards, editor, images }: SavedProps) {
                   <span className={styles.numero}>{index + 1}</span>
                   <span className={styles.textoSalvo}>
                     <span className={styles.pergunta}>
-                      <Inline text={question} />
+                      <Inline text={question} cloze="esconde" />
                     </span>
                     <span className={styles.comeco}>
-                      <Inline text={backPreview(answer)} />
+                      {hasCloze(question) ? (
+                        <Inline text={question} cloze="revela" />
+                      ) : (
+                        <Inline text={backPreview(answer)} />
+                      )}
                     </span>
                   </span>
                 </>

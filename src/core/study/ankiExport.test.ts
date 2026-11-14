@@ -23,4 +23,10 @@ describe('exportação para o Anki', () => {
     expect(rows).toHaveLength(2);
     expect(rows.every((row) => row.split('\t').length === 2)).toBe(true);
   });
+
+  it('mantém o cloze no formato do Anki e pede o tipo Cloze quando todos são cloze', () => {
+    const tsv = ankiTsv([{ question: 'A {{c1::IL-6}} é **citocina**', answer: '' }]);
+    expect(tsv).toBe('#separator:tab\n#html:true\n#notetype:Cloze\nA {{c1::IL-6}} é <b>citocina</b>\t');
+    expect(ankiTsv([{ question: 'A {{c1::x}}', answer: '' }, { question: 'Q', answer: 'r' }])).not.toContain('#notetype');
+  });
 });

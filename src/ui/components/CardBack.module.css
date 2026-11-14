@@ -16,8 +16,13 @@
   font: var(--voz-mini);
 }
 
+/* Texto dos cartões (D159): letra de leitura em 600; com verso embaixo, à esquerda. */
 .frente > p {
   margin: 0;
+  font-family: var(--fonte-leitura);
+  font-weight: 600;
+  line-height: 1.45;
+  text-wrap: pretty;
 }
 
 .carta > .verso {
@@ -126,4 +131,58 @@
   border-radius: var(--raio-minimo);
   background: var(--cor-escolhido);
   color: inherit;
+}
+
+/* Cloze (D157, D159): texto sozinho no cartão, centrado; termo em 700. */
+.clozePar {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--e3);
+}
+
+@media (max-width: 640px) {
+  .clozePar {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.cloze {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  aspect-ratio: 16 / 9;
+  padding: var(--e4) var(--e5);
+  border: 1px solid var(--cor-acao);
+  border-radius: var(--raio-campo);
+}
+
+.cloze[data-lado='frente'] {
+  background: var(--cor-acao);
+  color: var(--cor-sobre-acao);
+}
+
+.cloze[data-lado='verso'] {
+  background: var(--cor-cartao);
+  color: var(--cor-texto);
+}
+
+.cloze > p {
+  margin: 0;
+  font-family: var(--fonte-leitura);
+  font-size: var(--texto-cloze);
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  line-height: 1.3;
+  text-align: center;
+  text-wrap: balance;
+}
+
+.lacuna {
+  color: var(--cor-escolhido);
+  font-weight: 700;
+}
+
+.resposta {
+  color: var(--cor-acao);
+  font-weight: 700;
 }

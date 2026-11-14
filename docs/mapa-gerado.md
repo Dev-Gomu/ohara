@@ -73,8 +73,8 @@
 ### docs/pecas.md
 - L2 # Cartão de peças
 - L4 ## Peças (src/ui/components)
-- L207 ## Store do teclado e das telas (src/ui/keyboard)
-- L223 ## Estudo (src/ui/study)
+- L211 ## Store do teclado e das telas (src/ui/keyboard)
+- L227 ## Estudo (src/ui/study)
 
 ### docs/prompt-propostas-visuais.md
 - L1 # Prompt: propostas visuais do Ohara (6 frentes)
@@ -215,6 +215,8 @@
 - src/core/study/cardLines.ts: Edição por linha do cartão novo (D138): o cartão aparece pronto e só a linha do cursor mostra o texto
 - src/core/study/cardText.test.ts: (sem comentário nem export no topo)
 - src/core/study/cardText.ts: Texto do editor de cartões. Cada cartão começa numa linha "@ frente"; as linhas
+- src/core/study/cloze.test.ts: (sem comentário nem export no topo)
+- src/core/study/cloze.ts: Cartão cloze (D157): a frase traz lacunas escritas como no Anki, "{{c1::resposta}}".
 - src/core/study/create.test.ts: (sem comentário nem export no topo)
 - src/core/study/create.ts: `export const SUBJECT_COLORS = 8;`
 - src/core/study/dates.test.ts: (sem comentário nem export no topo)
@@ -260,7 +262,7 @@
 - src/ui/components/Button.module.css: Sobre azul cheio o cursor ganha um segundo aro, para não sumir.
 - src/ui/components/Button.tsx: 'primary': azul cheio, um por bloco. 'quiet': só texto, para ajuste menor.
 - src/ui/components/CardBack.module.css: Cartão de estudo (D138, D155): frente cheia no azul de ação, verso no mesmo contorno.
-- src/ui/components/CardBack.tsx: `export function Inline({ text }: { text: string })`
+- src/ui/components/CardBack.tsx: (sem comentário nem export no topo)
 - src/ui/components/CardImages.module.css: Anexo de imagem nos cartões (D158, bancada anexo-funcional V1).
 - src/ui/components/CardImages.tsx: De onde a peça tira as imagens: a tela passa o índice do banco (a peça não lê dados).
 - src/ui/components/Cards.module.css: Dia de avaliação: peça recuada com os bloquinhos das matérias.

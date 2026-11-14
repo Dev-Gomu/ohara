@@ -42,6 +42,13 @@
   --nota-t1: 700 22px/28px var(--fonte-leitura);
   --nota-t2: 700 18px/24px var(--fonte-leitura);
   --nota-t3: 600 16.5px/25px var(--fonte-leitura);
+  /* Texto dos cartões (D159): tamanhos do cloze e do Treino no tablet */
+  --texto-cloze: 19px;
+  --texto-treino-pergunta: 48px;
+  --texto-treino-longa: 33px;
+  --texto-treino-faixa: 24px;
+  --texto-treino-verso: 22px;
+  --texto-treino-secao: 15.5px;
 
   /* Espaços: grade de 4 px */
   --e1: 4px;
