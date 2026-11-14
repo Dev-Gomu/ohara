@@ -61,10 +61,10 @@
 ### docs/estado.md
 - L1 # Estado do Ohara (atualizado em 14/11/2026)
 - L5 ## Onde estamos
-- L15 ## Próximo passo
-- L51 ## A conferir (aplicado em 13/11, só check e e2e)
-- L54 ## Esperando o usuário
-- L58 ## Iniciativas abertas (máx. 3)
+- L16 ## Próximo passo
+- L52 ## A conferir (aplicado em 13/11, só check e e2e)
+- L55 ## Esperando o usuário
+- L59 ## Iniciativas abertas (máx. 3)
 
 ### docs/mapa.md
 - L1 # Mapa do projeto
@@ -126,6 +126,24 @@
 
 ### docs/plano/_indice.md
 - L1 # Ohara: fila atual
+
+### docs/plano/criador-cartoes-prompt-web.md
+- L1 # Prompt: editor de criação de cartões do Ohara
+- L9 ## Quem sou e como falar comigo
+- L14 ## O app
+- L19 ## O que já existe (fatos)
+- L27 ## O que já testei e o que achei
+- L37 ## O que eu quero agora (com as minhas palavras)
+- L45 ## Regras que qualquer proposta precisa respeitar
+- L66 ## Como quero que você trabalhe
+- L75 ## O que há nos anexos
+
+### docs/plano/criador-cartoes.md
+- L1 # Criador de cartões: pedido de propostas (para o Fable)
+- L5 ## Para não enviesar
+- L9 ## O que já existe (fatos, não direção)
+- L16 ## Regras do projeto que valem para qualquer proposta
+- L22 ## Entrega esperada
 
 ### docs/plano/etapa-11.md
 - L1 # Etapa 11: Treino real com FSRS

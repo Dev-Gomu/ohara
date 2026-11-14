@@ -1,0 +1,74 @@
+/* Bancada pilula-cloze: marca-texto Q2 e 3 paletas. Nada muda largura de letra (cursor alinhado);
+   o fundo fica na altura da linha e passa 4 px para os lados sem ocupar lugar. */
+.pc { max-width: 1000px; margin: 0 auto; padding: var(--e4); color: var(--cor-texto); }
+.pc h2 { margin: 0; font: var(--voz-titulo); }
+.pc-sub { margin: var(--e1) 0 var(--e4); color: var(--cor-texto-2); font: var(--ui-apoio); }
+.pc-par { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--e4); }
+.pc-item { margin: 0; display: grid; gap: var(--e2); align-content: start; }
+.pc-item figcaption { color: var(--cor-texto-2); font: var(--ui-rotulo); }
+.pc-verso { color: var(--cor-texto-2); }
+
+/* Frente de fundo branco: mesma letra da faixa, texto escuro (no tema escuro, o fundo do cartão). */
+.pc-frente-branca { padding: var(--e3) var(--e4); border-bottom: 1px solid var(--cor-acao); background: var(--cor-cartao); color: var(--cor-texto); font: var(--voz-mini); font-family: var(--fonte-leitura); font-weight: 600; line-height: 1.45; }
+
+.pc-campo { display: grid; width: 100%; word-spacing: 0.1em; }
+.pc-espelho,
+.pc-campo textarea { grid-area: 1 / 1; margin: 0; padding: 0; border: 0; font: inherit; letter-spacing: inherit; word-spacing: inherit; line-height: inherit; white-space: pre-wrap; overflow-wrap: anywhere; }
+.pc-campo textarea { resize: none; overflow: hidden; outline: none; background: transparent; color: transparent; caret-color: currentColor; }
+.pc-sobre .pc-campo textarea { caret-color: var(--cor-sobre-acao); }
+.pc-branco .pc-campo textarea { caret-color: var(--cor-texto); }
+
+/* Sintaxe (chaves, dois-pontos e cN) em tom fraco; a resposta na cor do texto. */
+.pc-sobre .pc-ch,
+.pc-sobre .pc-n { color: color-mix(in srgb, var(--cor-sobre-acao) 50%, transparent); }
+.pc-branco .pc-ch,
+.pc-branco .pc-n { color: color-mix(in srgb, var(--cor-texto) 45%, transparent); }
+
+/* Marca-texto Q2. Cor em OKLCH: claridade (L) vem do fundo onde está, matiz (h) e croma (c) da paleta.
+   Assim as quatro cores têm a mesma claridade e nenhuma salta ou afunda. */
+.pc-l {
+  --pc-k: 0;
+  --pc-cor: oklch(calc(var(--pc-L) + var(--pc-dir) * var(--pc-k)) var(--pc-c) var(--pc-h));
+  border-radius: 2px;
+  background: var(--pc-cor);
+  box-shadow: -4px 0 0 var(--pc-cor), 4px 0 0 var(--pc-cor);
+}
+
+/* Claridade por fundo e tema (dir: para onde a intensidade cresce na C3). */
+.pc-sobre { --pc-L: 0.53; --pc-dir: -1; }
+.pc-branco { --pc-L: 0.92; --pc-dir: -1; }
+:root[data-tema='escuro'] .pc-sobre { --pc-L: 0.86; --pc-dir: -1; }
+:root[data-tema='escuro'] .pc-branco { --pc-L: 0.37; --pc-dir: 1; }
+
+/* C1 Gelo: matizes frios próximos, croma baixo. */
+[data-paleta-cloze='gelo'] { --pc-c: 0.05; }
+[data-paleta-cloze='gelo'] .pc-l[data-n='1'] { --pc-h: 240; }
+[data-paleta-cloze='gelo'] .pc-l[data-n='2'] { --pc-h: 290; }
+[data-paleta-cloze='gelo'] .pc-l[data-n='3'] { --pc-h: 195; }
+[data-paleta-cloze='gelo'] .pc-l[data-n='4'] { --pc-h: 320; }
+
+/* C2 Frio vivo: matizes bem separados, croma médio. */
+[data-paleta-cloze='vivo'] { --pc-c: 0.1; }
+[data-paleta-cloze='vivo'] .pc-l[data-n='1'] { --pc-h: 205; }
+[data-paleta-cloze='vivo'] .pc-l[data-n='2'] { --pc-h: 295; }
+[data-paleta-cloze='vivo'] .pc-l[data-n='3'] { --pc-h: 160; }
+[data-paleta-cloze='vivo'] .pc-l[data-n='4'] { --pc-h: 328; }
+
+/* C3 Uma cor só: pervinca; o número muda a intensidade. */
+[data-paleta-cloze='mono'] { --pc-c: 0.08; --pc-h: 275; }
+[data-paleta-cloze='mono'] .pc-l[data-n='2'] { --pc-k: 0.04; }
+[data-paleta-cloze='mono'] .pc-l[data-n='3'] { --pc-k: 0.08; }
+[data-paleta-cloze='mono'] .pc-l[data-n='4'] { --pc-k: 0.12; }
+
+/* Faixa azul: três saídas (a cor da paleta continua vindo de --pc-h). */
+[data-faixa='neutra'] .pc-sobre .pc-l,
+[data-faixa='sintaxe'] .pc-sobre .pc-l { --pc-cor: color-mix(in srgb, var(--cor-sobre-acao) 22%, transparent); }
+[data-faixa='sintaxe'] .pc-sobre .pc-ch,
+[data-faixa='sintaxe'] .pc-sobre .pc-n { color: oklch(0.9 0.09 var(--pc-h)); }
+:root[data-tema='escuro'] [data-faixa='sintaxe'] .pc-sobre .pc-ch,
+:root[data-tema='escuro'] [data-faixa='sintaxe'] .pc-sobre .pc-n { color: oklch(0.38 0.1 var(--pc-h)); }
+[data-faixa='clara'] .pc-sobre .pc-l { --pc-cor: oklch(0.93 0.05 var(--pc-h)); color: var(--cor-tinta); }
+:root[data-tema='escuro'] [data-faixa='clara'] .pc-sobre .pc-l { --pc-cor: oklch(0.9 0.06 var(--pc-h)); }
+[data-faixa='clara'] .pc-sobre .pc-ch,
+[data-faixa='clara'] .pc-sobre .pc-n { color: color-mix(in srgb, var(--cor-tinta) 45%, transparent); }
+[data-faixa='clara'] .pc-sobre .pc-campo textarea { caret-color: var(--cor-tinta); }

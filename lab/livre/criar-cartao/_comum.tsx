@@ -1,14 +1,9 @@
-// Base das três versões: o bloco Cartões de verdade (peças do app) e o campo que mostra as lacunas.
-import {
-  useRef,
-  useState,
-  type ComponentType,
-  type KeyboardEvent,
-  type ReactNode,
-  type RefObject,
-} from 'react';
+// P1 · Limpo (escolhido), pílula suave com o número da lacuna. A escrita é a real do app, {{c1::resposta}};
+// o campo desenha cada pedaço ({{, c1, ::, resposta, }}) com a mesma largura de letra, então o cursor alinha.
+// Cada versão só decide, por CSS, o que desses pedaços aparece.
+import { useLayoutEffect, useRef, useState, type KeyboardEvent, type ReactNode, type RefObject } from 'react';
 import { insertCloze } from '../../../src/core/study/cardFormat';
-import { clozeNumbers, hasCloze } from '../../../src/core/study/cloze';
+import { clozeNumbers } from '../../../src/core/study/cloze';
 import { Block } from '../../../src/ui/components/Block';
 import { Button } from '../../../src/ui/components/Button';
 import { Key } from '../../../src/ui/components/Key';
@@ -16,31 +11,32 @@ import { BlockTab, BlockTabs } from '../../../src/ui/components/Toggles';
 import ed from '../../../src/ui/screens/mesa/CardEditor.module.css';
 import './cc.css';
 
-export { ed };
 export type Estado = 'vazio' | 'simples' | 'cloze';
-export type Tipo = 'vazio' | 'simples' | 'cloze';
-export const FRASE =
-  'A {{c1::IL-6}} induz a síntese de PCR no fígado, e a {{c2::IL-1}} causa febre.';
-export const PERGUNTA = 'Qual citocina induz a síntese de PCR no fígado?';
-export const VERSO_TXT = 'IL-6, produzida por macrófagos ativados';
+export type Marca = 'segmento' | 'cru' | 'tom';
+const FRASE = 'A {{c1::IL-1}} e o {{c1::TNF-α}} causam febre; a {{c2::IL-6}} induz a síntese de {{c3::PCR}} no fígado.';
+const PERGUNTA = 'Qual citocina induz a síntese de PCR no fígado?';
+const VERSO_TXT = 'IL-6, produzida por macrófagos ativados';
 
-export const tipoDe = (t: string): Tipo =>
-  t.trim() === '' ? 'vazio' : hasCloze(t) ? 'cloze' : 'simples';
-export const prontos = (t: string, v: string): number =>
-  hasCloze(t) ? clozeNumbers(t).length : t.trim() !== '' && v.trim() !== '' ? 1 : 0;
+const PEDACO = /(\{\{c\d+::.+?\}\})/g;
+const UMA = /^\{\{(c(\d+))::(.+?)\}\}$/;
 
-/** Texto cru por baixo do campo: a resposta em destaque, as chaves apagadas (mesma largura, para o cursor alinhar). */
-function Espelho({ texto, cru }: { texto: string; cru: boolean }) {
+function Espelho({ texto }: { texto: string }) {
   return (
     <>
-      {texto.split(/(\{\{c\d+::.+?\}\})/g).map((p, i) => {
-        const m = /^(\{\{c\d+::)(.+?)(\}\})$/.exec(p);
-        if (!m) return <span key={i}>{p}</span>;
+      {texto.split(PEDACO).map((p, k) => {
+        const m = UMA.exec(p);
+        if (!m) return <span key={k}>{p}</span>;
         return (
-          <span key={i} className="cc-lac">
-            {cru && <span className="cc-chave">{m[1]}</span>}
-            {m[2]}
-            {cru && <span className="cc-chave">{m[3]}</span>}
+          <span key={k} className="cc-pil" data-n={Number(m[2]) % 3}>
+            <span className="cc-seg">
+              <span className="cc-ch">{'{{'}</span>
+              <span className="cc-n">{m[1]}</span>
+              <span className="cc-ch">::</span>
+            </span>
+            <span className="cc-resp">
+              {m[3]}
+              <span className="cc-ch">{'}}'}</span>
+            </span>
           </span>
         );
       })}
@@ -52,33 +48,32 @@ function Espelho({ texto, cru }: { texto: string; cru: boolean }) {
 interface CampoProps {
   valor: string;
   onChange: (v: string) => void;
+  rotulo: string;
   placeholder?: string;
   refEl?: RefObject<HTMLTextAreaElement | null>;
   onEnter?: () => void;
   onSalvar?: () => void;
   onAcima?: () => void;
-  /** Ctrl Shift C sem seleção: devolve true se tratou (a versão C abre as palavras). */
-  onLacunaSemSelecao?: (caret: number) => boolean;
-  rotulo: string;
 }
 
-/** Campo de texto: Ctrl Shift C faz lacuna, Ctrl Alt C outra lacuna no mesmo cartão (iguais ao app). */
-export function Campo(p: CampoProps) {
+/** Ctrl Shift C: lacuna com o próximo número. Ctrl Alt C: outra lacuna com o mesmo número (iguais ao app). */
+function Campo(p: CampoProps) {
   const interno = useRef<HTMLTextAreaElement>(null);
   const ref = p.refEl ?? interno;
-  const [foco, setFoco] = useState(false);
+  const pendente = useRef<[number, number] | null>(null);
+  // O cursor volta ao lugar logo após o React redesenhar, antes da próxima tecla.
+  useLayoutEffect(() => {
+    if (pendente.current === null) return;
+    ref.current?.setSelectionRange(...pendente.current);
+    pendente.current = null;
+  });
   const aoTecla = (e: KeyboardEvent<HTMLTextAreaElement>) => {
     const c = e.currentTarget;
-    const lacuna = e.ctrlKey && e.code === 'KeyC' && (e.shiftKey || e.altKey);
-    if (lacuna) {
+    if (e.ctrlKey && e.code === 'KeyC' && (e.shiftKey || e.altKey)) {
       e.preventDefault();
-      if (c.selectionStart === c.selectionEnd && p.onLacunaSemSelecao?.(c.selectionStart)) return;
-      const r = insertCloze(
-        { text: p.valor, start: c.selectionStart, end: c.selectionEnd },
-        e.altKey,
-      );
+      const r = insertCloze({ text: p.valor, start: c.selectionStart, end: c.selectionEnd }, e.altKey);
+      pendente.current = [r.start, r.end];
       p.onChange(r.text);
-      requestAnimationFrame(() => c.setSelectionRange(r.start, r.end));
     } else if (e.key === 'Enter' && e.ctrlKey) {
       e.preventDefault();
       p.onSalvar?.();
@@ -93,7 +88,7 @@ export function Campo(p: CampoProps) {
   return (
     <div className="cc-campo">
       <div className="cc-espelho" aria-hidden="true">
-        <Espelho texto={p.valor} cru={foco} />
+        <Espelho texto={p.valor} />
       </div>
       <textarea
         ref={ref}
@@ -103,15 +98,13 @@ export function Campo(p: CampoProps) {
         aria-label={p.rotulo}
         spellCheck
         onKeyDown={aoTecla}
-        onFocus={() => setFoco(true)}
-        onBlur={() => setFoco(false)}
         onChange={(e) => p.onChange(e.target.value)}
       />
     </div>
   );
 }
 
-export function Dicas({ teclas, children }: { teclas: [string, string][]; children?: ReactNode }) {
+function Dicas({ teclas }: { teclas: [string, string][] }) {
   return (
     <p className="cc-dicas">
       {teclas.map(([k, t]) => (
@@ -120,21 +113,26 @@ export function Dicas({ teclas, children }: { teclas: [string, string][]; childr
           {t}
         </span>
       ))}
-      {children}
     </p>
   );
 }
 
-interface BlocoProps {
-  pronto: number;
-  salvos: number;
-  onSalvar: () => void;
-  dicas: ReactNode;
-  children: ReactNode;
-}
-
-/** O bloco Cartões da Mesa, com as peças reais: abas Novo/Salvos e Salvar no cabeçalho (D140). */
-export function Bloco({ pronto, salvos, onSalvar, dicas, children }: BlocoProps) {
+function Corpo({ estado, marca }: { estado: Estado; marca: Marca }) {
+  const [t, setT] = useState(estado === 'vazio' ? '' : estado === 'simples' ? PERGUNTA : FRASE);
+  const [v, setV] = useState(estado === 'simples' ? VERSO_TXT : '');
+  const [salvos, setSalvos] = useState(0);
+  const fref = useRef<HTMLTextAreaElement>(null);
+  const vref = useRef<HTMLTextAreaElement>(null);
+  const nums = clozeNumbers(t);
+  const cloze = nums.length > 0;
+  const pronto = cloze ? nums.length : t.trim() !== '' && v.trim() !== '' ? 1 : 0;
+  const salvar = () => {
+    if (pronto === 0) return;
+    setSalvos((n) => n + pronto);
+    setT('');
+    setV('');
+    fref.current?.focus();
+  };
   const tools = (
     <>
       <BlockTabs label="Cartões">
@@ -146,79 +144,54 @@ export function Bloco({ pronto, salvos, onSalvar, dicas, children }: BlocoProps)
         </BlockTab>
       </BlockTabs>
       <span className="cc-salvar" onPointerDown={(e) => e.preventDefault()}>
-        <Button variant="primary" disabled={pronto === 0} onPress={onSalvar}>
+        <Button variant="primary" disabled={pronto === 0} onPress={salvar}>
           {pronto > 0 ? `Salvar ${pronto}` : 'Salvar'}
         </Button>
       </span>
     </>
   );
   return (
-    <div className="cc-mesa">
-      <Block
-        id="cc"
-        title="Cartões"
-        icon="cartoes"
-        tools={tools}
-        shortcut="Alt C"
-        menu
-        fixed="none"
-      >
+    <div className="cc-mesa" data-marca={marca}>
+      <Block id="cc" title="Cartões" icon="cartoes" tools={tools} shortcut="Alt C" menu fixed="none">
         <div className={ed.editor}>
           {salvos > 0 && (
             <p className={ed.salvou}>
               {salvos} {salvos === 1 ? 'cartão salvo' : 'cartões salvos'}.
             </p>
           )}
-          {children}
-          {dicas}
+          <article className={ed.carta}>
+            <div className={`${ed.faixa} cc-sobre`}>
+              <Campo
+                rotulo="Frente"
+                refEl={fref}
+                valor={t}
+                onChange={setT}
+                placeholder="Pergunta, ou frase com lacuna"
+                onEnter={() => vref.current?.focus()}
+                onSalvar={salvar}
+              />
+            </div>
+            <div className={ed.verso}>
+              <Campo
+                rotulo={cloze ? 'Extra' : 'Verso'}
+                refEl={vref}
+                valor={v}
+                onChange={setV}
+                placeholder={cloze ? 'Extra, se quiser' : 'Verso'}
+                onAcima={() => fref.current?.focus()}
+                onSalvar={salvar}
+              />
+            </div>
+          </article>
+          <Dicas teclas={[['Ctrl Shift C', 'nova lacuna'], ['Ctrl Alt C', 'mesmo número'], ['Ctrl Enter', 'salva']]} />
         </div>
       </Block>
     </div>
   );
 }
 
-/** Estado comum: frente, verso (no cloze vira o "Extra"), salvar e foco. */
-export function useCartao(estado: Estado) {
-  const [t, setT] = useState(estado === 'vazio' ? '' : estado === 'simples' ? PERGUNTA : FRASE);
-  const [v, setV] = useState(estado === 'simples' ? VERSO_TXT : '');
-  const [salvos, setSalvos] = useState(0);
-  const fref = useRef<HTMLTextAreaElement>(null);
-  const vref = useRef<HTMLTextAreaElement>(null);
-  const pronto = prontos(t, v);
-  const salvar = () => {
-    if (pronto === 0) return;
-    setSalvos((n) => n + pronto);
-    setT('');
-    setV('');
-    fref.current?.focus();
-  };
-  return {
-    t,
-    setT,
-    v,
-    setV,
-    salvos,
-    fref,
-    vref,
-    pronto,
-    salvar,
-    tipo: tipoDe(t),
-    nums: clozeNumbers(t),
-  };
-}
-
-export function Palco({
-  titulo,
-  nota,
-  Corpo,
-}: {
-  titulo: string;
-  nota: ReactNode;
-  Corpo: ComponentType<{ estado: Estado }>;
-}) {
-  const [e, setE] = useState<Estado>(
-    () => (new URLSearchParams(location.search).get('estado') as Estado | null) ?? 'cloze',
-  );
+export function Palco({ marca, titulo, nota }: { marca: Marca; titulo: string; nota: ReactNode }) {
+  const [e, setE] = useState<Estado>(() => (new URLSearchParams(location.search).get('estado') as Estado | null) ?? 'cloze');
   return (
     <section className="cc">
       <div className="cc-topo">
@@ -232,7 +205,7 @@ export function Palco({
         </div>
       </div>
       <div className="cc-palco">
-        <Corpo key={e} estado={e} />
+        <Corpo key={e} estado={e} marca={marca} />
         <div className="cc-nota">{nota}</div>
       </div>
     </section>

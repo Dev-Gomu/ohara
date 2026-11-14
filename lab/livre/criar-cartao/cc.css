@@ -1,227 +1,41 @@
-/* Bancada criar-cartao: só tokens do app. O bloco e o cartão simples vêm das peças reais. */
-.cc {
-  max-width: 1040px;
-  margin: 0 auto;
-  padding: var(--e4);
-  color: var(--cor-texto);
-  font: var(--ui-item);
-}
-.cc-topo {
-  display: flex;
-  align-items: center;
-  gap: var(--e4);
-  margin-bottom: var(--e4);
-}
-.cc-topo h2 {
-  margin: 0;
-  font: var(--voz-titulo);
-}
-.cc-estados {
-  display: flex;
-  gap: var(--e1);
-}
-.cc-estados button {
-  min-height: 32px;
-  padding: 0 var(--e3);
-  border: 1px solid var(--cor-texto-2);
-  border-radius: var(--raio-pilula);
-  background: transparent;
-  color: var(--cor-texto);
-  font: var(--ui-rotulo);
-  cursor: pointer;
-}
-.cc-estados button[data-on='true'] {
-  border-color: var(--cor-acao);
-  background: var(--cor-acao);
-  color: var(--cor-sobre-acao);
-}
+/* Bancada criar-cartao (P1 a P3): só tokens do app. O bloco e o cartão vêm das peças reais. */
+.cc { max-width: 1040px; margin: 0 auto; padding: var(--e4); color: var(--cor-texto); font: var(--ui-item); }
+.cc-topo { display: flex; align-items: center; gap: var(--e4); margin-bottom: var(--e4); }
+.cc-topo h2 { margin: 0; font: var(--voz-titulo); }
+.cc-estados { display: flex; gap: var(--e1); }
+.cc-estados button { min-height: 32px; padding: 0 var(--e3); border: 1px solid var(--cor-texto-2); border-radius: var(--raio-pilula); background: transparent; color: var(--cor-texto); font: var(--ui-rotulo); cursor: pointer; }
+.cc-estados button[data-on='true'] { border-color: var(--cor-acao); background: var(--cor-acao); color: var(--cor-sobre-acao); }
 
-.cc-palco {
-  display: grid;
-  grid-template-columns: 460px minmax(0, 1fr);
-  gap: var(--e5);
-  align-items: start;
-}
-.cc-mesa {
-  display: flex;
-  height: 540px;
-}
-.cc-mesa > * {
-  flex: 1;
-  min-width: 0;
-}
-.cc-salvar {
-  display: contents;
-}
-.cc-nota {
-  display: grid;
-  gap: var(--e3);
-  max-width: 44ch;
-  padding-top: var(--e2);
-  color: var(--cor-texto-2);
-  font: var(--ui-apoio);
-}
-.cc-nota p {
-  margin: 0;
-}
-.cc-nota b {
-  color: var(--cor-texto);
-}
+.cc-palco { display: grid; grid-template-columns: 460px minmax(0, 1fr); gap: var(--e5); align-items: start; }
+.cc-mesa { display: flex; height: 560px; }
+.cc-mesa > * { flex: 1; min-width: 0; }
+.cc-salvar { display: contents; }
+.cc-nota { display: grid; gap: var(--e3); max-width: 44ch; padding-top: var(--e2); color: var(--cor-texto-2); font: var(--ui-apoio); }
+.cc-nota p { margin: 0; }
+.cc-nota b { color: var(--cor-texto); }
 
 /* Campo: espelho por baixo, textarea transparente por cima (mesma letra, para o cursor alinhar). */
-.cc-campo {
-  display: grid;
-  width: 100%;
-}
+.cc-campo { display: grid; width: 100%; }
 .cc-espelho,
-.cc-campo textarea {
-  grid-area: 1 / 1;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  font: inherit;
-  letter-spacing: inherit;
-  line-height: inherit;
-  text-align: inherit;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
-}
-.cc-campo:not(:focus-within) textarea {
-  caret-color: transparent;
-}
-.cc-campo textarea {
-  resize: none;
-  overflow: hidden;
-  outline: none;
-  background: transparent;
-  color: transparent;
-  caret-color: var(--caret, var(--cor-texto));
-}
-.cc-campo textarea::placeholder {
-  color: var(--ph, var(--cor-texto-2));
-  opacity: 1;
-}
-.cc-sobre {
-  --caret: var(--cor-sobre-acao);
-  --ph: color-mix(in srgb, var(--cor-sobre-acao) 62%, transparent);
-}
+.cc-campo textarea { grid-area: 1 / 1; margin: 0; padding: 0; border: 0; font: inherit; letter-spacing: inherit; line-height: inherit; text-align: inherit; white-space: pre-wrap; overflow-wrap: anywhere; }
+.cc-campo textarea { resize: none; overflow: hidden; outline: none; background: transparent; color: transparent; caret-color: var(--caret, var(--cor-texto)); }
+.cc-campo textarea::placeholder { color: var(--ph, var(--cor-texto-2)); opacity: 1; }
+.cc-sobre { --caret: var(--cor-sobre-acao); --ph: color-mix(in srgb, var(--cor-sobre-acao) 62%, transparent); }
 
-/* Lacuna no texto cru: resposta em destaque, chaves apagadas. Sem negrito nem recuo (mudaria a largura). */
-.cc-lac {
-  border-radius: var(--raio-minimo);
-  background: color-mix(in srgb, var(--cor-acao) 14%, transparent);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--cor-acao) 14%, transparent);
-  color: var(--cor-acao);
-}
-.cc-sobre .cc-lac {
-  background: color-mix(in srgb, var(--cor-sobre-acao) 20%, transparent);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--cor-sobre-acao) 20%, transparent);
-  color: var(--cor-sobre-acao);
-}
-.cc-chave {
-  opacity: 0.45;
-}
+/* Lacuna {{cN::resposta}}: cada pedaço mantém a largura da letra; as versões só mudam o que aparece. */
+.cc-pil { border-radius: var(--raio-minimo); background: color-mix(in srgb, var(--cor-sobre-acao) 22%, transparent); }
+.cc-ch { color: transparent; }
+.cc-n { opacity: 0.8; }
+/* V1: segmento do número mais escuro */
+[data-marca='segmento'] .cc-seg { border-radius: var(--raio-minimo) 0 0 var(--raio-minimo); background: color-mix(in srgb, var(--cor-sobre-acao) 26%, transparent); }
+/* V2: texto cru, chaves apagadas */
+[data-marca='cru'] .cc-ch { color: color-mix(in srgb, var(--cor-sobre-acao) 45%, transparent); }
+[data-marca='cru'] .cc-n { opacity: 1; }
+/* V3: intensidade por número (1, 2, 3 e repete) */
+[data-marca='tom'] .cc-pil[data-n='1'] { background: color-mix(in srgb, var(--cor-sobre-acao) 16%, transparent); }
+[data-marca='tom'] .cc-pil[data-n='2'] { background: color-mix(in srgb, var(--cor-sobre-acao) 34%, transparent); }
+[data-marca='tom'] .cc-pil[data-n='0'] { background: none; box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--cor-sobre-acao) 70%, transparent); }
 
-/* Forma cloze (A e C): face azul cheia, como a frente do Treino, e o Extra embaixo. */
-.cc-cloze {
-  flex: none;
-  overflow: hidden;
-  border: 1px solid var(--cor-acao);
-  border-radius: var(--raio-campo);
-  background: var(--cor-cartao);
-  color: var(--cor-texto);
-}
-.cc-face {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-height: 176px;
-  padding: var(--e4) var(--e5);
-  background: var(--cor-acao);
-  color: var(--cor-sobre-acao);
-  font-family: var(--fonte-leitura);
-  font-size: var(--texto-cloze);
-  font-weight: 600;
-  line-height: 1.35;
-  text-align: center;
-}
-.cc-baixo {
-  display: flex;
-  flex-direction: column;
-  gap: var(--e1);
-  padding: var(--e3) var(--e4);
-  font: var(--leitura-texto);
-}
-.cc-rotulo {
-  color: var(--cor-texto-2);
-  font: var(--ui-rotulo);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-.cc-gera {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: flex-end;
-  gap: var(--e1);
-  margin: var(--e2) 0 0;
-  color: var(--cor-texto-2);
-  font: var(--ui-apoio);
-}
-.cc-num {
-  flex: none;
-  min-width: 30px;
-  padding: 1px var(--e2);
-  border-radius: var(--raio-pilula);
-  background: var(--cor-escolhido);
-  color: var(--cor-texto);
-  font: var(--ui-sigla);
-  text-align: center;
-}
+.cc-dicas { display: flex; flex-wrap: wrap; gap: var(--e2) var(--e3); margin: 0; color: var(--cor-texto-2); font: var(--ui-apoio); }
+.cc-dicas > span { display: inline-flex; align-items: center; gap: var(--e1); }
 
-/* B: lista do que vai sair, dentro do verso. */
-.cc-titulo {
-  color: var(--cor-acao);
-}
-.cc-titulo:first-child {
-  margin-top: 0;
-}
-.cc-ger {
-  display: flex;
-  gap: var(--e2);
-  align-items: baseline;
-  margin: 0 0 var(--e1);
-}
-
-/* C: escolha pelas palavras. */
-.cc-palavras {
-  margin: 0;
-  outline: none;
-}
-.cc-w {
-  padding: 0;
-  border-radius: var(--raio-minimo);
-  cursor: pointer;
-}
-.cc-grupo {
-  border-radius: var(--raio-minimo);
-  background: color-mix(in srgb, var(--cor-sobre-acao) 24%, transparent);
-  padding: 1px 4px;
-}
-.cc-palavras:focus .cc-w[data-cur='true'] {
-  box-shadow: 0 0 0 2px var(--cor-sobre-acao);
-}
-
-.cc-dicas {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--e2) var(--e3);
-  margin: 0;
-  color: var(--cor-texto-2);
-  font: var(--ui-apoio);
-}
-.cc-dicas > span {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--e1);
-}
