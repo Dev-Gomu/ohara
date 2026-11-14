@@ -62,9 +62,9 @@
 - L1 # Estado do Ohara (atualizado em 12/11/2026)
 - L5 ## Onde estamos
 - L10 ## Próximo passo
-- L29 ## A conferir (aplicado em 13/11, só check e e2e)
-- L32 ## Esperando o usuário
-- L36 ## Iniciativas abertas (máx. 3)
+- L31 ## A conferir (aplicado em 13/11, só check e e2e)
+- L34 ## Esperando o usuário
+- L38 ## Iniciativas abertas (máx. 3)
 
 ### docs/mapa.md
 - L1 # Mapa do projeto
@@ -209,6 +209,8 @@
 - src/core/study/attendance.ts: Aprovação por frequência: pelo menos 75% de presença (D100).
 - src/core/study/cardFormat.test.ts: (sem comentário nem export no topo)
 - src/core/study/cardFormat.ts: Formatação do texto do editor de cartões por atalho (D139): as mesmas teclas das Anotações
+- src/core/study/cardLines.test.ts: (sem comentário nem export no topo)
+- src/core/study/cardLines.ts: Edição por linha do cartão novo (D138): o cartão aparece pronto e só a linha do cursor mostra o texto
 - src/core/study/cardText.test.ts: (sem comentário nem export no topo)
 - src/core/study/cardText.ts: Texto do editor de cartões. Cada cartão começa numa linha "@ frente"; as linhas
 - src/core/study/create.test.ts: (sem comentário nem export no topo)
@@ -296,6 +298,7 @@
 - src/ui/faltas/Faltas.tsx: (sem comentário nem export no topo)
 - src/ui/faltas/summary.ts: Horas faltadas e o limite até agora; null enquanto não houve aula.
 - src/ui/keyboard/bars.ts: Barras de um bloco: a de cima é o cabeçalho (abas, ferramentas) e a de baixo é o rodapé
+- src/ui/keyboard/cardLine.ts: Uma linha visual cabe em ~1,6 vezes a altura da letra; acima disso o texto quebrou em mais linhas.
 - src/ui/keyboard/listener.ts: Painel flutuante de um campo (a bolha das Anotações): tocar nele mantém o cursor no texto.
 - src/ui/keyboard/store.ts: Devolver false deixa a tecla seguir o caminho normal.
 - src/ui/keyboard/tableAdjust.ts: Modo Ajustar da tabela (D149). Fora do React: o listener precisa saber na hora da tecla.
@@ -327,8 +330,10 @@
 - src/ui/screens/hub/Hub.module.css: (sem comentário nem export no topo)
 - src/ui/screens/hub/Hub.tsx: Altura que as Provas precisam: cartão de 86 px mais a margem de 8 px dos dois lados.
 - src/ui/screens/hub/HubBlocks.tsx: `export function ExamsBlock({ id, days }: { id: string; days: readonly AssessmentDay[] })`
+- src/ui/screens/mesa/CardEditor.module.css: Cartão novo: o cartão é o editor (D138). Mesmas cores do cartão salvo (D155).
+- src/ui/screens/mesa/CardEditor.tsx: A linha cresce com o texto, em quantas linhas visuais precisar.
 - src/ui/screens/mesa/CardsBlock.module.css: Cartões salvos (D151): lista com número, pergunta (até duas linhas) e começo do verso.
-- src/ui/screens/mesa/CardsBlock.tsx: Cartão aberto no lugar da linha, na lista de salvos (D151).
+- src/ui/screens/mesa/CardsBlock.tsx: Salvar fica no cabeçalho, ao lado do ⋮ (D140); sem rodapé, a área de digitação ganha a altura.
 - src/ui/screens/mesa/Mesa.module.css: (sem comentário nem export no topo)
 - src/ui/screens/mesa/Mesa.tsx: (sem comentário nem export no topo)
 - src/ui/screens/mesa/NotesBlock.tsx: (sem comentário nem export no topo)
@@ -339,6 +344,7 @@
 - src/ui/screens/mesa/notesTools.tsx: Título é um botão só: 1º toque Título 1, 2º Título 2, 3º volta ao texto.
 - src/ui/screens/mesa/tableAdjustExtension.ts: Altura é só mínima (D149): a linha guarda `minHeight` e a mostra como `height` (na tabela, mínimo).
 - src/ui/screens/mesa/tableOps.ts: Onde está o cursor dentro de uma tabela (sem células mescladas: o app não as cria).
+- src/ui/screens/mesa/useCardsEditor.ts: Cartão aberto no lugar da linha, na lista de salvos (D151).
 - src/ui/screens/mesa/useNotesEditor.ts: `export function useNotesEditor(lessonId: string, html: string): Editor | null`
 - src/ui/screens/treino/Inicio.module.css: Tela inicial do Treino: uma coluna de blocos no centro; "Ajustar" abre a lista ao lado.
 - src/ui/screens/treino/TrainingChoice.tsx: (sem comentário nem export no topo)

@@ -171,3 +171,25 @@ describe('modo Ajustar da tabela (D149)', () => {
     expect(resolve(press('ArrowRight'), { level: 'field', overlay: 'none' })).toBeNull();
   });
 });
+
+describe('linha do cartão novo', () => {
+  const at = (...spots: ('any' | 'start' | 'top' | 'bottom')[]) =>
+    ({ level: 'field', overlay: 'none', cardLine: spots }) as const;
+
+  it('Enter é do cartão em qualquer ponto da linha', () => {
+    expect(resolve(press('Enter'), at('any'))).toEqual({ type: 'cardLineSplit' });
+  });
+  it('Backspace só no começo; ↑ na primeira linha visual; ↓ na última', () => {
+    expect(resolve(press('Backspace'), at('any'))).toBeNull();
+    expect(resolve(press('Backspace'), at('any', 'start'))).toEqual({ type: 'cardLineBack' });
+    expect(resolve(press('ArrowUp'), at('any', 'top'))).toEqual({ type: 'cardLineMove', delta: -1 });
+    expect(resolve(press('ArrowDown'), at('any', 'top'))).toBeNull();
+    expect(resolve(press('ArrowDown'), at('any', 'bottom'))).toEqual({ type: 'cardLineMove', delta: 1 });
+  });
+  it('fora da linha do cartão, as teclas seguem para o texto', () => {
+    expect(resolve(press('Enter'), { level: 'field', overlay: 'none' })).toBeNull();
+  });
+  it('com modificador a tabela de teclas continua valendo', () => {
+    expect(resolve(press('Enter', { ctrl: true }), at('any'))?.type).toBe('saveCards');
+  });
+});

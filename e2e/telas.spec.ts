@@ -157,7 +157,26 @@ test('Mesa: Alt N abre um cartão, Ctrl Enter salva os completos', async ({ page
   const cartoes = page.locator('[data-block="mesa.cards"]');
   await expect(cartoes).toContainText('1 cartão salvo');
   await expect(cartoes.getByRole('button', { name: 'Salvos 7' })).toBeVisible();
-  await expect(cartoes.locator('textarea')).toHaveValue('@ Sem verso ainda');
+  await expect(cartoes.locator('textarea')).toHaveValue('Sem verso ainda');
+});
+
+test('Mesa: no cartão novo, Enter continua a lista, Backspace tira a marca e ↑ sobe de linha', async ({
+  page,
+}) => {
+  await page.keyboard.press('Alt+Digit2');
+  await page.keyboard.press('Alt+KeyN');
+  const linha = page.locator('[aria-label="Cartões novos"] textarea');
+  await page.keyboard.type('Quem libera IL-6?');
+  await page.keyboard.press('Enter');
+  await page.keyboard.type('- Febre');
+  await page.keyboard.press('Enter');
+  await expect(linha).toHaveValue('');
+  await expect(page.locator('[aria-label="Cartões novos"]')).toContainText('Febre');
+  await page.keyboard.press('Backspace');
+  await page.keyboard.press('ArrowUp');
+  await expect(linha).toHaveValue('Febre');
+  await page.keyboard.press('ArrowUp');
+  await expect(linha).toHaveValue('Quem libera IL-6?');
 });
 
 test('Agenda: a régua troca a visão e o dia comanda a prévia', async ({ page }) => {

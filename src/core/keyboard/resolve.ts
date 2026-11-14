@@ -1,5 +1,5 @@
 import type { Level, Resolved } from './actions';
-import { ADJUST_KEYS, KEYS, type KeyRow, type Mods } from './keys';
+import { ADJUST_KEYS, KEYS, LINE_KEYS, type KeyRow, type LineSpot, type Mods } from './keys';
 
 export interface KeyInput {
   code: string;
@@ -20,6 +20,8 @@ export interface KeyContext {
   overlay: Overlay;
   // Modo Ajustar da tabela: setas, Enter e Esc passam a ser dele.
   adjusting?: boolean;
+  // Cursor numa linha do cartão novo: onde ele está na linha decide se Enter, Backspace e setas são do cartão.
+  cardLine?: readonly LineSpot[];
 }
 
 function modsOf(input: KeyInput): string {
@@ -59,6 +61,10 @@ export function resolve(
       (key) => key.code === input.code && key.shift === input.shift && mods === (input.shift ? 's' : ''),
     );
     if (adjust) return input.repeat && adjust.action.type === 'tableAdjustEnd' ? { type: 'swallow' } : adjust.action;
+  }
+  if (context.cardLine && context.overlay === 'none' && mods === '') {
+    const line = LINE_KEYS.find((key) => key.code === input.code && context.cardLine?.includes(key.when));
+    if (line) return line.action;
   }
   const rows = keys.filter((key) => key.code === input.code && key.mods === mods);
   if (context.overlay !== 'none') return resolveInOverlay(input, rows);

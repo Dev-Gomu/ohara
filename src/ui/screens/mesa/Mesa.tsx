@@ -20,7 +20,8 @@ import { useScreenMemory } from '../../study/screenMemory';
 import { attach, detach, pickFile } from '../../study/attach';
 import { nowTime, storage, today, useStudy } from '../../study/study';
 import { SlidesViewer } from './SlidesViewer';
-import { CardsBlock, useCardsEditor } from './CardsBlock';
+import { CardsBlock } from './CardsBlock';
+import { useCardsEditor } from './useCardsEditor';
 import styles from './Mesa.module.css';
 import { focusBar, stepBar, withBarActions } from '../../keyboard/bars';
 import { HistoryWindow, NotesBlock } from './NotesBlock';
@@ -147,6 +148,11 @@ function LessonDesk({ data, lessonId }: { data: StudyData; lessonId: string }) {
       ...mosaic.actions,
       ...editorActions(editor, page),
       ...cardFormatActions(inCards, cardsEditor.format, editorActions(editor, page)),
+      cardLineSplit: () => cardsEditor.lineActions.cardLineSplit(),
+      cardLineBack: () => cardsEditor.lineActions.cardLineBack(),
+      cardLineMove: (change) => {
+        if (change.type === 'cardLineMove') cardsEditor.lineActions.cardLineMove(change.delta);
+      },
       // Na tabela, Alt R é o modo Ajustar; fora dela, o redimensionar do mosaico.
       resizeMode: (change) =>
         editorActions(editor, page).resizeMode?.(change) === false

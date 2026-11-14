@@ -83,68 +83,9 @@
   color: inherit;
 }
 
-/* Editor de cartões: texto à esquerda e prévia à direita; em bloco estreito, um sobre o outro. */
-.criar {
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  container-type: inline-size;
-}
-
-.criarGrade {
-  flex: 1;
-  min-height: 0;
-  display: grid;
-  grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
-  gap: var(--e2);
-  padding: var(--e1) var(--e3) 0;
-}
-
-@container (min-width: 620px) {
-  .criarGrade {
-    grid-template-rows: none;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  }
-}
-
-.texto {
-  min-height: 0;
-  padding: var(--e3);
-  border: 2px solid transparent;
-  border-radius: var(--raio-campo);
-  background: var(--cor-cartao-2);
-  color: var(--cor-texto);
-  font: var(--leitura-campo);
-  resize: none;
-}
-
-.texto:focus {
-  outline: none;
-  border-color: var(--cor-cursor);
-}
-
-.texto::placeholder {
-  color: var(--cor-texto-2);
-}
-
-.rascunhos {
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--e2);
-  padding: 0 0 var(--e2);
-  overflow: auto;
-}
-
 /* Segura o foco do editor ao tocar em Salvar. */
 .salvar {
   display: contents;
-}
-
-.salvou {
-  color: var(--cor-texto-2);
-  font: var(--ui-apoio);
 }
 
 .vazio {

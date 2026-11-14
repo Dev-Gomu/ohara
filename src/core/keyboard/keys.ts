@@ -365,3 +365,22 @@ export const ADJUST_KEYS: readonly AdjustRow[] = [
   { label: 'Enter', code: 'Enter', shift: false, action: { type: 'tableAdjustEnd' } },
   { label: 'Esc', code: 'Escape', shift: false, action: { type: 'tableAdjustEnd' } },
 ];
+
+// Só valem com o cursor numa linha do cartão novo (D138); por isso ficam fora de KEYS. "when" diz em que
+// ponto da linha a tecla é do cartão: Enter sempre; Backspace no começo do texto; ↑ na primeira linha visual
+// (ou no começo); ↓ na última (ou no fim).
+export type LineSpot = 'any' | 'start' | 'top' | 'bottom';
+
+export interface LineRow {
+  label: string;
+  code: string;
+  when: LineSpot;
+  action: KeyAction;
+}
+
+export const LINE_KEYS: readonly LineRow[] = [
+  { label: 'Enter', code: 'Enter', when: 'any', action: { type: 'cardLineSplit' } },
+  { label: 'Backspace', code: 'Backspace', when: 'start', action: { type: 'cardLineBack' } },
+  { label: '↑', code: 'ArrowUp', when: 'top', action: { type: 'cardLineMove', delta: -1 } },
+  { label: '↓', code: 'ArrowDown', when: 'bottom', action: { type: 'cardLineMove', delta: 1 } },
+];

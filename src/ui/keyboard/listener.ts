@@ -1,6 +1,7 @@
 import { overlayOf, type TouchTarget } from '../../core/keyboard/focus';
 import { resolve, type KeyInput } from '../../core/keyboard/resolve';
 import { disarmBar } from './bars';
+import { cardLineContext } from './cardLine';
 import { dispatch, getKeyboardState } from './store';
 import { isAdjusting } from './tableAdjust';
 
@@ -20,7 +21,13 @@ function inputOf(event: KeyboardEvent): KeyInput {
 
 function onKeyDown(event: KeyboardEvent): void {
   const { focus } = getKeyboardState();
-  const context = { level: focus.level, overlay: overlayOf(focus), adjusting: isAdjusting() };
+  const cardLine = cardLineContext();
+  const context = {
+    level: focus.level,
+    overlay: overlayOf(focus),
+    adjusting: isAdjusting(),
+    ...(cardLine ? { cardLine } : {}),
+  };
   const resolved = resolve(inputOf(event), context);
   if (!resolved) return;
   event.preventDefault();

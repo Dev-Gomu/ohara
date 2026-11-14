@@ -1,0 +1,172 @@
+/* Cartão novo: o cartão é o editor (D138). Mesmas cores do cartão salvo (D155). */
+.editor {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--e3);
+  min-height: 0;
+  padding: var(--e1) var(--e3) var(--e3);
+  overflow: auto;
+}
+
+.salvou {
+  color: var(--cor-texto-2);
+  font: var(--ui-apoio);
+}
+
+.carta {
+  flex: none;
+  overflow: hidden;
+  border: 1px solid var(--cor-acao);
+  border-radius: var(--raio-campo);
+  background: var(--cor-cartao);
+  color: var(--cor-texto);
+}
+
+.carta[data-incompleto='true'] {
+  border-style: dashed;
+}
+
+.faixa {
+  padding: var(--e3) var(--e4);
+  background: var(--cor-acao);
+  color: var(--cor-sobre-acao);
+  font: var(--voz-mini);
+}
+
+.verso {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--e3) var(--e4) var(--e4);
+  font: var(--leitura-texto);
+}
+
+.carta[data-compacto='true'] .verso {
+  font: var(--leitura-compacta);
+}
+
+.frente,
+.titulo,
+.subtitulo,
+.linha,
+.espaco {
+  margin: 0;
+  cursor: text;
+}
+
+.vazio,
+.falta {
+  color: inherit;
+  font: var(--ui-apoio);
+  opacity: 0.7;
+}
+
+.falta {
+  color: var(--cor-texto-2);
+  opacity: 1;
+}
+
+.titulo {
+  margin-top: var(--e2);
+  color: var(--cor-texto);
+  font: var(--ui-rotulo);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.verso[data-cor-titulos='true'] .titulo {
+  color: var(--cor-acao);
+}
+
+.subtitulo {
+  margin-top: var(--e1);
+  margin-left: var(--e2);
+  color: var(--cor-texto-2);
+  font: var(--ui-rotulo);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.linha {
+  display: flex;
+  gap: var(--e2);
+}
+
+.linha:is([data-tipo='item'], [data-tipo='number'], [data-tipo='pro'], [data-tipo='con'], [data-tipo='doubt']) {
+  padding-left: var(--e2);
+}
+
+.marca {
+  flex: none;
+  min-width: 1.1em;
+  color: var(--cor-texto-2);
+  font-weight: 700;
+}
+
+.espaco {
+  min-height: var(--e2);
+}
+
+/* Linha do cursor: texto cru, com a marca numa pílula. */
+.ativa {
+  display: flex;
+  align-items: baseline;
+  gap: var(--e2);
+  margin-inline: calc(var(--e2) * -1);
+  padding-inline: var(--e2);
+  border-radius: var(--raio-minimo);
+  background: color-mix(in srgb, var(--cor-cursor) 12%, transparent);
+}
+
+.faixa .ativa {
+  background: color-mix(in srgb, var(--cor-sobre-acao) 18%, transparent);
+}
+
+.pilula {
+  flex: none;
+  padding: 0 var(--e2);
+  border-radius: var(--raio-pilula);
+  background: var(--cor-escolhido);
+  color: var(--cor-texto);
+  font: var(--ui-sigla);
+}
+
+.faixa .pilula {
+  background: color-mix(in srgb, var(--cor-sobre-acao) 24%, transparent);
+  color: var(--cor-sobre-acao);
+}
+
+.campo {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  outline: none;
+  overflow: hidden;
+  resize: none;
+  text-transform: inherit;
+}
+
+.ativa[data-tipo='section'] {
+  color: var(--cor-acao);
+  font: var(--ui-rotulo);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.ativa[data-tipo='subsection'] {
+  color: var(--cor-texto-2);
+  font: var(--ui-rotulo);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.faixa .campo::placeholder {
+  color: var(--cor-sobre-acao);
+  opacity: 0.6;
+}
