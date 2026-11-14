@@ -72,3 +72,17 @@ export const ACERVO_AULAS = [
   { id: 'i8', titulo: 'Tolerância imunológica', data: '19 out', cartoes: 6 },
   { id: 'i9', titulo: 'Imunidade de mucosas', data: '14 out', cartoes: 4 },
 ] as const;
+
+// Lixeira (bancada noite 14/11): só o que foi excluído direto (a raiz); `traz` é o que volta junto.
+// `quando` = dias desde a exclusão (prazo de limpeza: 30 d).
+export const LIXEIRA = [
+  { id: 'x1', tipo: 'aula', titulo: 'Complemento', materia: 'IMU', cor: 2, quando: 0, traz: '9 cartões · anotações · slides' },
+  { id: 'x2', tipo: 'cartao', titulo: 'Qual via do complemento depende de anticorpo?', materia: 'IMU', cor: 2, quando: 0, traz: '' },
+  { id: 'x3', tipo: 'cartao', titulo: 'Onde fica o rim esquerdo?', materia: 'ANA', cor: 0, quando: 2, traz: '1 imagem' },
+  { id: 'x4', tipo: 'prova', titulo: 'P2 de Processos', materia: 'PRO', cor: 1, quando: 3, traz: '' },
+  { id: 'x5', tipo: 'pasta', titulo: '3º bimestre', materia: 'GEN', cor: 0, quando: 6, traz: '2 aulas · 14 cartões' },
+  { id: 'x6', tipo: 'anexo', titulo: 'Abbas cap. 4 (livro).pdf', materia: 'IMU', cor: 2, quando: 9, traz: '' },
+  { id: 'x7', tipo: 'lembrete', titulo: 'Levar jaleco na sexta', materia: '', cor: -1, quando: 12, traz: '' },
+  { id: 'x8', tipo: 'materia', titulo: 'Bioética', materia: 'BIO', cor: 5, quando: 25, traz: '3 aulas · 2 horários · faltas' },
+  { id: 'x9', tipo: 'aula', titulo: 'Hipersensibilidades tipo I a IV e doenças autoimunes associadas', materia: 'IMU', cor: 2, quando: 27, traz: '18 cartões · anotações' },
+] as const;
