@@ -1,4 +1,4 @@
-# Estado do Ohara (atualizado em 12/11/2026)
+# Estado do Ohara (atualizado em 14/11/2026)
 
 **Leia só este arquivo para retomar.** Detalhes de cada sessão: `docs/plano/faxina.md`. Fila: `docs/plano/_indice.md`.
 
@@ -8,6 +8,7 @@
 - Faxina: sessões 1 a 4 feitas (papel, visual, paletas, publicação). Na 4 saíram dois defeitos reais: Paleta reabria com a busca velha e carregar a aula apagava a versão do Histórico criada durante o carregamento. `lab/` só tem índice, sala, vitrine (agora com DayItem e FaultCell) e `provas-dias.html`; `diretrizes-visuais.md` virou resumo de uma página.
 
 ## Próximo passo
+**Ordem sugerida (14/11):** (1) aplicar o anexo de imagem (D158, tudo decidido); (2) fechar o verso do cloze e aplicar (D157); (3) itens pequenos (← → nos atalhos, faixa das Anotações a 320 px, falha antiga do Acervo); (4) R2 Configs, Etapa 11 (FSRS), Etapa 12. Sem teste ainda: arrastar imagem com mouse, seletor real, editor do cartão no tablet, Contido no escuro.
 
 **Propostas visuais de 13/11: parecer do usuário (só bancada, nada aplicado; pastas em `lab/livre/<ideia>/`)**
 - **Aplicados em 13/11 (D140, D142, D144):** raios novos (bloco 22, botão 12, item 10, campo 12); faixa de formatação aninhada no topo das Anotações (peça `FormatBar`, na vitrine; ☰ lista o que some no estreito; bolha só no toque; Alt T e Alt B vão à faixa); Salvar no cabeçalho dos Cartões, sem rodapé; padrão de janela V2 (contexto, X, rodapé de metades iguais); Configs com valor na linha. Bancadas apagadas.
@@ -27,6 +28,10 @@ Auditoria concluída (12/11): lab livre (`lab/livre.html`), cartão de peças (`
 - **Ícones da barra de formatação: conjunto completo DECIDIDO (D147, 13/11):** V1 de `lab/livre/icones-formatacao/` (conjunto próprio em `fable.tsx`, traço 2): os 13 da barra, os 11 do menu Aa e o caderno; "Mais estilos" = A em arco + "a" redondo. A aplicar junto com a barra (D145) e o cabeçalho da Mesa (D146), em outra sessão; ao aplicar, saem as pastas `icones-formatacao`, `aa-icone`, `barra-8` e `botoes-formatacao`. Histórico: Queixa do usuário: a **desproporção entre os botões**, uns maiores ou mais pesados que outros; nada aprovado. Tentativas: ícones desenhados à mão (traço 2, 1,75 e letras em fonte) e depois o Lucide (ISC, v0.468.0, copiado em `lab/livre/icones-formatacao/lucide.tsx`, traço 2, 1,75 e 1,5): ainda desproporcionais entre si. Aa: três versões em `lab/livre/aa-icone/` (arco, alto e curvo, letra em fonte), sem escolha. Pedido: conjunto único e equilibrado (mesmo peso, mesma altura óptica, mesma margem na grade 24, alinhamento no centro) para os 13 da barra e os 12 do menu Aa e bloco Anotações (caderno). Regras: traço dos ícones de bloco do app, sem fundo quente, tokens `--cor-*`, dois temas.
 
 - **Editor Novo dos Cartões APLICADO (D156, 14/11):** o cartão é o editor; linha do cursor crua com a marca em pílula. Regras em `core/study/cardLines.ts` (testes), teclas em `LINE_KEYS`, componente `CardEditor`. Falta testar no tablet (toque numa linha, teclado virtual, linhas que quebram).
+
+- **Cartão cloze: FRENTE decidida; VERSO EM ABERTO (D157, 14/11).** Última rodada (bancada `lab/livre/cloze-cartao/`): o usuário rejeitou as 3 versões do verso com faixa em cima e cartão embaixo, e as 3 com cara do cartão simples (uma peça só, faixa azul com a frase e corpo claro). Antes de aplicar, fechar o verso (pedir a referência do que ele quer). Visual decidido até aqui: **D157**, clássico B com `[…]` literal (frente azul cheia, texto branco, `[…]` em azul-gelo e negrito; verso claro com a resposta no azul da frente). **A aplicar em etapa própria:** escrita `{{c1::resposta}}`, editor, Salvos, Treino e exportação Anki. A bancada `lab/livre/cloze-cartao/` fica até lá; sai ao aplicar.
+
+- **Anexo de imagem nos cartões: DECIDIDO (D158, 14/11)**, bancada funcional aprovada (`lab/livre/anexo-funcional/`, com `anexo-imagem/` de apoio). **A aplicar em etapa própria:** imagens guardadas no banco SQLite e no backup, linha de imagem no texto do cartão (`{img:id}`), editor, Salvos, Treino, menu Alt O. Falta testar o arrastar com mouse e o seletor real.
 
 ## A conferir (aplicado em 13/11, só check e e2e)
 - Faixa das Anotações no bloco estreito (320 px) e no toque; ◦ botão Marcador/Aa e função do ⋮ extra ficaram de fora. Estilo "Contido" (D143) segue como última tarefa. Falha antiga no e2e: "Acervo: a 3ª aula do 2º bimestre" (do R1, não desta sessão).

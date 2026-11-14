@@ -58,7 +58,8 @@ function Moldura() {
 
   useEffect(() => {
     const aoTecla = (e: KeyboardEvent) => {
-      if (e.altKey || e.ctrlKey || e.metaKey || e.target instanceof HTMLSelectElement) return;
+      if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey) return;
+      if (e.target instanceof HTMLSelectElement || e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
       const cicla = (lista: string[], chave: string) =>
         mudar(chave, lista[(lista.indexOf(est[chave as keyof typeof est]) + 1) % lista.length] ?? '');
       if (e.code === 'KeyD') cicla(TEMAS, 'tema');

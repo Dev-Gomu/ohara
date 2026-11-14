@@ -1,0 +1,95 @@
+/* Bancada anexo-imagem: só tokens do app. Sem gradiente, sem tarja, sem círculo, sem divisória. */
+.ai-pagina { display: flex; flex-direction: column; gap: var(--e5); width: min(540px, 100%); margin: var(--e4) auto var(--e6); }
+.ai-secao h2 { margin: 0 0 var(--e2); color: var(--cor-texto-2); font: var(--ui-rotulo); letter-spacing: 0.06em; text-transform: uppercase; }
+.ai-ancora { position: relative; padding-bottom: 96px; }
+.ai-ancora-selo { padding-bottom: 40px; }
+
+/* Cartão (D155): faixa cheia no azul de ação e verso no mesmo contorno. */
+.ai-card { position: relative; overflow: hidden; border: 1px solid var(--cor-acao); border-radius: var(--raio-campo); background: var(--cor-cartao); color: var(--cor-texto); }
+.ai-frente { display: flex; flex-direction: column; gap: var(--e3); padding: var(--e3) var(--e4); background: var(--cor-acao); color: var(--cor-sobre-acao); font: var(--voz-mini); }
+.ai-rotulo-frente { flex: 1; min-width: 0; }
+.ai-verso { position: relative; padding: var(--e3) var(--e4) var(--e4); }
+.ai-ancora-selo .ai-card { overflow: visible; }
+.ai-ancora-selo .ai-frente { border-radius: var(--raio-campo) var(--raio-campo) 0 0; }
+.ai-ancora-selo .ai-verso { padding-bottom: var(--e5); }
+
+/* Pílula: ícone e número. */
+.ai-pil { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: var(--raio-pilula); background: var(--cor-escolhido); color: var(--cor-texto); font: var(--ui-sigla); font-size: 13px; cursor: pointer; }
+.ai-pil svg { width: 16px; height: 16px; }
+.ai-pil b { font-weight: 700; }
+.ai-pil-forte { background: color-mix(in srgb, var(--cor-sobre-acao) 24%, transparent); color: var(--cor-sobre-acao); }
+.ai-pil-mini { padding: 2px 8px; cursor: default; flex: none; }
+.ai-pil-add { background: var(--cor-cartao-2); color: var(--cor-texto-2); }
+.ai-topo { flex: none; }
+.ai-canto { display: flex; justify-content: flex-end; margin-top: var(--e2); }
+
+/* Miniaturas. */
+.ai-mini { display: inline-grid; place-items: center; flex: none; border-radius: var(--raio-item); overflow: hidden; }
+.ai-miniaba { position: relative; display: inline-flex; flex: none; }
+.ai-x { position: absolute; top: 3px; right: 3px; display: grid; place-items: center; width: 20px; height: 20px; border-radius: var(--raio-pilula); background: color-mix(in srgb, var(--cor-tinta) 70%, transparent); color: var(--cor-sobre-tinta); font-size: 12px; }
+.ai-x-peq { width: 16px; height: 16px; top: 2px; right: 2px; font-size: 10px; }
+.ai-mais-n { display: inline-grid; place-items: center; min-width: 40px; height: 52px; padding: 0 var(--e2); border-radius: var(--raio-item); background: var(--cor-cartao-2); color: var(--cor-texto-2); font: var(--ui-botao); }
+.ai-add { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-width: 76px; height: 52px; padding: 0 var(--e3); border-radius: var(--raio-item); background: var(--cor-cartao-2); color: var(--cor-texto-2); font: var(--ui-sigla); }
+.ai-add svg { width: 16px; height: 16px; }
+.ai-add-peq { min-width: 36px; width: 36px; height: 36px; padding: 0; }
+
+/* V1: gaveta flutuante sob o canto do cartão. */
+.ai-gaveta { position: absolute; right: var(--e3); top: calc(100% - 84px); display: flex; flex-direction: column; gap: var(--e2); padding: var(--e3); border: 1px solid var(--cor-acao); border-radius: var(--raio-campo); background: var(--cor-cartao); box-shadow: var(--sombra-flutuante); }
+.ai-gaveta header { display: flex; justify-content: space-between; gap: var(--e5); color: var(--cor-texto-2); font: var(--ui-rotulo); letter-spacing: 0.06em; text-transform: uppercase; }
+.ai-minis { display: flex; align-items: center; gap: var(--e2); }
+
+/* V2: fila de miniaturas no verso. */
+.ai-fila { display: flex; flex-wrap: wrap; align-items: center; gap: var(--e2); margin-top: var(--e3); }
+.ai-foto { display: inline-flex; border-radius: var(--raio-item); }
+.ai-foto:hover .ai-mini { outline: 2px solid var(--cor-cursor); }
+.ai-mini-fila { display: inline-flex; align-items: center; gap: 4px; flex: none; color: var(--cor-texto-2); font: var(--ui-sigla); }
+
+/* V3: selo no canto e bandeja que se estica. */
+.ai-selo { position: absolute; right: var(--e4); bottom: 0; display: inline-flex; align-items: center; gap: var(--e2); padding: 4px; border-radius: var(--raio-pilula); background: var(--cor-cartao); box-shadow: var(--sombra-flutuante); }
+.ai-selo-aberto { padding-left: var(--e2); }
+.ai-bandeja { display: inline-flex; align-items: center; gap: 6px; }
+.ai-bandeja .ai-mais-n { height: 36px; min-width: 32px; }
+.ai-pil-selo { background: var(--cor-acao); color: var(--cor-sobre-acao); }
+
+/* Linha da lista de Salvos (D151). */
+.ai-linha { display: flex; align-items: center; gap: var(--e3); padding: var(--e3) var(--e3); border-radius: var(--raio-item); background: var(--cor-cartao-2); }
+.ai-num { color: var(--cor-texto-2); font: var(--ui-apoio); }
+.ai-textos { display: flex; flex: 1; flex-direction: column; min-width: 0; font: var(--ui-item); }
+.ai-textos span { color: var(--cor-texto-2); font: var(--ui-apoio); }
+
+/* Frente: pergunta e anexo no topo; a faixa pode ter uma fila de miniaturas embaixo. */
+.ai-linha-frente { display: flex; align-items: center; gap: var(--e3); }
+.ai-fila-frente { margin-top: 0; }
+.ai-fila-frente .ai-pil-add { background: color-mix(in srgb, var(--cor-sobre-acao) 24%, transparent); color: var(--cor-sobre-acao); }
+.ai-gaveta-frente { top: 52px; }
+
+/* Ícone discreto de "anexar imagem" (cartão sem imagem). */
+.ai-vazio { display: grid; place-items: center; flex: none; width: 28px; height: 28px; border-radius: var(--raio-item); font-size: 18px; opacity: 0.55; }
+.ai-vazio:hover { opacity: 1; }
+.ai-vazio-frente { color: var(--cor-sobre-acao); }
+.ai-vazio-verso { color: var(--cor-texto-2); }
+.ai-fila-frente .ai-mini { box-shadow: 0 0 0 2px color-mix(in srgb, var(--cor-sobre-acao) 40%, transparent); }
+
+/* Anexo dentro do cartão e no Treino. */
+.ai-frente-img { flex-direction: column; align-items: stretch; }
+.ai-img-faixa { display: flex; }
+.ai-img-faixa .ai-mini { border-radius: var(--raio-item); box-shadow: 0 0 0 2px color-mix(in srgb, var(--cor-sobre-acao) 40%, transparent); }
+
+.ai-treino { display: flex; flex-direction: column; align-items: center; gap: var(--e3); padding: var(--e4) var(--e5) var(--e3); border-radius: var(--raio-bloco); background: var(--cor-acao); color: var(--cor-sobre-acao); text-align: center; }
+.ai-rot { align-self: flex-start; font: var(--ui-rotulo); letter-spacing: 0.08em; opacity: 0.75; text-transform: uppercase; }
+.ai-q { margin: 0; font: var(--voz-titulo); }
+.ai-q-mini { font: var(--voz-mini); text-align: left; }
+.ai-img-grande .ai-mini { border-radius: var(--raio-bloco); box-shadow: 0 0 0 3px color-mix(in srgb, var(--cor-sobre-acao) 40%, transparent); }
+.ai-treino .ai-dica { font: var(--ui-apoio); opacity: 0.75; }
+
+.ai-treino-verso { display: flex; flex-direction: column; gap: var(--e2); }
+.ai-topo { padding: var(--e3) var(--e5) var(--e4); border-radius: var(--raio-bloco); background: var(--cor-acao); color: var(--cor-sobre-acao); }
+.ai-topo .ai-rot { display: block; padding-bottom: var(--e1); }
+.ai-corpo { padding: var(--e3) var(--e5) var(--e5); border-radius: var(--raio-bloco); background: var(--cor-cartao-2); }
+.ai-rot-verso { display: block; padding-bottom: var(--e2); color: var(--cor-texto-2); font: var(--ui-rotulo); letter-spacing: 0.08em; text-transform: uppercase; }
+.ai-corpo .ai-fila { margin-top: var(--e3); }
+
+.ai-veu { position: relative; display: grid; place-items: center; min-height: 260px; border-radius: var(--raio-bloco); background: color-mix(in srgb, var(--cor-tinta) 72%, transparent); }
+.ai-ampla .ai-mini { border-radius: var(--raio-campo); }
+.ai-fechar { position: absolute; top: var(--e3); right: var(--e3); display: grid; place-items: center; width: 36px; height: 36px; border-radius: var(--raio-pilula); background: var(--cor-cartao); color: var(--cor-texto); font-size: 16px; }
+.ai-no-texto { display: flex; margin: var(--e2) 0 var(--e3); }
