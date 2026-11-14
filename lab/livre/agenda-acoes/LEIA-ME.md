@@ -18,7 +18,7 @@ Todas as janelas seguem o padrão D144 (contexto, X de 44 px, rodapé de metades
   - **Registrar falta:** lista as aulas do dia, cada uma com Presente / Falta / Cancelada (D100).
 
 ## Recomendação
-**V1.** Dois botões grandes no pé do calendário, com o "Novo evento" azul; a lista do dia continua rolando acima deles.
+**V1** (aprovada pelo usuário em 14/11). Dois botões grandes no pé do calendário, com o "Novo evento" azul; a lista do dia continua rolando acima deles.
 
 ## Teclas (linhas da tabela, nunca keydown em componente)
 | Tecla | Onde | Faz | Toque |
@@ -36,6 +36,7 @@ Nenhuma tecla nova: tudo cabe em linhas já existentes (Alt N, Alt O, Alt Z).
 - Migração nova (`00X_agenda_excecoes.sql`): exceções da Grade por data (cancelar, mover) e o tipo novo; Sem aula grava também em `attendance.cancelled` (D101) para sair da conta.
 - `src/core/study/queries.ts`: `AssessmentDay` inclui trabalho e apresentação; `eventsOn` aplica as exceções. Testes Vitest para: cancelar recusado com conteúdo (G6), mover só uma aula, desfazer.
 - `src/ui/components/Cards.tsx`: `AssessmentDayCard` ganha prop `kinds` (marca A/T no fim da fileira); regerar `docs/pecas.md`.
+- `src/ui/screens/hub/Hub.module.css` (pedido 14/11 à tarde, V1 aprovada): cabeçalho do calendário com mais ar: ano na mesma letra do mês e na mesma linha de base, 16 px entre o cabeçalho e os dias da semana (`.aa-bloco-cal` em `aa.css`).
 - `src/ui/screens/hub/HubBlocks.tsx`: rodapé do calendário com os dois botões; ⋮ com "Registrar falta neste dia"; bloco renomeado para Avaliações.
 - `src/ui/screens/agenda/AgendaPreview.tsx` e `agendaForms.ts`: ações Mover e Sem aula, janelas Mover e Novo evento com os tipos novos.
 - Roteiro e2e curto: Hub → Alt N → Apresentação → aparece no bloco Avaliações.

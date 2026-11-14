@@ -49,3 +49,9 @@
 .aa-teclas kbd { padding: 1px 6px; border-radius: var(--raio-item); background: var(--sup-peca); color: var(--cor-texto); font: var(--ui-rotulo); }
 /* Na peça real, a marca vira um item no fim da fileira de pílulas (prop nova `kinds`). */
 .aa-cartao [class*='pilulas'] { padding-right: 44px; }
+
+/* Ajuste do cabeçalho do calendário (pedido 14/11 à tarde). Na aplicação vai para Hub.module.css. */
+.aa-bloco-cal header[class*='titulo'] { align-items: baseline; padding-bottom: var(--e4); }
+.aa-bloco-cal header[class*='titulo'] [class*='conta'] { font: var(--ui-rotulo); letter-spacing: 0.06em; }
+.aa-bloco-cal [class*='calendario'] { padding-top: var(--e1); row-gap: var(--e1); }
+.aa-bloco-cal [class*='semana'] { padding-bottom: var(--e1); }
