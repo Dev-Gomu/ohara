@@ -72,7 +72,11 @@ export function useCardImagesEditor(editor: CardsEditor, lessonId: string): Card
   };
   const drawerIds = drawer ? sidesOf(drawer.line)[drawer.side === 'frente' ? 'front' : 'back'] : [];
 
-  const attach = (files: readonly File[], at: number, side?: ImageSide): void => {
+  // Botão (toque ou mouse) num cartão: se o cursor está nesse cartão, a imagem entra onde ele está.
+  const anchor = (at: number): { at: number; atCursor: boolean } =>
+    groupOf(text, at).includes(line) ? { at: line, atCursor: true } : { at, atCursor: false };
+
+  const attach = (files: readonly File[], at: number, side?: ImageSide, atCursor = side === undefined): void => {
     const chosen = side ?? sideAt(text, at, index.sideOf);
     const already = countSide(text, at, chosen, index.sideOf);
     void addImages(files, lessonId, chosen, already).then((ids) => {
@@ -80,7 +84,7 @@ export function useCardImagesEditor(editor: CardsEditor, lessonId: string): Card
       // As imagens novas ainda não estão no índice: o lado delas é o escolhido.
       const known = new Set(ids);
       const sideOf = (id: string) => (known.has(id) ? chosen : index.sideOf(id));
-      editor.replace(insertImages(editor.source, at, ids, chosen, sideOf, side === undefined));
+      editor.replace(insertImages(editor.source, at, ids, chosen, sideOf, atCursor));
     });
   };
 
@@ -100,7 +104,10 @@ export function useCardImagesEditor(editor: CardsEditor, lessonId: string): Card
     drawer,
     drawerIds,
     attach,
-    pick: (at, side) => pickImages((files) => attach(files, at, side)),
+    pick: (at, side) => {
+      const place = anchor(at);
+      pickImages((files) => attach(files, place.at, side, place.atCursor));
+    },
     openDrawer: openDrawerAt,
     removeAt: (at) => {
       const id = imageIdOf(splitLines(text)[at] ?? '');
