@@ -6,60 +6,53 @@ import {
   type Item,
   type Scheme,
 } from '../../core/grades/grades';
-import { passphraseProblem, pinProblem } from '../../core/secret/vault';
+import { createElement } from 'react';
+import { pinProblem } from '../../core/secret/vault';
 import { shortDate } from '../../core/study/dates';
 import type { Exam, StudyData, Subject } from '../../core/study/types';
 import { ask } from '../shell/PromptWindow';
 import { showNotice } from '../study/notice';
+import { QrCode } from './QrCode';
+import qr from './Qr.module.css';
+import { QrScanner } from './QrScanner';
 import {
-  changePass,
+  changePin,
   checkCode,
+  pairDevice,
+  pairingText,
   readPin,
   recover,
   removeItem,
-  removePin,
   saveItem,
   saveScheme,
   schemeFor,
-  setPin,
   startSetup,
-  unlock,
   unlockPin,
 } from './session';
 
 const NONE = 'nenhum';
 
-export function askSetup(): void {
-  ask({
-    title: 'Criar a frase de acesso',
-    action: 'Criar',
-    fields: [
-      {
-        id: 'frase',
-        label:
-          'Frase de acesso (pelo menos 12 caracteres). Sem ela e sem o código, ninguém abre as Notas.',
-        type: 'password',
-      },
-      { id: 'repete', label: 'Repita a frase', type: 'password' },
-    ],
-    onSubmit: ({ frase = '', repete = '' }) => {
-      const problem = passphraseProblem(frase);
-      if (problem) return showNotice(problem);
-      if (frase !== repete) return showNotice('As duas frases são diferentes.');
-      void startSetup(frase);
-    },
-  });
+const PIN_HELP = 'PIN de 6 números, só deste aparelho';
+
+function pinsMatch(pin: string, repete: string): string | null {
+  const problem = pinProblem(pin);
+  if (problem) return problem;
+  return pin === repete ? null : 'Os dois PINs são diferentes.';
 }
 
-export function askUnlock(): void {
+export function askSetup(): void {
   ask({
-    title: 'Abrir as Notas',
-    action: 'Abrir',
-    fields: [{ id: 'frase', label: 'Frase de acesso', type: 'password' }],
-    onSubmit: ({ frase = '' }) =>
-      void unlock(frase).then((ok) => {
-        if (!ok) showNotice('Frase errada.');
-      }),
+    title: 'Criar o PIN das Notas',
+    action: 'Criar',
+    fields: [
+      { id: 'pin', label: PIN_HELP, type: 'pin' },
+      { id: 'repete', label: 'Repita o PIN', type: 'pin' },
+    ],
+    onSubmit: ({ pin = '', repete = '' }) => {
+      const problem = pinsMatch(pin, repete);
+      if (problem) return showNotice(problem);
+      void startSetup(pin);
+    },
   });
 }
 
@@ -67,77 +60,114 @@ export function askPinUnlock(): void {
   ask({
     title: 'Abrir com o PIN',
     action: 'Abrir',
-    fields: [{ id: 'pin', label: 'PIN (4 a 6 números)', type: 'password' }],
-    onSubmit: ({ pin = '' }) =>
-      void unlockPin(pin).then((result) => {
-        if (result === 'errado') showNotice('PIN errado.');
-        if (result === 'apagado') showNotice('PIN apagado por excesso de erros. Use a frase.');
-      }),
+    fields: [{ id: 'pin', label: 'PIN de 6 números', type: 'pin' }],
+    onSubmit: () => undefined,
+    verify: async ({ pin = '' }) => {
+      const result = await unlockPin(pin);
+      if (result === 'errado') return 'PIN errado.';
+      if (result === 'apagado') return 'PIN apagado por excesso de erros. Use o código.';
+      return null;
+    },
   });
 }
 
 export function askRecover(): void {
   ask({
-    title: 'Recuperar pelo código',
+    title: 'Usar o código de recuperação',
     action: 'Recuperar',
     fields: [
       { id: 'codigo', label: 'Código de recuperação (XXXX-XXXX-XXXX-XXXX-XXXX)' },
-      { id: 'frase', label: 'Nova frase de acesso (pelo menos 12 caracteres)', type: 'password' },
+      { id: 'pin', label: `Novo ${PIN_HELP}`, type: 'pin' },
+      { id: 'repete', label: 'Repita o novo PIN', type: 'pin' },
     ],
-    onSubmit: ({ codigo = '', frase = '' }) => {
-      const problem = passphraseProblem(frase);
+    onSubmit: ({ codigo = '', pin = '', repete = '' }) => {
+      const problem = pinsMatch(pin, repete);
       if (problem) return showNotice(problem);
       void (async () => {
         if (!(await checkCode(codigo))) return showNotice('Código errado.');
-        await recover(codigo, frase);
+        await recover(codigo, pin);
       })();
     },
   });
 }
 
-export function askChangePass(): void {
+// Aparelho novo: lê o QR do aparelho antigo (câmera) ou o texto dele, e cria o PIN deste.
+export function askPair(): void {
   ask({
-    title: 'Trocar a frase de acesso',
-    action: 'Trocar',
-    fields: [
-      { id: 'antiga', label: 'Frase atual', type: 'password' },
-      { id: 'nova', label: 'Frase nova (pelo menos 12 caracteres)', type: 'password' },
-    ],
-    onSubmit: ({ antiga = '', nova = '' }) => {
-      const problem = passphraseProblem(nova);
-      if (problem) return showNotice(problem);
-      void changePass(antiga, nova).then((ok) =>
-        showNotice(ok ? 'Frase trocada. As notas continuam as mesmas.' : 'Frase atual errada.'),
-      );
-    },
-  });
-}
-
-export function askPin(): void {
-  ask({
-    title: readPin() ? 'Trocar o PIN' : 'Criar um PIN',
-    action: 'Salvar',
+    title: 'Já uso em outro aparelho',
+    action: 'Conectar',
+    body: (set) => createElement(QrScanner, { onRead: (text) => set('codigo', text) }),
     fields: [
       {
-        id: 'pin',
-        label: 'PIN de 4 a 6 números. Só vale neste aparelho e não protege o arquivo sincronizado',
-        type: 'password',
+        id: 'codigo',
+        label: 'Código do outro aparelho (aparece em "Adicionar outro aparelho"), ou leia o QR',
+        type: 'area',
       },
-      { id: 'frase', label: 'Sua frase de acesso, para confirmar', type: 'password' },
+      { id: 'pin', label: `Novo ${PIN_HELP}`, type: 'pin' },
+      { id: 'repete', label: 'Repita o novo PIN', type: 'pin' },
     ],
-    onSubmit: ({ pin = '', frase = '' }) => {
-      const problem = pinProblem(pin);
+    onSubmit: ({ codigo = '', pin = '', repete = '' }) => {
+      const problem = pinsMatch(pin, repete);
       if (problem) return showNotice(problem);
-      void setPin(frase, pin).then((ok) =>
-        showNotice(ok ? 'PIN salvo neste aparelho.' : 'Frase errada: o PIN não foi salvo.'),
-      );
+      void pairDevice(codigo, pin).then((ok) => {
+        if (!ok) showNotice('Esse código de aparelho não vale.');
+      });
     },
   });
 }
 
-export function dropPin(): void {
-  removePin();
-  showNotice('PIN apagado deste aparelho.');
+// Nas Notas abertas: pede o PIN de novo e mostra o QR (e o texto) para o aparelho novo ler.
+export function askAddDevice(): void {
+  let text = '';
+  ask({
+    title: 'Adicionar outro aparelho',
+    action: 'Pronto',
+    fields: [{ id: 'pin', label: 'Seu PIN, para mostrar o QR', type: 'pin' }],
+    onSubmit: () => undefined,
+    verify: async ({ pin = '' }) => {
+      const found = await pairingText(pin);
+      if (found === null) return readPin() ? 'PIN errado.' : 'PIN apagado por excesso de erros.';
+      text = found;
+      return null;
+    },
+    onVerified: () =>
+      ask({
+        title: 'QR do aparelho novo',
+        action: 'Fechar',
+        fields: [],
+        body: () =>
+          createElement(
+            'div',
+            null,
+            createElement(QrCode, { text }),
+            createElement(
+              'p',
+              { className: qr.codigoTexto, 'data-testid': 'codigo-aparelho' },
+              text,
+            ),
+          ),
+        onSubmit: () => undefined,
+      }),
+  });
+}
+
+export function askChangePin(): void {
+  ask({
+    title: 'Trocar o PIN',
+    action: 'Salvar',
+    fields: [
+      { id: 'antigo', label: 'PIN de agora', type: 'pin' },
+      { id: 'pin', label: `Novo ${PIN_HELP}`, type: 'pin' },
+      { id: 'repete', label: 'Repita o novo PIN', type: 'pin' },
+    ],
+    onSubmit: ({ antigo = '', pin = '', repete = '' }) => {
+      const problem = pinsMatch(pin, repete);
+      if (problem) return showNotice(problem);
+      void changePin(antigo, pin).then((ok) =>
+        showNotice(ok ? 'PIN trocado neste aparelho.' : 'PIN de agora errado.'),
+      );
+    },
+  });
 }
 
 function number(text: string | undefined, fallback: number): number {

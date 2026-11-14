@@ -1,29 +1,28 @@
 import { describe, expect, it } from 'vitest';
 import { CODE_LENGTH, fromBase64, newRecoveryCode, normalizeCode, toBase64 } from './codec';
+import { exportPairing, pairFromText } from './pairing';
 import {
-  changePassphrase,
-  createPin,
   createVault,
   ITERATIONS,
+  makePin,
   openRecord,
-  passphraseProblem,
+  pinProblem,
   PIN_MAX_FAILS,
   recoverWithCode,
   sealRecord,
   tryPin,
   unlockWithCode,
-  unlockWithPassphrase,
 } from './vault';
 
 // Poucas iterações só nos testes, para não demorar; o padrão de verdade é conferido abaixo.
 const FAST = 1000;
-const PASS = 'frase de teste bem longa';
+const PIN = '482193';
 
 describe('padrões', () => {
-  it('usa PBKDF2 com 600 000 iterações e exige frase de 12 caracteres', () => {
+  it('usa PBKDF2 com 600 000 iterações e exige PIN de exatamente 6 números', () => {
     expect(ITERATIONS).toBe(600_000);
-    expect(passphraseProblem('curta')).not.toBeNull();
-    expect(passphraseProblem('doze letras!')).toBeNull();
+    for (const bad of ['12', '4821', '12ab34', '1234567']) expect(pinProblem(bad)).not.toBeNull();
+    expect(pinProblem('000123')).toBeNull();
   });
 
   it('o código de recuperação tem 20 caracteres em grupos de 4 e aceita variações', () => {
@@ -41,14 +40,14 @@ describe('padrões', () => {
 
 describe('cifra de registros', () => {
   it('cifra e decifra de volta', async () => {
-    const { key } = await createVault(PASS, FAST);
+    const { key } = await createVault(PIN, FAST);
     const sealed = await sealRecord(key, 'r1', { kind: 'item', nota: 8.5 });
     expect(JSON.stringify(sealed)).not.toContain('8.5');
     expect(await openRecord(key, sealed)).toEqual({ kind: 'item', nota: 8.5 });
   });
 
   it('um byte trocado no texto cifrado falha', async () => {
-    const { key } = await createVault(PASS, FAST);
+    const { key } = await createVault(PIN, FAST);
     const sealed = await sealRecord(key, 'r1', { nota: 9 });
     const bytes = fromBase64(sealed.ciphertext);
     bytes[0] = (bytes[0] ?? 0) ^ 1;
@@ -56,13 +55,13 @@ describe('cifra de registros', () => {
   });
 
   it('trocar o id (AAD) falha', async () => {
-    const { key } = await createVault(PASS, FAST);
+    const { key } = await createVault(PIN, FAST);
     const sealed = await sealRecord(key, 'r1', { nota: 9 });
     expect(await openRecord(key, { ...sealed, id: 'r2' })).toBeNull();
   });
 
   it('o mesmo texto cifrado duas vezes dá resultados diferentes', async () => {
-    const { key } = await createVault(PASS, FAST);
+    const { key } = await createVault(PIN, FAST);
     const a = await sealRecord(key, 'r1', { nota: 9 });
     const b = await sealRecord(key, 'r1', { nota: 9 });
     expect(a.ciphertext).not.toBe(b.ciphertext);
@@ -70,63 +69,39 @@ describe('cifra de registros', () => {
   });
 });
 
-describe('frase de acesso', () => {
-  it('a frase certa abre e a errada falha sem expor nada', async () => {
-    const { vault, key } = await createVault(PASS, FAST);
-    const sealed = await sealRecord(key, 'r1', { nota: 7 });
-    const opened = await unlockWithPassphrase(vault, PASS);
-    expect(opened && (await openRecord(opened, sealed))).toEqual({ nota: 7 });
-    expect(await unlockWithPassphrase(vault, 'frase errada completa')).toBeNull();
-  });
-
-  it('a chave em uso não é extraível', async () => {
-    const { vault, key } = await createVault(PASS, FAST);
-    const opened = await unlockWithPassphrase(vault, PASS);
-    expect(key.extractable).toBe(false);
-    expect(opened?.extractable).toBe(false);
-  });
-
-  it('as iterações gravadas na vault são respeitadas', async () => {
-    const { vault } = await createVault(PASS, FAST);
+describe('criar o cofre (D172)', () => {
+  it('não guarda frase: só o código tranca a vault e o PIN tranca a chave do aparelho', async () => {
+    const { vault, pin, key } = await createVault(PIN, FAST);
+    expect(vault.passWrapped).toBe('');
     expect(vault.iterations).toBe(FAST);
-    expect(await unlockWithPassphrase({ ...vault, iterations: FAST + 1 }, PASS)).toBeNull();
+    expect(key.extractable).toBe(false);
+    const sealed = await sealRecord(key, 'r1', { nota: 7 });
+    const opened = (await tryPin(pin, PIN)).key;
+    expect(opened && (await openRecord(opened, sealed))).toEqual({ nota: 7 });
   });
 
-  it('trocar a frase: a nova abre, a antiga falha e as notas continuam intactas', async () => {
-    const { vault, key } = await createVault(PASS, FAST);
-    const sealed = await sealRecord(key, 'r1', { nota: 6.5 });
-    const next = await changePassphrase(vault, PASS, 'outra frase igualmente longa');
-    expect(next).not.toBeNull();
-    if (!next) return;
-    expect(await unlockWithPassphrase(next, PASS)).toBeNull();
-    const opened = await unlockWithPassphrase(next, 'outra frase igualmente longa');
-    expect(opened && (await openRecord(opened, sealed))).toEqual({ nota: 6.5 });
+  it('recusa PIN inválido ao criar', async () => {
+    await expect(createVault('12', FAST)).rejects.toThrow();
   });
 
-  it('trocar a frase com a frase antiga errada falha', async () => {
-    const { vault } = await createVault(PASS, FAST);
-    expect(
-      await changePassphrase(vault, 'errada errada errada', 'outra frase igualmente longa'),
-    ).toBeNull();
-  });
-
-  it('recusa frase curta ao criar e ao trocar', async () => {
-    await expect(createVault('curta', FAST)).rejects.toThrow();
-    const { vault } = await createVault(PASS, FAST);
-    await expect(changePassphrase(vault, PASS, 'curta')).rejects.toThrow();
+  it('duas criações geram chaves diferentes', async () => {
+    const a = await createVault(PIN, FAST);
+    const b = await createVault(PIN, FAST);
+    const sealed = await sealRecord(a.key, 'r1', { nota: 1 });
+    expect(await openRecord(b.key, sealed)).toBeNull();
   });
 });
 
 describe('código de recuperação', () => {
-  it('abre a vault, e o código novo vale enquanto o antigo deixa de valer', async () => {
-    const created = await createVault(PASS, FAST);
+  it('abre a vault; recuperar cria PIN novo e código novo, o usado deixa de valer', async () => {
+    const created = await createVault(PIN, FAST);
     const sealed = await sealRecord(created.key, 'r1', { nota: 5 });
     expect(await unlockWithCode(created.vault, created.recoveryCode)).not.toBeNull();
 
     const recovered = await recoverWithCode(
       created.vault,
       created.recoveryCode.toLowerCase(),
-      'frase nova depois de perder',
+      '135790',
     );
     expect(recovered).not.toBeNull();
     if (!recovered) return;
@@ -134,59 +109,81 @@ describe('código de recuperação', () => {
     expect(await openRecord(recovered.key, sealed)).toEqual({ nota: 5 });
     expect(await unlockWithCode(recovered.vault, created.recoveryCode)).toBeNull();
     expect(await unlockWithCode(recovered.vault, recovered.recoveryCode)).not.toBeNull();
-    expect(await unlockWithPassphrase(recovered.vault, PASS)).toBeNull();
-    expect(
-      await unlockWithPassphrase(recovered.vault, 'frase nova depois de perder'),
-    ).not.toBeNull();
+    expect((await tryPin(recovered.pin, PIN)).key).toBeNull();
+    const again = (await tryPin(recovered.pin, '135790')).key;
+    expect(again && (await openRecord(again, sealed))).toEqual({ nota: 5 });
   });
 
-  it('código errado ou mal formado falha', async () => {
-    const { vault } = await createVault(PASS, FAST);
+  it('código errado ou mal formado falha; PIN novo inválido é recusado', async () => {
+    const { vault, recoveryCode } = await createVault(PIN, FAST);
     expect(await unlockWithCode(vault, newRecoveryCode())).toBeNull();
     expect(await unlockWithCode(vault, 'curto')).toBeNull();
-    expect(
-      await recoverWithCode(vault, newRecoveryCode(), 'frase nova depois de perder'),
-    ).toBeNull();
+    expect(await recoverWithCode(vault, newRecoveryCode(), '135790')).toBeNull();
+    await expect(recoverWithCode(vault, recoveryCode, '12')).rejects.toThrow();
   });
 });
 
 describe('PIN', () => {
-  it('abre com o PIN certo', async () => {
-    const { vault, key } = await createVault(PASS, FAST);
-    const sealed = await sealRecord(key, 'r1', { nota: 4 });
-    const pin = await createPin(vault, PASS, '4821');
-    expect(pin).not.toBeNull();
-    if (!pin) return;
-    const attempt = await tryPin(pin, '4821');
-    expect(attempt.key && (await openRecord(attempt.key, sealed))).toEqual({ nota: 4 });
-  });
-
-  it('não cria PIN com a frase errada nem com formato inválido', async () => {
-    const { vault } = await createVault(PASS, FAST);
-    expect(await createPin(vault, 'frase errada completa', '4821')).toBeNull();
-    await expect(createPin(vault, PASS, '12')).rejects.toThrow();
-    await expect(createPin(vault, PASS, '12ab')).rejects.toThrow();
+  it('PIN errado não abre', async () => {
+    const { pin } = await createVault(PIN, FAST);
+    expect((await tryPin(pin, '000000')).key).toBeNull();
   });
 
   it('5 erros apagam o PIN; antes disso, acertar zera a contagem', async () => {
-    const { vault } = await createVault(PASS, FAST);
-    let pin = await createPin(vault, PASS, '4821');
-    expect(pin).not.toBeNull();
+    const created = await createVault(PIN, FAST);
+    let pin: typeof created.pin | null = created.pin;
     for (let step = 1; step < PIN_MAX_FAILS; step += 1) {
-      const attempt = await tryPin(pin as NonNullable<typeof pin>, '0000');
+      const attempt = await tryPin(pin as NonNullable<typeof pin>, '000000');
       expect(attempt.key).toBeNull();
       expect(attempt.next?.fails).toBe(step);
       pin = attempt.next;
     }
-    const good = await tryPin(pin as NonNullable<typeof pin>, '4821');
+    const good = await tryPin(pin as NonNullable<typeof pin>, PIN);
     expect(good.next?.fails).toBe(0);
     pin = good.next;
 
     for (let step = 1; step < PIN_MAX_FAILS; step += 1) {
-      pin = (await tryPin(pin as NonNullable<typeof pin>, '0000')).next;
+      pin = (await tryPin(pin as NonNullable<typeof pin>, '000000')).next;
     }
-    const last = await tryPin(pin as NonNullable<typeof pin>, '0000');
+    const last = await tryPin(pin as NonNullable<typeof pin>, '000000');
     expect(last.key).toBeNull();
     expect(last.next).toBeNull();
+  });
+
+  it('trocar o PIN: o novo abre as mesmas notas e o antigo não', async () => {
+    const created = await createVault(PIN, FAST);
+    const sealed = await sealRecord(created.key, 'r1', { nota: 3 });
+    const master = (await tryPin(created.pin, PIN, true)).key as CryptoKey;
+    const next = await makePin(master, '999000', FAST);
+    expect((await tryPin(next, PIN)).key).toBeNull();
+    const opened = (await tryPin(next, '999000')).key;
+    expect(opened && (await openRecord(opened, sealed))).toEqual({ nota: 3 });
+  });
+});
+
+describe('aparelho novo (pareamento)', () => {
+  it('o texto do aparelho antigo abre as mesmas notas com um PIN novo', async () => {
+    const created = await createVault(PIN, FAST);
+    const sealed = await sealRecord(created.key, 'r1', { nota: 9 });
+    const master = (await tryPin(created.pin, PIN, true)).key as CryptoKey;
+    const text = await exportPairing(created.vault, master);
+    expect(text).not.toContain(created.recoveryCode);
+
+    const paired = await pairFromText(text.replace(/(.{6})/g, '$1 '), '777111');
+    expect(paired).not.toBeNull();
+    if (!paired) return;
+    expect(await openRecord(paired.key, sealed)).toEqual({ nota: 9 });
+    expect(paired.vault).toEqual(created.vault);
+    expect((await tryPin(paired.pin, PIN)).key).toBeNull();
+    const again = (await tryPin(paired.pin, '777111')).key;
+    expect(again && (await openRecord(again, sealed))).toEqual({ nota: 9 });
+    // O código de recuperação continua valendo no aparelho novo.
+    expect(await unlockWithCode(paired.vault, created.recoveryCode)).not.toBeNull();
+  });
+
+  it('texto inválido é recusado e PIN ruim dá erro', async () => {
+    expect(await pairFromText('qualquer coisa', '777111')).toBeNull();
+    expect(await pairFromText('OHARA1:AAAA', '777111')).toBeNull();
+    await expect(pairFromText('OHARA1:AAAA', '12')).rejects.toThrow();
   });
 });

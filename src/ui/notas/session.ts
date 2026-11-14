@@ -1,15 +1,14 @@
 import { useSyncExternalStore } from 'react';
 import { defaultScheme, type Item, type Scheme } from '../../core/grades/grades';
+import { exportPairing, pairFromText } from '../../core/secret/pairing';
 import {
-  changePassphrase,
-  createPin,
   createVault,
+  makePin,
   openRecord,
   recoverWithCode,
   sealRecord,
   tryPin,
   unlockWithCode,
-  unlockWithPassphrase,
   type PinData,
   type VaultData,
 } from '../../core/secret/vault';
@@ -26,6 +25,7 @@ export interface Draft {
   vault: VaultData;
   code: string;
   key: CryptoKey;
+  pin: PinData;
 }
 
 interface View {
@@ -133,16 +133,20 @@ export function removeItem(id: string): void {
   set({ ...view, items: view.items.filter((item) => item.id !== id) });
 }
 
+function draftOf(created: Awaited<ReturnType<typeof createVault>>): Draft {
+  return { vault: created.vault, code: created.recoveryCode, key: created.key, pin: created.pin };
+}
+
 // Primeira vez: gera o cofre e o código, mas só grava depois de confirmar (confirmDraft).
-export async function startSetup(passphrase: string): Promise<void> {
-  const created = await createVault(passphrase);
-  set({ ...CLOSED, draft: { vault: created.vault, code: created.recoveryCode, key: created.key } });
+export async function startSetup(pin: string): Promise<void> {
+  set({ ...CLOSED, draft: draftOf(await createVault(pin)) });
 }
 
 export async function confirmDraft(): Promise<void> {
   const draft = view.draft;
   if (!draft) return;
   storage.write((data) => ({ ...data, vault: [draft.vault] }));
+  writePin(draft.pin);
   await storage.flush();
   await open(draft.key);
 }
@@ -151,19 +155,12 @@ export function cancelDraft(): void {
   set(CLOSED);
 }
 
-export async function unlock(passphrase: string): Promise<boolean> {
+// PIN esquecido (ou apagado por erros): o código abre a chave e o PIN novo vale neste aparelho.
+export async function recover(code: string, newPin: string): Promise<boolean> {
   const row = vaultRow();
-  const key = row && (await unlockWithPassphrase(row, passphrase));
-  if (!key) return false;
-  await open(key);
-  return true;
-}
-
-export async function recover(code: string, newPassphrase: string): Promise<boolean> {
-  const row = vaultRow();
-  const created = row && (await recoverWithCode(row, code, newPassphrase));
+  const created = row && (await recoverWithCode(row, code, newPin));
   if (!created) return false;
-  set({ ...CLOSED, draft: { vault: created.vault, code: created.recoveryCode, key: created.key } });
+  set({ ...CLOSED, draft: draftOf(created) });
   return true;
 }
 
@@ -172,11 +169,14 @@ export async function checkCode(code: string): Promise<boolean> {
   return row !== undefined && (await unlockWithCode(row, code)) !== null;
 }
 
-export async function changePass(oldPass: string, newPass: string): Promise<boolean> {
-  const row = vaultRow();
-  const next = row && (await changePassphrase(row, oldPass, newPass));
-  if (!next) return false;
-  storage.write((data) => ({ ...data, vault: [next] }));
+// Aparelho novo: o texto/QR do aparelho antigo traz a chave; o PIN novo é só deste aparelho.
+export async function pairDevice(text: string, pin: string): Promise<boolean> {
+  const paired = await pairFromText(text, pin);
+  if (!paired) return false;
+  storage.write((data) => ({ ...data, vault: [paired.vault] }));
+  writePin(paired.pin);
+  await storage.flush();
+  await open(paired.key);
   return true;
 }
 
@@ -187,18 +187,32 @@ export function readPin(): PinData | null {
 
 function writePin(pin: PinData | null): void {
   storage.setDeviceState(PIN_KEY, pin ? JSON.stringify(pin) : '');
+  // Faz a tela de Notas travadas reler se há PIN (ex.: apagado por 5 erros).
+  set({ ...view });
 }
 
-export async function setPin(passphrase: string, pin: string): Promise<boolean> {
-  const row = vaultRow();
-  const made = row && (await createPin(row, passphrase, pin));
-  if (!made) return false;
-  writePin(made);
+// Confere o PIN (contando os erros, como no desbloqueio) e devolve a chave extraível, ou null.
+async function checkPin(pin: string): Promise<CryptoKey | null> {
+  const saved = readPin();
+  if (!saved) return null;
+  const attempt = await tryPin(saved, pin, true);
+  writePin(attempt.next);
+  return attempt.key;
+}
+
+export async function changePin(oldPin: string, newPin: string): Promise<boolean> {
+  const saved = readPin();
+  const master = await checkPin(oldPin);
+  if (!saved || !master) return false;
+  writePin(await makePin(master, newPin, saved.iterations));
   return true;
 }
 
-export function removePin(): void {
-  writePin(null);
+// Texto do QR do "Adicionar outro aparelho". Pede o PIN de novo; erro conta como no desbloqueio.
+export async function pairingText(pin: string): Promise<string | null> {
+  const row = vaultRow();
+  const master = await checkPin(pin);
+  return row && master ? exportPairing(row, master) : null;
 }
 
 export type PinResult = 'ok' | 'errado' | 'apagado';

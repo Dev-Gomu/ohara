@@ -33,17 +33,16 @@ import { dispatch, getKeyboardState, type BlockOption } from '../keyboard/store'
 import { useBlocks } from '../keyboard/useBlocks';
 import { closeNotes } from '../study/navigation';
 import {
-  askChangePass,
+  askAddDevice,
+  askChangePin,
   askCopyScheme,
   askFromAgenda,
   askItem,
-  askPin,
   askScheme,
   deleteItem,
-  dropPin,
 } from './forms';
 import { boletimRow, needCell, subjectItems, sumNote, tileOf } from './model';
-import { lock, readPin, saveScheme, schemeFor } from './session';
+import { lock, saveScheme, schemeFor } from './session';
 
 const REGUA = 'notas.regua';
 const BOLETIM = 'notas.boletim';
@@ -85,17 +84,20 @@ export function NotasAberto({ data, items, unreadable }: Props) {
               selected={picked === index + 1}
             >
               {`${entry.code}  ${fmt(
-                yearResult(
-                  subjectItems(items, entry.id),
-                  schemeFor(entry.id),
-                ).value,
+                yearResult(subjectItems(items, entry.id), schemeFor(entry.id)).value,
               )}`}
             </FilterChip>
           ))}
         </div>
       </Block>
       {subject ? (
-        <Disciplina data={data} items={items} subject={subject} subjects={subjects} warning={warning} />
+        <Disciplina
+          data={data}
+          items={items}
+          subject={subject}
+          subjects={subjects}
+          warning={warning}
+        />
       ) : (
         <Geral data={data} items={items} subjects={subjects} warning={warning} />
       )}
@@ -214,11 +216,14 @@ function Disciplina({ data, items, subject, subjects, warning }: DisciplinaProps
     {
       id: 'copiar',
       label: 'Copiar esquema de outra matéria',
-      run: () => askCopyScheme(subject, subjects.filter((other) => other.id !== subject.id)),
+      run: () =>
+        askCopyScheme(
+          subject,
+          subjects.filter((other) => other.id !== subject.id),
+        ),
     },
-    { id: 'frase', label: 'Trocar a frase de acesso', run: askChangePass },
-    { id: 'pin', label: readPin() ? 'Trocar o PIN' : 'Criar um PIN neste aparelho', run: askPin },
-    ...(readPin() ? [{ id: 'sem-pin', label: 'Apagar o PIN', run: dropPin }] : []),
+    { id: 'pin', label: 'Trocar o PIN', run: askChangePin },
+    { id: 'aparelho', label: 'Adicionar outro aparelho', run: askAddDevice },
     { id: 'travar', label: 'Travar as Notas agora', run: lock },
   ];
 
@@ -269,7 +274,10 @@ function Disciplina({ data, items, subject, subjects, warning }: DisciplinaProps
       </span>,
     ];
     if (fourth.convert) {
-      needLines.push(['Nota nas avaliações', <b key="g">{fmt(fromPoints(points, fourth.worth))}</b>]);
+      needLines.push([
+        'Nota nas avaliações',
+        <b key="g">{fmt(fromPoints(points, fourth.worth))}</b>,
+      ]);
     }
   }
   void need;
@@ -293,7 +301,9 @@ function Disciplina({ data, items, subject, subjects, warning }: DisciplinaProps
               {[0, 1].map((k) => {
                 const index = (half - 1) * 2 + k;
                 const tile = tiles[index];
-                return tile && <BimesterTile key={index} tile={tile} block={FAIXAS} index={index} />;
+                return (
+                  tile && <BimesterTile key={index} tile={tile} block={FAIXAS} index={index} />
+                );
               })}
             </SemesterFaixa>
           ))}
@@ -340,8 +350,22 @@ function Disciplina({ data, items, subject, subjects, warning }: DisciplinaProps
           <div className={cx('nt-pad')}>
             <SummaryLines
               lines={[
-                ['1º semestre', sem1.value === null || sem1.partial ? <Soft key="a">em aberto</Soft> : fmt(sem1.value)],
-                ['2º semestre', sem2.value === null || sem2.partial ? <Soft key="b">em aberto</Soft> : fmt(sem2.value)],
+                [
+                  '1º semestre',
+                  sem1.value === null || sem1.partial ? (
+                    <Soft key="a">em aberto</Soft>
+                  ) : (
+                    fmt(sem1.value)
+                  ),
+                ],
+                [
+                  '2º semestre',
+                  sem2.value === null || sem2.partial ? (
+                    <Soft key="b">em aberto</Soft>
+                  ) : (
+                    fmt(sem2.value)
+                  ),
+                ],
                 ['Média até agora', fmt(year.value)],
               ]}
             >

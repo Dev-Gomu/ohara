@@ -5,7 +5,8 @@ import { useBlocks } from '../keyboard/useBlocks';
 import { ScreenFrame } from '../shell/ScreenFrame';
 import { closeNotes } from '../study/navigation';
 import { useStudy } from '../study/study';
-import { askPinUnlock, askRecover, askSetup, askUnlock } from './forms';
+import { CofrePin, CriarPin } from './CofrePin';
+import { askPair, askRecover } from './forms';
 import { NotasAberto } from './NotasAberto';
 import styles from './Notas.module.css';
 import { cancelDraft, confirmDraft, lock, readPin, useSecretView } from './session';
@@ -25,11 +26,14 @@ function vaultActions(hasVault: boolean, draftCode: string | null): Action[] {
       { label: 'Cancelar', run: cancelDraft },
     ];
   }
-  if (!hasVault) return [{ label: 'Criar a frase de acesso', hint: 'Enter', run: askSetup }];
+  const pair = { label: 'Já uso em outro aparelho', run: askPair };
+  if (!hasVault) return [pair];
   return [
-    { label: 'Abrir com a frase', hint: 'Enter', run: askUnlock },
-    ...(readPin() ? [{ label: 'Abrir com o PIN', run: askPinUnlock }] : []),
-    { label: 'Esqueci a frase: usar o código de recuperação', run: askRecover },
+    {
+      label: readPin() ? 'Esqueci o PIN: usar o código' : 'Criar PIN novo com o código',
+      run: askRecover,
+    },
+    pair,
   ];
 }
 
@@ -81,12 +85,13 @@ function Closed(props: { hasVault: boolean; code: string | null }) {
   return (
     <div className={`${styles.notas} ${styles.cofreGrade}`}>
       <Block id={VAULT} title="Notas do boletim" className={styles.cofre}>
-        <div className={styles.corpo}>
+        <div className={`${styles.corpo} ${styles.centro}`}>
           {code ? (
             <>
               <p className={styles.texto}>
                 Este é o seu código de recuperação. Anote em papel, fora do app. Ele aparece só esta
-                vez. Sem a frase e sem o código, as notas não podem ser recuperadas.
+                vez. Sem o PIN e sem o código, as notas não podem ser recuperadas, a não ser em
+                outro aparelho já aberto.
               </p>
               <p className={styles.codigo} data-testid="codigo-recuperacao">
                 {code}
@@ -96,9 +101,10 @@ function Closed(props: { hasVault: boolean; code: string | null }) {
             <p className={styles.texto}>
               {hasVault
                 ? 'As notas estão travadas. Elas se travam sozinhas depois de 2 minutos sem uso.'
-                : 'As notas ficam cifradas: só abrem com a sua frase de acesso, e nunca aparecem na Agenda, no Hub nem na Mesa.'}
+                : 'As notas ficam cifradas: só abrem com o seu PIN, e nunca aparecem na Agenda, no Hub nem na Mesa.'}
             </p>
           )}
+          {!code && (hasVault ? <CofrePin hasPin={readPin() !== null} /> : <CriarPin />)}
           {actions.map((action, index) => (
             <NavItem
               key={action.label}

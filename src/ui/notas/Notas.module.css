@@ -60,8 +60,41 @@
   color: var(--cor-texto-2);
 }
 
+.centro {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.centro .texto {
+  margin-inline: auto;
+}
+
+.centro .acao {
+  width: min(100%, 480px);
+  text-align: left;
+}
+
+.pinBloco {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--e2);
+  margin: var(--e2) 0;
+}
+
+.pinRotulo {
+  margin: 0;
+  font: 700 18px/26px var(--fonte-interface);
+}
+
+.pinDica {
+  margin: 0;
+  color: var(--cor-texto-2);
+}
+
 .codigo {
-  align-self: flex-start;
+  align-self: center;
   padding: var(--e3) var(--e4);
   border-radius: var(--raio-item);
   background: var(--cor-cartao-2);
