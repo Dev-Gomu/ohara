@@ -6,6 +6,7 @@ import {
 } from '../../../core/study/queries';
 import { leaf, split } from '../../../core/mosaic/tree';
 import { longDate, monthGrid } from '../../../core/study/dates';
+import { visibleReminders } from '../../../core/study/reminders';
 import { dispatch, getKeyboardState } from '../../keyboard/store';
 import { useBlocks } from '../../keyboard/useBlocks';
 import { Mosaic } from '../../mosaic/Mosaic';
@@ -52,7 +53,7 @@ export function Hub() {
   const examDays = upcomingAssessmentDays(data, today);
   const events = eventsOn(data, today);
   const faults = faultLines(data);
-  const reminders = data.reminders.filter((item) => item.date === today);
+  const reminders = visibleReminders(data.reminders, today);
   const days = monthGrid(today);
   const todayIndex = days.indexOf(today);
 

@@ -8,14 +8,15 @@ import {
   weekdayShort,
 } from '../../../core/study/dates';
 import { eventsOn, isNow, subjectOf, type AssessmentDay } from '../../../core/study/queries';
+import { isOverdue, overdueDays } from '../../../core/study/reminders';
 import type { ClassEvent, Exam, Reminder, StudyData } from '../../../core/study/types';
 import { Block } from '../../components/Block';
 import { AssessmentDayCard } from '../../components/Cards';
 import { Button } from '../../components/Button';
+import { CheckItem } from '../../components/CheckItem';
 import { Day } from '../../components/Controls';
 import { DayItem } from '../../components/DayItem';
 import { FaultCell } from '../../components/FaultCell';
-import { ListItem } from '../../components/ListItem';
 import { useSelectedIndex } from '../../components/NavItem';
 import { NowPill, StatePill, SubjectMark } from '../../components/Pill';
 import type { FaultLine } from '../../faltas/summary';
@@ -208,6 +209,10 @@ export function FaultsBlock({ id, lines }: { id: string; lines: readonly FaultLi
   );
 }
 
+const lateText = (item: Reminder): string => `${overdueDays(item, today)} d`;
+const lateNote = (item: Reminder): string | undefined =>
+  isOverdue(item, today) ? `atrasado há ${overdueDays(item, today)} dias` : undefined;
+
 interface RemindersProps {
   id: string;
   reminders: readonly Reminder[];
@@ -220,16 +225,16 @@ export function RemindersBlock({ id, reminders, onToggle }: RemindersProps) {
       <div className={styles.lista}>
         {reminders.length === 0 && <p className={styles.vazio}>Nada para hoje.</p>}
         {reminders.map((item, index) => (
-          <ListItem
+          <CheckItem
             key={item.id}
             nav={{ block: id, index }}
             title={item.text}
-            past={item.done}
-            quietSelection
+            checked={item.done}
+            note={lateNote(item)}
             onOpen={() => onToggle(item.id)}
           >
-            {item.done && <StatePill state="ok">feito</StatePill>}
-          </ListItem>
+            {isOverdue(item, today) && <StatePill state="atencao">{lateText(item)}</StatePill>}
+          </CheckItem>
         ))}
       </div>
       <div className={styles.novo}>

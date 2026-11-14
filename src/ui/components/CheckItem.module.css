@@ -1,0 +1,95 @@
+/* Peça CheckItem (aprovada na bancada lembretes-check, V2): linha com caixa que enche e texto riscado. */
+.item {
+  display: flex;
+  align-items: center;
+  gap: var(--e3);
+  width: 100%;
+  min-height: var(--item-lista);
+  padding: var(--e2) var(--e4);
+  border-radius: var(--raio-item);
+  text-align: left;
+}
+
+/* Escolhido sem consequência: só aparece com o bloco aceso. */
+:global([data-foco]) .item[data-sel='true'] {
+  background: var(--cor-escolhido);
+}
+
+@media (hover: hover) {
+  .item:not([data-sel='true']):hover {
+    background: var(--sup-peca);
+  }
+}
+
+.caixa {
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: var(--raio-minimo);
+  overflow: hidden;
+  transform-origin: center;
+}
+
+.anel {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 2px var(--cor-texto);
+  opacity: 0.28;
+}
+
+.enchimento {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--cor-acao);
+  transform-origin: center;
+}
+
+.visto {
+  position: relative;
+  width: 68%;
+  height: 68%;
+  overflow: visible;
+  fill: none;
+  stroke: var(--cor-sobre-acao);
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.rotulo {
+  position: relative;
+  flex: 0 1 auto;
+  min-width: 0;
+  display: inline-flex;
+}
+
+.palavras {
+  overflow: hidden;
+  font: var(--voz-mini);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.risco {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 46%;
+  height: 1.5px;
+  border-radius: var(--raio-minimo);
+  background: currentcolor;
+  transform-origin: left center;
+  pointer-events: none;
+}
+
+.fim {
+  flex: none;
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
