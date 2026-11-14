@@ -1,0 +1,44 @@
+/* Bancada cartoes-final: a D159 inteira. Só tokens de cor e raio. */
+.cf-pagina { display: flex; flex-direction: column; gap: var(--e5); width: min(920px, 100%); margin: var(--e4) auto var(--e6); }
+.cf-nota-topo { margin: 0; color: var(--cor-texto-2); font: var(--ui-apoio); }
+.cf-rot { margin: 0 0 var(--e2); color: var(--cor-texto-2); font: var(--ui-rotulo); letter-spacing: 0.06em; text-transform: uppercase; }
+.cf-par { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--e3); align-items: start; }
+.cf-azul { background: var(--cor-acao); color: var(--cor-sobre-acao); }
+.cf-claro { background: var(--cor-cartao); color: var(--cor-texto); }
+.cf-oc { font-weight: 700; color: var(--cor-escolhido); }
+.cf-resp { font-weight: 700; color: var(--cor-acao); }
+
+/* Texto da D159: letra de leitura 600, à esquerda, linha 1,45, letras no espaço natural. */
+.cf-frase, .cf-pergunta { font-family: var(--fonte-leitura); font-weight: 600; line-height: 1.3; letter-spacing: -0.005em; text-align: center; text-wrap: balance; }
+.cf-pergunta { line-height: 1.2; letter-spacing: -0.015em; }
+.cf-pergunta[data-tam='m'] { line-height: 1.3; letter-spacing: -0.01em; }
+/* Faixa do cartão único (Mesa e Treino virado): à esquerda, como na imagem do usuário. */
+.cf-pagina article:not(.cf-card) > p:first-child { font-family: var(--fonte-leitura); font-weight: 600; line-height: 1.45; text-align: left; text-wrap: pretty; }
+
+/* Mesa */
+.cf-card { display: flex; flex-direction: column; justify-content: center; aspect-ratio: 16 / 9; padding: var(--e4) var(--e5); border: 1px solid var(--cor-acao); border-radius: var(--raio-campo); }
+.cf-frase { margin: 0; font-size: 19px; }
+.cf-par article > p:first-child { font-size: 17.5px; } /* frente da peça StudyCard */
+
+/* Treino no tablet deitado: largura real (920 px), escala grande. */
+.cf-palco { display: flex; flex-direction: column; gap: var(--e3); height: 640px; }
+.cf-cheia { display: grid; flex: 1; grid-template-rows: auto 1fr auto; min-height: 0; border-radius: var(--raio-bloco); }
+.cf-cheia:not(.cf-claro) { background: var(--cor-acao); color: var(--cor-sobre-acao); }
+.cf-cheia.cf-claro { border: 1px solid var(--cor-acao); }
+.cf-rotulo { text-align: left; padding: var(--e4) var(--e5) 0; font: var(--ui-rotulo); letter-spacing: 0.08em; opacity: 0.75; text-transform: uppercase; }
+.cf-pergunta { align-self: center; margin: 0; padding: 0 var(--e6); font-size: 48px; }
+.cf-cheia { text-align: center; }
+.cf-pergunta[data-tam='m'] { font-size: 33px; }
+.cf-dica { padding: 0 var(--e5) var(--e4); font: var(--ui-apoio); opacity: 0.75; text-align: center; }
+/* Treino virado: o cartão único da Mesa em tamanho de tablet (faixa 24, verso 22, título 15,5). */
+.cf-treino > article { flex: 1; min-height: 0; display: flex; flex-direction: column; overflow: hidden; }
+.cf-treino > article > p:first-child { flex: none; padding: var(--e4) var(--e5); font-size: 24px; }
+.cf-treino > article > div { flex: 1; min-height: 0; overflow: auto; padding: var(--e4) var(--e5) var(--e5); font-size: 22px; line-height: 1.45; }
+.cf-treino > article h3 { font-size: 15.5px; }
+.cf-notas { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--e2); }
+.cf-nota { display: grid; place-items: center; min-height: 56px; border-radius: var(--raio-botao); box-shadow: inset 0 0 0 1.5px var(--cor-acao); font: var(--ui-botao); }
+.cf-nota[data-bom='true'] { background: var(--cor-acao); box-shadow: none; color: var(--cor-sobre-acao); }
+
+/* Rodada 3: alinhamento da faixa azul do cartão único (Mesa e Treino virado). */
+.cf-centro article:not(.cf-card) > p:first-child,
+.cf-misto [data-curta='true'] > article > p:first-child { text-align: center; line-height: 1.3; text-wrap: balance; }

@@ -1,0 +1,40 @@
+/* Bancada cloze-zero, rodada 5. Só tokens. A fonte nova (leitura 600) em todos os cartões, em três formatações. */
+.zr-pagina { display: flex; flex-direction: column; gap: var(--e5); width: min(980px, 100%); margin: var(--e4) auto var(--e6); }
+.zr-nota { margin: 0; color: var(--cor-texto-2); font: var(--ui-apoio); }
+.zr-par { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--e3); align-items: start; }
+.zr-rot { display: block; margin: 0 0 var(--e2); color: var(--cor-texto-2); font: var(--ui-rotulo); letter-spacing: 0.06em; text-transform: uppercase; }
+.zr-azul { background: var(--cor-acao); color: var(--cor-sobre-acao); }
+.zr-claro { background: var(--cor-cartao); color: var(--cor-texto); }
+
+/* Cloze */
+.zr-card { display: flex; flex-direction: column; justify-content: center; aspect-ratio: 16 / 9; padding: var(--e4) var(--e5); border: 1px solid var(--cor-acao); border-radius: var(--raio-campo); text-align: center; }
+.zr-oc { font-weight: 700; color: var(--cor-escolhido); }
+.zr-resp { font-weight: 700; color: var(--cor-acao); }
+
+/* Treino: mesmas medidas de Treino.module.css */
+.zr-palco { display: flex; flex-direction: column; gap: var(--e3); height: 340px; border-radius: var(--raio-bloco); text-align: center; }
+.zr-palco.zr-azul { justify-content: space-between; align-items: center; gap: 0; }
+.zr-rotulo { align-self: stretch; padding: var(--e4) var(--e5) 0; font: var(--ui-rotulo); letter-spacing: 0.08em; opacity: 0.75; text-align: left; text-transform: uppercase; }
+.zr-pergunta { padding: 0 var(--e6); }
+.zr-dica { padding-bottom: var(--e4); font: var(--ui-apoio); opacity: 0.75; }
+.zr-topo { flex: none; max-height: 38%; padding: var(--e3) var(--e5) var(--e4); border-radius: var(--raio-bloco); overflow: auto; }
+.zr-verso { flex: 1; min-height: 0; padding: var(--e4) var(--e5); border-radius: var(--raio-bloco); overflow: auto; background: var(--cor-cartao); }
+
+/* A fonte nova: letra de leitura, peso 600, nos mesmos tamanhos de hoje. */
+.zr-nova .zr-frase { margin: 0; font: 600 19px/1.5 var(--fonte-leitura); }
+.zr-nova .zr-par > article > p:first-child { font: 600 17.5px/1.4 var(--fonte-leitura); } /* frente da peça StudyCard */
+.zr-nova .zr-pergunta { font: 600 32px/1.3 var(--fonte-leitura); }
+.zr-nova .zr-pergunta[data-tam='m'] { font: 600 23px/1.4 var(--fonte-leitura); }
+.zr-nova .zr-topo { font: 600 22px/1.35 var(--fonte-leitura); }
+
+/* Três formatações do texto da frente (e da frase do cloze). A faixa do cartão da Mesa fica sempre à esquerda. */
+.zr-nova :is(.zr-frase, .zr-pergunta, .zr-topo) { text-wrap: balance; }
+/* V1 arejado: centrado, linhas folgadas, letras no espaço natural. */
+.zr-arejado :is(.zr-frase, .zr-pergunta, .zr-topo, .zr-par > article > p:first-child) { line-height: 1.5; letter-spacing: 0; }
+/* V2 justo (ESCOLHIDA): centrado, linhas mais juntas e letras levemente fechadas (texto grande fecha mais). */
+.zr-justo :is(.zr-frase, .zr-topo, .zr-par > article > p:first-child) { line-height: 1.3; letter-spacing: -0.005em; }
+.zr-justo .zr-pergunta { line-height: 1.2; letter-spacing: -0.015em; }
+.zr-justo .zr-pergunta[data-tam='m'] { line-height: 1.3; letter-spacing: -0.01em; }
+/* V3 à esquerda: tudo alinhado à esquerda, altura de leitura (1,45), sem equilibrar as linhas. */
+.zr-esquerda :is(.zr-frase, .zr-pergunta, .zr-topo, .zr-par > article > p:first-child) { line-height: 1.45; letter-spacing: 0; text-align: left; text-wrap: pretty; }
+.zr-esquerda .zr-pergunta { align-self: stretch; padding: 0 var(--e5); }

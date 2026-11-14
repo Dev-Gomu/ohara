@@ -62,9 +62,9 @@
 - L1 # Estado do Ohara (atualizado em 14/11/2026)
 - L5 ## Onde estamos
 - L10 ## Próximo passo
-- L36 ## A conferir (aplicado em 13/11, só check e e2e)
-- L39 ## Esperando o usuário
-- L43 ## Iniciativas abertas (máx. 3)
+- L38 ## A conferir (aplicado em 13/11, só check e e2e)
+- L41 ## Esperando o usuário
+- L45 ## Iniciativas abertas (máx. 3)
 
 ### docs/mapa.md
 - L1 # Mapa do projeto
