@@ -19,6 +19,8 @@ export function cardLineContext(): readonly LineSpot[] | undefined {
   }
   const { selectionStart, selectionEnd, value } = element;
   const spots: LineSpot[] = ['any'];
+  const side = element.getAttribute('data-card-side');
+  if (side === 'front' || side === 'back') spots.push(side);
   const collapsed = selectionStart === selectionEnd;
   const single = isSingleRow(element);
   if (collapsed && selectionStart === 0) spots.push('start', 'top');

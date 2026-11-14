@@ -390,12 +390,13 @@ export const OPTION_KEYS: readonly OptionRow[] = [
 // ponto da linha a tecla é do cartão: Enter sempre; Backspace no começo do texto; ↑ na primeira linha visual
 // (ou no começo); ↓ na última (ou no fim).
 // 'image': o cursor está numa linha de imagem (D158), sem texto para editar.
-export type LineSpot = 'any' | 'start' | 'top' | 'bottom' | 'image';
+export type LineSpot = 'any' | 'start' | 'top' | 'bottom' | 'image' | 'front' | 'back';
 
 export interface LineRow {
   label: string;
   code: string;
   when: LineSpot;
+  shift?: boolean;
   action: KeyAction;
 }
 
@@ -404,6 +405,8 @@ export const LINE_KEYS: readonly LineRow[] = [
   { label: 'Backspace', code: 'Backspace', when: 'start', action: { type: 'cardLineBack' } },
   { label: '↑', code: 'ArrowUp', when: 'top', action: { type: 'cardLineMove', delta: -1 } },
   { label: '↓', code: 'ArrowDown', when: 'bottom', action: { type: 'cardLineMove', delta: 1 } },
+  { label: 'Tab', code: 'Tab', when: 'front', action: { type: 'cardSide', to: 'back' } },
+  { label: 'Shift Tab', code: 'Tab', when: 'back', shift: true, action: { type: 'cardSide', to: 'front' } },
   { label: 'Enter', code: 'Enter', when: 'image', action: { type: 'cardImageZoom' } },
   { label: 'Delete', code: 'Delete', when: 'image', action: { type: 'cardImageRemove' } },
   { label: 'Backspace', code: 'Backspace', when: 'image', action: { type: 'cardImageRemove' } },

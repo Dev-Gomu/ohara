@@ -6,6 +6,7 @@ import { replaceSymbols } from './symbols';
 
 export type LineKind =
   | 'front'
+  | 'more'
   | 'section'
   | 'subsection'
   | 'item'
@@ -27,7 +28,9 @@ export interface Draft {
 }
 
 // A ordem importa: "--" antes de "-". Lista exige espaço, para "-5 mmHg" e "1.5 mg" não virarem lista.
+// "@@ " continua a frente numa linha nova (Enter na frente); precisa vir antes de "@".
 const MARKS: readonly [LineKind, RegExp][] = [
+  ['more', /^@@\s?/],
   ['front', /^@\s?/],
   ['subsection', /^##\s?/],
   ['section', /^#\s?/],
@@ -60,6 +63,8 @@ export function parseDrafts(source: string): Draft[] {
     const line = parseLine(raw);
     const current = drafts.at(-1);
     if (line.kind === 'front') drafts.push({ front: line.text.trim(), back: [] });
+    else if (line.kind === 'more' && current) current.front = `${current.front}\n${line.text.trim()}`.trim();
+    else if (line.kind === 'more') drafts.push({ front: line.text.trim(), back: [] });
     else if (current) current.back.push(raw);
     else if (raw.trim()) drafts.push({ front: raw.trim(), back: [] });
   }

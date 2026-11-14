@@ -2,6 +2,9 @@ import { useLayoutEffect, useRef, useState } from 'react';
 import { formatCard, insertCloze, type CardFormat } from '../../../core/study/cardFormat';
 import {
   backspaceAtStart,
+  frontLines,
+  groupLines,
+  insertBlankAfter,
   locate,
   markLength,
   offsetOf,
@@ -48,6 +51,7 @@ export interface CardsEditor {
     cardLineSplit: () => void;
     cardLineBack: () => void;
     cardLineMove: (delta: -1 | 1) => void;
+    cardSide: (to: 'front' | 'back') => void;
   };
   field: React.RefObject<HTMLTextAreaElement | null>;
   // Linha de imagem em edição (D158): recebe o foco no lugar do campo de texto.
@@ -183,6 +187,16 @@ export function useCardsEditor(blockId: string, lessonId: string): CardsEditor {
         if (edit) apply(edit);
       },
       cardLineMove: (delta) => goTo(line + delta, delta < 0),
+      // Tab e Shift Tab (D170): da frente ao primeiro verso (criando-o se faltar) e de volta.
+      cardSide: (to) => {
+        const group = groupLines(source).find((item) => item.lines.includes(line));
+        if (!group) return;
+        if (to === 'front') return goTo(group.first, true);
+        const fronts = frontLines(source, group);
+        const second = group.lines.find((item) => !fronts.includes(item));
+        if (second !== undefined) return goTo(second, false);
+        apply(insertBlankAfter(source, fronts.at(-1) ?? group.first));
+      },
     },
   };
 }

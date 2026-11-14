@@ -128,11 +128,31 @@
 :root {
   --cor-agora: var(--cor-acao); /* hoje, agora: mesmo azul cheio da ação */
   --sup-recuada: color-mix(in srgb, var(--cor-cartao) 55%, var(--cor-fundo)); /* bloco sem cursor */
-  --sup-peca: color-mix(in srgb, var(--cor-texto) 6%, transparent); /* peça dentro de bloco, aceso ou recuado */
-  --cor-rastro: color-mix(in srgb, var(--cor-cursor) 30%, var(--cor-cartao)); /* para onde o Esc volta */
-  --cor-relevo: color-mix(in srgb, var(--cor-texto) 16%, var(--cor-cartao-2)); /* tecla com relevo */
-  --sup-peca-viva: color-mix(in srgb, var(--cor-texto) 11%, transparent); /* peça sob o mouse: um degrau acima */
-  --cor-acao-viva: color-mix(in srgb, var(--cor-acao) 88%, var(--cor-texto)); /* botão principal sob o mouse */
+  --sup-peca: color-mix(
+    in srgb,
+    var(--cor-texto) 6%,
+    transparent
+  ); /* peça dentro de bloco, aceso ou recuado */
+  --cor-rastro: color-mix(
+    in srgb,
+    var(--cor-cursor) 30%,
+    var(--cor-cartao)
+  ); /* para onde o Esc volta */
+  --cor-relevo: color-mix(
+    in srgb,
+    var(--cor-texto) 16%,
+    var(--cor-cartao-2)
+  ); /* tecla com relevo */
+  --sup-peca-viva: color-mix(
+    in srgb,
+    var(--cor-texto) 11%,
+    transparent
+  ); /* peça sob o mouse: um degrau acima */
+  --cor-acao-viva: color-mix(
+    in srgb,
+    var(--cor-acao) 88%,
+    var(--cor-texto)
+  ); /* botão principal sob o mouse */
   --cor-slide: #fff; /* o slide é conteúdo: continua claro no tema escuro */
   --cor-slide-texto: #152030;
   --sombra-flutuante: 0 4px 16px rgb(0 0 0 / 0.3); /* barra que flutua sobre o conteúdo */
@@ -141,6 +161,9 @@
 /* Cor sólida (70% da ativa sobre o cartão): resolvida aqui vale para toda paleta e tema. */
 :root {
   --cor-contorno-foco: color-mix(in srgb, var(--cor-cursor) 70%, var(--cor-cartao));
+  /* Cartão de estudo (D169): contorno e linha de divisão num azul mais claro, e a lacuna em pílula suave. */
+  --cor-cartao-borda: color-mix(in srgb, var(--cor-acao) 55%, var(--cor-cartao));
+  --cor-lacuna: color-mix(in srgb, var(--cor-acao) 14%, var(--cor-cartao));
 }
 
 @media (prefers-reduced-motion: reduce) {

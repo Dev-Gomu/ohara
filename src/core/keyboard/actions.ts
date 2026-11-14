@@ -27,6 +27,8 @@ export type KeyAction =
   | { type: 'cardLineSplit' }
   | { type: 'cardLineBack' }
   | { type: 'cardLineMove'; delta: -1 | 1 }
+  // Tab passa da frente ao verso; Shift Tab volta (D170).
+  | { type: 'cardSide'; to: 'front' | 'back' }
   | { type: 'cardImageRemove' }
   | { type: 'cardImageZoom' }
   // Janela da Lixeira (D164): delta 0 só devolve o foco da busca à lista.

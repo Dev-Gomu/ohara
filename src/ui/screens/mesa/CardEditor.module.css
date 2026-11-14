@@ -14,56 +14,92 @@
   font: var(--ui-apoio);
 }
 
+/* Contorno e linha de divisão (D169): o mesmo traço, um azul mais claro, fundo claro, sem faixa. */
 .carta {
   flex: none;
   overflow: hidden;
-  border: 1px solid var(--cor-acao);
+  border: 2px solid var(--cor-cartao-borda);
   border-radius: var(--raio-campo);
   background: var(--cor-cartao);
   color: var(--cor-texto);
 }
 
-.faixa {
-  padding: var(--e3) var(--e4);
-  background: var(--cor-acao);
-  color: var(--cor-sobre-acao);
+.ladoFrente,
+.ladoVerso {
+  display: flex;
+  flex-direction: column;
+  padding: var(--e2);
+  transition: opacity var(--tempo-borda);
+}
+
+.ladoFrente {
   font: var(--voz-mini);
   font-family: var(--fonte-leitura);
   font-weight: 600;
   line-height: 1.45;
 }
 
-.verso {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding: var(--e3) var(--e4) var(--e4);
+.ladoVerso {
+  border-top: 2px solid var(--cor-cartao-borda);
   font: var(--leitura-texto);
 }
 
-.carta[data-compacto='true'] .verso {
+.carta[data-compacto='true'] .ladoVerso {
   font: var(--leitura-compacta);
 }
 
-.frente,
+/* O verso existe sempre; vazio e sem o cursor, fica esmaecido como sugestão (D170). */
+.carta[data-vazio]:not([data-lado='verso']) .ladoVerso {
+  opacity: 0.5;
+}
+
+.frase,
 .titulo,
 .subtitulo,
 .linha,
-.espaco {
+.espaco,
+.sugestao {
   margin: 0;
+  padding: 3px var(--e3);
+  border-radius: var(--raio-item);
   cursor: text;
+}
+
+.frase {
+  padding-block: var(--e2);
+  white-space: pre-wrap;
+}
+
+.frase[data-lacuna] {
+  line-height: 1.9;
+}
+
+.sugestao {
+  color: var(--cor-texto-2);
 }
 
 .vazio,
 .falta {
-  color: inherit;
+  color: var(--cor-texto-2);
   font: var(--ui-apoio);
-  opacity: 0.7;
 }
 
-.falta {
-  color: var(--cor-texto-2);
-  opacity: 1;
+.lacuna {
+  padding: 2px var(--e2);
+  border-radius: var(--raio-minimo);
+  background: var(--cor-lacuna);
+  box-decoration-break: clone;
+}
+
+.lacuna b {
+  margin-left: var(--e2);
+  padding: 1px 7px;
+  border-radius: var(--raio-pilula);
+  background: var(--cor-acao);
+  color: var(--cor-sobre-acao);
+  font: var(--ui-sigla);
+  font-variant-numeric: tabular-nums;
+  vertical-align: 1px;
 }
 
 .titulo {
@@ -74,12 +110,11 @@
   text-transform: uppercase;
 }
 
-.verso[data-cor-titulos='true'] .titulo {
+.ladoVerso[data-cor-titulos='true'] .titulo {
   color: var(--cor-acao);
 }
 
 .subtitulo {
-  margin-top: var(--e1);
   margin-left: var(--e2);
   color: var(--cor-texto-2);
   font: var(--ui-rotulo);
@@ -93,7 +128,7 @@
 }
 
 .linha:is([data-tipo='item'], [data-tipo='number'], [data-tipo='pro'], [data-tipo='con'], [data-tipo='doubt']) {
-  padding-left: var(--e2);
+  padding-left: var(--e3);
 }
 
 .marca {
@@ -107,19 +142,18 @@
   min-height: var(--e2);
 }
 
-/* Linha do cursor: texto cru, com a marca numa pílula. */
+/* Linha do cursor: texto cru (com {{cN::}} à vista), a marca numa pílula. */
 .ativa {
   display: flex;
   align-items: baseline;
   gap: var(--e2);
-  margin-inline: calc(var(--e2) * -1);
-  padding-inline: var(--e2);
-  border-radius: var(--raio-minimo);
-  background: color-mix(in srgb, var(--cor-cursor) 12%, transparent);
+  padding: 3px var(--e3);
+  border-radius: var(--raio-item);
+  background: color-mix(in srgb, var(--cor-acao) 10%, var(--cor-cartao));
 }
 
-.faixa .ativa {
-  background: color-mix(in srgb, var(--cor-sobre-acao) 18%, transparent);
+.ladoFrente .ativa {
+  padding-block: var(--e2);
 }
 
 .pilula {
@@ -129,11 +163,6 @@
   background: var(--cor-escolhido);
   color: var(--cor-texto);
   font: var(--ui-sigla);
-}
-
-.faixa .pilula {
-  background: color-mix(in srgb, var(--cor-sobre-acao) 24%, transparent);
-  color: var(--cor-sobre-acao);
 }
 
 .campo {
@@ -151,6 +180,10 @@
   text-transform: inherit;
 }
 
+.campo::placeholder {
+  color: var(--cor-texto-2);
+}
+
 .ativa[data-tipo='section'] {
   color: var(--cor-acao);
   font: var(--ui-rotulo);
@@ -165,9 +198,79 @@
   text-transform: uppercase;
 }
 
-.faixa .campo::placeholder {
-  color: var(--cor-sobre-acao);
+/* Marcador: abre e fecha em altura e não deixa espaço quando some. */
+.marcador {
+  display: grid;
+  grid-template-rows: minmax(0, 0fr);
+  overflow: hidden;
+  font: var(--ui-botao);
+  transition: grid-template-rows 0.18s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.marcador > div {
+  min-height: 0;
+  padding-bottom: var(--e2);
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.14s ease, transform 0.18s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.marcador[data-aberto='true'] {
+  grid-template-rows: minmax(0, 1fr);
+}
+
+.marcador[data-aberto='true'] > div {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.05s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marcador,
+  .marcador > div {
+    transition: none;
+  }
+}
+
+.seletor {
+  display: inline-flex;
+  gap: 2px;
+  padding: 4px;
+  border-radius: var(--raio-item);
+  background: var(--sup-recuada);
+}
+
+.seletor button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 var(--e3);
+  border: 0;
+  border-radius: calc(var(--raio-item) - 2px);
+  background: none;
+  color: var(--cor-texto-2);
+  font: inherit;
+  cursor: pointer;
+}
+
+.seletor button[data-sel='true'] {
+  background: var(--cor-escolhido);
+  color: var(--cor-texto);
+}
+
+.marca2 {
+  width: 14px;
+  height: 6px;
+  border-radius: var(--raio-pilula);
+  box-shadow: inset 0 0 0 2px var(--cor-texto-2);
   opacity: 0.6;
+}
+
+.seletor button[data-sel='true'] .marca2 {
+  background: var(--cor-acao);
+  box-shadow: none;
+  opacity: 1;
 }
 
 /* Anexo de imagem (D158): ícone ou pílula ao lado da pergunta e no canto do verso. */

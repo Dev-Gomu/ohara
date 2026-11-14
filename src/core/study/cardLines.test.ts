@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { backspaceAtStart, groupLines, locate, markLength, offsetOf, splitAt } from './cardLines';
+import { backspaceAtStart, frontLines, groupLines, insertBlankAfter, locate, markLength, offsetOf, splitAt } from './cardLines';
 
 describe('markLength', () => {
   it('mede a marca no começo', () => {
@@ -20,7 +20,7 @@ describe('splitAt (Enter)', () => {
   });
   it('título e frente abrem linha sem marca', () => {
     expect(splitAt('# Efeitos', 0, 9, 9)).toEqual({ source: '# Efeitos\n', line: 1, caret: 0 });
-    expect(splitAt('@ Quem?', 0, 7, 7)).toEqual({ source: '@ Quem?\n', line: 1, caret: 0 });
+    expect(splitAt('@ Quem?', 0, 7, 7)).toEqual({ source: '@ Quem?\n@@ ', line: 1, caret: 3 });
   });
   it('parte a linha no meio do texto', () => {
     expect(splitAt('- Febre alta', 0, 7, 7)).toEqual({ source: '- Febre\n-  alta', line: 1, caret: 2 });
@@ -57,5 +57,21 @@ describe('posições e cartões', () => {
       { first: 1, lines: [1, 2, 3] },
       { first: 4, lines: [4] },
     ]);
+  });
+});
+
+describe('frente com várias linhas', () => {
+  it('Enter na frente abre "@@ "; numa continuação vazia vira verso', () => {
+    expect(splitAt('@ a\n@@ b', 1, 4, 4)).toEqual({ source: '@ a\n@@ b\n@@ ', line: 2, caret: 3 });
+    expect(splitAt('@ a\n@@ ', 1, 3, 3)).toEqual({ source: '@ a\n', line: 1, caret: 0 });
+  });
+  it('Backspace no começo da continuação sobe o texto', () => {
+    expect(backspaceAtStart('@ a\n@@ b', 1)).toEqual({ source: '@ ab', line: 0, caret: 3 });
+  });
+  it('acha as linhas da frente e abre o verso logo abaixo', () => {
+    const source = '@ a\n@@ b\nverso';
+    const [group] = groupLines(source);
+    expect(frontLines(source, group!)).toEqual([0, 1]);
+    expect(insertBlankAfter('@ a\n@@ b', 1)).toEqual({ source: '@ a\n@@ b\n', line: 2, caret: 0 });
   });
 });

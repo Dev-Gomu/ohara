@@ -1,7 +1,7 @@
 import { useLayoutEffect } from 'react';
 import { imageIdOf, isFrontImage } from '../../../core/study/cardImages';
-import { groupLines, markLength, splitLines } from '../../../core/study/cardLines';
-import { hasCloze } from '../../../core/study/cloze';
+import { frontLines, groupLines, insertBlankAfter, markLength, splitLines } from '../../../core/study/cardLines';
+import { clozeSegments, hasCloze } from '../../../core/study/cloze';
 import { parseLine, type LineKind } from '../../../core/study/cardText';
 import { Inline } from '../../components/CardBack';
 import { CardPicture, ImageAttach } from '../../components/CardImages';
@@ -12,13 +12,31 @@ import styles from './CardEditor.module.css';
 
 const BULLET: Partial<Record<LineKind, string>> = { item: '•', pro: '+', con: '−', doubt: '?' };
 
+// Na frente, cada lacuna vira uma pílula com a resposta e o número no fim (D169).
+function Pills({ text }: { text: string }) {
+  return (
+    <>
+      {clozeSegments(text).map((part, index) =>
+        part.number === null ? (
+          <Inline key={index} text={part.text} />
+        ) : (
+          <span key={index} className={styles.lacuna}>
+            {part.text}
+            <b>{part.number}</b>
+          </span>
+        ),
+      )}
+    </>
+  );
+}
+
 function Formatted({ raw, front, onPress }: { raw: string; front: boolean; onPress: () => void }) {
   const { kind, text } = parseLine(raw);
-  const body = text === '' ? null : <Inline text={text} cloze={front ? 'esconde' : undefined} />;
+  const body = text === '' ? null : front ? <Pills text={text} /> : <Inline text={text} />;
   const press = { onMouseDown: (event: React.MouseEvent) => event.preventDefault(), onClick: onPress };
   if (front) {
     return (
-      <p className={styles.frente} {...press}>
+      <p className={styles.frase} data-lacuna={hasCloze(text) ? '' : undefined} {...press}>
         {body ?? <span className={styles.vazio}>Sem frente</span>}
       </p>
     );
@@ -41,7 +59,7 @@ function fitHeight(area: HTMLTextAreaElement): void {
   area.style.height = `${area.scrollHeight}px`;
 }
 
-function Active({ editor, raw, front }: { editor: CardsEditor; raw: string; front: boolean }) {
+function Active({ editor, raw, front, hint }: { editor: CardsEditor; raw: string; front: boolean; hint: string }) {
   const { field, typeLine } = editor;
   const prefix = markLength(raw);
   const value = raw.slice(prefix);
@@ -53,26 +71,51 @@ function Active({ editor, raw, front }: { editor: CardsEditor; raw: string; fron
 
   return (
     <div className={styles.ativa} data-tipo={front ? 'front' : kind}>
-      {prefix > 0 && <span className={styles.pilula}>{raw.slice(0, prefix).trim()}</span>}
+      {prefix > 0 && !front && <span className={styles.pilula}>{raw.slice(0, prefix).trim()}</span>}
       <textarea
         ref={field}
         data-field
         data-card-line
+        data-card-side={front ? 'front' : 'back'}
         rows={1}
         className={styles.campo}
         value={value}
         spellCheck
         aria-label="Linha do cartão"
-        placeholder={front ? 'Pergunta' : ''}
+        placeholder={hint}
         onChange={(event) => typeLine(event.target.value, event.target.selectionStart)}
       />
     </div>
   );
 }
 
-// No cartão novo o próprio cartão é o editor (D138): pronto, com a linha do cursor em texto cru.
+type Side = 'front' | 'back';
+
+// Seletor Frente | Verso (D170): só o lado com o cursor o mostra; o dedo também troca de lado.
+function SideMarker({ side, current, extra, onGo }: { side: Side; current: boolean; extra: boolean; onGo: (to: Side) => void }) {
+  const sides: readonly [Side, string][] = [
+    ['front', 'Frente'],
+    ['back', extra ? 'Extra' : 'Verso'],
+  ];
+  return (
+    <div className={styles.marcador} data-aberto={current} aria-hidden={!current}>
+      <div>
+        <span className={styles.seletor} onPointerDown={(event) => event.preventDefault()}>
+          {sides.map(([id, name]) => (
+            <button key={id} type="button" tabIndex={-1} data-sel={id === side} onClick={() => onGo(id)}>
+              <i className={styles.marca2} />
+              {name}
+            </button>
+          ))}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+// No cartão novo o próprio cartão é o editor (D138, D169): contornado, com a linha do cursor em texto cru.
 export function CardEditor({ editor, images }: { editor: CardsEditor; images: CardImagesEditor }) {
-  const { source, line, activate, saved, field } = editor;
+  const { source, line, activate, saved, field, replace } = editor;
   const { sideOf } = images.source;
   const view = useCardView();
   const lines = splitLines(source);
@@ -82,7 +125,7 @@ export function CardEditor({ editor, images }: { editor: CardsEditor; images: Ca
     field.current?.scrollIntoView({ block: 'nearest' });
   }, [line, source, field]);
 
-  const render = (index: number, front: boolean, last: boolean) => {
+  const render = (index: number, front: boolean, hint: string) => {
     const raw = lines[index] ?? '';
     const drop = images.dropOn(index);
     const id = imageIdOf(raw);
@@ -102,12 +145,10 @@ export function CardEditor({ editor, images }: { editor: CardsEditor; images: Ca
         </div>
       );
     }
-    // Linhas em branco no fim do cartão só aparecem quando o cursor está nelas.
-    if (index !== line && !front && last && raw.trim() === '') return null;
     return (
       <div key={index} {...drop}>
         {index === line ? (
-          <Active editor={editor} raw={raw} front={front} />
+          <Active editor={editor} raw={raw} front={front} hint={hint} />
         ) : (
           <Formatted raw={raw} front={front} onPress={() => activate(index)} />
         )}
@@ -123,19 +164,35 @@ export function CardEditor({ editor, images }: { editor: CardsEditor; images: Ca
         </p>
       )}
       {groups.map((group) => {
-        const [first = 0, ...others] = group.lines;
+        const first = group.first;
+        const fronts = frontLines(source, group);
+        const more = fronts.slice(1);
+        const others = group.lines.filter((index) => !fronts.includes(index));
         const frontImages = others.filter((index) => isFrontImage(lines[index] ?? '', sideOf));
         const rest = others.filter((index) => !isFrontImage(lines[index] ?? '', sideOf));
         const sides = images.sidesOf(first);
+        const cloze = fronts.some((index) => hasCloze(lines[index] ?? ''));
+        const onFront = fronts.includes(line) || frontImages.includes(line);
+        const onBack = rest.includes(line);
+        const empty = rest.every((index) => (lines[index] ?? '').trim() === '' && imageIdOf(lines[index] ?? '') === null);
+        const hint = cloze ? 'Extra (opcional)' : 'Resposta';
+        const openBack = () => {
+          if (rest[0] === undefined) replace(insertBlankAfter(source, fronts.at(-1) ?? first));
+          else activate(rest[0]);
+        };
+        const go = (to: Side) => (to === 'front' ? activate(first) : openBack());
         return (
           <article
             key={group.first}
             className={styles.carta}
             data-compacto={view.compact}
+            data-vazio={empty ? '' : undefined}
+            data-lado={onFront ? 'frente' : onBack ? 'verso' : ''}
           >
-            <div className={styles.faixa}>
+            <div className={styles.ladoFrente}>
+              <SideMarker side="front" current={onFront} extra={cloze} onGo={go} />
               <div className={styles.linhaFrente}>
-                {render(first, true, false)}
+                {render(first, true, 'Pergunta, ou frase com lacuna')}
                 <ImageAttach
                   side="frente"
                   count={sides.front.length}
@@ -143,13 +200,22 @@ export function CardEditor({ editor, images }: { editor: CardsEditor; images: Ca
                   onOpen={() => images.openDrawer(first, 'frente')}
                 />
               </div>
-              {frontImages.map((index) => render(index, true, false))}
+              {more.map((index) => render(index, true, ''))}
+              {frontImages.map((index) => render(index, true, ''))}
             </div>
-            <div className={styles.verso} data-cor-titulos={view.colorTitles}>
-              {rest.length === 0 && line !== first && !hasCloze(lines[first] ?? '') && (
-                <p className={styles.falta}>Falta o verso</p>
+            <div className={styles.ladoVerso} data-cor-titulos={view.colorTitles}>
+              <SideMarker side="back" current={onBack} extra={cloze} onGo={go} />
+              {empty && !onBack ? (
+                <p className={styles.sugestao} onMouseDown={(event) => event.preventDefault()} onClick={openBack}>
+                  {hint}
+                </p>
+              ) : (
+                rest.map((index) => {
+                  const blank = (lines[index] ?? '').trim() === '';
+                  if (index !== line && blank && index === rest.at(-1)) return null;
+                  return render(index, false, rest.length === 1 ? hint : '');
+                })
               )}
-              {rest.map((index) => render(index, false, index === rest.at(-1)))}
               <span className={styles.canto}>
                 <ImageAttach
                   side="verso"

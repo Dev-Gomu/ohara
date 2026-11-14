@@ -17,11 +17,12 @@ export function markLength(raw: string): number {
   return kind === 'text' ? 0 : raw.length - text.length;
 }
 
-const LIST_KINDS = new Set(['item', 'number', 'pro', 'con', 'doubt']);
+const LIST_KINDS = new Set(['item', 'number', 'pro', 'con', 'doubt', 'more']);
 
 // Marca que a linha de baixo herda ao dar Enter: só as listas continuam (números contam +1).
 function continuation(raw: string): string {
   const { kind } = parseLine(raw);
+  if (kind === 'front' || kind === 'more') return '@@ ';
   if (!LIST_KINDS.has(kind)) return '';
   const mark = raw.slice(0, markLength(raw));
   if (kind !== 'number') return mark.endsWith(' ') ? mark : `${mark} `;
@@ -50,6 +51,12 @@ export function backspaceAtStart(source: string, line: number): LineEdit | null 
   const lines = splitLines(source);
   const raw = lines[line] ?? '';
   const prefix = markLength(raw);
+  // Linha de continuação da frente: sobe o texto para a linha de cima.
+  if (parseLine(raw).kind === 'more' && line > 0) {
+    const up = lines[line - 1] ?? '';
+    lines.splice(line - 1, 2, up + raw.slice(prefix));
+    return { source: lines.join('\n'), line: line - 1, caret: up.length };
+  }
   if (prefix > 0) {
     lines[line] = raw.slice(prefix);
     return { source: lines.join('\n'), line, caret: 0 };
@@ -88,4 +95,17 @@ export function groupLines(source: string): CardGroup[] {
     groups.at(-1)?.lines.push(index);
   });
   return groups;
+}
+
+// Linhas do texto que são a frente do cartão: a que abre ("@") e as continuações ("@@").
+export const frontLines = (source: string, group: CardGroup): number[] => {
+  const all = splitLines(source);
+  return group.lines.filter((index) => index === group.first || parseLine(all[index] ?? '').kind === 'more');
+};
+
+// Abre uma linha comum (sem marca) logo abaixo de `line`: é como o verso nasce.
+export function insertBlankAfter(source: string, line: number): LineEdit {
+  const lines = splitLines(source);
+  lines.splice(line + 1, 0, '');
+  return { source: lines.join('\n'), line: line + 1, caret: 0 };
 }

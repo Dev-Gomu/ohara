@@ -83,8 +83,11 @@ export function resolve(
     const option = OPTION_KEYS.find((key) => key.code === input.code);
     if (option) return option.action;
   }
-  if (context.cardLine && context.overlay === 'none' && mods === '') {
-    const line = LINE_KEYS.find((key) => key.code === input.code && context.cardLine?.includes(key.when));
+  if (context.cardLine && context.overlay === 'none' && (mods === '' || mods === 's')) {
+    const line = LINE_KEYS.find(
+      (key) =>
+        key.code === input.code && (key.shift ?? false) === (mods === 's') && context.cardLine?.includes(key.when),
+    );
     if (line) return line.action;
   }
   if (context.trash && context.overlay === 'window' && (mods === '' || mods === 'a')) {

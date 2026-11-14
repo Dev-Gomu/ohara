@@ -154,6 +154,9 @@ function LessonDesk({ data, lessonId }: { data: StudyData; lessonId: string }) {
       ...cardFormatActions(inCards, cardsEditor.format, editorActions(editor, page)),
       cardLineSplit: () => cardsEditor.lineActions.cardLineSplit(),
       cardLineBack: () => cardsEditor.lineActions.cardLineBack(),
+      cardSide: (change) => {
+        if (change.type === 'cardSide') cardsEditor.lineActions.cardSide(change.to);
+      },
       cardImageRemove: () => cardImages.removeAt(cardsEditor.line),
       cardImageZoom: () => cardImages.zoomAt(cardsEditor.line),
       cardLineMove: (change) => {

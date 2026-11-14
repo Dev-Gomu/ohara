@@ -38,3 +38,23 @@ export function expandCloze(text: string): string[] {
     ),
   );
 }
+
+export interface ClozeSegment {
+  text: string;
+  // Número e dica só existem nos trechos de lacuna.
+  number: number | null;
+  hint: string;
+}
+
+// A frase como o editor a mostra: trechos comuns e lacunas inteiras, com o número de cada uma.
+export function clozeSegments(text: string): ClozeSegment[] {
+  const segments: ClozeSegment[] = [];
+  let last = 0;
+  for (const found of text.matchAll(PATTERN)) {
+    if (found.index > last) segments.push({ text: text.slice(last, found.index), number: null, hint: '' });
+    segments.push({ text: found[2] ?? '', number: Number(found[1]), hint: found[3] ?? '' });
+    last = found.index + found[0].length;
+  }
+  if (last < text.length) segments.push({ text: text.slice(last), number: null, hint: '' });
+  return segments;
+}

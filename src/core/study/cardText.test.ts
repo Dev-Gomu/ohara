@@ -109,3 +109,11 @@ describe('cloze nos rascunhos', () => {
     expect(isComplete({ front: 'sem lacuna', back: '' })).toBe(false);
   });
 });
+
+describe('frente com continuação', () => {
+  it('"@@" soma linhas à frente do cartão', () => {
+    expect(parseDrafts('@ Caso: febre\n@@ Qual o agente?\nStreptococcus')).toEqual([
+      { front: 'Caso: febre\nQual o agente?', back: 'Streptococcus' },
+    ]);
+  });
+});

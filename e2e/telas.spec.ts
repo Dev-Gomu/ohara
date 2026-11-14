@@ -149,7 +149,7 @@ test('Mesa: Alt N abre um cartão, Ctrl Enter salva os completos', async ({ page
   await page.keyboard.press('Alt+KeyN');
   await expect(bloco(page)).toHaveText('mesa.cards');
   await page.keyboard.type('Quem libera IL-6?');
-  await page.keyboard.press('Enter');
+  await page.keyboard.press('Tab');
   await page.keyboard.type('Macrófago');
   await page.keyboard.press('Alt+KeyN');
   await page.keyboard.type('Sem verso ainda');
@@ -167,7 +167,7 @@ test('Mesa: no cartão novo, Enter continua a lista, Backspace tira a marca e �
   await page.keyboard.press('Alt+KeyN');
   const linha = page.locator('[aria-label="Cartões novos"] textarea');
   await page.keyboard.type('Quem libera IL-6?');
-  await page.keyboard.press('Enter');
+  await page.keyboard.press('Tab');
   await page.keyboard.type('- Febre');
   await page.keyboard.press('Enter');
   await expect(linha).toHaveValue('');
@@ -177,6 +177,20 @@ test('Mesa: no cartão novo, Enter continua a lista, Backspace tira a marca e �
   await expect(linha).toHaveValue('Febre');
   await page.keyboard.press('ArrowUp');
   await expect(linha).toHaveValue('Quem libera IL-6?');
+});
+
+test('Mesa: Tab passa da frente ao verso e Shift Tab volta (D170)', async ({ page }) => {
+  await page.keyboard.press('Alt+Digit2');
+  await page.keyboard.press('Alt+KeyN');
+  const linha = page.locator('[aria-label="Cartões novos"] textarea');
+  await page.keyboard.type('Quem libera IL-6?');
+  await page.keyboard.press('Tab');
+  await expect(linha).toHaveValue('');
+  await page.keyboard.type('Macrófago');
+  await page.keyboard.press('Shift+Tab');
+  await expect(linha).toHaveValue('Quem libera IL-6?');
+  await page.keyboard.press('Tab');
+  await expect(linha).toHaveValue('Macrófago');
 });
 
 test('Agenda: a régua troca a visão e o dia comanda a prévia', async ({ page }) => {

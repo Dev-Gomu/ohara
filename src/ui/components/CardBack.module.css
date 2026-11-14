@@ -1,8 +1,8 @@
-/* Cartão de estudo (D138, D155): frente cheia no azul de ação, verso no mesmo contorno. */
+/* Cartão de estudo (D138, D169): contornado, de fundo claro; uma linha de 2 px separa frente e verso. */
 .carta {
   container-type: inline-size;
   overflow: hidden;
-  border: 1px solid var(--cor-acao);
+  border: 2px solid var(--cor-cartao-borda);
   border-radius: var(--raio-campo);
   background: var(--cor-cartao);
   color: var(--cor-texto);
@@ -11,9 +11,13 @@
 
 .frente {
   padding: var(--e3) var(--e4);
-  background: var(--cor-acao);
-  color: var(--cor-sobre-acao);
+  color: var(--cor-texto);
   font: var(--voz-mini);
+}
+
+.frente + *,
+.frente + .verso {
+  border-top: 2px solid var(--cor-cartao-borda);
 }
 
 /* Texto dos cartões (D159): letra de leitura em 600; com verso embaixo, à esquerda. */
@@ -23,10 +27,11 @@
   font-weight: 600;
   line-height: 1.45;
   text-wrap: pretty;
+  white-space: pre-line;
 }
 
 .carta > .verso {
-  padding: var(--e4) var(--e4) var(--e5);
+  padding: var(--e3) var(--e4) var(--e5);
 }
 
 .falta {
@@ -152,16 +157,8 @@
   justify-content: center;
   aspect-ratio: 16 / 9;
   padding: var(--e4) var(--e5);
-  border: 1px solid var(--cor-acao);
+  border: 2px solid var(--cor-cartao-borda);
   border-radius: var(--raio-campo);
-}
-
-.cloze[data-lado='frente'] {
-  background: var(--cor-acao);
-  color: var(--cor-sobre-acao);
-}
-
-.cloze[data-lado='verso'] {
   background: var(--cor-cartao);
   color: var(--cor-texto);
 }
@@ -175,10 +172,14 @@
   line-height: 1.3;
   text-align: center;
   text-wrap: balance;
+  white-space: pre-line;
 }
 
 .lacuna {
-  color: var(--cor-escolhido);
+  padding: 0 var(--e2);
+  border-radius: var(--raio-minimo);
+  background: var(--cor-lacuna);
+  color: var(--cor-acao);
   font-weight: 700;
 }
 

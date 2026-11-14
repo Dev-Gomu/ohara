@@ -174,7 +174,7 @@ describe('modo Ajustar da tabela (D149)', () => {
 });
 
 describe('linha do cartão novo', () => {
-  const at = (...spots: ('any' | 'start' | 'top' | 'bottom' | 'image')[]) =>
+  const at = (...spots: ('any' | 'start' | 'top' | 'bottom' | 'image' | 'front' | 'back')[]) =>
     ({ level: 'field', overlay: 'none', cardLine: spots }) as const;
 
   it('Enter é do cartão em qualquer ponto da linha', () => {
@@ -194,6 +194,12 @@ describe('linha do cartão novo', () => {
     expect(resolve(press('Backspace'), image)).toEqual({ type: 'cardImageRemove' });
     expect(resolve(press('ArrowDown'), image)).toEqual({ type: 'cardLineMove', delta: 1 });
     expect(resolve(press('Delete'), at('any'))).toBeNull();
+  });
+  it('Tab passa da frente ao verso e Shift Tab volta; fora disso é do texto', () => {
+    expect(resolve(press('Tab'), at('any', 'front'))).toEqual({ type: 'cardSide', to: 'back' });
+    expect(resolve(press('Tab', { shift: true }), at('any', 'back'))).toEqual({ type: 'cardSide', to: 'front' });
+    expect(resolve(press('Tab', { shift: true }), at('any', 'front'))).toBeNull();
+    expect(resolve(press('Tab'), at('any', 'back'))).toBeNull();
   });
   it('fora da linha do cartão, as teclas seguem para o texto', () => {
     expect(resolve(press('Enter'), { level: 'field', overlay: 'none' })).toBeNull();
