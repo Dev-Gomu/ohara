@@ -18,6 +18,7 @@ import { Palette } from './Palette';
 import { PromptWindow } from './PromptWindow';
 import { UndoBar } from './UndoBar';
 import { ReminderWindow } from './ReminderWindow';
+import { TrashWindow } from './TrashWindow';
 import { FAULTS_OPEN, NOTES_OPEN } from '../study/navigation';
 import { setScreenMemory } from '../study/screenMemory';
 import { storage } from '../study/study';
@@ -93,6 +94,7 @@ export function Shell() {
       <OptionsWindow />
       <TopMenuWindow />
       <ConsultWindows />
+      <TrashWindow />
       <PromptWindow />
       <UndoBar />
     </>

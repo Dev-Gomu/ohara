@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { Level } from './actions';
-import { OPTION_KEYS } from './keys';
+import { OPTION_KEYS, TRASH_KEYS } from './keys';
 import { resolve, type KeyContext, type KeyInput } from './resolve';
 
 const press = (code: string, extra: Partial<KeyInput> = {}): KeyInput => ({
@@ -223,5 +223,30 @@ describe('linha com opções curtas (D160)', () => {
   });
   it('dentro de uma janela as setas são dela', () => {
     expect(resolve(press('ArrowLeft'), { ...choosing, overlay: 'window' })).toBeNull();
+  });
+});
+
+describe('janela da Lixeira (D164)', () => {
+  const rows = TRASH_KEYS.flatMap((key) => key.when.map((spot) => [key.label, spot, key] as const));
+  it.each(rows)('%s em %s faz o que a tabela diz', (_label, spot, key) => {
+    const input = press(key.code, { alt: key.alt });
+    expect(resolve(input, { ...inWindow, trash: spot })).toEqual(key.action);
+  });
+  it('fora da janela da Lixeira as teclas dela não valem', () => {
+    expect(resolve(press('KeyO', { alt: true }), inWindow)).toEqual(swallow);
+    expect(resolve(press('ArrowLeft'), inWindow)).toBeNull();
+  });
+  it('na busca, ← → são do texto', () => {
+    expect(resolve(press('ArrowLeft'), { ...inWindow, trash: 'search' })).toBeNull();
+  });
+  it('Enter segurado não restaura um atrás do outro', () => {
+    expect(resolve(press('Enter', { repeat: true }), { ...inWindow, trash: 'list' })).toEqual(swallow);
+  });
+  it('na lista, Esc fecha a janela; no menu, só o menu', () => {
+    expect(resolve(press('Escape'), { ...inWindow, trash: 'list' })).toEqual({ type: 'escape' });
+    expect(resolve(press('Escape'), { ...inWindow, trash: 'menu' })).toEqual({ type: 'trashBack' });
+  });
+  it('na confirmação, Enter é do botão com foco (nasce em Cancelar)', () => {
+    expect(resolve(press('Enter'), { ...inWindow, trash: 'confirm' })).toBeNull();
   });
 });

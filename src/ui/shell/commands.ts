@@ -11,7 +11,10 @@ export const CONSULT_WINDOWS = [
   { id: 'consulta-dia', title: 'Agenda do dia' },
   { id: 'consulta-calendario', title: 'Calendário' },
   { id: 'consulta-provas', title: 'Próximas provas' },
+  { id: 'lixeira', title: 'Lixeira' },
 ] as const;
+
+export const TRASH_WINDOW = 'lixeira';
 
 export interface Command {
   id: string;

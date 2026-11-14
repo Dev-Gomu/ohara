@@ -66,6 +66,14 @@
   text-transform: uppercase;
 }
 
+.detalhe {
+  flex: 1;
+  color: var(--cor-texto-2);
+  font: var(--ui-apoio);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
 .fechar {
   display: grid;
   flex: none;

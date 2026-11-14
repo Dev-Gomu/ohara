@@ -37,13 +37,14 @@ export function removeCard(data: StudyData, id: string): StudyData {
   return { ...data, cards: data.cards.filter((item) => item.id !== id) };
 }
 
-// Excluir a aula leva os cartões. O que ela marcou na Agenda continua, sem aula ligada.
+// Excluir a aula leva os cartões, os slides e as imagens. O que ela marcou na Agenda continua, sem aula ligada.
 export function removeLesson(data: StudyData, id: string): StudyData {
   return {
     ...data,
     lessons: data.lessons.filter((item) => item.id !== id),
     cards: data.cards.filter((item) => item.lessonId !== id),
     files: data.files.filter((item) => item.lessonId !== id),
+    cardImages: data.cardImages.filter((item) => item.lessonId !== id),
     events: data.events.map((item) => (item.lessonId === id ? { ...item, lessonId: null } : item)),
   };
 }
@@ -77,6 +78,8 @@ export function removeSubject(data: StudyData, id: string): StudyData {
     files: data.files.filter(
       (item) => item.subjectId !== id && !lessonIds.has(item.lessonId ?? ''),
     ),
+    cardImages: data.cardImages.filter((item) => !lessonIds.has(item.lessonId)),
+    attendance: data.attendance.filter((item) => item.subjectId !== id),
   };
 }
 
@@ -91,6 +94,8 @@ const COLLECTIONS = [
   'slots',
   'reminders',
   'files',
+  'attendance',
+  'cardImages',
 ] as const;
 
 // Desfazer uma ação: `before` e `after` são os dados antes e logo depois dela. Volta o que a ação

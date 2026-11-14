@@ -55,6 +55,18 @@ Esta é a tabela de atalhos que a Etapa 2 implementa. Cada linha vira um teste (
 | Alt Z | Desfaz a última exclusão (vale por 10 segundos) |
 | Alt / · F1 | Ajuda |
 
+### Janela da Lixeira (D164; tabela `TRASH_KEYS`, fora de `KEYS`)
+| Tecla | Onde | Ação |
+|---|---|---|
+| ↑ ↓ | lista, busca | anda entre os itens (da busca, volta à lista) |
+| ← → | lista | troca o tipo na régua (dá a volta) |
+| Enter | lista | restaura, com Desfazer; na busca, volta à lista |
+| Alt O | lista | menu ⋮: Restaurar · Apagar de vez… |
+| Alt F | lista, busca | vai à busca |
+| Alt Z | lista, busca | desfaz o último restaurar |
+| Esc | busca, menu, confirmação | sai de um nível; na lista, fecha a janela |
+| Tab · Enter | confirmação | o foco nasce em Cancelar: Enter sozinho nunca apaga |
+
 ### Slides
 | Tecla | Ação |
 |---|---|

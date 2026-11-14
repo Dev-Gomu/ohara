@@ -61,10 +61,10 @@
 ### docs/estado.md
 - L1 # Estado do Ohara (atualizado em 14/11/2026)
 - L5 ## Onde estamos
-- L14 ## Próximo passo
-- L45 ## A conferir (aplicado em 13/11, só check e e2e)
-- L48 ## Esperando o usuário
-- L52 ## Iniciativas abertas (máx. 3)
+- L15 ## Próximo passo
+- L46 ## A conferir (aplicado em 13/11, só check e e2e)
+- L49 ## Esperando o usuário
+- L53 ## Iniciativas abertas (máx. 3)
 
 ### docs/mapa.md
 - L1 # Mapa do projeto
@@ -73,8 +73,8 @@
 ### docs/pecas.md
 - L2 # Cartão de peças
 - L4 ## Peças (src/ui/components)
-- L211 ## Store do teclado e das telas (src/ui/keyboard)
-- L227 ## Estudo (src/ui/study)
+- L225 ## Store do teclado e das telas (src/ui/keyboard)
+- L242 ## Estudo (src/ui/study)
 
 ### docs/prompt-propostas-visuais.md
 - L1 # Prompt: propostas visuais do Ohara (6 frentes)
@@ -95,11 +95,11 @@
 - L1 # Ohara: teclado
 - L8 ## Regras de uso
 - L19 ## Tabela final
-- L83 ## Decisões desta etapa
-- L89 ## Testado (PC, Linux, Chrome instalado como app)
-- L95 ## Testado no tablet (Galaxy Tab S7 FE, na horizontal)
-- L101 ## Checkpoint da Etapa 6 (07/11/2026)
-- L105 ## Pendências
+- L95 ## Decisões desta etapa
+- L101 ## Testado (PC, Linux, Chrome instalado como app)
+- L107 ## Testado no tablet (Galaxy Tab S7 FE, na horizontal)
+- L113 ## Checkpoint da Etapa 6 (07/11/2026)
+- L117 ## Pendências
 
 ### docs/telas.md
 - L1 # Ohara: telas
@@ -177,7 +177,7 @@
 - src/core/db/errors.ts: Traduz o erro do navegador ou do SQLite. Na migração e na gravação, o que não for reconhecido
 - src/core/db/hlc.ts: Relógio híbrido (D29): ordena como texto e nunca anda para trás, mesmo se o relógio do aparelho voltar.
 - src/core/db/migrations.ts: O SQL chega já como texto: o core não importa arquivo.
-- src/core/db/protocol.ts: Estado só deste aparelho (D28): página atual de cada aula etc. Não sincroniza.
+- src/core/db/protocol.ts: Exclusão lógica (vai à Lixeira, D164). `by` é a raiz da exclusão; sem ele, o próprio item.
 - src/core/db/rows.ts: `export type SqlValue = string | number | null;`
 - src/core/db/specs.ts: Falso: fica no aparelho, é apagada de verdade e não sincroniza (D85).
 - src/core/grades/grades.test.ts: (sem comentário nem export no topo)
@@ -242,6 +242,9 @@
 - src/core/study/subjectTiles.ts: Peça da grade de disciplinas do Treino. id nulo é "Todas".
 - src/core/study/symbols.test.ts: (sem comentário nem export no topo)
 - src/core/study/symbols.ts: Símbolos ao digitar (D139): tabela própria, do zero. Mais longo primeiro, para "<->" não virar "<" + "->".
+- src/core/study/trash.test.ts: (sem comentário nem export no topo)
+- src/core/study/trash.ts: Lixeira (D164): o item fica 30 dias; nos últimos 7 a linha avisa quando some.
+- src/core/study/trashList.ts: Ordem da régua. `male`: "excluído" (cartão, anexo, lembrete) ou "excluída".
 - src/core/study/types.ts: Posição na paleta, nunca o valor da cor: o tema pode mudar sem mexer nos dados.
 - src/core/study/versions.test.ts: (sem comentário nem export no topo)
 - src/core/study/versions.ts: D34: guarda uma versão a cada 5 minutos, até 50 por aula. Grava a versão anterior à edição,
@@ -299,6 +302,8 @@
 - src/ui/components/Target.tsx: Onde a peça vive: `nav` liga ao teclado (campo navegável); sem ele, a tela informa
 - src/ui/components/Toggles.module.css: O alvo de toque ocupa a altura inteira da ilha.
 - src/ui/components/Toggles.tsx: Grupo de alternadores ou de abas: a mesma ilha recuada da barra do topo.
+- src/ui/components/TrashRow.module.css: Linha da Lixeira (D164), da bancada V2. Só tokens.
+- src/ui/components/TrashRow.tsx: ⋮ de toque (44 px): abre as mesmas opções do Alt O.
 - src/ui/components/Window.module.css: (sem comentário nem export no topo)
 - src/ui/components/Window.tsx: De onde a janela veio (bloco ou tela): rótulo pequeno acima do título.
 - src/ui/faltas/Faltas.tsx: (sem comentário nem export no topo)
@@ -382,10 +387,13 @@
 - src/ui/shell/Shell.tsx: (sem comentário nem export no topo)
 - src/ui/shell/TopMenu.module.css: (sem comentário nem export no topo)
 - src/ui/shell/TopMenu.tsx: (sem comentário nem export no topo)
+- src/ui/shell/TrashWindow.module.css: Janela da Lixeira (D164, bancada V2): régua à esquerda, lista no meio, prévia à direita.
+- src/ui/shell/TrashWindow.tsx: Rodapé gerado da tabela: as teclas da lista, juntas pelo que fazem.
 - src/ui/shell/UndoBar.tsx: `export function UndoBar()`
 - src/ui/shell/commands.ts: `export const CONSULT_WINDOWS = [`
 - src/ui/shell/topAnimation.ts: Preferência de aparelho, como o tema: sem armazenamento vale o padrão.
 - src/ui/shell/topTabs.ts: Como a barra do topo mostra as telas: só o número, número com ícone, só o ícone ou o ícone
+- src/ui/shell/trashState.ts: Estado de tela da janela da Lixeira (fica em memória): tipo da régua, busca, item escolhido,
 - src/ui/study/actions.ts: `export function toggleReminder(id: string | undefined): void`
 - src/ui/study/attach.ts: `export async function attach(`
 - src/ui/study/cardImages.ts: Reduz no navegador (lado maior de 1600 px) e guarda como JPEG: cabe no banco e no backup (D158).
@@ -397,7 +405,7 @@
 - src/ui/study/pdf.ts: pdf.js só carrega quando o primeiro PDF é aberto; o worker dele vai no precache do PWA.
 - src/ui/study/screenMemory.ts: Estado de tela que sobrevive à troca de tela, só enquanto o app está aberto (D26).
 - src/ui/study/study.ts: Horário fixo nos dados de exemplo, para sempre haver uma aula de agora.
-- src/ui/study/undo.ts: D: exclusão é lógica no banco e tem Desfazer (regras.md G8). `label` aparece no aviso.
+- src/ui/study/undo.ts: Exclusão mostra "Ver lixeira" no aviso; restaurar, não.
 - src/ui/styles/base.css: (sem comentário nem export no topo)
 - src/ui/styles/fonts.css: Fontes da D67, servidas pelo app (D68). Licença OFL.
 - src/ui/styles/paletas.css: Paletas oficiais além da base (Gelo suave, sem atributo, em tokens.css; D132). Configs e ?paleta=a|b trocam.

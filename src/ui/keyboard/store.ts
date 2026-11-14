@@ -56,6 +56,15 @@ let state: KeyboardState = {
 
 let registration: ScreenRegistration = { blocks: [], arrival: { block: '', level: 'block' } };
 const memory: Partial<Record<Screen, FocusPlace>> = {};
+// Teclas próprias de uma janela (as da Lixeira, D164): a janela aberta as recebe antes do resto.
+const windowActions = new Map<string, (change: KeyAction) => boolean>();
+
+export function registerWindowActions(window: string, run: (change: KeyAction) => boolean): () => void {
+  windowActions.set(window, run);
+  return () => {
+    if (windowActions.get(window) === run) windowActions.delete(window);
+  };
+}
 const subscribers = new Set<() => void>();
 
 export function subscribe(subscriber: () => void): () => void {
@@ -154,6 +163,8 @@ function runScreenAction(change: FocusChange, layout: FocusLayout): boolean {
 }
 
 export function dispatch(change: FocusChange, repeat = false): void {
+  const own = state.focus.window === null ? undefined : windowActions.get(state.focus.window);
+  if (own && change.type !== 'touch' && change.type !== 'jump' && change.type !== 'openWindow' && own(change)) return;
   if (change.type === 'undo') {
     runUndo();
     return;

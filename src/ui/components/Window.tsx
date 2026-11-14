@@ -8,6 +8,8 @@ interface WindowProps {
   title: string;
   // De onde a janela veio (bloco ou tela): rótulo pequeno acima do título.
   context?: string;
+  // Apoio curto ao lado do título (contagem, prazo), à direita, antes do X.
+  detail?: string;
   testId?: string;
   wide?: boolean;
   children: ReactNode;
@@ -19,7 +21,7 @@ export function WindowFooter({ children }: { children: ReactNode }) {
   return <div className={styles.pe}>{children}</div>;
 }
 
-export function Window({ id, title, context, testId, wide, children }: WindowProps) {
+export function Window({ id, title, context, detail, testId, wide, children }: WindowProps) {
   const { focus } = useKeyboardState();
   return (
     <ModalOverlay
@@ -40,12 +42,22 @@ export function Window({ id, title, context, testId, wide, children }: WindowPro
                 {title}
               </Heading>
             </div>
+            {detail !== undefined && <span className={styles.detalhe}>{detail}</span>}
             <Button
               className={styles.fechar}
               aria-label="Fechar"
               onPress={() => dispatch({ type: 'escape' })}
             >
-              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                width="24"
+                height="24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                aria-hidden="true"
+              >
                 <path d="M6 6l12 12M18 6L6 18" />
               </svg>
             </Button>

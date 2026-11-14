@@ -1,0 +1,45 @@
+-- Lixeira (D164): quando o item foi excluído e qual exclusão o levou (a "raiz"). Os filhos levados
+-- junto guardam o id da raiz, para restaurar exatamente o que foi junto. deleted = 2 é lápide.
+-- Exclusões antigas não sabem a raiz: ficam fora da lista ("legado") e saem na limpeza de 30 dias.
+ALTER TABLE years ADD COLUMN deleted_at TEXT;
+ALTER TABLE years ADD COLUMN deleted_by TEXT;
+UPDATE years SET deleted_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now'), deleted_by = 'legado' WHERE deleted = 1;
+ALTER TABLE subjects ADD COLUMN deleted_at TEXT;
+ALTER TABLE subjects ADD COLUMN deleted_by TEXT;
+UPDATE subjects SET deleted_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now'), deleted_by = 'legado' WHERE deleted = 1;
+ALTER TABLE folders ADD COLUMN deleted_at TEXT;
+ALTER TABLE folders ADD COLUMN deleted_by TEXT;
+UPDATE folders SET deleted_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now'), deleted_by = 'legado' WHERE deleted = 1;
+ALTER TABLE lessons ADD COLUMN deleted_at TEXT;
+ALTER TABLE lessons ADD COLUMN deleted_by TEXT;
+UPDATE lessons SET deleted_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now'), deleted_by = 'legado' WHERE deleted = 1;
+ALTER TABLE cards ADD COLUMN deleted_at TEXT;
+ALTER TABLE cards ADD COLUMN deleted_by TEXT;
+UPDATE cards SET deleted_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now'), deleted_by = 'legado' WHERE deleted = 1;
+ALTER TABLE exams ADD COLUMN deleted_at TEXT;
+ALTER TABLE exams ADD COLUMN deleted_by TEXT;
+UPDATE exams SET deleted_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now'), deleted_by = 'legado' WHERE deleted = 1;
+ALTER TABLE events ADD COLUMN deleted_at TEXT;
+ALTER TABLE events ADD COLUMN deleted_by TEXT;
+UPDATE events SET deleted_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now'), deleted_by = 'legado' WHERE deleted = 1;
+ALTER TABLE slots ADD COLUMN deleted_at TEXT;
+ALTER TABLE slots ADD COLUMN deleted_by TEXT;
+UPDATE slots SET deleted_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now'), deleted_by = 'legado' WHERE deleted = 1;
+ALTER TABLE reminders ADD COLUMN deleted_at TEXT;
+ALTER TABLE reminders ADD COLUMN deleted_by TEXT;
+UPDATE reminders SET deleted_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now'), deleted_by = 'legado' WHERE deleted = 1;
+ALTER TABLE files ADD COLUMN deleted_at TEXT;
+ALTER TABLE files ADD COLUMN deleted_by TEXT;
+UPDATE files SET deleted_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now'), deleted_by = 'legado' WHERE deleted = 1;
+ALTER TABLE attendance ADD COLUMN deleted_at TEXT;
+ALTER TABLE attendance ADD COLUMN deleted_by TEXT;
+UPDATE attendance SET deleted_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now'), deleted_by = 'legado' WHERE deleted = 1;
+ALTER TABLE card_images ADD COLUMN deleted_at TEXT;
+ALTER TABLE card_images ADD COLUMN deleted_by TEXT;
+UPDATE card_images SET deleted_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now'), deleted_by = 'legado' WHERE deleted = 1;
+ALTER TABLE vault ADD COLUMN deleted_at TEXT;
+ALTER TABLE vault ADD COLUMN deleted_by TEXT;
+UPDATE vault SET deleted_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now'), deleted_by = 'legado' WHERE deleted = 1;
+ALTER TABLE secret_records ADD COLUMN deleted_at TEXT;
+ALTER TABLE secret_records ADD COLUMN deleted_by TEXT;
+UPDATE secret_records SET deleted_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now'), deleted_by = 'legado' WHERE deleted = 1;

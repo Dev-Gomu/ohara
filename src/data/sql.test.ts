@@ -10,6 +10,7 @@ import { MIGRATIONS } from './migrationList';
 import {
   applyChanges,
   loadSnapshot,
+  loadTrash,
   loadVersions,
   migrate,
   openState,
@@ -57,7 +58,7 @@ describe('SQL (SQLite em memória)', () => {
     const db = await memoryDb();
     migrate(db, MIGRATIONS);
     migrate(db, MIGRATIONS);
-    expect(schemaVersion(db)).toBe(5);
+    expect(schemaVersion(db)).toBe(6);
   });
 
   it('ida e volta das nove tabelas e das versões', async () => {
@@ -107,6 +108,35 @@ describe('SQL (SQLite em memória)', () => {
     expect(kept[0]?.deleted).toBe(1);
     expect(String(kept[0]?.updated_at)).toMatch(/^0000000002000-/);
     expect(loadVersions(db, 'a')).toEqual([]);
+  });
+
+  it('Lixeira: exclusão grava quando e a raiz; put limpa; Apagar de vez deixa lápide sem conteúdo', async () => {
+    const db = await memoryDb();
+    migrate(db, MIGRATIONS);
+    const card = seed.cards[0];
+    if (!card) throw new Error('sem cartão');
+    const row = toRow('cards', card);
+    applyChanges(db, [{ op: 'put', table: 'cards', row }], 'dev', 1000);
+    applyChanges(
+      db,
+      [{ op: 'delete', table: 'cards', id: card.id, by: 'aula-x', at: '2026-11-14T00:00:00.000Z' }],
+      'dev',
+      2000,
+    );
+    expect(loadTrash(db).cards?.[0]).toMatchObject({ deleted_by: 'aula-x', deleted_at: '2026-11-14T00:00:00.000Z' });
+    applyChanges(db, [{ op: 'put', table: 'cards', row }], 'dev', 3000);
+    expect(db.all('SELECT deleted, deleted_at, deleted_by FROM cards')[0]).toEqual({
+      deleted: 0,
+      deleted_at: null,
+      deleted_by: null,
+    });
+    applyChanges(db, [{ op: 'delete', table: 'cards', id: card.id }], 'dev', 4000);
+    expect(loadTrash(db).cards?.[0]?.deleted_by).toBe(card.id);
+    applyChanges(db, [{ op: 'purge', table: 'cards', id: card.id }], 'dev', 5000);
+    const tomb = db.all('SELECT * FROM cards')[0];
+    expect(tomb).toMatchObject({ deleted: 2, question: '', answer: '', lesson_id: '' });
+    expect(loadTrash(db).cards).toEqual([]);
+    expect(loadSnapshot(db).cards).toEqual([]);
   });
 
   it('put em linha apagada traz de volta e o HLC nunca anda para trás', async () => {

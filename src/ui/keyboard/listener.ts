@@ -5,6 +5,8 @@ import { cardLineContext } from './cardLine';
 import { isChoosing } from './choice';
 import { dispatch, getKeyboardState } from './store';
 import { isAdjusting } from './tableAdjust';
+import { TRASH_WINDOW } from '../shell/commands';
+import { trashSpot } from '../shell/trashState';
 
 function inputOf(event: KeyboardEvent): KeyInput {
   return {
@@ -29,6 +31,7 @@ function onKeyDown(event: KeyboardEvent): void {
     adjusting: isAdjusting(),
     choosing: isChoosing(focus),
     ...(cardLine ? { cardLine } : {}),
+    ...(focus.window === TRASH_WINDOW ? { trash: trashSpot() } : {}),
   };
   const resolved = resolve(inputOf(event), context);
   if (!resolved) return;

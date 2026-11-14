@@ -34,6 +34,7 @@ export function folderOptions(folder: { id: string; name: string } | undefined):
       run: () =>
         removeWithUndo(`Pasta "${folder.name}" excluída; as aulas ficaram sem pasta.`, (data) =>
           removeFolder(data, folder.id),
+        folder.id,
         ),
     },
   ];
@@ -65,6 +66,7 @@ export function lessonOptions(lesson: Lesson | undefined): BlockOption[] {
       run: () =>
         removeWithUndo(`Aula "${lesson.title}" excluída, com os cartões.`, (data) =>
           removeLesson(data, lesson.id),
+        lesson.id,
         ),
     },
   ];
@@ -94,7 +96,7 @@ export function cardOptions(card: Card | undefined): BlockOption[] {
     {
       id: 'excluir',
       label: 'Excluir cartão',
-      run: () => removeWithUndo('Cartão excluído.', (data) => removeCard(data, card.id)),
+      run: () => removeWithUndo('Cartão excluído.', (data) => removeCard(data, card.id), card.id),
     },
   ];
 }

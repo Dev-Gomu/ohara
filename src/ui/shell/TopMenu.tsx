@@ -3,6 +3,7 @@ import { Dialog, Menu, MenuItem, Modal, ModalOverlay } from 'react-aria-componen
 import { Key } from '../components/Key';
 import { dispatch, useKeyboardState } from '../keyboard/store';
 import { openFaults, openNotes } from '../study/navigation';
+import { TRASH_WINDOW } from './commands';
 import styles from './TopMenu.module.css';
 
 const WINDOW = 'topmenu';
@@ -37,6 +38,16 @@ const ITEMS: readonly { id: string; label: string; keys?: string; icon: ReactNod
     run: openNotes,
   },
   {
+    id: 'lixeira',
+    label: 'Lixeira',
+    icon: (
+      <Traco>
+        <path d="M4 7h16M9 7V5h6v2M6 7l1 13h10l1-13" />
+      </Traco>
+    ),
+    run: () => dispatch({ type: 'openWindow', window: TRASH_WINDOW }),
+  },
+  {
     id: 'ajuda',
     label: 'Ajuda',
     keys: 'Alt /',
@@ -52,7 +63,7 @@ export function TopMenuButton({ cursor }: { cursor: boolean }) {
       type="button"
       className={cursor ? `${styles.botao} anel-fino` : styles.botao}
       data-menu-item=""
-      title="Faltas, Notas e Ajuda"
+      title="Faltas, Notas, Lixeira e Ajuda"
       aria-label="Mais"
       aria-haspopup="menu"
       onClick={() => dispatch({ type: 'openWindow', window: WINDOW })}

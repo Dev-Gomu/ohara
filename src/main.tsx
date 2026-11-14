@@ -7,6 +7,7 @@ import { createFixtures } from './core/study/fixtures';
 import type { StudyData } from './core/study/types';
 import { createClient, DbError, type DbClient } from './data/client';
 import { createDbStorage } from './data/dbStorage';
+import { expired } from './core/study/trash';
 import { acquireLock } from './data/lock';
 import { prefixed } from './core/appInfo';
 import { DB_NAME } from './data/dbName';
@@ -92,8 +93,11 @@ async function boot() {
     return fail(code, error instanceof Error ? error.message : String(error), client);
   }
   show(<Shell />);
-  // Arquivos de aulas excluídas só saem do disco aqui: o Desfazer já não vale depois de recarregar.
-  void storage.sweepBlobs().catch(() => undefined);
+  // Lixeira (D164): o que passou de 30 dias vira lápide; depois saem do disco os bytes sem dono.
+  void storage
+    .purge(expired(storage.readTrash(), new Date()))
+    .then(() => storage.sweepBlobs())
+    .catch(() => undefined);
 }
 
 void boot();

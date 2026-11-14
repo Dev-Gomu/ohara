@@ -5,7 +5,6 @@ import {
   mimeOf,
   newFile,
   toHex,
-  canDropBlob,
   detachFile,
 } from '../../core/study/files';
 import type { FileKind, StudyFile } from '../../core/study/types';
@@ -49,25 +48,14 @@ export async function attach(
     kind,
     owner,
   );
-  const replaced = storage
-    .read()
-    .files.find(
-      (item) => kind === 'slides' && item.kind === 'slides' && item.lessonId === owner.lessonId,
-    );
+  // Os slides trocados vão à Lixeira; os bytes só saem no Apagar de vez (D164).
   storage.write((data) => attachFile(data, file));
-  if (replaced) await dropIfUnused(replaced);
   showNotice(`"${source.name}" anexado (${pages} ${pages === 1 ? 'página' : 'páginas'}).`);
 }
 
-async function dropIfUnused(file: StudyFile): Promise<void> {
-  if (canDropBlob(storage.read().files, file.sha256, file.id)) {
-    await storage.removeBlob(file.sha256);
-  }
-}
-
-export async function detach(file: StudyFile): Promise<void> {
+export function detach(file: StudyFile): Promise<void> {
   storage.write((data) => detachFile(data, file.id));
-  await dropIfUnused(file);
+  return Promise.resolve();
 }
 
 // O seletor só abre a partir de um gesto do usuário: Enter no menu conta como gesto.
