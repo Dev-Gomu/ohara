@@ -26,6 +26,15 @@ const vaultRow = {
   codeWrapped: 'd',
 };
 const secretRow = { id: 's', iv: 'iv', ciphertext: 'ct' };
+const imageRow = {
+  id: 'img',
+  lessonId: 'a',
+  side: 'frente' as const,
+  mime: 'image/jpeg',
+  width: 10,
+  height: 5,
+  data: 'data:image/jpeg;base64,AA',
+};
 const file = {
   id: 'f',
   sha256: 'abc',
@@ -52,7 +61,9 @@ describe('toRow e fromRow', () => {
               ? [vaultRow]
               : spec.table === 'secret_records'
                 ? [secretRow]
-                : items;
+                : spec.table === 'card_images'
+                  ? [imageRow]
+                  : items;
     expect(sample.length).toBeGreaterThan(0);
     for (const item of sample) {
       expect(fromRow(spec.table, toRow(spec.table, item))).toEqual(item);
@@ -114,13 +125,14 @@ describe('diffStudy', () => {
       reminders: add(base.reminders),
       files: [file],
       attendance: [attendanceRow],
+      cardImages: [imageRow],
       vault: [vaultRow],
       secrets: [secretRow],
       noteVersions: [{ id: 'v', lessonId: 'a', at: 1, html: 'h' }],
     };
     const changes = diffStudy(base, after);
-    expect(changes).toHaveLength(14);
-    expect(new Set(changes.map((item) => ('table' in item ? item.table : ''))).size).toBe(14);
+    expect(changes).toHaveLength(15);
+    expect(new Set(changes.map((item) => ('table' in item ? item.table : ''))).size).toBe(15);
   });
 });
 

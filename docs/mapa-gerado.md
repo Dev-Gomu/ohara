@@ -73,8 +73,8 @@
 ### docs/pecas.md
 - L2 # Cartão de peças
 - L4 ## Peças (src/ui/components)
-- L180 ## Store do teclado e das telas (src/ui/keyboard)
-- L196 ## Estudo (src/ui/study)
+- L207 ## Store do teclado e das telas (src/ui/keyboard)
+- L223 ## Estudo (src/ui/study)
 
 ### docs/prompt-propostas-visuais.md
 - L1 # Prompt: propostas visuais do Ohara (6 frentes)
@@ -209,6 +209,8 @@
 - src/core/study/attendance.ts: Aprovação por frequência: pelo menos 75% de presença (D100).
 - src/core/study/cardFormat.test.ts: (sem comentário nem export no topo)
 - src/core/study/cardFormat.ts: Formatação do texto do editor de cartões por atalho (D139): as mesmas teclas das Anotações
+- src/core/study/cardImages.test.ts: (sem comentário nem export no topo)
+- src/core/study/cardImages.ts: Imagens no texto do cartão (D158). A imagem é uma linha "{img:id}" no ponto onde foi colocada;
 - src/core/study/cardLines.test.ts: (sem comentário nem export no topo)
 - src/core/study/cardLines.ts: Edição por linha do cartão novo (D138): o cartão aparece pronto e só a linha do cursor mostra o texto
 - src/core/study/cardText.test.ts: (sem comentário nem export no topo)
@@ -259,6 +261,8 @@
 - src/ui/components/Button.tsx: 'primary': azul cheio, um por bloco. 'quiet': só texto, para ajuste menor.
 - src/ui/components/CardBack.module.css: Cartão de estudo (D138, D155): frente cheia no azul de ação, verso no mesmo contorno.
 - src/ui/components/CardBack.tsx: `export function Inline({ text }: { text: string })`
+- src/ui/components/CardImages.module.css: Anexo de imagem nos cartões (D158, bancada anexo-funcional V1).
+- src/ui/components/CardImages.tsx: De onde a peça tira as imagens: a tela passa o índice do banco (a peça não lê dados).
 - src/ui/components/Cards.module.css: Dia de avaliação: peça recuada com os bloquinhos das matérias.
 - src/ui/components/Cards.tsx: Texto do app, já pronto: "prova", "trabalho", "apres.".
 - src/ui/components/Controls.module.css: Em coluna, o flex: 1 esmagaria ou esticaria o campo.
@@ -344,6 +348,7 @@
 - src/ui/screens/mesa/notesTools.tsx: Título é um botão só: 1º toque Título 1, 2º Título 2, 3º volta ao texto.
 - src/ui/screens/mesa/tableAdjustExtension.ts: Altura é só mínima (D149): a linha guarda `minHeight` e a mostra como `height` (na tabela, mínimo).
 - src/ui/screens/mesa/tableOps.ts: Onde está o cursor dentro de uma tabela (sem células mescladas: o app não as cria).
+- src/ui/screens/mesa/useCardImagesEditor.ts: Anexa no cartão da linha; sem lado, decide pela linha (pergunta ou imagem da frente: frente).
 - src/ui/screens/mesa/useCardsEditor.ts: Cartão aberto no lugar da linha, na lista de salvos (D151).
 - src/ui/screens/mesa/useNotesEditor.ts: `export function useNotesEditor(lessonId: string, html: string): Editor | null`
 - src/ui/screens/treino/Inicio.module.css: Tela inicial do Treino: uma coluna de blocos no centro; "Ajustar" abre a lista ao lado.
@@ -375,6 +380,7 @@
 - src/ui/shell/topTabs.ts: Como a barra do topo mostra as telas: só o número, número com ícone, só o ícone ou o ícone
 - src/ui/study/actions.ts: `export function toggleReminder(id: string | undefined): void`
 - src/ui/study/attach.ts: `export async function attach(`
+- src/ui/study/cardImages.ts: Reduz no navegador (lado maior de 1600 px) e guarda como JPEG: cabe no banco e no backup (D158).
 - src/ui/study/cardView.ts: Jeito de mostrar o cartão (D138): vale por aparelho, não vai para o banco do estudo.
 - src/ui/study/download.ts: `export function downloadBytes(bytes: Uint8Array, filename: string): void`
 - src/ui/study/editOptions.ts: `export function folderOptions(folder: { id: string; name: string } | undefined): BlockOption[]`

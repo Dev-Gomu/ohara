@@ -10,6 +10,10 @@ function isSingleRow(element: HTMLTextAreaElement): boolean {
 // Linha do cartão novo em edição (D138): diz ao resolvedor onde está o cursor na linha.
 export function cardLineContext(): readonly LineSpot[] | undefined {
   const element = document.activeElement;
+  // Linha de imagem (D158): não há texto, então Enter, Delete e as setas são sempre do cartão.
+  if (element instanceof HTMLElement && element.hasAttribute('data-card-image')) {
+    return ['image', 'top', 'bottom'];
+  }
   if (!(element instanceof HTMLTextAreaElement) || !element.hasAttribute('data-card-line')) {
     return undefined;
   }

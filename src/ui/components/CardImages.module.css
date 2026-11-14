@@ -1,0 +1,229 @@
+/* Anexo de imagem nos cartões (D158, bancada anexo-funcional V1). */
+.anexar,
+.pilula {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.anexar {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--raio-item);
+  color: var(--cor-texto-2);
+  opacity: 0.55;
+}
+
+.anexar svg {
+  width: 18px;
+  height: 18px;
+}
+
+.anexar:hover,
+.anexar:focus-visible {
+  opacity: 1;
+}
+
+.anexar[data-lado='frente'] {
+  color: var(--cor-sobre-acao);
+}
+
+.pilula {
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: var(--raio-pilula);
+  background: var(--cor-escolhido);
+  color: var(--cor-texto);
+  font: var(--ui-sigla);
+}
+
+.pilula svg {
+  width: 16px;
+  height: 16px;
+}
+
+.pilula[data-lado='frente'] {
+  background: color-mix(in srgb, var(--cor-sobre-acao) 24%, transparent);
+  color: var(--cor-sobre-acao);
+}
+
+/* Imagem como linha do cartão. */
+.foto {
+  margin: var(--e2) 0;
+}
+
+.moldura {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  border-radius: var(--raio-item);
+  outline: none;
+  cursor: zoom-in;
+}
+
+.foto[data-ativa] .moldura {
+  box-shadow: 0 0 0 3px var(--cor-cursor);
+}
+
+.foto[data-ativa][data-lado='frente'] .moldura {
+  box-shadow: 0 0 0 3px var(--cor-sobre-acao);
+}
+
+.moldura img {
+  display: block;
+  max-width: 100%;
+  max-height: 200px;
+  border-radius: var(--raio-item);
+}
+
+.foto[data-tam='grande'] .moldura img {
+  max-height: 240px;
+  border-radius: var(--raio-campo);
+}
+
+.foto[data-tam='grande'] {
+  display: flex;
+  justify-content: center;
+}
+
+.foto[data-tam='mini'] {
+  display: inline-block;
+  margin: var(--e2) var(--e2) 0 0;
+}
+
+.foto[data-tam='mini'] .moldura img {
+  max-height: 90px;
+}
+
+.semImagem {
+  display: inline-grid;
+  place-items: center;
+  min-width: 72px;
+  min-height: 52px;
+  padding: var(--e2);
+  border-radius: var(--raio-item);
+  background: var(--cor-cartao-2);
+  color: var(--cor-texto-2);
+  font: var(--ui-apoio);
+}
+
+.tirar {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: var(--raio-pilula);
+  background: color-mix(in srgb, var(--cor-tinta) 70%, transparent);
+  color: var(--cor-sobre-tinta);
+  font: var(--ui-sigla);
+  opacity: 0;
+  cursor: pointer;
+}
+
+.moldura:hover .tirar,
+.foto[data-ativa] .tirar,
+.mini .tirar,
+[data-entrada='toque'] .tirar {
+  opacity: 1;
+}
+
+/* Gaveta (janela): miniaturas, ✕ e Adicionar. */
+.conta {
+  margin: 0 0 var(--e3);
+  color: var(--cor-texto-2);
+  font: var(--ui-rotulo);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.minis {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--e3);
+}
+
+.mini,
+.adicionar {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  border-radius: var(--raio-item);
+  outline: none;
+  cursor: pointer;
+}
+
+.mini img,
+.mini .semImagem {
+  width: 108px;
+  height: 78px;
+  object-fit: cover;
+  border-radius: var(--raio-item);
+}
+
+.mini .tirar {
+  top: 4px;
+  right: 4px;
+}
+
+.adicionar {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-width: 108px;
+  height: 78px;
+  padding: 0 var(--e3);
+  background: var(--cor-cartao-2);
+  color: var(--cor-texto-2);
+  font: var(--ui-sigla);
+}
+
+.adicionar svg {
+  width: 18px;
+  height: 18px;
+}
+
+.mini[data-focus-visible],
+.adicionar[data-focus-visible],
+.amplaItem[data-focus-visible] img {
+  box-shadow: 0 0 0 3px var(--cor-cursor);
+}
+
+/* Ampliada: uma imagem por vez; ← → rolam até a próxima. */
+.ampla {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  outline: none;
+}
+
+.amplaItem {
+  display: flex;
+  flex: 0 0 100%;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--e2);
+  scroll-snap-align: center;
+  outline: none;
+}
+
+.amplaItem img {
+  max-width: 100%;
+  max-height: 70vh;
+  border-radius: var(--raio-campo);
+}
+
+.posicao {
+  color: var(--cor-texto-2);
+  font: var(--ui-apoio);
+}
+
+.gaveta {
+  display: contents;
+}

@@ -166,3 +166,21 @@
   color: var(--cor-sobre-acao);
   opacity: 0.6;
 }
+
+/* Anexo de imagem (D158): ícone ou pílula ao lado da pergunta e no canto do verso. */
+.linhaFrente {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--e3);
+}
+
+.linhaFrente > :first-child {
+  flex: 1;
+  min-width: 0;
+}
+
+.canto {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: var(--e2);
+}

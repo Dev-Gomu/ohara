@@ -13,6 +13,7 @@ export const splitLines = (source: string): string[] => source.replace(/\r\n?/g,
 // Tamanho da marca no começo da linha ("@ ", "## ", "- ", "1. "); zero se não houver.
 export function markLength(raw: string): number {
   const { kind, text } = parseLine(raw);
+  if (kind === 'image') return raw.length;
   return kind === 'text' ? 0 : raw.length - text.length;
 }
 
@@ -55,6 +56,8 @@ export function backspaceAtStart(source: string, line: number): LineEdit | null 
   }
   if (line === 0) return null;
   const above = lines[line - 1] ?? '';
+  // Linha de imagem em cima (D158): não junta texto nela; o cursor sobe para a imagem.
+  if (parseLine(above).kind === 'image') return { source, line: line - 1, caret: 0 };
   lines.splice(line - 1, 2, above + raw);
   return { source: lines.join('\n'), line: line - 1, caret: above.length };
 }

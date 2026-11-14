@@ -24,6 +24,8 @@ export type KeyAction =
   | { type: 'cardLineSplit' }
   | { type: 'cardLineBack' }
   | { type: 'cardLineMove'; delta: -1 | 1 }
+  | { type: 'cardImageRemove' }
+  | { type: 'cardImageZoom' }
   | { type: 'swapHiddenBlock' }
   | { type: 'openOptions' }
   | { type: 'goToTopBar' }

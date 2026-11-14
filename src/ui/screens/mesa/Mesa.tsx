@@ -22,6 +22,7 @@ import { nowTime, storage, today, useStudy } from '../../study/study';
 import { SlidesViewer } from './SlidesViewer';
 import { CardsBlock } from './CardsBlock';
 import { useCardsEditor } from './useCardsEditor';
+import { useCardImagesEditor } from './useCardImagesEditor';
 import styles from './Mesa.module.css';
 import { focusBar, stepBar, withBarActions } from '../../keyboard/bars';
 import { HistoryWindow, NotesBlock } from './NotesBlock';
@@ -73,6 +74,7 @@ function LessonDesk({ data, lessonId }: { data: StudyData; lessonId: string }) {
 
   const editor = useNotesEditor(lessonId, lesson?.notes ?? '');
   const cardsEditor = useCardsEditor(CARDS, lessonId);
+  const cardImages = useCardImagesEditor(cardsEditor, lessonId);
   const cardView = useCardView();
   const inCards = () => getKeyboardState().focus.block === CARDS;
   const inNotes = () => getKeyboardState().focus.block === NOTES;
@@ -122,6 +124,7 @@ function LessonDesk({ data, lessonId }: { data: StudyData; lessonId: string }) {
       ...(block === CARDS && cardsEditor.mode === 'salvos'
         ? cardOptions(cards[getKeyboardState().focus.items[CARDS] ?? 0])
         : []),
+      ...(block === CARDS && cardsEditor.mode === 'novo' ? cardImages.options() : []),
       ...(block === CARDS
         ? [
             {
@@ -150,6 +153,8 @@ function LessonDesk({ data, lessonId }: { data: StudyData; lessonId: string }) {
       ...cardFormatActions(inCards, cardsEditor.format, editorActions(editor, page)),
       cardLineSplit: () => cardsEditor.lineActions.cardLineSplit(),
       cardLineBack: () => cardsEditor.lineActions.cardLineBack(),
+      cardImageRemove: () => cardImages.removeAt(cardsEditor.line),
+      cardImageZoom: () => cardImages.zoomAt(cardsEditor.line),
       cardLineMove: (change) => {
         if (change.type === 'cardLineMove') cardsEditor.lineActions.cardLineMove(change.delta);
       },
@@ -226,7 +231,7 @@ function LessonDesk({ data, lessonId }: { data: StudyData; lessonId: string }) {
     if (id === NOTES) {
       return <NotesBlock id={id} editor={editor} />;
     }
-    return <CardsBlock id={id} cards={cards} editor={cardsEditor} />;
+    return <CardsBlock id={id} cards={cards} editor={cardsEditor} images={cardImages} />;
   }
 
   return (

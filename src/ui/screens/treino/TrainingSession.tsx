@@ -1,9 +1,12 @@
 import { flip, isFinished, rate, type Grade, type Session } from '../../../core/study/session';
+import { imagesBySide } from '../../../core/study/cardImages';
 import { Block } from '../../components/Block';
+import { CardPicture, ImageZoom, type ImageSource } from '../../components/CardImages';
 import { CardBack, Inline } from '../../components/CardBack';
 import { NavItem } from '../../components/NavItem';
 import { useBlocks } from '../../keyboard/useBlocks';
 import { ScreenFrame } from '../../shell/ScreenFrame';
+import { openZoom, useCardImages, useZoom } from '../../study/cardImages';
 import { useStudy } from '../../study/study';
 import styles from './Treino.module.css';
 
@@ -31,6 +34,18 @@ export function TrainingSession({ session, onChange }: TrainingSessionProps) {
   const card = data.cards.find((item) => item.id === session.queue[0]);
   const finished = isFinished(session);
   const question = card?.question ?? '';
+  const answer = card?.answer ?? '';
+  const index = useCardImages();
+  const zoom = useZoom();
+  const sides = imagesBySide(answer, index.sideOf);
+  // A da frente aparece na frente; as do verso só depois de virar (D158). Toque amplia.
+  const visible = session.flipped ? [...sides.front, ...sides.back] : sides.front;
+  const images: ImageSource = { ...index, onZoom: (id) => openZoom(visible, id) };
+  const picture = (id: string, size: 'grande' | 'mini') => (
+    <span key={id} onClick={(event) => event.stopPropagation()}>
+      <CardPicture src={index.src(id)} side="frente" size={size} onZoom={() => images.onZoom?.(id)} />
+    </span>
+  );
   const leave = () => onChange(null);
   const turn = () => {
     if (!finished) onChange(flip(session));
@@ -82,10 +97,11 @@ export function TrainingSession({ session, onChange }: TrainingSessionProps) {
               <span data-pergunta>
                 <Inline text={question} />
               </span>
+              {sides.front.length > 0 && <div>{sides.front.map((id) => picture(id, 'mini'))}</div>}
             </div>
             <div className={styles.versoCartao}>
               <span className={styles.rotuloVerso}>Verso</span>
-              <CardBack back={card?.answer ?? ''} />
+              <CardBack back={answer} images={images} />
             </div>
             <div className={styles.notas}>
               {GRADES.map(([grade, label]) => (
@@ -108,11 +124,13 @@ export function TrainingSession({ session, onChange }: TrainingSessionProps) {
               <span className={styles.perguntaCheia} data-tam={sizeOf(question)} data-pergunta>
                 <Inline text={question} />
               </span>
+              {sides.front.map((id) => picture(id, 'grande'))}
               <span className={styles.dica}>Toque ou Espaço para revelar</span>
             </NavItem>
           </div>
         )}
       </Block>
+      <ImageZoom ids={zoom.ids} current={zoom.current} src={index.src} />
     </ScreenFrame>
   );
 }

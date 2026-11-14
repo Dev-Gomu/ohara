@@ -239,6 +239,7 @@ export function createFixtures(today: string): StudyData {
     ].map((text, index) => ({ id: `l-${index}`, text, date: today, done: false })),
     files: [],
     attendance: [],
+    cardImages: [],
     vault: [],
     secrets: [],
     noteVersions: [],

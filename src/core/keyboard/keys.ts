@@ -369,7 +369,8 @@ export const ADJUST_KEYS: readonly AdjustRow[] = [
 // Só valem com o cursor numa linha do cartão novo (D138); por isso ficam fora de KEYS. "when" diz em que
 // ponto da linha a tecla é do cartão: Enter sempre; Backspace no começo do texto; ↑ na primeira linha visual
 // (ou no começo); ↓ na última (ou no fim).
-export type LineSpot = 'any' | 'start' | 'top' | 'bottom';
+// 'image': o cursor está numa linha de imagem (D158), sem texto para editar.
+export type LineSpot = 'any' | 'start' | 'top' | 'bottom' | 'image';
 
 export interface LineRow {
   label: string;
@@ -383,4 +384,7 @@ export const LINE_KEYS: readonly LineRow[] = [
   { label: 'Backspace', code: 'Backspace', when: 'start', action: { type: 'cardLineBack' } },
   { label: '↑', code: 'ArrowUp', when: 'top', action: { type: 'cardLineMove', delta: -1 } },
   { label: '↓', code: 'ArrowDown', when: 'bottom', action: { type: 'cardLineMove', delta: 1 } },
+  { label: 'Enter', code: 'Enter', when: 'image', action: { type: 'cardImageZoom' } },
+  { label: 'Delete', code: 'Delete', when: 'image', action: { type: 'cardImageRemove' } },
+  { label: 'Backspace', code: 'Backspace', when: 'image', action: { type: 'cardImageRemove' } },
 ];

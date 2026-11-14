@@ -3,7 +3,17 @@
 // Tudo fica em texto puro: quem desenha é a tela, sem HTML vindo do usuário.
 import { replaceSymbols } from './symbols';
 
-export type LineKind = 'front' | 'section' | 'subsection' | 'item' | 'number' | 'pro' | 'con' | 'doubt' | 'text';
+export type LineKind =
+  | 'front'
+  | 'section'
+  | 'subsection'
+  | 'item'
+  | 'number'
+  | 'pro'
+  | 'con'
+  | 'doubt'
+  | 'image'
+  | 'text';
 
 export interface Line {
   kind: LineKind;
@@ -27,7 +37,12 @@ const MARKS: readonly [LineKind, RegExp][] = [
   ['number', /^\d+[.)]\s/],
 ];
 
+export const IMAGE_LINE = /^\{img:([0-9A-Za-z-]+)\}\s*$/;
+
 export function parseLine(line: string): Line {
+  // Linha de imagem (D158): "{img:id}" sozinha na linha; o texto é o id.
+  const image = IMAGE_LINE.exec(line);
+  if (image?.[1]) return { kind: 'image', text: image[1] };
   for (const [kind, mark] of MARKS) {
     const found = mark.exec(line);
     if (found) return { kind, text: line.slice(found[0].length) };
@@ -73,7 +88,7 @@ export function backLines(back: string): BackLine[] {
 // Começo do verso em uma linha, para a lista de salvos: só o texto, sem os títulos.
 export function backPreview(back: string): string {
   return backLines(back)
-    .filter((line) => line.kind !== 'section' && line.kind !== 'subsection')
+    .filter((line) => line.kind !== 'section' && line.kind !== 'subsection' && line.kind !== 'image')
     .map((line) => line.text)
     .join(' · ');
 }

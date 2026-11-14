@@ -6,6 +6,7 @@ import { DayItem } from '../../src/ui/components/DayItem';
 import { FormatBar, type FormatTool } from '../../src/ui/components/FormatBar';
 import { FaultCell } from '../../src/ui/components/FaultCell';
 import { BlockTab, BlockTabs, BlockToggle, ToggleGroup } from '../../src/ui/components/Toggles';
+import { CardPicture, ImageAttach } from '../../src/ui/components/CardImages';
 import { Amostra, Ficha, Linha, Secao } from './moldura';
 
 const MATERIAS = [
@@ -17,6 +18,10 @@ const MATERIAS = [
 ] as const;
 
 const nada = () => undefined;
+// Imagem de mentira (sem arquivo): retângulo chapado em SVG.
+const AMOSTRA_IMAGEM =
+  'data:image/svg+xml;utf8,' +
+  encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="240" height="140"><rect width="240" height="140" fill="#8fb3d9"/><path d="M20 120 90 60l40 40 30-30 60 50" stroke="#0f1a24" stroke-width="6" fill="none"/></svg>');
 const ferr = (id: string, label: string, glyph: string, priority: FormatTool['priority'], sel = false): FormatTool => ({
   id, label, glyph, priority, sel, run: nada,
 });
@@ -135,6 +140,24 @@ export function AgendaMesa() {
       >
         <Amostra estado="bloco largo, Negrito ligado">
           <FormatBar groups={FORMATOS} onExpand={nada} onOptions={nada} />
+        </Amostra>
+      </Ficha>
+      <Ficha
+        nome="Anexo de imagem"
+        arquivo="CardImages"
+        largura={8}
+        uso="Cartões (D158): sem imagem, ícone discreto de anexar; com imagem, pílula com o número, que abre a gaveta (janela com miniaturas, ✕ e Adicionar). A imagem fica no ponto do texto; a linha acesa recebe Enter (amplia) e Delete (remove)."
+      >
+        <Linha>
+          <Amostra estado="sem imagem (verso)">
+            <ImageAttach side="verso" count={0} onAttach={nada} onOpen={nada} />
+          </Amostra>
+          <Amostra estado="com imagens (verso)">
+            <ImageAttach side="verso" count={2} onAttach={nada} onOpen={nada} />
+          </Amostra>
+        </Linha>
+        <Amostra estado="linha de imagem acesa">
+          <CardPicture src={AMOSTRA_IMAGEM} side="verso" active onZoom={nada} onRemove={nada} />
         </Amostra>
       </Ficha>
       <Ficha

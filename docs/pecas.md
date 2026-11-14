@@ -19,8 +19,31 @@
 
 ### CardBack.tsx
 - `function Inline({ text }: { text: string })`
-- `function CardBack({ back, compact }: { back: string; compact?: boolean })`
-  Verso do cartão já formatado: seção, listas e marcas clínicas (+ a favor, − contra, ? dúvida).
+- `function CardBack({ back, compact, colorTitles = true, images }: CardBackProps)`
+  Verso: seção (#), subtítulo (##, recuado) e texto; em duas colunas quando o cartão é largo.
+  `interface CardBackProps { back: string; compact?: boolean; colorTitles?: boolean; images?: ImageSource | undefined; }`
+- `function StudyCard({ front, back, compact, colorTitles, images }: StudyCardProps)`
+  Uma peça só (D138, D155): frente cheia no azul de ação e verso no mesmo contorno.
+  `interface StudyCardProps extends CardBackProps { front: string; }`
+
+### CardImages.tsx
+- `interface ImageSource { sideOf: SideOf; src: (id: string) => string | undefined; onZoom?: (id: string) => void; }`
+  De onde a peça tira as imagens: a tela passa o índice do banco (a peça não lê dados).
+- `const IMAGE_DRAWER`
+- `const IMAGE_ZOOM`
+- `function ImageIcon({ plus }: { plus?: boolean })`
+- `function ImageAttach({ side, count, onAttach, onOpen }: ImageAttachProps)`
+  Sem imagem: ícone discreto de anexar. Com imagem: pílula com ícone e número, que abre a gaveta (D158).
+  `interface ImageAttachProps { side: ImageSide; count: number; onAttach: () => void; onOpen: () => void; }`
+- `function CardPicture({ src, side, active, focusRef, onPress, onZoom, onRemove, size = 'linha', }: CardPictureProps)`
+  Imagem no ponto do texto onde foi colocada. Sem os bytes (apagada), mostra o lugar vazio.
+  `interface CardPictureProps { src: string | undefined; side: ImageSide; active?: boolean; focusRef?: React.Ref<HTMLDivElement>; onPress?: () => void; onZoom?: () => void; onRemove?: () => void; size?: 'linha' | 'grande' | 'mini'; }`
+- `function ImageDrawer({ side, ids, context, source, onRemove, onAdd }: ImageDrawerProps)`
+  Gaveta: só gerencia (← → andam, Enter amplia, Delete remove, Esc fecha).
+  `interface ImageDrawerProps { side: ImageSide; ids: readonly string[]; context: string; source: ImageSource; onRemove: (id: string) => void; onAdd: () => void; }`
+- `function ImageZoom({ ids, current, src }: ImageZoomProps): ReactNode`
+  Ampliada: ← → trocam de imagem (a lista rola até a escolhida), Esc fecha.
+  `interface ImageZoomProps { ids: readonly string[]; current: string | null; src: (id: string) => string | undefined; }`
 
 ### Cards.tsx
 - `interface DayBrick { code: string; color: number; kind: string; }`
@@ -60,10 +83,14 @@
 - `function FilterChip({ subject, children, ...target }: TargetProps & { subject?: number | undefined; children: string })`
 
 ### FormatBar.tsx
-- `interface FormatTool { id: string; label: string; glyph: ReactNode; sel: boolean; priority: 1 | 2 | 3 | 4; run: () => void; }`
-- `function FormatBar({ groups, bar, onExpand, onOptions }: FormatBarProps)`
-  Faixa de formatação aninhada no topo do bloco: formatação à esquerda, ☰ (o que não coube), ampliar e ⋮ à direita. Mostra só o que cabe; o resto vai para o menu ☰.
-  `interface FormatBarProps { groups: readonly (readonly FormatTool[])[]; bar?: 'top'; onExpand?: () => void; onOptions?: () => void; }`
+- `interface FormatTool { id: string; label: string; icon?: string; sel: boolean; run: () => void; }`
+- `function FormatBar({ tools, styleTools, bar, onExpand, onOptions }: FormatBarProps)`
+  Cabeçalho do bloco Anotações (D146): caderno, barra de formatação (D145) e ⋮ na mesma linha. O que não cabe sobe para o topo do menu Aa (D152). Caderno, Aa e ⋮ nunca somem.
+  `interface FormatBarProps { tools: readonly FormatTool[]; styleTools: readonly FormatTool[]; bar?: 'top'; onExpand?: () => void; onOptions?: () => void; }`
+
+### FormatIcons.tsx
+- `type FormatIconName = keyof typeof PATHS;`
+- `function FormatIcon({ name }: { name: string })`
 
 ### Grades.tsx
 - `const cx = (names: string): string =>`
@@ -205,8 +232,32 @@
   O seletor só abre a partir de um gesto do usuário: Enter no menu conta como gesto.
 - `function pickBackup(onPick: (file: File) => void): void`
 
+### cardImages.ts
+- `const isImageFile = (file: File): boolean =>`
+- `function addImages(files: readonly File[], lessonId: string, side: ImageSide, already: number): Promise<string[]>`
+  Grava as imagens e devolve os ids, na ordem; o limite é por lado do cartão.
+- `function removeImages(ids: readonly string[]): void`
+  Exclusão lógica no banco (a coleção perde o item e o diff marca deleted).
+- `interface ImageIndex { sideOf: SideOf; src: (id: string) => string | undefined; }`
+- `function useCardImages(): ImageIndex`
+- `function pickImages(onPick: (files: File[]) => void): void`
+  O seletor só abre a partir de um gesto do usuário: Enter no menu conta como gesto.
+- `function openZoom(ids: readonly string[], current: string, fromDrawer = false): void`
+- `function useZoom(): ZoomState`
+  `interface ZoomState { ids: readonly string[]; current: string | null; fromDrawer: boolean; }`
+- `function useImageWindows(onClosed: () => void): void`
+  Ao fechar a ampliada que veio da gaveta, a gaveta volta; ao fechar a gaveta, o foco volta ao cartão.
+
+### cardView.ts
+- `interface CardView { compact: boolean; colorTitles: boolean; }`
+- `const toggleCompact = (): void =>`
+- `const toggleColorTitles = (): void =>`
+- `function useCardView(): CardView`
+
 ### download.ts
 - `function downloadBytes(bytes: Uint8Array, filename: string): void`
+- `function downloadText(text: string, filename: string): void`
+- `function fileSlug(text: string, fallback: string): string`
 
 ### editOptions.ts
 - `function folderOptions(folder: { id: string; name: string } | undefined): BlockOption[]`

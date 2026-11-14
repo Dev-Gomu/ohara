@@ -32,6 +32,8 @@ function linesHtml(lines: readonly BackLine[]): string {
     open = null;
   };
   for (const line of lines) {
+    // Exportação para o Anki sem imagens por enquanto (D158).
+    if (line.kind === 'image') continue;
     const list = line.kind === 'item' ? 'ul' : line.kind === 'number' ? 'ol' : null;
     if (list !== open) {
       close();

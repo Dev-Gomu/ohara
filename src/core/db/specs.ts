@@ -20,6 +20,7 @@ export type TableName =
   | 'reminders'
   | 'files'
   | 'attendance'
+  | 'card_images'
   | 'vault'
   | 'secret_records'
   | 'note_versions';
@@ -147,6 +148,12 @@ export const SPECS: readonly TableSpec[] = [
       num('missed'),
       bool('cancelled'),
     ],
+  },
+  {
+    table: 'card_images',
+    collection: 'cardImages',
+    sync: true,
+    columns: [text('lessonId'), text('side'), text('mime'), num('width'), num('height'), text('data')],
   },
   {
     table: 'vault',

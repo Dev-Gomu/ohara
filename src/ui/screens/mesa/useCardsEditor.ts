@@ -16,6 +16,7 @@ import {
   parseDrafts,
   type Draft,
 } from '../../../core/study/cardText';
+import { imageIdOf } from '../../../core/study/cardImages';
 import { addCards } from '../../../core/study/create';
 import { symbolAtCaret } from '../../../core/study/symbols';
 import { dispatch } from '../../keyboard/store';
@@ -47,6 +48,11 @@ export interface CardsEditor {
     cardLineMove: (delta: -1 | 1) => void;
   };
   field: React.RefObject<HTMLTextAreaElement | null>;
+  // Linha de imagem em edição (D158): recebe o foco no lugar do campo de texto.
+  imageField: React.RefObject<HTMLDivElement | null>;
+  // Aplica uma troca no texto inteiro e põe o cursor onde ela pede (usado pelas imagens).
+  replace: (edit: LineEdit) => void;
+  refocus: () => void;
 }
 
 interface Request {
@@ -64,6 +70,7 @@ export function useCardsEditor(blockId: string, lessonId: string): CardsEditor {
   const [saved, setSaved] = useState<number | null>(null);
   const [openId, setOpenId] = useState<string | null>(null);
   const field = useRef<HTMLTextAreaElement>(null);
+  const imageField = useRef<HTMLDivElement>(null);
   const lines = splitLines(source);
   const line = active < 0 || active >= lines.length ? lines.length - 1 : active;
   const raw = lines[line] ?? '';
@@ -71,11 +78,16 @@ export function useCardsEditor(blockId: string, lessonId: string): CardsEditor {
   const ready = drafts.filter(isComplete).length;
 
   useLayoutEffect(() => {
+    if (request === null) return;
+    const image = imageIdOf(raw) !== null ? imageField.current : null;
     const area = field.current;
-    if (request === null || !area) return;
-    const prefix = markLength(raw);
-    area.focus();
-    area.setSelectionRange(Math.max(0, request.start - prefix), Math.max(0, request.end - prefix));
+    if (!image && !area) return;
+    if (image) image.focus();
+    else if (area) {
+      const prefix = markLength(raw);
+      area.focus();
+      area.setSelectionRange(Math.max(0, request.start - prefix), Math.max(0, request.end - prefix));
+    }
     setRequest(null);
   }, [request, raw]);
 
@@ -112,6 +124,9 @@ export function useCardsEditor(blockId: string, lessonId: string): CardsEditor {
     openId,
     setOpenId,
     field,
+    imageField,
+    replace: apply,
+    refocus: () => goTo(line, true),
     line,
     activate: (target) => goTo(target, true),
     typeLine: (value, at) => {

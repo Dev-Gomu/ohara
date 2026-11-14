@@ -132,6 +132,20 @@ export interface Attendance {
   cancelled: boolean;
 }
 
+// Imagem de um cartão (D158): os bytes reduzidos ficam no próprio banco, em data URL, e vão no backup.
+// O lado vem daqui, não da posição no texto: o verso pode começar com imagem sem virar frente.
+export type ImageSide = 'frente' | 'verso';
+
+export interface CardImage {
+  id: string;
+  lessonId: string;
+  side: ImageSide;
+  mime: string;
+  width: number;
+  height: number;
+  data: string;
+}
+
 export interface StudyData {
   years: Year[];
   subjects: Subject[];
@@ -144,6 +158,7 @@ export interface StudyData {
   reminders: Reminder[];
   files: StudyFile[];
   attendance: Attendance[];
+  cardImages: CardImage[];
   vault: VaultRow[];
   secrets: SecretRow[];
   noteVersions: readonly NoteVersion[];

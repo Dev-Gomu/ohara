@@ -16,6 +16,10 @@
   font: var(--voz-mini);
 }
 
+.frente > p {
+  margin: 0;
+}
+
 .carta > .verso {
   padding: var(--e4) var(--e4) var(--e5);
 }

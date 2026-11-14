@@ -25,6 +25,7 @@ export const EMPTY_STUDY: StudyData = {
   reminders: [],
   files: [],
   attendance: [],
+  cardImages: [],
   vault: [],
   secrets: [],
   noteVersions: [],
