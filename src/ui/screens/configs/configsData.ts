@@ -13,7 +13,15 @@ import {
   TOP_ANIMATION_NAMES,
 } from '../../shell/topAnimation';
 import { currentTopTabs, cycleTopTabs, TOP_TABS_NAMES } from '../../shell/topTabs';
-import { currentPalette, cyclePalette, PALETTE_NAMES, toggleTheme } from '../../theme';
+import {
+  CORNER_NAMES,
+  currentCorners,
+  currentPalette,
+  cycleCorners,
+  cyclePalette,
+  PALETTE_NAMES,
+  toggleTheme,
+} from '../../theme';
 
 export interface Row {
   label: string;
@@ -118,6 +126,12 @@ export function buildSections(diag: Diagnostics | null): readonly Section[] {
           detail: 'Gelo suave, Gelo ou Índigo.',
           value: PALETTE_NAMES[currentPalette()],
           run: () => showNotice(`Paleta: ${PALETTE_NAMES[cyclePalette()]}.`),
+        },
+        {
+          label: 'Cantos',
+          detail: 'Arredondado ou Contido (cantos mais retos).',
+          value: CORNER_NAMES[currentCorners()],
+          run: () => showNotice(`Cantos: ${CORNER_NAMES[cycleCorners()]}.`),
         },
         {
           group: 'Barra do topo',

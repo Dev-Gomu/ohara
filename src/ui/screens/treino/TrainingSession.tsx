@@ -21,10 +21,16 @@ interface TrainingSessionProps {
   onChange: (session: Session | null) => void;
 }
 
+// Pergunta longa encolhe a letra em dois degraus (140 e 360 letras), D150.
+function sizeOf(text: string): 'p' | 'm' | 'g' {
+  return text.length > 360 ? 'g' : text.length > 140 ? 'm' : 'p';
+}
+
 export function TrainingSession({ session, onChange }: TrainingSessionProps) {
   const data = useStudy();
   const card = data.cards.find((item) => item.id === session.queue[0]);
   const finished = isFinished(session);
+  const question = card?.question ?? '';
   const leave = () => onChange(null);
   const turn = () => {
     if (!finished) onChange(flip(session));
@@ -69,34 +75,41 @@ export function TrainingSession({ session, onChange }: TrainingSessionProps) {
               Voltar à escolha <kbd className={styles.teclaBotao}>Enter</kbd>
             </NavItem>
           </div>
+        ) : session.flipped ? (
+          <div className={styles.palco}>
+            <div className={styles.topo} data-tam={sizeOf(question)}>
+              <span className={styles.rotulo}>Frente</span>
+              <span data-pergunta>
+                <Inline text={question} />
+              </span>
+            </div>
+            <div className={styles.versoCartao}>
+              <span className={styles.rotuloVerso}>Verso</span>
+              <CardBack back={card?.answer ?? ''} />
+            </div>
+            <div className={styles.notas}>
+              {GRADES.map(([grade, label]) => (
+                <button
+                  key={grade}
+                  type="button"
+                  className={styles.nota}
+                  data-nota={grade}
+                  onClick={() => onChange(rate(session, grade))}
+                >
+                  {label} <kbd className={styles.tecla}>{grade}</kbd>
+                </button>
+              ))}
+            </div>
+          </div>
         ) : (
-          <div className={styles.cartao}>
-            <p className={styles.pergunta}>
-              <Inline text={card?.question ?? ''} />
-            </p>
-            {session.flipped && (
-              <div className={styles.resposta}>
-                <CardBack back={card?.answer ?? ''} />
-              </div>
-            )}
-            {session.flipped ? (
-              <div className={styles.notas}>
-                {GRADES.map(([grade, label]) => (
-                  <button
-                    key={grade}
-                    type="button"
-                    className={styles.nota}
-                    onClick={() => onChange(rate(session, grade))}
-                  >
-                    {label} <kbd className={styles.tecla}>{grade}</kbd>
-                  </button>
-                ))}
-              </div>
-            ) : (
-              <NavItem block={CARD} index={0} className={styles.iniciar} ring="anel" onOpen={turn}>
-                Ver resposta <kbd className={styles.teclaBotao}>Espaço</kbd>
-              </NavItem>
-            )}
+          <div className={styles.palco}>
+            <NavItem block={CARD} index={0} className={styles.frenteCheia} ring="anel" onOpen={turn}>
+              <span className={styles.rotulo}>Frente</span>
+              <span className={styles.perguntaCheia} data-tam={sizeOf(question)} data-pergunta>
+                <Inline text={question} />
+              </span>
+              <span className={styles.dica}>Toque ou Espaço para revelar</span>
+            </NavItem>
           </div>
         )}
       </Block>

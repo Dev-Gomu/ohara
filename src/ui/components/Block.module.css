@@ -69,6 +69,9 @@
 }
 
 .nome {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e2);
   font: var(--ui-rotulo);
   color: var(--cor-texto-2);
   letter-spacing: 0.06em;
@@ -111,4 +114,16 @@
     flex: 1;
     min-height: 320px;
   }
+}
+
+/* Cabeçalho minimalista da Mesa (D146): tecla e ⋮ só com o bloco aceso ou no toque. */
+.fimDiscreto .opcoes,
+.fimDiscreto kbd {
+  visibility: hidden;
+}
+
+.bloco[data-foco] .fimDiscreto .opcoes,
+.bloco[data-foco] .fimDiscreto kbd,
+:global(:root[data-entrada='toque']) .fimDiscreto .opcoes {
+  visibility: visible;
 }

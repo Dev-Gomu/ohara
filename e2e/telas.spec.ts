@@ -92,13 +92,13 @@ test('Treino: Espaço vira, número responde, Errei volta para a fila', async ({
   await expect(bloco(page)).toHaveText('treino.resumo');
   await page.keyboard.press('Enter');
   await expect(bloco(page)).toHaveText('treino.cartao');
-  const antes = await page.locator('[data-block="treino.cartao"] p').first().textContent();
+  const antes = await page.locator('[data-block="treino.cartao"] [data-pergunta]').textContent();
   await page.keyboard.press('Digit3');
-  await expect(page.locator('[data-block="treino.cartao"] p').first()).toHaveText(antes ?? '');
+  await expect(page.locator('[data-block="treino.cartao"] [data-pergunta]')).toHaveText(antes ?? '');
   await page.keyboard.press('Space');
   await expect(page.getByRole('button', { name: 'Bom' })).toBeVisible();
   await page.keyboard.press('Digit3');
-  await expect(page.locator('[data-block="treino.cartao"] p').first()).not.toHaveText(antes ?? '');
+  await expect(page.locator('[data-block="treino.cartao"] [data-pergunta]')).not.toHaveText(antes ?? '');
   await expect(page.getByText(/^1 de/)).toBeVisible();
   await page.keyboard.press('Escape');
   await page.keyboard.press('Escape');

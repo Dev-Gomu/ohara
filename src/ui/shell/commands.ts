@@ -3,7 +3,7 @@ import { SCREEN_NAMES } from '../../core/keyboard/keys';
 import type { StudyData } from '../../core/study/types';
 import { dispatch } from '../keyboard/store';
 import { openFaults, openLesson, openNotes, openSubject } from '../study/navigation';
-import { cyclePalette, toggleTheme } from '../theme';
+import { cycleCorners, cyclePalette, toggleTheme } from '../theme';
 import { cycleTopAnimation } from './topAnimation';
 
 export const CONSULT_WINDOWS = [
@@ -37,6 +37,7 @@ export function commands(data: StudyData): Command[] {
     { id: 'notas', label: 'Notas do boletim', run: openNotes },
     { id: 'tema', label: 'Trocar tema', keys: 'Alt D', run: toggleTheme },
     { id: 'paleta', label: 'Trocar paleta de cores', run: cyclePalette },
+    { id: 'cantos', label: 'Trocar estilo de cantos', run: cycleCorners },
     { id: 'animacao-topo', label: 'Trocar animação da barra do topo', run: cycleTopAnimation },
     {
       id: 'lembrete',

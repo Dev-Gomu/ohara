@@ -18,10 +18,11 @@ import './ui/styles/fonts.css';
 import './ui/styles/tokens.css';
 import './ui/styles/base.css';
 import './ui/styles/paletas.css';
-import { applyPalette, applyTheme } from './ui/theme';
+import { applyCorners, applyPalette, applyTheme } from './ui/theme';
 
 applyTheme();
 applyPalette();
+applyCorners();
 
 const container = document.getElementById('root');
 if (!container) throw new Error('Elemento #root não encontrado');

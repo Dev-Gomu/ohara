@@ -143,3 +143,12 @@
     --abrir-escala: 1;
   }
 }
+
+/* Estilo "Contido" (D143): mesmos papéis, cantos mais retos. Escolhido nas Configs. */
+:root[data-cantos='contido'] {
+  --raio-bloco: 16px;
+  --raio-item: 6px;
+  --raio-botao: 6px;
+  --raio-campo: 8px;
+  --raio-minimo: 6px;
+}

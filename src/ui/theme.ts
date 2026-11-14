@@ -77,3 +77,48 @@ export function cyclePalette(): Palette {
   applyPalette(next);
   return next;
 }
+
+// Estilo de cantos (D143): 'arredondado' é o padrão (tokens.css) e não põe atributo.
+export type Corners = 'arredondado' | 'contido';
+
+const CORNERS: readonly Corners[] = ['arredondado', 'contido'];
+const CORNERS_KEY = prefixed('cantos');
+
+export const CORNER_NAMES: Readonly<Record<Corners, string>> = {
+  arredondado: 'Arredondado',
+  contido: 'Contido',
+};
+
+function asCorners(value: string | null | undefined): Corners | null {
+  return CORNERS.find((item) => item === value) ?? null;
+}
+
+function storedCorners(): Corners {
+  try {
+    return asCorners(localStorage.getItem(CORNERS_KEY)) ?? 'arredondado';
+  } catch {
+    return 'arredondado';
+  }
+}
+
+export function currentCorners(): Corners {
+  return asCorners(document.documentElement.dataset.cantos) ?? 'arredondado';
+}
+
+export function applyCorners(corners?: Corners): void {
+  const chosen = corners ?? storedCorners();
+  if (chosen === 'arredondado') delete document.documentElement.dataset.cantos;
+  else document.documentElement.dataset.cantos = chosen;
+  if (corners === undefined) return;
+  try {
+    localStorage.setItem(CORNERS_KEY, chosen);
+  } catch {
+    // Sem armazenamento, a escolha vale só até recarregar.
+  }
+}
+
+export function cycleCorners(): Corners {
+  const next = currentCorners() === 'contido' ? 'arredondado' : 'contido';
+  applyCorners(next);
+  return next;
+}

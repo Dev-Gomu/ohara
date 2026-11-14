@@ -342,7 +342,7 @@
 - src/ui/screens/mesa/useNotesEditor.ts: `export function useNotesEditor(lessonId: string, html: string): Editor | null`
 - src/ui/screens/treino/Inicio.module.css: Tela inicial do Treino: uma coluna de blocos no centro; "Ajustar" abre a lista ao lado.
 - src/ui/screens/treino/TrainingChoice.tsx: `export function TrainingChoice({ onStart }: TrainingChoiceProps)`
-- src/ui/screens/treino/TrainingSession.tsx: `export function TrainingSession({ session, onChange }: TrainingSessionProps)`
+- src/ui/screens/treino/TrainingSession.tsx: Pergunta longa encolhe a letra em dois degraus (140 e 360 letras), D150.
 - src/ui/screens/treino/Treino.module.css: O cursor da lista não comanda nada: só aparece com o bloco ativo (diretriz 3.2).
 - src/ui/screens/treino/Treino.tsx: `export function Treino()`
 - src/ui/shell/ConsultWindows.module.css: (sem comentário nem export no topo)

@@ -51,14 +51,17 @@ export function Block(props: BlockProps) {
       {title !== undefined && (
         <header className={styles.titulo}>
           {icon ? (
-            <h2 className={`${styles.nome} ${styles.icone}`} aria-label={title ?? label} title={title}>
-              <BlockIcon name={icon} />
+            <h2 className={styles.nome} title={title}>
+              <span className={styles.icone} aria-hidden="true">
+                <BlockIcon name={icon} />
+              </span>
+              {title}
             </h2>
           ) : (
             <h2 className={styles.nome}>{title}</h2>
           )}
           {count !== undefined && <span className={styles.conta}>{count}</span>}
-          <div className={styles.fim}>
+          <div className={`${styles.fim} ${icon ? styles.fimDiscreto : ''}`}>
             {tools}
             {shortcut !== undefined && <Key>{shortcut}</Key>}
             {menu && (
