@@ -105,7 +105,7 @@
     inset 0 0 0 calc(var(--cursor-bloco) + var(--cursor)) var(--cor-cartao);
 }
 
-:global(:root[data-entrada='toque']) .materia[data-cursor] {
+:global(:root[data-entrada]:not([data-entrada='teclado'])) .materia[data-cursor] {
   box-shadow: none;
 }
 

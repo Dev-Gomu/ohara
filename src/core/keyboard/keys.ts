@@ -368,6 +368,12 @@ export const ADJUST_KEYS: readonly AdjustRow[] = [
   { label: 'Esc', code: 'Escape', shift: false, action: { type: 'tableAdjustEnd' } },
 ];
 
+// Só valem com a Ajuda aberta: ← → trocam de lista (qualidade de vida, D166).
+export const HELP_KEYS: readonly OptionRow[] = [
+  { label: '←', code: 'ArrowLeft', action: { type: 'helpTab', step: -1 } },
+  { label: '→', code: 'ArrowRight', action: { type: 'helpTab', step: 1 } },
+];
+
 // Só valem com a linha acesa de uma lista que tem opções curtas (Configs, D160); por isso ficam fora de KEYS.
 export interface OptionRow {
   label: string;

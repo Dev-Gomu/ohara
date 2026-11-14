@@ -1,16 +1,21 @@
-import { useState } from 'react';
 import { SCREEN_NAMES } from '../../core/keyboard/keys';
 import { groupLines, linesOf, type HelpTab } from '../../core/keyboard/keyTools';
 import { BlockTab, ToggleGroup } from '../components/Toggles';
 import { Window } from '../components/Window';
-import { useKeyboardState } from '../keyboard/store';
+import { dispatch, getKeyboardState, useKeyboardState } from '../keyboard/store';
 import styles from './HelpWindow.module.css';
 
 const TABS: readonly HelpTab[] = ['screen', 'universal', 'all'];
 
+// A lista vive no estado de foco; tocar numa aba anda de uma em uma até chegar nela.
+function goTo(id: HelpTab): void {
+  const gap = (TABS.indexOf(id) - getKeyboardState().focus.helpTab + TABS.length) % TABS.length;
+  if (gap !== 0) dispatch({ type: 'helpTab', step: gap === 1 ? 1 : -1 });
+}
+
 export function HelpWindow() {
   const { screen, focus } = useKeyboardState();
-  const [tab, setTab] = useState<HelpTab>('screen');
+  const tab = TABS[focus.helpTab] ?? 'screen';
   const name = SCREEN_NAMES[screen];
   const names: Record<HelpTab, string> = { screen: `Só ${name}`, universal: 'Universais', all: 'Todos' };
   const lines = linesOf(tab, screen);
@@ -25,7 +30,7 @@ export function HelpWindow() {
                   key={id}
                   selected={tab === id}
                   count={linesOf(id, screen).length}
-                  onPress={() => setTab(id)}
+                  onPress={() => goTo(id)}
                 >
                   {names[id]}
                 </BlockTab>

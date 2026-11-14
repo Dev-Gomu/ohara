@@ -106,11 +106,11 @@
     0 14px 26px -10px color-mix(in srgb, var(--tom) 55%, transparent);
 }
 
-:global(:root[data-entrada='toque']) .materia:global(.anel-interno) {
+:global(:root[data-entrada]:not([data-entrada='teclado'])) .materia:global(.anel-interno) {
   transform: none;
 }
 
-:global(:root[data-entrada='toque']) .materia:global(.anel-interno) .materiaCorpo {
+:global(:root[data-entrada]:not([data-entrada='teclado'])) .materia:global(.anel-interno) .materiaCorpo {
   box-shadow: none;
 }
 

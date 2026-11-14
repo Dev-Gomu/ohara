@@ -23,6 +23,7 @@ export type KeyAction =
   | { type: 'tableAdjustEnd' }
   // Linha com opções curtas (Configs, D160): ← → trocam a opção escolhida.
   | { type: 'optionStep'; delta: -1 | 1 }
+  | { type: 'helpTab'; step: -1 | 1 }
   | { type: 'cardLineSplit' }
   | { type: 'cardLineBack' }
   | { type: 'cardLineMove'; delta: -1 | 1 }

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { Level } from './actions';
-import { OPTION_KEYS, TRASH_KEYS } from './keys';
+import { HELP_KEYS, OPTION_KEYS, TRASH_KEYS } from './keys';
 import { resolve, type KeyContext, type KeyInput } from './resolve';
 
 const press = (code: string, extra: Partial<KeyInput> = {}): KeyInput => ({
@@ -248,5 +248,19 @@ describe('janela da Lixeira (D164)', () => {
   });
   it('na confirmação, Enter é do botão com foco (nasce em Cancelar)', () => {
     expect(resolve(press('Enter'), { ...inWindow, trash: 'confirm' })).toBeNull();
+  });
+});
+
+describe('Ajuda aberta: ← → trocam de lista', () => {
+  const help = { level: 'block', overlay: 'window', window: 'help' } as const;
+
+  it.each(HELP_KEYS.map((key) => [key.label, key.code, key.action] as const))('%s', (_label, code, action) => {
+    expect(resolve(press(code), help)).toEqual(action);
+  });
+  it('na Paleta as setas continuam sendo da janela', () => {
+    expect(resolve(press('ArrowRight'), { ...help, window: 'palette' })).toBeNull();
+  });
+  it('Esc continua sendo Esc', () => {
+    expect(resolve(press('Escape'), help)?.type).toBe('escape');
   });
 });

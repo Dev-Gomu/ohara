@@ -17,6 +17,7 @@ const state = (extra: Partial<FocusState> = {}): FocusState => ({
   block: 'a',
   menuIndex: 0,
   window: null,
+  helpTab: 0,
   optionsOpen: false,
   items: {},
   ...extra,
@@ -273,5 +274,23 @@ describe('campo navegável (D70, D71)', () => {
     expect(escapeGoesBack(inNav(), nav)).toBe(false);
     expect(escapeGoesBack(state({ block: 'aulas', window: 'help' }), nav)).toBe(false);
     expect(escapeGoesBack(state(), layout)).toBe(false);
+  });
+});
+
+describe('Ajuda: lista e Esc em dois passos', () => {
+  it('Esc com outra lista volta à primeira e mantém a janela; o segundo fecha', () => {
+    const open = state({ window: 'help', helpTab: 2 });
+    const first = reduceFocus(open, { type: 'escape' }, layout);
+    expect(first).toMatchObject({ window: 'help', helpTab: 0 });
+    expect(reduceFocus(first, { type: 'escape' }, layout).window).toBeNull();
+  });
+  it('abrir a Ajuda zera a lista', () => {
+    expect(reduceFocus(state({ helpTab: 2 }), { type: 'openHelp' }, layout).helpTab).toBe(0);
+    expect(reduceFocus(state({ helpTab: 2 }), { type: 'openWindow', window: 'help' }, layout).helpTab).toBe(0);
+  });
+  it('helpTab anda em círculo e só vale com a Ajuda aberta', () => {
+    expect(reduceFocus(state({ window: 'help' }), { type: 'helpTab', step: -1 }, layout).helpTab).toBe(2);
+    expect(reduceFocus(state({ window: 'help', helpTab: 2 }), { type: 'helpTab', step: 1 }, layout).helpTab).toBe(0);
+    expect(reduceFocus(state(), { type: 'helpTab', step: 1 }, layout).helpTab).toBe(0);
   });
 });

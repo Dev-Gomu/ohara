@@ -9,6 +9,7 @@ import {
   type FocusLayout,
   type FocusState,
 } from '../../core/keyboard/focus';
+import { inputModeOf } from '../../core/keyboard/inputMode';
 import { KEYS } from '../../core/keyboard/keys';
 import { runUndo } from '../study/undo';
 import { toggleTheme } from '../theme';
@@ -49,7 +50,7 @@ export interface KeyboardState {
 
 // Fora do React: o listener precisa do estado atual mesmo com teclas em sequência rápida.
 let state: KeyboardState = {
-  focus: { level: 'block', block: '', menuIndex: 0, window: null, optionsOpen: false, items: {} },
+  focus: { level: 'block', block: '', menuIndex: 0, window: null, optionsOpen: false, helpTab: 0, items: {} },
   screen: 'hub',
   lastAction: null,
 };
@@ -173,7 +174,7 @@ export function dispatch(change: FocusChange, repeat = false): void {
     toggleTheme();
     return;
   }
-  document.documentElement.dataset.entrada = change.type === 'touch' ? 'toque' : 'teclado';
+  document.documentElement.dataset.entrada = inputModeOf(change);
   const layout = readLayout();
   const lastAction = describeChange(change);
   if (overlayOf(state.focus) === 'none' && runScreenAction(change, layout)) {

@@ -67,6 +67,6 @@
   }
 }
 
-:global(:root[data-entrada='toque']) .botao[data-cursor] {
+:global(:root[data-entrada]:not([data-entrada='teclado'])) .botao[data-cursor] {
   box-shadow: none;
 }

@@ -62,9 +62,9 @@
 - L1 # Estado do Ohara (atualizado em 14/11/2026)
 - L5 ## Onde estamos
 - L15 ## Próximo passo
-- L46 ## A conferir (aplicado em 13/11, só check e e2e)
-- L49 ## Esperando o usuário
-- L53 ## Iniciativas abertas (máx. 3)
+- L51 ## A conferir (aplicado em 13/11, só check e e2e)
+- L54 ## Esperando o usuário
+- L58 ## Iniciativas abertas (máx. 3)
 
 ### docs/mapa.md
 - L1 # Mapa do projeto
@@ -184,7 +184,9 @@
 - src/core/grades/grades.ts: Regras N1 e N2 de regras.md. Puro: os dados vêm decifrados da tela.
 - src/core/keyboard/actions.ts: 'field' é o campo de texto; 'nav' é o campo navegável: lista, régua ou grade (D70).
 - src/core/keyboard/focus.test.ts: a à esquerda, ocupando a altura; b em cima e c embaixo, à direita.
-- src/core/keyboard/focus.ts: Item escolhido em cada campo navegável. Sobrevive à saída do bloco: a seleção permanece.
+- src/core/keyboard/focus.ts: Lista aberta na Ajuda (0 = Só desta tela). Zera ao abrir a janela.
+- src/core/keyboard/inputMode.test.ts: (sem comentário nem export no topo)
+- src/core/keyboard/inputMode.ts: Mouse não é toque: só o dedo e a caneta aumentam alvos e mostram a bolha (qualidade de vida, D166).
 - src/core/keyboard/keyTools.ts: Lista as combinações repetidas: code + modificadores + nível só pode aparecer uma vez.
 - src/core/keyboard/keys.test.ts: Transcrito de docs/teclado.md: a tabela não pode perder nem ganhar tecla em silêncio.
 - src/core/keyboard/keys.ts: a = Alt, c = Ctrl, s = Shift
@@ -372,7 +374,7 @@
 - src/ui/shell/ErrorScreen.module.css: (sem comentário nem export no topo)
 - src/ui/shell/ErrorScreen.tsx: (sem comentário nem export no topo)
 - src/ui/shell/HelpWindow.module.css: (sem comentário nem export no topo)
-- src/ui/shell/HelpWindow.tsx: `export function HelpWindow()`
+- src/ui/shell/HelpWindow.tsx: A lista vive no estado de foco; tocar numa aba anda de uma em uma até chegar nela.
 - src/ui/shell/Loading.tsx: `export function Loading()`
 - src/ui/shell/OptionsWindow.module.css: (sem comentário nem export no topo)
 - src/ui/shell/OptionsWindow.tsx: Menu ⋮ do bloco. Setas e Enter ficam com o React Aria; o Esc é do listener (D18).

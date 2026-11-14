@@ -13,6 +13,11 @@
 - **Lixeira APLICADA (D164, D167, 14/11):** janela larga (tipos numa faixa horizontal no topo, pedido do usuário) pela Paleta ("Lixeira"), pelo menu ⋯ do topo e por "Ver lixeira" no aviso do Desfazer; migração 006; restaurar com Desfazer, Apagar de vez (lápide), limpeza de 30 dias ao abrir. Conferida com `npm run tela` nos dois temas (lista com cursor, menu ⋮, confirmação) e com roteiro do Playwright (excluir aula → Paleta → Enter restaura). **Sem teste:** tablet e toque (Restaurar e ⋮ na linha, régua por toque), limpeza real de 30 dias, Apagar de vez de anexo com PDF (bytes saindo do disco), "pai na lixeira" na tela (só no teste de unidade). A pasta da bancada saiu ao juntar as branches (14/11).
 
 ## Próximo passo
+**Fila de aplicação (14/11, uma por sessão, nesta ordem; marque FEITA ao terminar):**
+1. ~~Qualidade de vida, parte 1 (D166): entrada mouse/toque + Ajuda ← → e Esc.~~ **FEITA (14/11):** `data-entrada` agora é teclado/mouse/toque (`core/keyboard/inputMode.ts`); alvo grande e bolha só no toque, cursor escondido em mouse e toque; Ajuda com `helpTab` no foco, ← → (`HELP_KEYS`), Esc em dois passos e zera ao abrir. Conferida por testes (841 ok); falta testar à mão. Modelo `lab/livre/qualidade-vida/` (fica para a parte 2).
+2. Qualidade de vida, parte 2 (D166): botões em `Button`, pilha de avisos, teclas da tabela, Desfazer pausado. A pasta sai ao fim.
+3. Notas extras (D165). Modelo `lab/livre/notas-extras/`; a pasta sai ao fim.
+4. Agenda e Hub, ações rápidas (D168). Modelo `lab/livre/agenda-acoes/`; a pasta sai ao fim.
 - **Qualidade de vida: TODAS APROVADAS (D166, 14/11), a aplicar** em duas sessões: (1) entrada mouse/toque + Ajuda ← → e Esc; (2) botões em `Button`, pilha de avisos, teclas da tabela, Desfazer pausado. Modelo: `lab/livre/qualidade-vida/` (LEIA-ME com causa, teclas, testes e arquivos) (já no main); a pasta sai ao aplicar.
 - **Notas extras: V1 APROVADA (D165, 14/11), a aplicar** (busca `/`, meta por semestre e ano, janela de esquema). Modelo: `lab/livre/notas-extras/` (LEIA-ME); a pasta sai ao aplicar.
 - **Agenda e Hub, ações rápidas: V1 APROVADA (D168, 14/11), a aplicar** (Registrar falta e Novo evento no calendário do Hub, Apresentação, Mover/Sem aula/aula avulsa). Modelo: `lab/livre/agenda-acoes/` (LEIA-ME com plano); a pasta sai ao aplicar.

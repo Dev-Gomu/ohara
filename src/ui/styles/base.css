@@ -68,13 +68,13 @@ p {
   box-shadow: inset 0 0 0 var(--cursor) var(--cor-cursor);
 }
 
-:root[data-entrada='toque'] [data-cursor] {
+:root[data-entrada]:not([data-entrada='teclado']) [data-cursor] {
   box-shadow: none;
 }
 
-:root[data-entrada='toque'] .anel,
-:root[data-entrada='toque'] .anel-fino,
-:root[data-entrada='toque'] .anel-interno {
+:root[data-entrada]:not([data-entrada='teclado']) .anel,
+:root[data-entrada]:not([data-entrada='teclado']) .anel-fino,
+:root[data-entrada]:not([data-entrada='teclado']) .anel-interno {
   outline: none;
 }
 

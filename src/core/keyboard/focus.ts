@@ -11,6 +11,8 @@ export interface FocusState {
   menuIndex: number;
   window: WindowId | null;
   optionsOpen: boolean;
+  // Lista aberta na Ajuda (0 = Só desta tela). Zera ao abrir a janela.
+  helpTab: number;
   // Item escolhido em cada campo navegável. Sobrevive à saída do bloco: a seleção permanece.
   items: Readonly<Record<string, number>>;
 }
@@ -36,6 +38,10 @@ export interface FocusLayout {
   hasParent?: boolean;
 }
 
+export type PointerKind = 'mouse' | 'touch';
+
+export const HELP_TABS = 3;
+
 export type TouchTarget =
   | { kind: 'field'; block: string }
   | { kind: 'item'; block: string; index: number }
@@ -45,7 +51,7 @@ export type TouchTarget =
 
 export type FocusChange =
   | KeyAction
-  | { type: 'touch'; target: TouchTarget }
+  | { type: 'touch'; target: TouchTarget; pointer?: PointerKind }
   | { type: 'openWindow'; window: WindowId }
   | { type: 'jump'; block: string; level: Level; items?: Readonly<Record<string, number>> };
 
@@ -83,6 +89,7 @@ export function escapeGoesBack(state: FocusState, layout: FocusLayout): boolean 
 
 // D18: janela, depois menu ⋮, depois sobe um nível. No nível menu não há para onde subir.
 function escape(state: FocusState): FocusState {
+  if (state.window === 'help' && state.helpTab !== 0) return { ...state, helpTab: 0 };
   if (state.window !== null) return { ...state, window: null };
   if (state.optionsOpen) return { ...state, optionsOpen: false };
   if (state.level === 'field' || state.level === 'nav') return { ...state, level: 'block' };
@@ -180,9 +187,13 @@ export function reduceFocus(
     case 'previousBlock':
       return cycleBlock(state, -1, layout);
     case 'openHelp':
-      return { ...state, window: 'help' };
+      return { ...state, window: 'help', helpTab: 0 };
+    case 'helpTab':
+      return state.window === 'help'
+        ? { ...state, helpTab: (state.helpTab + change.step + HELP_TABS) % HELP_TABS }
+        : state;
     case 'openWindow':
-      return { ...state, window: change.window };
+      return { ...state, window: change.window, helpTab: change.window === 'help' ? 0 : state.helpTab };
     case 'openPalette':
       return { ...state, window: 'palette' };
     case 'quickReminder':

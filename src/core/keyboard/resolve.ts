@@ -1,6 +1,7 @@
 import type { Level, Resolved } from './actions';
 import {
   ADJUST_KEYS,
+  HELP_KEYS,
   KEYS,
   LINE_KEYS,
   OPTION_KEYS,
@@ -36,6 +37,8 @@ export interface KeyContext {
   choosing?: boolean;
   // Janela da Lixeira aberta: onde está o foco dentro dela.
   trash?: TrashSpot;
+  // Qual janela está aberta (só a Ajuda usa: ← → trocam de lista).
+  window?: string | null;
 }
 
 function modsOf(input: KeyInput): string {
@@ -90,6 +93,10 @@ export function resolve(
       (key) => key.code === input.code && key.alt === (mods === 'a') && key.when.includes(spot),
     );
     if (own) return input.repeat && !own.repeats ? { type: 'swallow' } : own.action;
+  }
+  if (context.window === 'help' && context.overlay === 'window' && mods === '') {
+    const help = HELP_KEYS.find((key) => key.code === input.code);
+    if (help) return input.repeat ? { type: 'swallow' } : help.action;
   }
   const rows = keys.filter((key) => key.code === input.code && key.mods === mods);
   if (context.overlay !== 'none') return resolveInOverlay(input, rows);

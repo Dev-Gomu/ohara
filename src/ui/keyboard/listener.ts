@@ -28,6 +28,7 @@ function onKeyDown(event: KeyboardEvent): void {
   const context = {
     level: focus.level,
     overlay: overlayOf(focus),
+    window: focus.window,
     adjusting: isAdjusting(),
     choosing: isChoosing(focus),
     ...(cardLine ? { cardLine } : {}),
@@ -56,13 +57,20 @@ function touchTargetOf(target: EventTarget | null): TouchTarget {
 
 function onPointerDown(event: PointerEvent): void {
   disarmBar();
-  dispatch({ type: 'touch', target: touchTargetOf(event.target) });
+  dispatch({
+    type: 'touch',
+    target: touchTargetOf(event.target),
+    pointer: event.pointerType === 'mouse' ? 'mouse' : 'touch',
+  });
 }
 
 // O foco chega ao campo também sem toque, como no retorno de outro aplicativo.
 function onFocusIn(event: FocusEvent): void {
   const target = touchTargetOf(event.target);
-  if (target.kind === 'field') dispatch({ type: 'touch', target });
+  if (target.kind !== 'field') return;
+  // Clicar com o mouse num campo foca sem trocar a entrada para toque.
+  const pointer = document.documentElement.dataset.entrada === 'mouse' ? 'mouse' : 'touch';
+  dispatch({ type: 'touch', target, pointer });
 }
 
 // Único ponto do app que escuta teclas (D15). O lint barra qualquer outro.

@@ -104,8 +104,8 @@
   outline-offset: 2px;
 }
 
-:global(:root[data-entrada='toque']) .chave[data-cursor],
-:global(:root[data-entrada='toque']) .caixa[data-cursor] {
+:global(:root[data-entrada]:not([data-entrada='teclado'])) .chave[data-cursor],
+:global(:root[data-entrada]:not([data-entrada='teclado'])) .caixa[data-cursor] {
   outline: none;
 }
 
@@ -133,7 +133,7 @@
     inset 0 0 0 calc(var(--cursor) * 2) var(--cor-cartao);
 }
 
-:global(:root[data-entrada='toque']) .dia.hoje[data-cursor] {
+:global(:root[data-entrada]:not([data-entrada='teclado'])) .dia.hoje[data-cursor] {
   box-shadow: none;
 }
 
