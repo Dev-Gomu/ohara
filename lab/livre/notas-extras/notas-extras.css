@@ -1,0 +1,230 @@
+/* Bancada notas-extras: só tokens (cor por papel, raio por token). */
+.nx-palco {
+  display: flex;
+  flex-direction: column;
+  gap: var(--vao-mosaico);
+  min-height: 100%;
+  padding: var(--margem-tela);
+  background: var(--cor-fundo);
+}
+
+.nx-regua {
+  gap: var(--e2);
+}
+
+.nx-lupa {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e2);
+  height: var(--alvo);
+  padding: 0 var(--e3);
+  border: 0;
+  border-radius: var(--raio-botao);
+  background: var(--sup-recuada);
+  color: var(--cor-texto-2);
+  font: var(--ui-botao);
+  cursor: pointer;
+}
+
+.nx-busca {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e3);
+  width: 340px;
+}
+.nx-busca > label {
+  flex: 1;
+}
+.nx-busca > :last-child {
+  white-space: nowrap;
+}
+
+.nx-tile {
+  display: contents;
+}
+
+.nx-sem {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e2);
+}
+
+.nx-faixa-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e1) var(--e4);
+  padding: var(--e2) var(--e3);
+  border-radius: var(--raio-item);
+  background: var(--sup-recuada);
+  font: var(--ui-apoio);
+  font-variant-numeric: tabular-nums;
+}
+.nx-faixa-meta b {
+  font: var(--ui-item);
+  color: var(--cor-texto);
+}
+
+.nx-ok {
+  color: var(--cor-ok);
+}
+.nx-nao {
+  color: var(--cor-atencao);
+}
+
+.nx-grupo {
+  margin: 0;
+  font: var(--ui-rotulo);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--cor-texto-2);
+}
+
+.nx-teclas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e2) var(--e4);
+  margin: 0;
+  font: var(--ui-apoio);
+  color: var(--cor-texto-2);
+}
+
+/* Janela do esquema */
+.nx-janela {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e4);
+  padding: 0 var(--e5) var(--e4);
+  min-width: 520px;
+}
+.nx-pergunta {
+  margin: 0;
+  font: var(--ui-item);
+  color: var(--cor-texto);
+}
+
+.nx-modelos {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--e3);
+}
+
+.nx-modelo,
+.nx-linha {
+  border: 0;
+  background: var(--sup-peca);
+  color: var(--cor-texto);
+  cursor: pointer;
+  font: var(--ui-apoio);
+  text-align: left;
+}
+
+.nx-modelo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e1);
+  min-height: 96px;
+  padding: var(--e4);
+  border-radius: var(--raio-item);
+}
+.nx-modelo b {
+  font: var(--voz-numero-mini);
+  font-variant-numeric: tabular-nums;
+}
+.nx-modelo:last-child b {
+  font: var(--ui-botao);
+}
+
+.nx-modelo[data-escolhida],
+.nx-linha[data-escolhida] {
+  background: var(--cor-escolhido);
+}
+
+.nx-modelo[data-cursor],
+.nx-linha[data-cursor] {
+  box-shadow: inset 0 0 0 var(--cursor-bloco) var(--cor-cursor);
+}
+
+.nx-linhas {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e2);
+}
+
+.nx-linha {
+  display: grid;
+  grid-template-columns: auto 120px minmax(0, 1fr);
+  align-items: center;
+  gap: var(--e3);
+  min-height: var(--alvo);
+  padding: var(--e2) var(--e4);
+  border-radius: var(--raio-item);
+}
+.nx-linha b {
+  font: var(--ui-botao);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Marca de escolha: pílula alongada, nunca círculo. */
+.nx-marca {
+  width: 28px;
+  height: 14px;
+  border-radius: var(--raio-pilula);
+  background: var(--sup-recuada);
+  box-shadow: inset 0 0 0 2px var(--cor-texto-2);
+}
+.nx-linha[data-escolhida] .nx-marca {
+  background: var(--cor-acao);
+  box-shadow: none;
+}
+
+.nx-mais {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--e3) var(--e4);
+  padding: var(--e4);
+  border-radius: var(--raio-item);
+  background: var(--sup-recuada);
+}
+
+.nx-campo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e1);
+  font: var(--ui-apoio);
+  color: var(--cor-texto-2);
+}
+.nx-campo > span:first-child {
+  font: var(--ui-item);
+  color: var(--cor-texto);
+}
+
+/* V3: boletim geral com a coluna "Precisa" que segue o semestre */
+.nx-geral {
+  display: grid;
+  grid-template-columns: 90px repeat(3, 80px) 170px minmax(0, 1fr);
+  align-items: center;
+  gap: var(--e1) var(--e3);
+  padding: 0 var(--bloco-pad-x) var(--bloco-pad-y);
+  font: var(--ui-item);
+  font-variant-numeric: tabular-nums;
+}
+.nx-geral > .nx-cab {
+  font: var(--ui-rotulo);
+  color: var(--cor-texto-2);
+  letter-spacing: 0.04em;
+}
+.nx-geral > .nx-linha-g {
+  display: contents;
+}
+.nx-precisa {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--e2);
+  white-space: nowrap;
+}
+
+.nx-quanto { display: flex; flex-direction: column; gap: var(--e2); }
+.nx-modelo { min-width: 0; }
+.nx-modelo > * { white-space: normal; overflow-wrap: anywhere; }

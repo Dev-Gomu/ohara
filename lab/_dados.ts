@@ -86,3 +86,27 @@ export const LIXEIRA = [
   { id: 'x8', tipo: 'materia', titulo: 'Bioética', materia: 'BIO', cor: 5, quando: 25, traz: '3 aulas · 2 horários · faltas' },
   { id: 'x9', tipo: 'aula', titulo: 'Hipersensibilidades tipo I a IV e doenças autoimunes associadas', materia: 'IMU', cor: 2, quando: 27, traz: '18 cartões · anotações' },
 ] as const;
+
+// Notas extras (bancada notas-extras, noite 14/11): 12 matérias para a busca valer a pena,
+// esquema em pontos por bimestre (D113) e avaliações com nota máxima. null = pendente.
+type Av = { nome: string; nota: number | null; max: number };
+export const NOTAS_BOLETIM: readonly {
+  sigla: string;
+  cor: number;
+  nome: string;
+  vale: readonly [number, number, number, number];
+  bim: readonly [readonly Av[], readonly Av[], readonly Av[], readonly Av[]];
+}[] = [
+  { sigla: 'IMU', cor: 2, nome: 'Imunologia', vale: [5, 5, 5, 5], bim: [[{ nome: 'P1', nota: 6, max: 10 }], [{ nome: 'Seminário', nota: 0.9, max: 1 }, { nome: 'P2', nota: null, max: 4 }], [], []] },
+  { sigla: 'PRO', cor: 1, nome: 'Propedêutica', vale: [3, 7, 3, 7], bim: [[{ nome: 'OSCE 1', nota: 2.7, max: 3 }], [{ nome: 'P2', nota: null, max: 7 }], [], []] },
+  { sigla: 'GEN', cor: 0, nome: 'Genética', vale: [5, 5, 5, 5], bim: [[{ nome: 'P1', nota: 2, max: 5 }], [{ nome: 'P2', nota: null, max: 5 }], [], []] },
+  { sigla: 'EPI', cor: 3, nome: 'Epidemiologia', vale: [5, 5, 5, 5], bim: [[{ nome: 'P1', nota: 1, max: 5 }], [{ nome: 'P2', nota: null, max: 5 }], [], []] },
+  { sigla: 'FAR', cor: 4, nome: 'Farmacologia', vale: [5, 5, 5, 5], bim: [[{ nome: 'P1', nota: 4.5, max: 5 }], [{ nome: 'P2', nota: 4.6, max: 5 }], [{ nome: 'P3', nota: 4.5, max: 5 }], [{ nome: 'P4', nota: null, max: 5 }]] },
+  { sigla: 'FIS', cor: 5, nome: 'Fisiologia', vale: [5, 5, 5, 5], bim: [[{ nome: 'P1', nota: 3.8, max: 5 }], [{ nome: 'P2', nota: 3.1, max: 5 }], [{ nome: 'P3', nota: 2.9, max: 5 }], [{ nome: 'P4', nota: null, max: 5 }]] },
+  { sigla: 'PAT', cor: 6, nome: 'Patologia geral', vale: [4, 6, 4, 6], bim: [[{ nome: 'P1', nota: 3.2, max: 4 }], [{ nome: 'P2', nota: null, max: 6 }], [], []] },
+  { sigla: 'HIS', cor: 7, nome: 'Histologia', vale: [5, 5, 5, 5], bim: [[{ nome: 'Prática', nota: null, max: 2 }, { nome: 'P1', nota: null, max: 3 }], [], [], []] },
+  { sigla: 'ANA', cor: 0, nome: 'Anatomia', vale: [5, 5, 5, 5], bim: [[{ nome: 'P1', nota: 3.5, max: 5 }], [{ nome: 'P2', nota: 3.6, max: 5 }], [], []] },
+  { sigla: 'BQM', cor: 1, nome: 'Bioquímica', vale: [5, 5, 5, 5], bim: [[{ nome: 'P1', nota: 3.9, max: 5 }], [{ nome: 'P2', nota: null, max: 5 }], [], []] },
+  { sigla: 'APS', cor: 3, nome: 'Atenção primária', vale: [5, 5, 5, 5], bim: [[{ nome: 'Portfólio', nota: 4.8, max: 5 }], [{ nome: 'Portfólio 2', nota: null, max: 5 }], [], []] },
+  { sigla: 'BIO', cor: 5, nome: 'Bioética', vale: [5, 5, 5, 5], bim: [[], [], [], []] },
+];
