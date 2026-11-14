@@ -49,18 +49,3 @@
 .aa-teclas kbd { padding: 1px 6px; border-radius: var(--raio-item); background: var(--sup-peca); color: var(--cor-texto); font: var(--ui-rotulo); }
 /* Na peça real, a marca vira um item no fim da fileira de pílulas (prop nova `kinds`). */
 .aa-cartao [class*='pilulas'] { padding-right: 44px; }
-
-/* Ajuste do cabeçalho do calendário (pedido 14/11 à tarde). Na aplicação vai para Hub.module.css. */
-.aa-bloco-cal header[class*='titulo'] { align-items: baseline; padding-bottom: var(--e4); }
-.aa-bloco-cal header[class*='titulo'] [class*='conta'] { font: var(--ui-rotulo); letter-spacing: 0.06em; }
-.aa-bloco-cal [class*='calendario'] { padding-top: var(--e1); row-gap: var(--e1); }
-.aa-bloco-cal [class*='semana'] { padding-bottom: var(--e1); }
-
-/* Margem única nas laterais (pedido 14/11 à tarde): colunas fixas do tamanho da pílula do dia, espalhadas
-   entre as bordas; cabeçalho, linha do dia, eventos e botões usam a mesma margem. */
-.aa-bloco-cal header[class*='titulo'] { padding-inline: var(--e3); }
-.aa-bloco-cal header[class*='titulo'] [class*='opcoes'] { margin-right: 0; }
-.aa-bloco-cal [class*='calendario'] { grid-template-columns: repeat(7, 52px); justify-content: space-between; padding-inline: var(--e3); }
-.aa-bloco-cal [class*='doDia'] { padding-inline: var(--e3); }
-.aa-bloco-cal [class*='eventos'] { padding-inline: var(--e3); }
-.aa-bloco-cal .aa-cal-pe { padding-inline: var(--e3); }
