@@ -77,13 +77,12 @@ export function CardBack({ back, compact, colorTitles = true }: CardBackProps) {
 
 interface StudyCardProps extends CardBackProps {
   front: string;
-  incomplete?: boolean;
 }
 
 // Uma peça só (D138, D155): frente cheia no azul de ação e verso no mesmo contorno.
-export function StudyCard({ front, back, compact, colorTitles, incomplete }: StudyCardProps) {
+export function StudyCard({ front, back, compact, colorTitles }: StudyCardProps) {
   return (
-    <article className={styles.carta} data-compacto={compact} data-incompleto={incomplete}>
+    <article className={styles.carta} data-compacto={compact}>
       <p className={styles.frente}>{front ? <Inline text={front} /> : 'Sem frente'}</p>
       {back ? (
         <CardBack back={back} compact={compact} colorTitles={colorTitles} />

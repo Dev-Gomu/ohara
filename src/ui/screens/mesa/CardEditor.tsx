@@ -94,14 +94,11 @@ export function CardEditor({ editor }: { editor: CardsEditor }) {
       )}
       {groups.map((group) => {
         const [first = 0, ...rest] = group.lines;
-        const back = rest.filter((index) => (lines[index] ?? '').trim() !== '');
-        const incomplete = (lines[first] ?? '').replace(/^@\s?/, '').trim() === '' || back.length === 0;
         return (
           <article
             key={group.first}
             className={styles.carta}
             data-compacto={view.compact}
-            data-incompleto={incomplete}
           >
             <div className={styles.faixa}>{render(first, true, false)}</div>
             <div className={styles.verso} data-cor-titulos={view.colorTitles}>

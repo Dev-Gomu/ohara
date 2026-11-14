@@ -9,10 +9,6 @@
   text-align: left;
 }
 
-.carta[data-incompleto='true'] {
-  border-style: dashed;
-}
-
 .frente {
   padding: var(--e3) var(--e4);
   background: var(--cor-acao);

@@ -23,10 +23,6 @@
   color: var(--cor-texto);
 }
 
-.carta[data-incompleto='true'] {
-  border-style: dashed;
-}
-
 .faixa {
   padding: var(--e3) var(--e4);
   background: var(--cor-acao);
