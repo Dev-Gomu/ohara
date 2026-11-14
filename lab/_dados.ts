@@ -110,3 +110,19 @@ export const NOTAS_BOLETIM: readonly {
   { sigla: 'APS', cor: 3, nome: 'Atenção primária', vale: [5, 5, 5, 5], bim: [[{ nome: 'Portfólio', nota: 4.8, max: 5 }], [{ nome: 'Portfólio 2', nota: null, max: 5 }], [], []] },
   { sigla: 'BIO', cor: 5, nome: 'Bioética', vale: [5, 5, 5, 5], bim: [[], [], [], []] },
 ];
+
+// Bancada agenda-acoes: um mês do Hub com aulas, provas, entrega e apresentação.
+export const AGENDA_ACOES = {
+  hoje: '2026-11-13',
+  aulasDoDia: [
+    { id: 'x1', sigla: 'IMU', cor: 2, titulo: 'Complemento', inicio: '08:00', fim: '10:00', conteudo: true },
+    { id: 'x2', sigla: 'FAR', cor: 4, titulo: 'Farmacocinética', inicio: '10:20', fim: '12:00', conteudo: false },
+    { id: 'x3', sigla: 'APS', cor: 3, titulo: 'Tutoria', inicio: '14:00', fim: '16:00', conteudo: false },
+  ],
+  avaliacoes: [
+    { dia: '2026-11-17', itens: [{ sigla: 'IMU', cor: 2, tipo: 'prova' }] },
+    { dia: '2026-11-19', itens: [{ sigla: 'APS', cor: 3, tipo: 'apresentacao' }] },
+    { dia: '2026-11-24', itens: [{ sigla: 'PRO', cor: 1, tipo: 'prova' }, { sigla: 'GEN', cor: 0, tipo: 'trabalho' }] },
+    { dia: '2026-11-27', itens: [{ sigla: 'FAR', cor: 4, tipo: 'apresentacao' }, { sigla: 'HIS', cor: 5, tipo: 'prova' }] },
+  ],
+} as const;
