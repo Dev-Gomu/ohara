@@ -35,6 +35,7 @@ const noLooseKeys = [
 export default tseslint.config(
   {
     ignores: [
+      '.claude',
       'dist',
       'lab/livre',
       'lab/_dados.ts',
@@ -47,7 +48,11 @@ export default tseslint.config(
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {
-    languageOptions: { globals: { ...globals.browser, ...globals.node } },
+    languageOptions: {
+      globals: { ...globals.browser, ...globals.node },
+      // Worktrees em .claude/worktrees têm tsconfig próprio: sem isto o parser não sabe qual usar.
+      parserOptions: { tsconfigRootDir: import.meta.dirname },
+    },
   },
   {
     files: ['src/ui/**/*.{ts,tsx}'],

@@ -63,12 +63,12 @@ Lista curta do que foi **adiado ou ainda não decidido**. O que está no plano d
 - Notas: busca `/` na régua, metas por semestre ("Precisa no 2º bim."), janela de esquema com modelos 5 + 5 / 3 + 7 e "Mais opções" (D114) ainda não levadas ao app.
 - 2026-11-12: Botões "Registrar falta" e "Novo evento" no calendário do Hub.
 - 2026-11-13: Lista de cartões criados (aba "Salvos" da Mesa) virar uma lista de fato, não mais grade de cartões coloridos. Formato a definir em bancada, depois do editor de cartão novo.
-- 2026-11-12: Três botões fora das peças da vitrine (Atualizar, ErrorScreen, Criar): trocar por peças.
+- 2026-11-12: Três botões fora das peças da vitrine (Atualizar, ErrorScreen, Criar): trocar por peças. → aprovado na D166, a aplicar.
 - 2026-11-13: Estilo de cantos "Contido" (bloco 16) como opção nas Configs (D143). Última tarefa do app, depois de todas as outras.
 
-- Ajuda (Alt /): trocar de lista com ← → e Esc em dois passos pelo resolvedor central (hoje as abas só respondem a toque e Tab+Enter) (13/11).
-- Tabela nas Anotações: comandos da mini-barra (+ Linha etc.) só com mouse e toque; falta tecla para eles. Arrasto das linhas ainda sem teste com dedo no tablet (14/11).
-- Pré-existente: no primeiro clique depois de usar o teclado, `data-entrada` vira `toque` e os botões da faixa crescem no meio do clique (o clique pode cair no vizinho). Ver se vale só mudar para toque com `pointerType` de toque (14/11).
+- Ajuda (Alt /): trocar de lista com ← → e Esc em dois passos pelo resolvedor central (hoje as abas só respondem a toque e Tab+Enter) (13/11). → aprovado na D166, a aplicar.
+- Tabela nas Anotações: comandos da mini-barra (+ Linha etc.) só com mouse e toque; falta tecla para eles. Arrasto das linhas ainda sem teste com dedo no tablet (14/11). → aprovado na D166, a aplicar.
+- Pré-existente: no primeiro clique depois de usar o teclado, `data-entrada` vira `toque` e os botões da faixa crescem no meio do clique (o clique pode cair no vizinho). Ver se vale só mudar para toque com `pointerType` de toque (14/11). → aprovado na D166, a aplicar.
 - Cartão cloze (14/11): **superado pela D159** (letra de leitura, sem negrito pesado, verso claro com a frase). Histórico: melhor visual até agora = clássico B (`lab/livre/cloze-cartao/`, rodada 8): frente azul cheia com texto branco, `[…]` em azul-gelo e negrito, toda a frase em negrito na letra de voz; verso claro com a resposta no azul da frente, em negrito. Escrita `{{c1::resposta}}` (igual ao Anki). Aplicar em etapa própria (editor, Salvos, Treino, exportação Anki). Decidido na D157.
 - Anexo de imagem (D161): limpar do banco as imagens de rascunhos descartados e de cartões apagados (`unusedImages` em `core/study/cardImages.ts` já acha quais) (14/11).
 - Vitrine (`lab/vitrine.html`) não abre: erro no `FormatBar` (`groups` sem `length`) já antes da noite de 14/11; a ficha nova "Anexo de imagem" está lá mas não foi vista (14/11).
