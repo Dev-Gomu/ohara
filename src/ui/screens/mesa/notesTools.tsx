@@ -92,10 +92,27 @@ const STYLES: readonly Spec[] = [
   { id: 'refazer', label: 'Refazer', run: (e) => void chain(e).redo().run() },
 ];
 
+// Atalhos do editor (docs/teclado.md); o que não está aqui fica só com o nome.
+const SHORTCUTS: Readonly<Record<string, string>> = {
+  negrito: 'Ctrl B',
+  italico: 'Ctrl I',
+  sublinhado: 'Ctrl U',
+  marca: 'Ctrl ⇧ H',
+  tachado: 'Ctrl ⇧ X',
+  link: 'Ctrl K',
+  codigo: 'Ctrl E',
+  numerada: 'Ctrl ⇧ 7',
+  topicos: 'Ctrl ⇧ 8',
+  tarefas: 'Ctrl ⇧ 9',
+  desfazer: 'Ctrl Z',
+  refazer: 'Ctrl ⇧ Z',
+};
+
 function toTools(specs: readonly Spec[], editor: Editor | null): FormatTool[] {
   return specs.map((spec) => ({
     id: spec.id,
     label: spec.label,
+    ...(SHORTCUTS[spec.id] && { shortcut: SHORTCUTS[spec.id] }),
     ...(editor && spec.icon && { icon: spec.icon(editor) }),
     sel: editor ? (spec.active?.(editor) ?? false) : false,
     run: () => editor && spec.run(editor),

@@ -1,0 +1,62 @@
+/* Peça Dica (aprovada na bancada dica-formatacao, V2 azul sem desfoque). */
+.gatilho {
+  display: inline-flex;
+  touch-action: manipulation;
+  -webkit-touch-callout: none;
+}
+
+.dica {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  display: block;
+  pointer-events: none;
+}
+
+.caixa {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--raio-item);
+  background: var(--cor-acao);
+  color: var(--cor-sobre-acao);
+  box-shadow: var(--sombra-flutuante);
+}
+
+.caixa[data-side='top'] {
+  transform-origin: center bottom;
+}
+
+.caixa[data-side='bottom'] {
+  transform-origin: center top;
+}
+
+.camada {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.texto {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font: var(--ui-sigla);
+  white-space: nowrap;
+}
+
+.tecla {
+  display: inline-flex;
+  align-items: center;
+  height: 1.55em;
+  padding: 0 0.45em;
+  border-radius: var(--raio-minimo);
+  background: color-mix(in srgb, var(--cor-sobre-acao) 14%, transparent);
+  color: color-mix(in srgb, var(--cor-sobre-acao) 80%, transparent);
+  font: inherit;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+}

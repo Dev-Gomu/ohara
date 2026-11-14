@@ -1,10 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
+import { Dica } from './Dica';
+import { DicaGrupo } from './DicaGrupo';
 import { FormatIcon } from './FormatIcons';
 import styles from './FormatBar.module.css';
 
 export interface FormatTool {
   id: string;
   label: string;
+  // Mostrado na dica ao lado do nome.
+  shortcut?: string;
   // Nome do desenho em FormatIcons (quando falta, usa o id).
   icon?: string;
   sel: boolean;
@@ -44,17 +48,18 @@ const keepSelection = (event: React.PointerEvent) => event.preventDefault();
 
 function ToolButton({ tool }: { tool: FormatTool }) {
   return (
-    <button
-      type="button"
-      className={styles.botao}
-      aria-pressed={tool.sel}
-      aria-label={tool.label}
-      title={tool.label}
-      onPointerDown={keepSelection}
-      onClick={tool.run}
-    >
-      <FormatIcon name={tool.icon ?? tool.id} />
-    </button>
+    <Dica content={tool.label} {...(tool.shortcut && { shortcut: tool.shortcut })}>
+      <button
+        type="button"
+        className={styles.botao}
+        aria-pressed={tool.sel}
+        aria-label={tool.label}
+        onPointerDown={keepSelection}
+        onClick={tool.run}
+      >
+        <FormatIcon name={tool.icon ?? tool.id} />
+      </button>
+    </Dica>
   );
 }
 
@@ -68,71 +73,91 @@ export function FormatBar({ tools, styleTools, bar, onExpand, onOptions }: Forma
   const shown = tools.slice(0, Math.max(0, room - (expandFits ? 1 : 0)));
   const rest = tools.slice(shown.length);
   return (
-    <div className={styles.faixa} ref={ref} role="toolbar" aria-label="Formatação" data-bar={bar}>
-      <span className={styles.caderno}>
-        <FormatIcon name="caderno" />
-      </span>
-      <div className={styles.grupos}>
-        {shown.map((tool) => (
-          <ToolButton key={tool.id} tool={tool} />
-        ))}
-        <div className={styles.mais} onBlur={(e) => !e.currentTarget.contains(e.relatedTarget) && setOpen(false)}>
-          <button
-            type="button"
-            className={styles.botao}
-            aria-label="Mais estilos"
-            title="Mais estilos"
-            aria-expanded={open}
-            aria-pressed={open}
-            onPointerDown={keepSelection}
-            onClick={() => setOpen(!open)}
+    <DicaGrupo>
+      <div className={styles.faixa} ref={ref} role="toolbar" aria-label="Formatação" data-bar={bar}>
+        <span className={styles.caderno}>
+          <FormatIcon name="caderno" />
+        </span>
+        <div className={styles.grupos}>
+          {shown.map((tool) => (
+            <ToolButton key={tool.id} tool={tool} />
+          ))}
+          <div
+            className={styles.mais}
+            onBlur={(e) => !e.currentTarget.contains(e.relatedTarget) && setOpen(false)}
           >
-            <FormatIcon name="aa" />
-          </button>
-          {open && (
-            <div className={styles.menu} role="menu" aria-label="Mais estilos">
-              {rest.length > 0 && (
-                <div className={styles.fileira}>
-                  {rest.map((tool) => (
-                    <ToolButton key={tool.id} tool={tool} />
+            <Dica content="Mais estilos">
+              <button
+                type="button"
+                className={styles.botao}
+                aria-label="Mais estilos"
+                aria-expanded={open}
+                aria-pressed={open}
+                onPointerDown={keepSelection}
+                onClick={() => setOpen(!open)}
+              >
+                <FormatIcon name="aa" />
+              </button>
+            </Dica>
+            {open && (
+              <div className={styles.menu} role="menu" aria-label="Mais estilos">
+                {rest.length > 0 && (
+                  <div className={styles.fileira}>
+                    {rest.map((tool) => (
+                      <ToolButton key={tool.id} tool={tool} />
+                    ))}
+                  </div>
+                )}
+                <div className={styles.lista}>
+                  {styleTools.map((tool) => (
+                    <button
+                      key={tool.id}
+                      type="button"
+                      role="menuitem"
+                      className={styles.linha}
+                      aria-pressed={tool.sel}
+                      onPointerDown={keepSelection}
+                      onClick={() => {
+                        tool.run();
+                        setOpen(false);
+                      }}
+                    >
+                      <FormatIcon name={tool.icon ?? tool.id} />
+                      <span>{tool.label}</span>
+                    </button>
                   ))}
                 </div>
-              )}
-              <div className={styles.lista}>
-                {styleTools.map((tool) => (
-                  <button
-                    key={tool.id}
-                    type="button"
-                    role="menuitem"
-                    className={styles.linha}
-                    aria-pressed={tool.sel}
-                    onPointerDown={keepSelection}
-                    onClick={() => {
-                      tool.run();
-                      setOpen(false);
-                    }}
-                  >
-                    <FormatIcon name={tool.icon ?? tool.id} />
-                    <span>{tool.label}</span>
-                  </button>
-                ))}
               </div>
-            </div>
+            )}
+          </div>
+        </div>
+        <div className={styles.fim}>
+          {expandFits && (
+            <Dica content="Ampliar bloco" shortcut="Alt M">
+              <button
+                type="button"
+                className={styles.botao}
+                aria-label="Ampliar bloco"
+                onClick={onExpand}
+              >
+                <FormatIcon name="expandir" />
+              </button>
+            </Dica>
+          )}
+          {onOptions && (
+            <Dica content="Opções" shortcut="Alt O">
+              <button
+                type="button"
+                className={styles.botao}
+                aria-label="Opções de Anotações"
+                onClick={onOptions}
+              >
+                <FormatIcon name="mais" />
+              </button>
+            </Dica>
           )}
         </div>
       </div>
-      <div className={styles.fim}>
-        {expandFits && (
-          <button type="button" className={styles.botao} aria-label="Ampliar bloco" title="Ampliar · Alt M" onClick={onExpand}>
-            <FormatIcon name="expandir" />
-          </button>
-        )}
-        {onOptions && (
-          <button type="button" className={styles.botao} aria-label="Opções de Anotações" title="Opções · Alt O" onClick={onOptions}>
-            <FormatIcon name="mais" />
-          </button>
-        )}
-      </div>
-    </div>
+    </DicaGrupo>
   );
 }
