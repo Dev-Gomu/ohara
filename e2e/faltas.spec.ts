@@ -7,7 +7,8 @@ const resumo = (page: Page) => page.locator('[data-block="faltas.resumo"]');
 test('Faltas: marca falta e aula cancelada e o resumo recalcula', async ({ page }) => {
   await page.goto('./?exemplo');
   await expect(bloco(page)).toHaveText('hub.agenda');
-  await page.getByRole('button', { name: 'Faltas', exact: true }).click();
+  await page.getByRole('button', { name: 'Mais', exact: true }).click();
+  await page.getByRole('menuitem', { name: 'Faltas', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Faltas' })).toBeVisible();
   await page.locator('[data-block="faltas.materias"]').getByRole('button', { name: /FAR/ }).click();
   await expect(aulas(page)).toContainText('Aulas de FAR');

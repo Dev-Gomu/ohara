@@ -2,20 +2,21 @@ import { useLayoutEffect, useRef, useSyncExternalStore, type ReactNode } from 'r
 import { SCREENS } from '../../core/keyboard/actions';
 import { SCREEN_NAMES } from '../../core/keyboard/keys';
 import { PhoneBlock } from '../components/Block';
-import { Button } from '../components/Button';
 import { Island, LevelIndicator, Tab } from '../components/Island';
 import { ScreenIcon } from '../components/ScreenIcon';
 import { dispatch, useKeyboardState } from '../keyboard/store';
-import { openFaults, openNotes } from '../study/navigation';
 import { storage } from '../study/study';
 import styles from './ScreenFrame.module.css';
 import { placeTopBar } from './topAnimation';
 import { useTopTabs } from './topTabs';
+import { TopMenuButton } from './TopMenu';
 
 interface ScreenFrameProps {
   title: ReactNode;
   caps?: boolean;
   bar?: ReactNode;
+  // Antes do título (a sigla da matéria na Mesa).
+  lead?: ReactNode;
   end?: ReactNode;
   // Falso quando um modo passageiro (Redimensionar) toma o lugar do indicador de nível.
   level?: boolean;
@@ -64,7 +65,7 @@ function usePhonePages(focusBlock: string) {
   return { pages, current };
 }
 
-export function ScreenFrame({ title, caps = true, bar, end, level = true, children }: ScreenFrameProps) {
+export function ScreenFrame({ title, caps = true, bar, lead, end, level = true, children }: ScreenFrameProps) {
   const { focus, screen } = useKeyboardState();
   const phone = usePhonePages(focus.block);
   const cursorAt = (index: number) => focus.level === 'menu' && focus.menuIndex === index;
@@ -107,6 +108,7 @@ export function ScreenFrame({ title, caps = true, bar, end, level = true, childr
           ))}
         </Island>
         {bar}
+        {lead}
         <h1 ref={heading} className={styles.titulo} data-caps={caps}>
           {title}
         </h1>
@@ -114,21 +116,7 @@ export function ScreenFrame({ title, caps = true, bar, end, level = true, childr
           {end}
           {level && <LevelIndicator level={levelName} keys={LEVEL_KEYS[levelName]} />}
           {!storage.persistent && <span className={styles.aviso}>Dados de exemplo</span>}
-          <Button variant="quiet" menuItem cursor={cursorAt(SCREENS.length)} onPress={openFaults}>
-            Faltas
-          </Button>
-          <Button variant="quiet" menuItem cursor={cursorAt(SCREENS.length + 1)} onPress={openNotes}>
-            Notas
-          </Button>
-          <Button
-            variant="quiet"
-            menuItem
-            cursor={cursorAt(SCREENS.length + 2)}
-            label="Ajuda"
-            onPress={() => dispatch({ type: 'openHelp' })}
-          >
-            ?
-          </Button>
+          <TopMenuButton cursor={cursorAt(SCREENS.length)} />
         </div>
       </nav>
       <div className={styles.corpo}>

@@ -17,11 +17,13 @@ interface BlockToggleProps {
   letter: string;
   open: boolean;
   cursor?: boolean;
+  // Com ícone, o nome sai da tela (fica no título e na leitura de tela).
+  icon?: ReactNode;
   onToggle: () => void;
 }
 
 // Alternador de bloco: mostra ou esconde um bloco. Aberto = fundo de escolhido e marca cheia.
-export function BlockToggle({ name, letter, open, cursor, onToggle }: BlockToggleProps) {
+export function BlockToggle({ name, letter, open, cursor, icon, onToggle }: BlockToggleProps) {
   return (
     <button
       type="button"
@@ -30,11 +32,12 @@ export function BlockToggle({ name, letter, open, cursor, onToggle }: BlockToggl
       data-sel={open}
       data-cursor={cursor ? '' : undefined}
       aria-pressed={open}
-      title={`Alt ${letter}`}
+      title={`${name} · Alt ${letter}`}
+      aria-label={icon ? name : undefined}
       onClick={onToggle}
     >
-      <i className={styles.marca} />
-      {name}
+      {icon ? <span className={styles.icone}>{icon}</span> : <i className={styles.marca} />}
+      {icon ? null : name}
       <Key>{letter}</Key>
     </button>
   );

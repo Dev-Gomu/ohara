@@ -13,6 +13,7 @@ import { Treino } from '../screens/treino/Treino';
 import { ConsultWindows } from './ConsultWindows';
 import { HelpWindow } from './HelpWindow';
 import { OptionsWindow } from './OptionsWindow';
+import { TopMenuWindow } from './TopMenu';
 import { Palette } from './Palette';
 import { PromptWindow } from './PromptWindow';
 import { UndoBar } from './UndoBar';
@@ -90,6 +91,7 @@ export function Shell() {
       <Palette />
       <ReminderWindow />
       <OptionsWindow />
+      <TopMenuWindow />
       <ConsultWindows />
       <PromptWindow />
       <UndoBar />

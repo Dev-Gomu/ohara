@@ -1,0 +1,88 @@
+.botao {
+  position: relative;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--raio-pilula);
+  color: var(--cor-acao);
+  font: var(--ui-botao);
+}
+
+.botao::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+}
+
+.botao svg {
+  width: 22px;
+  height: 22px;
+}
+
+.veu {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding: calc(var(--margem-tela) + var(--barra-topo)) var(--margem-tela) 0;
+}
+
+.caixa {
+  width: min(240px, 100%);
+}
+
+.janela {
+  padding: var(--e1);
+  border-radius: var(--raio-campo);
+  background: var(--cor-cartao);
+  box-shadow: var(--sombra-flutuante);
+  outline: none;
+}
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  outline: none;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: var(--e3);
+  min-height: var(--alvo);
+  padding: 0 var(--e3);
+  border-radius: var(--raio-item);
+  font: var(--ui-item);
+  cursor: pointer;
+}
+
+.item[data-focused] {
+  background: var(--cor-escolhido);
+}
+
+.item > :last-child:not(.icone) {
+  margin-left: auto;
+}
+
+.icone {
+  display: inline-flex;
+  width: 22px;
+  height: 22px;
+  color: var(--cor-texto-2);
+}
+
+.icone svg {
+  width: 100%;
+  height: 100%;
+}
+
+.sinal {
+  width: 100%;
+  text-align: center;
+}

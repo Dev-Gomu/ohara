@@ -15,7 +15,8 @@ async function criarMateria(page: Page, name: string) {
 }
 
 async function abrirNotas(page: Page) {
-  await page.getByRole('button', { name: 'Notas', exact: true }).click();
+  await page.getByRole('button', { name: 'Mais', exact: true }).click();
+  await page.getByRole('menuitem', { name: 'Notas', exact: true }).click();
 }
 
 async function preencher(page: Page, valores: string[]) {

@@ -4,6 +4,7 @@ import { leaf, leaves, split } from '../../../core/mosaic/tree';
 import { currentEventIndex, eventsOn, subjectOf } from '../../../core/study/queries';
 import type { StudyData } from '../../../core/study/types';
 import { Block } from '../../components/Block';
+import { BlockIcon } from '../../components/BlockIcon';
 import { Button } from '../../components/Button';
 import { SubjectPill } from '../../components/Pill';
 import { ModeIndicator } from '../../components/Island';
@@ -36,9 +37,9 @@ const ALL = [SLIDES, NOTES, CARDS];
 const INITIAL = split('row', split('col', leaf(SLIDES), leaf(CARDS), 0.58), leaf(NOTES));
 
 const TOGGLES = [
-  { id: SLIDES, label: 'Slides', letter: 'S' },
-  { id: NOTES, label: 'Anotações', letter: 'A' },
-  { id: CARDS, label: 'Cartões', letter: 'C' },
+  { id: SLIDES, label: 'Slides', letter: 'S', icon: 'slides' as const },
+  { id: NOTES, label: 'Anotações', letter: 'A', icon: 'notas' as const },
+  { id: CARDS, label: 'Cartões', letter: 'C', icon: 'cartoes' as const },
 ];
 
 function defaultLesson(data: StudyData): string {
@@ -247,9 +248,9 @@ function LessonDesk({ data, lessonId }: { data: StudyData; lessonId: string }) {
       title={lesson?.title}
       caps={false}
       level={!mosaic.resizing}
+      lead={subject && <SubjectPill code={subject.code} color={subject.color} />}
       end={
         <>
-          {subject && <SubjectPill code={subject.code} color={subject.color} />}
           {mosaic.resizing ? (
             <ModeIndicator
               name="Redimensionar"
@@ -258,11 +259,12 @@ function LessonDesk({ data, lessonId }: { data: StudyData; lessonId: string }) {
             />
           ) : (
             <ToggleGroup label="Blocos">
-              {TOGGLES.map(({ id, label, letter }) => (
+              {TOGGLES.map(({ id, label, letter, icon }) => (
                 <BlockToggle
                   key={id}
                   name={label}
                   letter={letter}
+                  icon={<BlockIcon name={icon} />}
                   open={mosaic.isOpen(id)}
                   onToggle={() => mosaic.toggle(id)}
                 />

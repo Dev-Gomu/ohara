@@ -61,10 +61,10 @@
 ### docs/estado.md
 - L1 # Estado do Ohara (atualizado em 14/11/2026)
 - L5 ## Onde estamos
-- L10 ## Próximo passo
-- L38 ## A conferir (aplicado em 13/11, só check e e2e)
-- L41 ## Esperando o usuário
-- L45 ## Iniciativas abertas (máx. 3)
+- L12 ## Próximo passo
+- L40 ## A conferir (aplicado em 13/11, só check e e2e)
+- L43 ## Esperando o usuário
+- L47 ## Iniciativas abertas (máx. 3)
 
 ### docs/mapa.md
 - L1 # Mapa do projeto
@@ -377,9 +377,11 @@
 - src/ui/shell/PromptWindow.tsx: Formulário curto de qualquer tela. Enter envia, Esc cancela.
 - src/ui/shell/ReminderWindow.tsx: `export function ReminderWindow()`
 - src/ui/shell/ScreenFrame.module.css: (sem comentário nem export no topo)
-- src/ui/shell/ScreenFrame.tsx: Falso quando um modo passageiro (Redimensionar) toma o lugar do indicador de nível.
+- src/ui/shell/ScreenFrame.tsx: Antes do título (a sigla da matéria na Mesa).
 - src/ui/shell/Shell.module.css: Tecla sobre o botão amarelo do aviso.
 - src/ui/shell/Shell.tsx: (sem comentário nem export no topo)
+- src/ui/shell/TopMenu.module.css: (sem comentário nem export no topo)
+- src/ui/shell/TopMenu.tsx: (sem comentário nem export no topo)
 - src/ui/shell/UndoBar.tsx: `export function UndoBar()`
 - src/ui/shell/commands.ts: `export const CONSULT_WINDOWS = [`
 - src/ui/shell/topAnimation.ts: Preferência de aparelho, como o tema: sem armazenamento vale o padrão.
