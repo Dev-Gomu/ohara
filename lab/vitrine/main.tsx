@@ -11,6 +11,7 @@ import { dispatch } from '../../src/ui/keyboard/store';
 import { Controles } from './controles';
 import { Estrutura } from './estrutura';
 import { AgendaMesa } from './agenda-mesa';
+import { Pecas1511 } from './pecas-15-11';
 
 const raiz = document.documentElement;
 const pedido = new URLSearchParams(location.search);
@@ -43,6 +44,7 @@ function Vitrine() {
       <Estrutura />
       <Controles />
       <AgendaMesa />
+      <Pecas1511 />
     </main>
   );
 }

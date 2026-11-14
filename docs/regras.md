@@ -58,5 +58,5 @@
 |---|---|---|
 | N1 | Estrutura: matéria → semestre → bimestre → itens com peso. Mínimo 7,0, "Preciso de X", prova faltada = pendente (não vale zero), reposição ocupa o lugar da original, bônus com teto 10 | Manter (detalhe na Etapa 13) |
 | N2 | Regras de cálculo são um **esquema por matéria e por ano**, nunca fixo no código | Manter |
-| N3 | Trava das Notas por **PIN curto** (só trava de tela) | Rever (D41 pede a frase da cifra; decide-se na Etapa 13) |
+| N3 | Trava das Notas por **PIN de 6 números** por aparelho; a chave é aleatória e fica guardada no aparelho (sem frase). Aparelho novo entra por QR/código; o código de recuperação cria PIN novo | Aplicada (D171, D172, D176) |
 | N4 | Recuperação e prova final | Descartar (o usuário não usa) |

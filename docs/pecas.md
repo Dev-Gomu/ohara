@@ -58,6 +58,10 @@
   Único lugar em que a cor da matéria vira fundo. Só a sigla, nunca o nome inteiro.
   `interface SubjectCardProps extends TargetProps { code: string; color: number; detail?: string; }`
 
+### CheckItem.tsx
+- `function CheckItem({ title, checked, note, children, ...target }: CheckItemProps)`
+  `interface CheckItemProps extends TargetProps { title: string; checked: boolean; note?: string | undefined; children?: ReactNode; }`
+
 ### Controls.tsx
 - `function Field({ label, shortcut, ...input }: FieldProps)`
   Campo de busca e de formulário. As teclas são do texto: o listener cuida disso pelo nível.
@@ -76,6 +80,17 @@
   Item da Agenda de hoje: hora em duas linhas, título, sigla em texto; a matéria é um tom no fundo.
   `interface DayItemProps extends TargetProps { start: string; end: string; title: string; code: string; color: number | undefined; past?: boolean; children?: ReactNode; }`
 
+### Dica.tsx
+- `function Dica({ content, shortcut, side = 'top', children }: DicaProps)`
+  `interface DicaProps { content: string; shortcut?: string; side?: 'top' | 'bottom'; children: ReactElement<{ 'aria-describedby'?: string }>; }`
+
+### DicaGrupo.tsx
+- `interface DicaGroup { id: string; controller: DicaController; delay: number; warmWindow: number; }`
+- `const DicaContext`
+- `function DicaGrupo({ delay = 400, warmWindow = 300, children, }: { delay?: number; warmWindow?: number; children: ReactNode; })`
+  Uma dica só para a barra toda: cada botão pede, o grupo desenha e desliza.
+- `const useDicaGroup = (): DicaGroup | null =>`
+
 ### FaultCell.tsx
 - `function FaultCell({ code, missed, limit, attention, ...target }: FaultCellProps)`
   Célula de Faltas: só texto. A bolinha no canto da sigla (exceção ao "sem círculos", D128) marca atenção.
@@ -87,7 +102,7 @@
 - `function FilterChip({ subject, children, ...target }: TargetProps & { subject?: number | undefined; children: string })`
 
 ### FormatBar.tsx
-- `interface FormatTool { id: string; label: string; icon?: string; sel: boolean; run: () => void; }`
+- `interface FormatTool { id: string; label: string; shortcut?: string; icon?: string; sel: boolean; run: () => void; }`
 - `function FormatBar({ tools, styleTools, bar, onExpand, onOptions }: FormatBarProps)`
   Cabeçalho do bloco Anotações (D146): caderno, barra de formatação (D145) e ⋮ na mesma linha. O que não cabe sobe para o topo do menu Aa (D152). Caderno, Aa e ⋮ nunca somem.
   `interface FormatBarProps { tools: readonly FormatTool[]; styleTools: readonly FormatTool[]; bar?: 'top'; onExpand?: () => void; onOptions?: () => void; }`
@@ -165,6 +180,23 @@
 - `function DayPill({ weekday, number, today, }: { weekday: string; number: string; today?: boolean; })`
   Pílula do dia: dia da semana e número juntos; hoje fica cheia de ação.
 
+### PinSlots.tsx
+- `type PinStatus = 'idle' | 'success' | 'error';`
+  Código de N casas (PIN). Porte do Code Slots do React Bits, aprovado na bancada (V2). Campo de texto próprio: só dígitos e Backspace, sem escutar tecla (D15). Clique ou toque escolhe a casa.
+- `function PinSlots({ length = 6, status = 'idle', mask = true, disabled = false, autoFocus = false, ariaLabel = 'PIN', onChange, onComplete, }: PinSlotsProps)`
+  `interface PinSlotsProps { length?: number; status?: PinStatus; mask?: boolean; disabled?: boolean; autoFocus?: boolean; ariaLabel?: string; onChange?: (code: string) => void; onComplete?: (code: string) => void; }`
+
+### PinSlotsParts.tsx
+- `const SINK_FADE`
+- `const clamp01 = (v: number): number =>`
+- `const digitsOf = (raw: unknown): string =>`
+- `const toSlots = (raw: unknown, n: number): string[] =>`
+- `const firstEmptyOf = (slots: readonly string[]): number =>`
+- `const isFull = (slots: readonly string[]): boolean =>`
+- `function Slot({ mv, drop, char, active, rise, sink }: SlotProps)`
+  Uma casa: o enchimento "pousa" com mola e o dígito sobe; no acerto, afunda em cascata.
+  `interface SlotProps { mv: MotionValue<number>; drop: MotionValue<number>; char: string; active: boolean; rise: number; sink: number; }`
+
 ### Preview.tsx
 - `function Preview({ title, detail, actions, children }: PreviewProps)`
   Prévia do item escolhido. O título é texto do usuário: fica como foi digitado.
@@ -221,6 +253,15 @@
   O Esc é do listener: ele fecha pelo estado, e o React Aria nem chega a ver a tecla (D08). Rodapé de ações: os botões dividem a largura em partes iguais, sem atalhos escritos.
 - `function Window({ id, title, context, detail, testId, wide, children }: WindowProps)`
   `interface WindowProps { id: string; title: string; context?: string; detail?: string; testId?: string; wide?: boolean; children: ReactNode; }`
+
+### dicaController.ts
+- `type DicaSide = 'top' | 'bottom';`
+  Dica "aquecida" (porte do WarmTooltip, React Bits; D175): a primeira espera um instante; enquanto o grupo está quente, a dica desliza para o vizinho em vez de fechar e abrir. Estado fora do React.
+- `type DicaMode = 'cold' | 'warm' | 'instant' | 'move';`
+- `interface DicaPayload { id: string; trigger: HTMLElement; content: string; shortcut: string | undefined; side: DicaSide; gap: number; warmWindow: number; }`
+- `interface DicaView { state: 'closed' | 'open' | 'closing'; current: DicaPayload | null; mode: DicaMode; swap: number; }`
+- `const EASE_OUT`
+- `function anchorOf(trigger: HTMLElement, side: DicaSide, gap: number): [number, number]`
 
 ## Store do teclado e das telas (src/ui/keyboard)
 

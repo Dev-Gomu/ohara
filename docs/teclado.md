@@ -91,6 +91,7 @@ Esta é a tabela de atalhos que a Etapa 2 implementa. Cada linha vira um teste (
 | Ctrl Enter | Salvar cartões |
 | Ctrl Shift C | Cartão: nova lacuna cloze (próximo número); com seleção, envolve o texto |
 | Ctrl Alt C | Cartão: outra lacuna com o mesmo número |
+| Tab · Shift Tab | Cartão novo: da frente ao verso e de volta (D170) |
 
 ## Decisões desta etapa
 
