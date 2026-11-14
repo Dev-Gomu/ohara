@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { formatCard } from './cardFormat';
+import { formatCard, insertCloze } from './cardFormat';
 
 describe('formatação do editor de cartões', () => {
   it('envolve a seleção com a marca', () => {
@@ -45,5 +45,24 @@ describe('formatação do editor de cartões', () => {
 
   it('trocar de lista troca a marca da linha', () => {
     expect(formatCard({ text: '- febre', start: 0, end: 0 }, 'orderedList').text).toBe('1. febre');
+  });
+});
+
+describe('insertCloze', () => {
+  it('sem seleção abre o par com o cursor na resposta', () => {
+    expect(insertCloze({ text: 'A  é', start: 2, end: 2 }, false)).toEqual({ text: 'A {{c1::}} é', start: 8, end: 8 });
+  });
+
+  it('envolve a seleção e põe o cursor depois', () => {
+    const edit = insertCloze({ text: 'A IL-6 é', start: 2, end: 6 }, false);
+    expect(edit.text).toBe('A {{c1::IL-6}} é');
+    expect(edit.start).toBe(edit.text.indexOf(' é'));
+  });
+
+  it('numera pela linha do cursor: próximo livre ou o mesmo', () => {
+    const text = '@ A {{c1::IL-6}} e {{c2::PCR}} x\nOutra {{c5::linha}}';
+    const at = text.indexOf(' x');
+    expect(insertCloze({ text, start: at, end: at }, false).text).toContain('{{c3::}}');
+    expect(insertCloze({ text, start: at, end: at }, true).text).toContain('{{c2::}}');
   });
 });

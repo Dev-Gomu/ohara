@@ -56,6 +56,8 @@ export type KeyAction =
   | { type: 'orderedList' }
   | { type: 'bulletList' }
   | { type: 'taskList' }
+  | { type: 'cloze' }
+  | { type: 'clozeSame' }
   | { type: 'saveCards' }
   | { type: 'flipCard' }
   | { type: 'rateCard'; grade: 1 | 2 | 3 | 4 };

@@ -169,6 +169,14 @@ function LessonDesk({ data, lessonId }: { data: StudyData; lessonId: string }) {
           return mosaic.actions.escape ? mosaic.actions.escape(change) : false;
         cardsEditor.setOpenId(null);
       },
+      cloze: () => {
+        if (!inCards()) return false;
+        cardsEditor.cloze(false);
+      },
+      clozeSame: () => {
+        if (!inCards()) return false;
+        cardsEditor.cloze(true);
+      },
       saveCards: () => {
         if (!inCards()) return false;
         cardsEditor.save();

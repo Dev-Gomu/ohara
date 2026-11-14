@@ -95,11 +95,11 @@
 - L1 # Ohara: teclado
 - L8 ## Regras de uso
 - L19 ## Tabela final
-- L81 ## Decisões desta etapa
-- L87 ## Testado (PC, Linux, Chrome instalado como app)
-- L93 ## Testado no tablet (Galaxy Tab S7 FE, na horizontal)
-- L99 ## Checkpoint da Etapa 6 (07/11/2026)
-- L103 ## Pendências
+- L83 ## Decisões desta etapa
+- L89 ## Testado (PC, Linux, Chrome instalado como app)
+- L95 ## Testado no tablet (Galaxy Tab S7 FE, na horizontal)
+- L101 ## Checkpoint da Etapa 6 (07/11/2026)
+- L105 ## Pendências
 
 ### docs/telas.md
 - L1 # Ohara: telas

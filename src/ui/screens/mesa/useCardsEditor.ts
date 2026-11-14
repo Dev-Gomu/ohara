@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef, useState } from 'react';
-import { formatCard, type CardFormat } from '../../../core/study/cardFormat';
+import { formatCard, insertCloze, type CardFormat } from '../../../core/study/cardFormat';
 import {
   backspaceAtStart,
   locate,
@@ -43,6 +43,7 @@ export interface CardsEditor {
   activate: (line: number) => void;
   typeLine: (value: string, caret: number) => void;
   format: (format: CardFormat) => void;
+  cloze: (same: boolean) => void;
   lineActions: {
     cardLineSplit: () => void;
     cardLineBack: () => void;
@@ -115,6 +116,17 @@ export function useCardsEditor(blockId: string, lessonId: string): CardsEditor {
     setRequest({ start: atEnd ? (lines[next] ?? '').length : 0, end: atEnd ? (lines[next] ?? '').length : 0 });
   };
 
+  // Aplica uma edição pura à seleção da linha ativa e devolve o cursor ao lugar certo.
+  const change = (run: (edit: { text: string; start: number; end: number }) => { text: string; start: number; end: number }): void => {
+    const { start, end } = selection();
+    const edit = run({ text: source, start: offsetOf(source, line, start), end: offsetOf(source, line, end) });
+    write(edit.text);
+    const from = locate(edit.text, edit.start);
+    const to = locate(edit.text, edit.end);
+    setActive(from.line);
+    setRequest({ start: from.caret, end: to.line === from.line ? to.caret : from.caret });
+  };
+
   return {
     mode,
     setMode,
@@ -151,18 +163,8 @@ export function useCardsEditor(blockId: string, lessonId: string): CardsEditor {
       setActive(-1);
       setRequest({ start: Number.MAX_SAFE_INTEGER, end: Number.MAX_SAFE_INTEGER });
     },
-    format: (kind) => {
-      const { start, end } = selection();
-      const edit = formatCard(
-        { text: source, start: offsetOf(source, line, start), end: offsetOf(source, line, end) },
-        kind,
-      );
-      write(edit.text);
-      const from = locate(edit.text, edit.start);
-      const to = locate(edit.text, edit.end);
-      setActive(from.line);
-      setRequest({ start: from.caret, end: to.line === from.line ? to.caret : from.caret });
-    },
+    format: (kind) => change((edit) => formatCard(edit, kind)),
+    cloze: (same) => change((edit) => insertCloze(edit, same)),
     newCard: () => {
       const next = appendCard(source);
       setMode('novo');

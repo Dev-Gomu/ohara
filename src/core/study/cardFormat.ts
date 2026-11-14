@@ -70,6 +70,23 @@ function toggleLines(edit: Edit, kind: 'bulletList' | 'orderedList'): Edit {
   };
 }
 
+// Cloze (D157): envolve a seleção em "{{cN::…}}" ou abre o par com o cursor na resposta.
+// O número vem da linha do cursor: o próximo livre, ou, com `same`, o maior já usado (outra lacuna do mesmo cartão).
+export function insertCloze(edit: Edit, same: boolean): Edit {
+  const { text, start, end } = edit;
+  const from = text.lastIndexOf('\n', start - 1) + 1;
+  const stop = text.indexOf('\n', end);
+  const line = text.slice(from, stop === -1 ? text.length : stop);
+  const used = [...line.matchAll(/\{\{c(\d+)::/g)].map((found) => Number(found[1]));
+  const top = Math.max(0, ...used);
+  const number = same ? Math.max(1, top) : top + 1;
+  const open = `{{c${number}::`;
+  const selected = text.slice(start, end);
+  const next = text.slice(0, start) + open + selected + '}}' + text.slice(end);
+  const caret = selected === '' ? start + open.length : start + open.length + selected.length + 2;
+  return { text: next, start: caret, end: caret };
+}
+
 export function formatCard(edit: Edit, format: CardFormat): Edit {
   const marker = MARKERS[format];
   if (marker) return wrap(edit, marker);

@@ -77,6 +77,8 @@ Esta é a tabela de atalhos que a Etapa 2 implementa. Cada linha vira um teste (
 | Ctrl Alt 1 · 2 · 3 | Título 1, 2, 3 |
 | Ctrl Shift 7 · 8 · 9 | Lista numerada, com marcadores, de tarefas |
 | Ctrl Enter | Salvar cartões |
+| Ctrl Shift C | Cartão: nova lacuna cloze (próximo número); com seleção, envolve o texto |
+| Ctrl Alt C | Cartão: outra lacuna com o mesmo número |
 
 ## Decisões desta etapa
 

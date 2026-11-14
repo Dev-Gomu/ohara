@@ -335,6 +335,8 @@ export const KEYS: readonly KeyRow[] = [
   ),
   row('Editor', 'Ctrl Shift 9', 'Digit9', 'cs', FIELD, { type: 'taskList' }, 'Lista de tarefas'),
   row('Editor', 'Ctrl Enter', 'Enter', 'c', FIELD, { type: 'saveCards' }, 'Salvar cartões'),
+  row('Editor', 'Ctrl Shift C', 'KeyC', 'cs', FIELD, { type: 'cloze' }, 'Cartão: nova lacuna (cloze)'),
+  row('Editor', 'Ctrl Alt C', 'KeyC', 'ca', FIELD, { type: 'clozeSame' }, 'Cartão: outra lacuna, mesmo número'),
 ];
 
 // Só valem com o modo Ajustar da tabela ligado (D149); por isso ficam fora de KEYS.
