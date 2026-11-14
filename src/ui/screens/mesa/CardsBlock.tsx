@@ -1,27 +1,30 @@
 import { useEffect, useRef, useState } from 'react';
 import {
   appendCard,
+  backPreview,
   isComplete,
   keepIncomplete,
   parseDrafts,
   type Draft,
 } from '../../../core/study/cardText';
+import { formatCard, type CardFormat } from '../../../core/study/cardFormat';
+import { symbolAtCaret } from '../../../core/study/symbols';
 import { addCards } from '../../../core/study/create';
 import type { Card } from '../../../core/study/types';
 import { Block } from '../../components/Block';
 import { Button } from '../../components/Button';
-import { CardBack, Inline } from '../../components/CardBack';
+import { Inline, StudyCard } from '../../components/CardBack';
 import { NavItem } from '../../components/NavItem';
 import { dispatch } from '../../keyboard/store';
 import { useScreenMemory } from '../../study/screenMemory';
+import { useCardView } from '../../study/cardView';
 import { storage, today } from '../../study/study';
 import { BlockTab, BlockTabs } from '../../components/Toggles';
 import styles from './CardsBlock.module.css';
 
 export type CardsMode = 'novo' | 'salvos';
 
-const CARD_COLORS = ['roxo', 'rosa', 'azul', 'verde'];
-const HINT = '@ frente · # seção · - item · 1. número · + a favor · -- contra · ? dúvida';
+const HINT = '@ frente · # seção · ## subtítulo · - item · 1. número · + a favor · -- contra · ? dúvida';
 
 export interface CardsEditor {
   mode: CardsMode;
@@ -33,6 +36,12 @@ export interface CardsEditor {
   saved: number | null;
   save: () => void;
   newCard: () => void;
+  // Cartão aberto no lugar da linha, na lista de salvos (D151).
+  openId: string | null;
+  setOpenId: (id: string | null) => void;
+  format: (format: CardFormat) => void;
+  // Troca "->" e afins por símbolos logo ao digitar.
+  type: (text: string, caret: number) => void;
   field: React.RefObject<HTMLTextAreaElement | null>;
 }
 
@@ -40,15 +49,16 @@ export interface CardsEditor {
 export function useCardsEditor(blockId: string, lessonId: string): CardsEditor {
   const [mode, setMode] = useScreenMemory<CardsMode>('mesa.cartoes.modo', 'novo');
   const [source, setSource] = useScreenMemory(`mesa.cartoes.rascunho.${lessonId}`, '');
-  const [caret, setCaret] = useState<number | null>(null);
+  const [caret, setCaret] = useState<{ start: number; end: number } | null>(null);
   const [saved, setSaved] = useState<number | null>(null);
+  const [openId, setOpenId] = useState<string | null>(null);
   const field = useRef<HTMLTextAreaElement>(null);
   const drafts = parseDrafts(source);
   const ready = drafts.filter(isComplete).length;
 
   useEffect(() => {
     if (caret === null || !field.current) return;
-    field.current.setSelectionRange(caret, caret);
+    field.current.setSelectionRange(caret.start, caret.end);
     setCaret(null);
   }, [caret]);
 
@@ -63,6 +73,8 @@ export function useCardsEditor(blockId: string, lessonId: string): CardsEditor {
     drafts,
     ready,
     saved,
+    openId,
+    setOpenId,
     field,
     save: () => {
       const complete = drafts.filter(isComplete);
@@ -72,14 +84,29 @@ export function useCardsEditor(blockId: string, lessonId: string): CardsEditor {
       const rest = keepIncomplete(drafts);
       setSource(rest);
       setSaved(complete.length);
-      setCaret(rest.length);
+      setCaret({ start: rest.length, end: rest.length });
+    },
+    format: (kind) => {
+      const area = field.current;
+      if (!area) return;
+      const edit = formatCard(
+        { text: area.value, start: area.selectionStart, end: area.selectionEnd },
+        kind,
+      );
+      setSource(edit.text);
+      setCaret({ start: edit.start, end: edit.end });
+    },
+    type: (text, at) => {
+      const swapped = symbolAtCaret(text, at);
+      setSource(swapped ? swapped.text : text);
+      if (swapped) setCaret({ start: swapped.caret, end: swapped.caret });
     },
     newCard: () => {
       const next = appendCard(source);
       setMode('novo');
       setSource(next.source);
       setSaved(null);
-      setCaret(next.caret);
+      setCaret({ start: next.caret, end: next.caret });
       dispatch({ type: 'jump', block: blockId, level: 'field' });
     },
   };
@@ -122,13 +149,14 @@ export function CardsBlock({ id, cards, editor }: CardsBlockProps) {
   );
   return (
     <Block id={id} title="Cartões" icon="cartoes" tools={tools} shortcut="Alt C" menu>
-      {mode === 'novo' ? <Writer editor={editor} /> : <Saved id={id} cards={cards} />}
+      {mode === 'novo' ? <Writer editor={editor} /> : <Saved id={id} cards={cards} editor={editor} />}
     </Block>
   );
 }
 
 function Writer({ editor }: { editor: CardsEditor }) {
-  const { source, setSource, drafts, saved, field } = editor;
+  const { source, type, drafts, saved, field } = editor;
+  const view = useCardView();
   return (
     <div className={styles.criar}>
       <div className={styles.criarGrade}>
@@ -142,7 +170,7 @@ function Writer({ editor }: { editor: CardsEditor }) {
           placeholder={
             '@ Quem libera IL-6?\nMacrófago ativado\n# Efeitos\n- Febre\n- ↑ PCR no fígado'
           }
-          onChange={(event) => setSource(event.target.value)}
+          onChange={(event) => type(event.target.value, event.target.selectionStart)}
         />
         <div className={styles.rascunhos} aria-label="Prévia">
           {saved !== null && (
@@ -156,16 +184,14 @@ function Writer({ editor }: { editor: CardsEditor }) {
             </p>
           )}
           {drafts.map((draft, index) => (
-            <article key={index} className={styles.rascunho} data-incompleto={!isComplete(draft)}>
-              <p className={styles.frente}>
-                {draft.front ? <Inline text={draft.front} /> : 'Sem frente'}
-              </p>
-              {draft.back ? (
-                <CardBack back={draft.back} compact />
-              ) : (
-                <p className={styles.falta}>Falta o verso</p>
-              )}
-            </article>
+            <StudyCard
+              key={index}
+              front={draft.front}
+              back={draft.back}
+              compact={view.compact}
+              colorTitles={view.colorTitles}
+              incomplete={!isComplete(draft)}
+            />
           ))}
         </div>
       </div>
@@ -173,24 +199,47 @@ function Writer({ editor }: { editor: CardsEditor }) {
   );
 }
 
-function Saved({ id, cards }: { id: string; cards: readonly Card[] }) {
+function Saved({ id, cards, editor }: { id: string; cards: readonly Card[]; editor: CardsEditor }) {
+  const { openId, setOpenId } = editor;
+  const view = useCardView();
+  if (cards.length === 0) return <p className={styles.vazio}>Sem cartões nesta aula. Alt N cria.</p>;
   return (
-    <div className={styles.cartoes}>
-      {cards.length === 0 && <p className={styles.vazio}>Sem cartões nesta aula. Alt N cria.</p>}
-      {cards.map(({ id: cardId, question, answer }, index) => (
-        <NavItem
-          key={cardId}
-          block={id}
-          index={index}
-          className={styles.cartao}
-          color={CARD_COLORS[index % CARD_COLORS.length]}
-        >
-          <span className={styles.pergunta}>
-            <Inline text={question} />
-          </span>
-          <CardBack back={answer} compact />
-        </NavItem>
-      ))}
-    </div>
+    <ol className={styles.lista}>
+      {cards.map(({ id: cardId, question, answer }, index) => {
+        const toggle = () => setOpenId(openId === cardId ? null : cardId);
+        return (
+          <li key={cardId}>
+            <NavItem
+              block={id}
+              index={index}
+              ring="cursor"
+              className={openId === cardId ? styles.aberto : styles.linhaSalva}
+              onOpen={toggle}
+            >
+              {openId === cardId ? (
+                <StudyCard
+                  front={question}
+                  back={answer}
+                  compact={view.compact}
+                  colorTitles={view.colorTitles}
+                />
+              ) : (
+                <>
+                  <span className={styles.numero}>{index + 1}</span>
+                  <span className={styles.textoSalvo}>
+                    <span className={styles.pergunta}>
+                      <Inline text={question} />
+                    </span>
+                    <span className={styles.comeco}>
+                      <Inline text={backPreview(answer)} />
+                    </span>
+                  </span>
+                </>
+              )}
+            </NavItem>
+          </li>
+        );
+      })}
+    </ol>
   );
 }

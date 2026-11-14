@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import {
   appendCard,
+  backBlocks,
+  backPreview,
   backLines,
   isComplete,
   keepIncomplete,
@@ -13,6 +15,7 @@ describe('texto do editor de cartões', () => {
   it('reconhece as marcas do começo da linha', () => {
     expect(parseLine('@ O que é IL-6?')).toEqual({ kind: 'front', text: 'O que é IL-6?' });
     expect(parseLine('# Ações')).toEqual({ kind: 'section', text: 'Ações' });
+    expect(parseLine('## Citocinas')).toEqual({ kind: 'subsection', text: 'Citocinas' });
     expect(parseLine('-- Não é específica')).toEqual({ kind: 'con', text: 'Não é específica' });
     expect(parseLine('+ Rápida')).toEqual({ kind: 'pro', text: 'Rápida' });
     expect(parseLine('? Confirmar')).toEqual({ kind: 'doubt', text: 'Confirmar' });
@@ -58,6 +61,36 @@ describe('texto do editor de cartões', () => {
       { text: ' sobe a ', style: 'plain' },
       { text: 'PCR', style: 'mark' },
       { text: '.', style: 'plain' },
+    ]);
+  });
+
+  it('itálico, sublinhado, sobrescrito, subscrito e setas', () => {
+    expect(spans('*a* __b__ H~2~O m^2^ A -> B')).toEqual([
+      { text: 'a', style: 'italic' },
+      { text: ' ', style: 'plain' },
+      { text: 'b', style: 'underline' },
+      { text: ' H', style: 'plain' },
+      { text: '2', style: 'sub' },
+      { text: 'O m', style: 'plain' },
+      { text: '2', style: 'sup' },
+      { text: ' A → B', style: 'plain' },
+    ]);
+  });
+
+  it('~ e * soltos continuam texto', () => {
+    expect(spans('~5 mg e 2 * 3 * 4')).toEqual([{ text: '~5 mg e 2 * 3 * 4', style: 'plain' }]);
+  });
+
+  it('o começo do verso pula os títulos e junta as linhas', () => {
+    expect(backPreview('# Efeitos\n- Febre\n## Fígado\nPCR')).toBe('Febre · PCR');
+  });
+
+  it('agrupa o verso em seções e subtítulos', () => {
+    const blocks = backBlocks('solto\n# Ações\n- a\n## Fígado\n- b\n# Outra\n- c');
+    expect(blocks.map((block) => block.title)).toEqual([null, 'Ações', 'Outra']);
+    expect(blocks[1]?.lines.map((line) => line.text)).toEqual(['a']);
+    expect(blocks[1]?.subs).toEqual([
+      { title: 'Fígado', lines: [{ kind: 'item', text: 'b', position: 0 }] },
     ]);
   });
 

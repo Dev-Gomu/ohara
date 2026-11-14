@@ -62,9 +62,9 @@
 - L1 # Estado do Ohara (atualizado em 12/11/2026)
 - L5 ## Onde estamos
 - L10 ## Próximo passo
-- L28 ## A conferir (aplicado em 13/11, só check e e2e)
-- L31 ## Esperando o usuário
-- L35 ## Iniciativas abertas (máx. 3)
+- L29 ## A conferir (aplicado em 13/11, só check e e2e)
+- L32 ## Esperando o usuário
+- L36 ## Iniciativas abertas (máx. 3)
 
 ### docs/mapa.md
 - L1 # Mapa do projeto
@@ -205,6 +205,8 @@
 - src/core/study/agenda.ts: A semana mostra de 7h às 19h; aula fora disso alarga a faixa em vez de sumir.
 - src/core/study/attendance.test.ts: 2026-11-02 é segunda-feira.
 - src/core/study/attendance.ts: Aprovação por frequência: pelo menos 75% de presença (D100).
+- src/core/study/cardFormat.test.ts: (sem comentário nem export no topo)
+- src/core/study/cardFormat.ts: Formatação do texto do editor de cartões por atalho (D139): as mesmas teclas das Anotações
 - src/core/study/cardText.test.ts: (sem comentário nem export no topo)
 - src/core/study/cardText.ts: Texto do editor de cartões. Cada cartão começa numa linha "@ frente"; as linhas
 - src/core/study/create.test.ts: (sem comentário nem export no topo)
@@ -230,6 +232,8 @@
 - src/core/study/storage.ts: A tela só conhece esta interface: o banco (data/) e a memória (testes) a implementam.
 - src/core/study/subjectTiles.test.ts: (sem comentário nem export no topo)
 - src/core/study/subjectTiles.ts: Peça da grade de disciplinas do Treino. id nulo é "Todas".
+- src/core/study/symbols.test.ts: (sem comentário nem export no topo)
+- src/core/study/symbols.ts: Símbolos ao digitar (D139): tabela própria, do zero. Mais longo primeiro, para "<->" não virar "<" + "->".
 - src/core/study/types.ts: Posição na paleta, nunca o valor da cor: o tema pode mudar sem mexer nos dados.
 - src/core/study/versions.test.ts: (sem comentário nem export no topo)
 - src/core/study/versions.ts: D34: guarda uma versão a cada 5 minutos, até 50 por aula. Grava a versão anterior à edição,
@@ -249,8 +253,8 @@
 - src/ui/components/BlockIcon.tsx: `export type IconName = keyof typeof PATHS;`
 - src/ui/components/Button.module.css: Sobre azul cheio o cursor ganha um segundo aro, para não sumir.
 - src/ui/components/Button.tsx: 'primary': azul cheio, um por bloco. 'quiet': só texto, para ajuste menor.
-- src/ui/components/CardBack.module.css: (sem comentário nem export no topo)
-- src/ui/components/CardBack.tsx: Verso do cartão já formatado: seção, listas e marcas clínicas (+ a favor, − contra, ? dúvida).
+- src/ui/components/CardBack.module.css: Cartão de estudo (D138, D155): frente cheia no azul de ação, verso no mesmo contorno.
+- src/ui/components/CardBack.tsx: `export function Inline({ text }: { text: string })`
 - src/ui/components/Cards.module.css: Dia de avaliação: peça recuada com os bloquinhos das matérias.
 - src/ui/components/Cards.tsx: Texto do app, já pronto: "prova", "trabalho", "apres.".
 - src/ui/components/Controls.module.css: Em coluna, o flex: 1 esmagaria ou esticaria o campo.
@@ -321,14 +325,15 @@
 - src/ui/screens/hub/Hub.module.css: (sem comentário nem export no topo)
 - src/ui/screens/hub/Hub.tsx: Altura que as Provas precisam: cartão de 86 px mais a margem de 8 px dos dois lados.
 - src/ui/screens/hub/HubBlocks.tsx: `export function ExamsBlock({ id, days }: { id: string; days: readonly AssessmentDay[] })`
-- src/ui/screens/mesa/CardsBlock.module.css: (sem comentário nem export no topo)
-- src/ui/screens/mesa/CardsBlock.tsx: O rascunho fica na memória da tela, por aula, até salvar (não sobrevive a fechar o app).
+- src/ui/screens/mesa/CardsBlock.module.css: Cartões salvos (D151): lista com número, pergunta (até duas linhas) e começo do verso.
+- src/ui/screens/mesa/CardsBlock.tsx: Cartão aberto no lugar da linha, na lista de salvos (D151).
 - src/ui/screens/mesa/Mesa.module.css: (sem comentário nem export no topo)
 - src/ui/screens/mesa/Mesa.tsx: (sem comentário nem export no topo)
 - src/ui/screens/mesa/NotesBlock.tsx: (sem comentário nem export no topo)
 - src/ui/screens/mesa/SlidesViewer.tsx: (sem comentário nem export no topo)
 - src/ui/screens/mesa/TableBar.module.css: Mini-barra da tabela (D149): fina, no pé do bloco, nunca cobre a tabela.
 - src/ui/screens/mesa/TableBar.tsx: Mini-barra (D149): só aparece com o cursor na tabela; no modo Ajustar vira uma linha única.
+- src/ui/screens/mesa/cardActions.ts: As teclas de formatação são as mesmas das Anotações: com o foco nos Cartões escrevem a marca
 - src/ui/screens/mesa/notesTools.tsx: Título é um botão só: 1º toque Título 1, 2º Título 2, 3º volta ao texto.
 - src/ui/screens/mesa/tableAdjustExtension.ts: Altura é só mínima (D149): a linha guarda `minHeight` e a mostra como `height` (na tabela, mínimo).
 - src/ui/screens/mesa/tableOps.ts: Onde está o cursor dentro de uma tabela (sem células mescladas: o app não as cria).
@@ -362,6 +367,7 @@
 - src/ui/shell/topTabs.ts: Como a barra do topo mostra as telas: só o número, número com ícone, só o ícone ou o ícone
 - src/ui/study/actions.ts: `export function toggleReminder(id: string | undefined): void`
 - src/ui/study/attach.ts: `export async function attach(`
+- src/ui/study/cardView.ts: Jeito de mostrar o cartão (D138): vale por aparelho, não vai para o banco do estudo.
 - src/ui/study/download.ts: `export function downloadBytes(bytes: Uint8Array, filename: string): void`
 - src/ui/study/editOptions.ts: `export function folderOptions(folder: { id: string; name: string } | undefined): BlockOption[]`
 - src/ui/study/navigation.ts: O bloco vazio faz a matéria aplicar o foco de chegada, com a pasta inicial da D76.

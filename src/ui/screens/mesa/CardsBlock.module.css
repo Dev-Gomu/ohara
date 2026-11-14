@@ -1,42 +1,86 @@
-.cartoes {
+/* Cartões salvos (D151): lista com número, pergunta (até duas linhas) e começo do verso. */
+.lista {
   flex: 1;
   min-height: 0;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-auto-rows: min-content;
-  gap: var(--e2);
-  padding: var(--e1) var(--e3) var(--e3);
-  overflow: auto;
-}
-
-.cartao {
   display: flex;
   flex-direction: column;
-  gap: var(--e1);
-  padding: var(--e3);
+  gap: 2px;
+  margin: 0;
+  padding: var(--e1) var(--e2) var(--e2);
+  overflow: auto;
+  list-style: none;
+}
+
+.linhaSalva {
+  display: flex;
+  align-items: baseline;
+  gap: var(--e2);
+  width: 100%;
+  min-height: var(--alvo);
+  padding: var(--e3) var(--e3) var(--e3) var(--e2);
   border-radius: var(--raio-item);
-  color: var(--cor-tinta);
+  color: var(--cor-texto);
   text-align: left;
 }
 
-.cartao[data-cor='roxo'] {
-  background: var(--cor-materia-1);
+.linhaSalva[data-sel='true'] {
+  background: var(--cor-rastro);
 }
 
-.cartao[data-cor='rosa'] {
-  background: var(--cor-materia-4);
+.linhaSalva[data-cursor] {
+  background: var(--cor-escolhido);
 }
 
-.cartao[data-cor='azul'] {
-  background: var(--cor-materia-2);
+.aberto {
+  display: block;
+  width: 100%;
+  margin: var(--e1) 0;
+  border-radius: var(--raio-campo);
+  text-align: left;
 }
 
-.cartao[data-cor='verde'] {
-  background: var(--cor-materia-3);
+.aberto[data-cursor] {
+  outline: 2px solid var(--cor-cursor);
+  outline-offset: 2px;
+}
+
+.numero {
+  flex: none;
+  width: 2ch;
+  color: var(--cor-texto-2);
+  font: var(--ui-apoio);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.textoSalvo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .pergunta {
-  font: var(--voz-mini);
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  font: var(--ui-item);
+}
+
+.comeco {
+  overflow: hidden;
+  color: var(--cor-texto-2);
+  font: var(--ui-apoio);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* Na linha o marca-texto não pinta: só o cartão aberto mostra a marca. */
+.comeco mark {
+  background: none;
+  color: inherit;
 }
 
 /* Editor de cartões: texto à esquerda e prévia à direita; em bloco estreito, um sobre o outro. */
@@ -91,29 +135,6 @@
   gap: var(--e2);
   padding: 0 0 var(--e2);
   overflow: auto;
-}
-
-.rascunho {
-  display: flex;
-  flex-direction: column;
-  gap: var(--e2);
-  padding: var(--e3) var(--e4);
-  border-radius: var(--raio-item);
-  background: var(--cor-cartao-2);
-}
-
-.rascunho[data-incompleto='true'] {
-  outline: 2px dashed var(--cor-texto-2);
-  outline-offset: -2px;
-}
-
-.frente {
-  font: var(--voz-mini);
-}
-
-.falta {
-  color: var(--cor-texto-2);
-  font: var(--ui-apoio);
 }
 
 /* Segura o foco do editor ao tocar em Salvar. */

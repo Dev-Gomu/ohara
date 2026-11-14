@@ -1,8 +1,9 @@
 // Texto do editor de cartões. Cada cartão começa numa linha "@ frente"; as linhas
 // seguintes são o verso. Marcas no começo da linha dão forma ao verso, como no app antigo.
 // Tudo fica em texto puro: quem desenha é a tela, sem HTML vindo do usuário.
+import { replaceSymbols } from './symbols';
 
-export type LineKind = 'front' | 'section' | 'item' | 'number' | 'pro' | 'con' | 'doubt' | 'text';
+export type LineKind = 'front' | 'section' | 'subsection' | 'item' | 'number' | 'pro' | 'con' | 'doubt' | 'text';
 
 export interface Line {
   kind: LineKind;
@@ -17,6 +18,7 @@ export interface Draft {
 // A ordem importa: "--" antes de "-". Lista exige espaço, para "-5 mmHg" e "1.5 mg" não virarem lista.
 const MARKS: readonly [LineKind, RegExp][] = [
   ['front', /^@\s?/],
+  ['subsection', /^##\s?/],
   ['section', /^#\s?/],
   ['con', /^--\s/],
   ['pro', /^\+\s/],
@@ -68,24 +70,68 @@ export function backLines(back: string): BackLine[] {
     });
 }
 
-export interface Span {
-  text: string;
-  style: 'plain' | 'bold' | 'mark';
+// Começo do verso em uma linha, para a lista de salvos: só o texto, sem os títulos.
+export function backPreview(back: string): string {
+  return backLines(back)
+    .filter((line) => line.kind !== 'section' && line.kind !== 'subsection')
+    .map((line) => line.text)
+    .join(' · ');
 }
 
-// **negrito** e ==destaque== dentro da linha.
+export interface BackBlock {
+  // "# Seção"; null para as linhas que vêm antes da primeira seção.
+  title: string | null;
+  lines: BackLine[];
+  // "## Subtítulo" abre um sub-bloco dentro da seção.
+  subs: { title: string; lines: BackLine[] }[];
+}
+
+export function backBlocks(back: string): BackBlock[] {
+  const blocks: BackBlock[] = [];
+  for (const line of backLines(back)) {
+    if (line.kind === 'section') {
+      blocks.push({ title: line.text, lines: [], subs: [] });
+      continue;
+    }
+    if (blocks.length === 0) blocks.push({ title: null, lines: [], subs: [] });
+    const block = blocks[blocks.length - 1];
+    if (!block) continue;
+    if (line.kind === 'subsection') block.subs.push({ title: line.text, lines: [] });
+    else (block.subs.at(-1)?.lines ?? block.lines).push(line);
+  }
+  return blocks;
+}
+
+export interface Span {
+  text: string;
+  style: 'plain' | 'bold' | 'italic' | 'underline' | 'mark' | 'sup' | 'sub';
+}
+
+// Marcas dentro da linha (D139). "~5 mg" e "2 * 3" não casam: a marca não pode ter espaço colado por dentro.
+const INLINE: readonly [Span['style'], string][] = [
+  ['bold', String.raw`\*\*([^*]+)\*\*`],
+  ['underline', String.raw`__([^_]+)__`],
+  ['mark', String.raw`==([^=]+)==`],
+  ['italic', String.raw`\*([^*\s](?:[^*]*[^*\s])?)\*`],
+  ['sup', String.raw`\^([^^\s](?:[^^]*[^^\s])?)\^`],
+  ['sub', String.raw`~([^~\s](?:[^~]*[^~\s])?)~`],
+];
+const INLINE_PATTERN = new RegExp(INLINE.map(([, source]) => source).join('|'), 'g');
+
 export function spans(text: string): Span[] {
   const result: Span[] = [];
-  const pattern = /\*\*([^*]+)\*\*|==([^=]+)==/g;
+  const plain = (chunk: string): void => {
+    if (chunk) result.push({ text: replaceSymbols(chunk), style: 'plain' });
+  };
   let last = 0;
-  for (const found of text.matchAll(pattern)) {
-    if (found.index > last) result.push({ text: text.slice(last, found.index), style: 'plain' });
-    const [, bold, mark] = found;
-    if (bold !== undefined) result.push({ text: bold, style: 'bold' });
-    if (mark !== undefined) result.push({ text: mark, style: 'mark' });
+  for (const found of text.matchAll(INLINE_PATTERN)) {
+    plain(text.slice(last, found.index));
+    const group = INLINE.findIndex((_, index) => found[index + 1] !== undefined);
+    const style = INLINE[group]?.[0];
+    if (style) result.push({ text: replaceSymbols(found[group + 1] ?? ''), style });
     last = found.index + found[0].length;
   }
-  if (last < text.length) result.push({ text: text.slice(last), style: 'plain' });
+  plain(text.slice(last));
   return result;
 }
 

@@ -1,30 +1,101 @@
+/* Cartão de estudo (D138, D155): frente cheia no azul de ação, verso no mesmo contorno. */
+.carta {
+  container-type: inline-size;
+  overflow: hidden;
+  border: 1px solid var(--cor-acao);
+  border-radius: var(--raio-campo);
+  background: var(--cor-cartao);
+  color: var(--cor-texto);
+  text-align: left;
+}
+
+.carta[data-incompleto='true'] {
+  border-style: dashed;
+}
+
+.frente {
+  padding: var(--e3) var(--e4);
+  background: var(--cor-acao);
+  color: var(--cor-sobre-acao);
+  font: var(--voz-mini);
+}
+
+.carta > .verso {
+  padding: var(--e4) var(--e4) var(--e5);
+}
+
+.falta {
+  padding: var(--e3) var(--e4);
+  color: var(--cor-texto-2);
+  font: var(--ui-apoio);
+}
+
 .verso {
   display: flex;
   flex-direction: column;
-  gap: var(--e1);
+  gap: var(--e5);
   font: var(--leitura-texto);
   text-align: left;
 }
 
 .verso[data-compacto='true'] {
+  gap: var(--e3);
   font: var(--leitura-compacta);
 }
 
-.linha {
-  display: flex;
-  gap: var(--e2);
+/* Cartão largo (tablet deitado): as seções correm em duas colunas. */
+@container (min-width: 521px) {
+  .carta > .verso {
+    display: block;
+    columns: 2;
+    column-gap: var(--e5);
+  }
+
+  .carta > .verso > .secao {
+    break-inside: avoid;
+    margin-bottom: var(--e5);
+  }
+
+  .carta > .verso[data-compacto='true'] > .secao {
+    margin-bottom: var(--e3);
+  }
 }
 
-.linha[data-tipo='section'] {
-  margin-top: var(--e1);
-  color: var(--cor-texto-2);
+.secao {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e1);
+}
+
+.titulo {
+  color: var(--cor-texto);
   font: var(--ui-rotulo);
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
-.linha:first-child[data-tipo='section'] {
-  margin-top: 0;
+.verso[data-cor-titulos='true'] .titulo {
+  color: var(--cor-acao);
+}
+
+.sub {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e1);
+  margin-top: var(--e2);
+  margin-left: var(--e2);
+}
+
+.subtitulo {
+  color: var(--cor-texto-2);
+  font: var(--ui-rotulo);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.linha {
+  display: flex;
+  gap: var(--e2);
 }
 
 .linha:is(

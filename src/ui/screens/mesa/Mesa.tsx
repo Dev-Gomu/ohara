@@ -13,6 +13,7 @@ import { useBlocks } from '../../keyboard/useBlocks';
 import { Mosaic } from '../../mosaic/Mosaic';
 import { useMosaic } from '../../mosaic/useMosaic';
 import { ScreenFrame } from '../../shell/ScreenFrame';
+import { toggleColorTitles, toggleCompact, useCardView } from '../../study/cardView';
 import { cardOptions } from '../../study/editOptions';
 import { MESA_LESSON } from '../../study/navigation';
 import { useScreenMemory } from '../../study/screenMemory';
@@ -24,6 +25,7 @@ import styles from './Mesa.module.css';
 import { focusBar, stepBar, withBarActions } from '../../keyboard/bars';
 import { HistoryWindow, NotesBlock } from './NotesBlock';
 import { editorActions, useNotesEditor } from './useNotesEditor';
+import { cardFormatActions } from './cardActions';
 
 const SLIDES = 'mesa.slides';
 const NOTES = 'mesa.notes';
@@ -70,6 +72,7 @@ function LessonDesk({ data, lessonId }: { data: StudyData; lessonId: string }) {
 
   const editor = useNotesEditor(lessonId, lesson?.notes ?? '');
   const cardsEditor = useCardsEditor(CARDS, lessonId);
+  const cardView = useCardView();
   const inCards = () => getKeyboardState().focus.block === CARDS;
   const inNotes = () => getKeyboardState().focus.block === NOTES;
 
@@ -82,7 +85,11 @@ function LessonDesk({ data, lessonId }: { data: StudyData; lessonId: string }) {
         : {
             id: CARDS,
             kind: 'nav' as const,
-            nav: { axis: 'grid' as const, count: cards.length, columns: 2 },
+            nav: { axis: 'y' as const, count: cards.length },
+            onActivate: (index: number) => {
+              const id = cards[index]?.id ?? null;
+              cardsEditor.setOpenId(cardsEditor.openId === id ? null : id);
+            },
           },
     ].filter((block) => mosaic.isOpen(block.id)),
     arrival: mosaic.isOpen(NOTES)
@@ -116,6 +123,16 @@ function LessonDesk({ data, lessonId }: { data: StudyData; lessonId: string }) {
         : []),
       ...(block === CARDS
         ? [
+            {
+              id: 'compacto',
+              label: cardView.compact ? 'Usar cartão padrão' : 'Usar cartão compacto',
+              run: toggleCompact,
+            },
+            {
+              id: 'cor-titulos',
+              label: cardView.colorTitles ? 'Desligar cor nos títulos' : 'Ligar cor nos títulos',
+              run: toggleColorTitles,
+            },
             cardsEditor.mode === 'novo'
               ? {
                   id: 'salvos',
@@ -129,11 +146,17 @@ function LessonDesk({ data, lessonId }: { data: StudyData; lessonId: string }) {
     actions: withBarActions({
       ...mosaic.actions,
       ...editorActions(editor, page),
+      ...cardFormatActions(inCards, cardsEditor.format, editorActions(editor, page)),
       // Na tabela, Alt R é o modo Ajustar; fora dela, o redimensionar do mosaico.
       resizeMode: (change) =>
         editorActions(editor, page).resizeMode?.(change) === false
           ? mosaic.actions.resizeMode?.(change)
           : true,
+      // Esc fecha o cartão aberto na lista de salvos antes de subir de nível.
+      escape: () => {
+        if (!inCards() || cardsEditor.mode !== 'salvos' || cardsEditor.openId === null) return false;
+        cardsEditor.setOpenId(null);
+      },
       saveCards: () => {
         if (!inCards()) return false;
         cardsEditor.save();
