@@ -1,5 +1,7 @@
 # Bancada: Lixeira (noite 14/11)
 
+> **Decisão do usuário (14/11, D164): V2 aprovada.** Onde este texto diverge, vale a D164: a entrada fica no menu ⋯ do topo (D137), não em ícone solto; restaurar uma pasta devolve só a pasta (D92: excluir pasta deixa as aulas vivas, sem pasta).
+
 Abrir: http://localhost:5173/ohara/lab/livre.html?ideia=lixeira (vale depois que a branch `bancadas/noite-14-11` vier ao main).
 Estados para ver direto: `&cursor=2&menu=1` (⋮ aberto), `&confirma=1` (Apagar de vez), `&vazia=1`, `&busca=xyz` (busca sem resultado).
 
@@ -36,7 +38,7 @@ Toque: tocar na linha escolhe; Restaurar e ⋮ aparecem nela (44 px). ⋮ → Ap
 ## Regras de dados (para aplicar)
 1. **Migração `006_lixeira.sql`** (a 005 é das imagens): em toda tabela com `deleted`, acrescentar `deleted_at TEXT` (quando) e `deleted_by TEXT` (id do item que foi excluído direto: a "raiz"). Excluir marca a raiz e todos os filhos ainda vivos com o mesmo `deleted_by`.
 2. **A lista mostra só raízes** (`deleted = 1 AND deleted_by = id`). O "volta com" é a contagem dos filhos com o mesmo `deleted_by`.
-3. **Restaurar traz junto exatamente o que a exclusão levou**: aula → seus cartões, anotações (são texto da aula: voltam sempre), slides e anexos, eventos ligados à aula; pasta → suas aulas e tudo delas; matéria → pastas, aulas, cartões, provas, horários, eventos, faltas, livro. Um cartão apagado **antes**, sozinho, continua na lixeira como item próprio.
+3. **Restaurar traz junto exatamente o que a exclusão levou**: aula → seus cartões, anotações (são texto da aula: voltam sempre), slides e anexos, eventos ligados à aula; pasta → só a pasta (D92: as aulas ficaram vivas, sem pasta); matéria → pastas, aulas, cartões, provas, horários, eventos, faltas, livro. Um cartão apagado **antes**, sozinho, continua na lixeira como item próprio.
 4. **Pai também na lixeira:** restaurar um cartão cuja aula está na lixeira restaura a aula junto (e avisa); o mesmo para aula sem matéria.
 5. **Avaliação do boletim** (cifrada): aparece como "Avaliação de IMU" sem a nota; restaurar não precisa da chave.
 6. **Apagar de vez** não some a linha: vira lápide (`deleted = 2`, conteúdo zerado, `updated_at` novo) para a sincronização não ressuscitar o item no outro aparelho; os bytes do arquivo saem do OPFS na hora.
