@@ -102,6 +102,7 @@ function subjectOptions(subject: Subject | undefined) {
       run: () =>
         removeWithUndo(`Matéria "${subject.name}" excluída.`, (data) =>
           removeSubject(data, subject.id),
+        subject.id,
         ),
     },
   ];

@@ -61,8 +61,16 @@ export function ensureDevice(db: SqlDb, newId: () => string): string {
   return id;
 }
 
+// Gravar uma linha a traz de volta da Lixeira: deleted, deleted_at e deleted_by zeram.
+const SYNC_COLUMNS = ['updated_at', 'deleted', 'deleted_at', 'deleted_by'] as const;
+
+function blankOf(kind: string): SqlValue {
+  if (kind === 'text?') return null;
+  return kind === 'text' ? '' : 0;
+}
+
 function putSql(table: string, columns: readonly string[], sync: boolean): string {
-  const all = sync ? [...columns, 'updated_at', 'deleted'] : [...columns];
+  const all = sync ? [...columns, ...SYNC_COLUMNS] : [...columns];
   const marks = all.map(() => '?').join(', ');
   const updates = all.filter((name) => name !== 'id').map((name) => `${name} = excluded.${name}`);
   return `INSERT INTO ${table} (${all.join(', ')}) VALUES (${marks}) ON CONFLICT(id) DO UPDATE SET ${updates.join(', ')}`;
@@ -98,15 +106,27 @@ export function applyChanges(
           continue;
         }
         clock = tick(clock, now);
-        db.run(putSql(spec.table, columns, true), [...values, formatHlc(clock, device), 0]);
+        db.run(putSql(spec.table, columns, true), [...values, formatHlc(clock, device), 0, null, null]);
       } else if (!spec.sync) {
         db.run(`DELETE FROM ${spec.table} WHERE id = ?`, [change.id]);
+      } else if (change.op === 'purge') {
+        clock = tick(clock, now);
+        const blank = spec.columns.map(({ column }) => `${column} = ?`).join(', ');
+        db.run(
+          `UPDATE ${spec.table} SET ${blank}, deleted = 2, updated_at = ?, deleted_at = NULL, deleted_by = NULL WHERE id = ?`,
+          [...spec.columns.map(({ kind }) => blankOf(kind)), formatHlc(clock, device), change.id],
+        );
       } else {
         clock = tick(clock, now);
-        db.run(`UPDATE ${spec.table} SET deleted = 1, updated_at = ? WHERE id = ?`, [
-          formatHlc(clock, device),
-          change.id,
-        ]);
+        db.run(
+          `UPDATE ${spec.table} SET deleted = 1, updated_at = ?, deleted_at = ?, deleted_by = ? WHERE id = ?`,
+          [
+            formatHlc(clock, device),
+            change.at ?? new Date(now).toISOString(),
+            change.by ?? change.id,
+            change.id,
+          ],
+        );
       }
     }
     writeMeta(db, 'hlc', formatHlc(clock, device));
@@ -120,6 +140,15 @@ export function loadSnapshot(db: SqlDb): Snapshot {
     snapshot[spec.table] = db.all(`SELECT * FROM ${spec.table} WHERE deleted = 0 ORDER BY rowid`);
   }
   return snapshot;
+}
+
+export function loadTrash(db: SqlDb): Snapshot {
+  const trash: Snapshot = {};
+  for (const spec of SPECS) {
+    if (!spec.sync) continue;
+    trash[spec.table] = db.all(`SELECT * FROM ${spec.table} WHERE deleted = 1 ORDER BY deleted_at`);
+  }
+  return trash;
 }
 
 export function loadDeviceState(db: SqlDb): Record<string, string> {
@@ -165,6 +194,7 @@ export function openState(
   return {
     snapshot: loadSnapshot(db),
     fresh: readMeta(db, 'seeded') === null,
+    trash: loadTrash(db),
     deviceState: loadDeviceState(db),
     diagnostics: diagnose(db, sqliteVersion, device),
     device,

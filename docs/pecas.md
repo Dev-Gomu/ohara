@@ -193,20 +193,34 @@
 ### Toggles.tsx
 - `function ToggleGroup({ label, children }: { label: string; children: ReactNode })`
   Grupo de alternadores ou de abas: a mesma ilha recuada da barra do topo.
-- `function BlockToggle({ name, letter, open, cursor, onToggle }: BlockToggleProps)`
+- `function BlockToggle({ name, letter, open, cursor, icon, onToggle }: BlockToggleProps)`
   Alternador de bloco: mostra ou esconde um bloco. Aberto = fundo de escolhido e marca cheia.
-  `interface BlockToggleProps { name: string; letter: string; open: boolean; cursor?: boolean; onToggle: () => void; }`
+  `interface BlockToggleProps { name: string; letter: string; open: boolean; cursor?: boolean; icon?: ReactNode; onToggle: () => void; }`
 - `function BlockTabs({ label, children }: BlockTabsProps)`
   Abas dentro do cabeçalho de um bloco. É barra do topo do bloco (Alt T chega nela).
   `interface BlockTabsProps { label: string; children: ReactNode; }`
 - `function BlockTab({ selected, count, onPress, children }: BlockTabProps)`
   `interface BlockTabProps { selected: boolean; count?: number; onPress: () => void; children: string; }`
 
+### TrashRow.tsx
+- `function MoreButton({ label, expanded, onPress }: MoreButtonProps)`
+  ⋮ de toque (44 px): abre as mesmas opções do Alt O.
+  `interface MoreButtonProps { label: string; expanded: boolean; onPress: () => void; }`
+- `interface RowAction { id: string; label: string; keys?: string; danger?: boolean; }`
+- `function RowMenu({ actions, onAction, }: { actions: readonly RowAction[]; onAction: (id: string) => void; })`
+  Menu do ⋮ dentro da linha. Setas e Enter são do React Aria; o Esc, do listener.
+- `function TrashRow(props: TrashRowProps)`
+  Linha da Lixeira (D164): sigla, título e apoio; a escolhida mostra Restaurar e ⋮ (toque).
+  `interface TrashRowProps { lead?: ReactNode; title: string; detail: string; leaves?: string | null; when: string; selected: boolean; cursor: boolean; menuOpen: boolean; actions: readonly RowAction[]; onSelect: () => void; onRestore: () => void; onMenu: () => void; onAction: (id: string) => void; }`
+- `function ConfirmBox({ title, confirmLabel, onCancel, onConfirm, children, }: ConfirmBoxProps)`
+  Confirmação de ação sem volta, dentro da janela: o foco nasce em Cancelar, então Enter sozinho nunca apaga. Os dois botões têm o mesmo tamanho; o perigoso é só contorno.
+  `interface ConfirmBoxProps { title: string; confirmLabel: string; onCancel: () => void; onConfirm: () => void; children: ReactNode; }`
+
 ### Window.tsx
 - `function WindowFooter({ children }: { children: ReactNode })`
   O Esc é do listener: ele fecha pelo estado, e o React Aria nem chega a ver a tecla (D08). Rodapé de ações: os botões dividem a largura em partes iguais, sem atalhos escritos.
-- `function Window({ id, title, context, testId, wide, children }: WindowProps)`
-  `interface WindowProps { id: string; title: string; context?: string; testId?: string; wide?: boolean; children: ReactNode; }`
+- `function Window({ id, title, context, detail, testId, wide, children }: WindowProps)`
+  `interface WindowProps { id: string; title: string; context?: string; detail?: string; testId?: string; wide?: boolean; children: ReactNode; }`
 
 ## Store do teclado e das telas (src/ui/keyboard)
 
@@ -216,6 +230,7 @@
 - `interface ScreenRegistration { blocks: readonly UiBlock[]; arrival: FocusPlace; back?: () => void; actions?: Partial<Record<KeyAction['type'], (change: KeyAction) => boolean | void>>; options?: (block: string) => readonly BlockOption[]; }`
 - `interface BlockOption { id: string; label: string; keys?: string; run: () => void; }`
 - `interface KeyboardState { focus: FocusState; screen: Screen; lastAction: string | null; }`
+- `function registerWindowActions(window: string, run: (change: KeyAction) => boolean): () => void`
 - `function subscribe(subscriber: () => void): () => void`
 - `function getKeyboardState(): KeyboardState`
 - `function useKeyboardState(): KeyboardState`
@@ -315,7 +330,10 @@
 - `function useStudy(): StudyData`
 
 ### undo.ts
-- `function removeWithUndo(label: string, change: (data: StudyData) => StudyData): void`
-  D: exclusão é lógica no banco e tem Desfazer (regras.md G8). `label` aparece no aviso.
+- `function removeWithUndo(label: string, change: (data: StudyData) => StudyData, root: string): void`
+  D: exclusão é lógica no banco e tem Desfazer (regras.md G8). `label` aparece no aviso. `root` é o item que a pessoa excluiu: tudo que sai junto vai à Lixeira com essa raiz (D164).
+- `function restoreWithUndo(label: string, root: string): void`
+  Restaurar da Lixeira: volta o grupo da raiz (e o do pai, se ele também estava lá). Desfazer devolve à Lixeira com a raiz e a data de antes.
 - `function runUndo(): void`
-- `function useUndoLabel(): string | null`
+- `function useUndo(): Pick<Pending, 'label' | 'removal'> | null`
+  `interface Pending { label: string; removal: boolean; undo: () => void; }`

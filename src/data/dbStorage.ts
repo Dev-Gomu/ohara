@@ -3,6 +3,13 @@ import type { Change, Diagnostics } from '../core/db/protocol';
 import { fromRow } from '../core/db/rows';
 import { SPECS } from '../core/db/specs';
 import { orphanBlobs } from '../core/study/files';
+import {
+  addedBetween,
+  nextTrash,
+  removedBetween,
+  type Trashed,
+  type TrashItem,
+} from '../core/study/trash';
 import { EMPTY_STUDY } from '../core/study/create';
 import type { Storage } from '../core/study/storage';
 import type { StudyData } from '../core/study/types';
@@ -48,6 +55,14 @@ export async function createDbStorage(
     const rows = opened.snapshot[spec.table] ?? [];
     mirror = { ...mirror, [spec.collection]: rows.map((row) => fromRow(spec.table, row)) };
   }
+  let trash: readonly Trashed[] = SPECS.filter((spec) => spec.sync).flatMap((spec) =>
+    (opened.trash[spec.table] ?? []).map((row) => ({
+      table: spec.table,
+      item: fromRow<TrashItem>(spec.table, row),
+      at: String(row.deleted_at ?? ''),
+      by: String(row.deleted_by ?? row.id),
+    })),
+  );
   if (opened.fresh) {
     const initial = options.initial();
     const changes: Change[] = [
@@ -65,6 +80,9 @@ export async function createDbStorage(
   let failed = false;
 
   const notify = () => listeners.forEach((listener) => listener());
+  // Anexo na Lixeira ainda pode voltar: os bytes ficam até o Apagar de vez.
+  const trashFiles = () =>
+    trash.filter((entry) => entry.table === 'files').map((entry) => entry.item as unknown as StudyData['files'][number]);
 
   function fail(error: unknown) {
     if (failed) return;
@@ -95,10 +113,17 @@ export async function createDbStorage(
       listeners.add(listener);
       return () => listeners.delete(listener);
     },
-    write(change) {
+    readTrash: () => trash,
+    write(change, mark) {
       const next = change(mirror);
       if (next === mirror) return;
-      const changes = diffStudy(mirror, next);
+      const gone = removedBetween(mirror, next, mark, new Date().toISOString());
+      const marks = new Map(gone.map((entry) => [`${entry.table}:${entry.item.id}`, entry]));
+      const changes = diffStudy(mirror, next).map((item) => {
+        const entry = item.op === 'delete' ? marks.get(`${item.table}:${item.id}`) : undefined;
+        return entry && item.op === 'delete' ? { ...item, by: entry.by, at: entry.at } : item;
+      });
+      trash = nextTrash(trash, addedBetween(mirror, next), gone);
       mirror = next;
       for (const item of changes) {
         const key = keyOf(item);
@@ -142,9 +167,25 @@ export async function createDbStorage(
       mirror = { ...mirror, noteVersions: [...loaded, ...fresh] };
       notify();
     },
+    async purge(items) {
+      if (items.length === 0) return;
+      const out = new Set(items);
+      trash = trash.filter((entry) => !out.has(entry));
+      for (const entry of items) {
+        const item: Change = { op: 'purge', table: entry.table, id: entry.item.id };
+        queue.set(`${entry.table}:${entry.item.id}`, item);
+      }
+      notify();
+      await flush();
+      const used = new Set([...mirror.files, ...trashFiles()].map((file) => file.sha256));
+      for (const entry of items) {
+        const sha = entry.table === 'files' ? String(entry.item.sha256) : '';
+        if (sha !== '' && !used.has(sha)) await client.removeFile(sha);
+      }
+    },
     async sweepBlobs() {
       await flush();
-      const orphans = orphanBlobs(await client.listFiles(), mirror.files);
+      const orphans = orphanBlobs(await client.listFiles(), [...mirror.files, ...trashFiles()]);
       for (const name of orphans) await client.removeFile(name);
       return orphans.length;
     },

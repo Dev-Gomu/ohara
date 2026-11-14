@@ -68,3 +68,25 @@ test('Mesa: a barra de formatação fica sempre no topo e Alt T vai a ela', asyn
   await page.keyboard.press('Alt+KeyT');
   await expect(bar.getByRole('button').first()).toBeFocused();
 });
+
+test('Lixeira: excluir aula, abrir pela Paleta e Enter restaura (D164)', async ({ page }) => {
+  await page.keyboard.press('Alt+Digit3');
+  await page.keyboard.press('Enter');
+  await page.keyboard.press('ArrowDown');
+  const lessons = page.locator('[data-block="acervo.aulas"] [data-sel]');
+  const before = await lessons.count();
+  await page.keyboard.press('Alt+KeyO');
+  await page.getByRole('menuitem', { name: 'Excluir aula' }).click();
+  await expect(lessons).toHaveCount(before - 1);
+  await page.keyboard.press('Alt+KeyP');
+  await page.keyboard.type('Lixeira');
+  await page.keyboard.press('Enter');
+  const trash = page.getByTestId('lixeira');
+  await expect(trash).toBeVisible();
+  await expect(trash.getByRole('listitem')).toHaveCount(1);
+  await page.keyboard.press('Enter');
+  await expect(trash.getByRole('listitem')).toHaveCount(0);
+  await expect(page.getByTestId('lixeira-aviso')).toContainText('Voltou ao lugar');
+  await page.keyboard.press('Escape');
+  await expect(lessons).toHaveCount(before);
+});

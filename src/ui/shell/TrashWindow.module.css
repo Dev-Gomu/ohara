@@ -1,0 +1,154 @@
+/* Janela da Lixeira (D164, bancada V2): régua à esquerda, lista no meio, prévia à direita. */
+.corpo {
+  position: relative;
+}
+
+.grade {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: var(--e4);
+  align-items: start;
+}
+
+.regua {
+  display: flex;
+  gap: var(--e1);
+  margin-bottom: var(--e3);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.meio {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e2);
+  min-width: 0;
+}
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  outline: none;
+  /* Só a lista rola: título, tipos, busca e teclas ficam sempre à vista. A conta é o que fica em cima
+     e embaixo dela na janela (véu, título, tipos, busca, teclas). */
+  max-height: max(180px, calc(100dvh - 400px));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.vazia {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e1);
+  padding: var(--e6) var(--e3);
+  color: var(--cor-texto-2);
+  font: var(--ui-apoio);
+  text-align: center;
+}
+
+.vazia b {
+  color: var(--cor-texto);
+  font: var(--ui-item);
+}
+
+.previa {
+  border-radius: var(--raio-item);
+  background: var(--cor-cartao-2);
+}
+
+.ficha {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e3);
+  padding: var(--e4);
+}
+
+.fichaTopo {
+  display: flex;
+  align-items: center;
+  gap: var(--e2);
+  color: var(--cor-texto-2);
+  font: var(--ui-rotulo);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.fichaTitulo {
+  margin: 0;
+  font: var(--voz-mini);
+  overflow-wrap: anywhere;
+}
+
+.fatos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e3);
+  margin: var(--e1) 0 0;
+}
+
+.fatos dt {
+  color: var(--cor-texto-2);
+  font: var(--ui-apoio);
+}
+
+.fatos dd {
+  margin: 0;
+  font: var(--ui-item);
+  font-variant-numeric: tabular-nums;
+}
+
+.fatos dd[data-atencao] {
+  color: var(--cor-atencao);
+}
+
+.nota {
+  margin: 0;
+  color: var(--cor-texto-2);
+  font: var(--ui-apoio);
+}
+
+.apoio {
+  color: var(--cor-texto-2);
+  font: var(--ui-apoio);
+}
+
+.teclas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e1) var(--e4);
+  margin: var(--e4) 0 0;
+  color: var(--cor-texto-2);
+  font: var(--ui-apoio);
+}
+
+.aviso {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--e3);
+  margin: var(--e3) 0 0;
+  padding: var(--e1) var(--e1) var(--e1) var(--e3);
+  border-radius: var(--raio-item);
+  background: var(--cor-cartao-2);
+  font: var(--ui-apoio);
+}
+
+.desfazer {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e2);
+  min-height: var(--alvo);
+  padding: 0 var(--e3);
+  border: 0;
+  border-radius: var(--raio-botao);
+  background: var(--sup-peca);
+  color: var(--cor-texto);
+  font: var(--ui-item);
+  cursor: pointer;
+}

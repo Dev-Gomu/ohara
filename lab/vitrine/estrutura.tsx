@@ -6,7 +6,14 @@ import { ListItem } from '../../src/ui/components/ListItem';
 import { NowPill, StatePill, SubjectPill } from '../../src/ui/components/Pill';
 import { Preview } from '../../src/ui/components/Preview';
 import { Ruler, RulerCreate, RulerPill } from '../../src/ui/components/Ruler';
+import { ConfirmBox, MoreButton, TrashRow } from '../../src/ui/components/TrashRow';
 import { Amostra, Ficha, Linha, Secao } from './moldura';
+
+const OPCOES = [
+  { id: 'restaurar', label: 'Restaurar', keys: 'Enter' },
+  { id: 'apagar', label: 'Apagar de vez…', danger: true },
+];
+const nada = () => undefined;
 
 const PASTAS = [
   { id: 'todas', title: 'Todas' },
@@ -195,6 +202,58 @@ function ListaEPrevia() {
           </ListItem>
           <ListItem title="Revisar TNF-α e pH" detail="Texto do usuário fica como foi digitado" />
         </div>
+      </Ficha>
+      <Ficha
+        nome="Linha da Lixeira"
+        arquivo="TrashRow"
+        largura={7}
+        uso="Item excluído (D164): sigla, título e apoio; nos últimos 7 dias, 'some em N d' em atenção. A escolhida mostra Restaurar e ⋮ de 44 px (toque). ConfirmBox: foco nasce em Cancelar."
+      >
+        <ul className="v-lista" style={{ listStyle: 'none', margin: 0, padding: 0 }}>
+          <TrashRow
+            lead={<SubjectPill code="IMU" color={2} />}
+            title="Tolerância e autoimunidade"
+            detail="Aula · excluída há 3 d · volta com 9 cartões · anotações · slides"
+            when="há 3 d"
+            selected={false}
+            cursor={false}
+            menuOpen={false}
+            actions={OPCOES}
+            onSelect={nada}
+            onRestore={nada}
+            onMenu={nada}
+            onAction={nada}
+          />
+          <TrashRow
+            lead={<SubjectPill code="GEN" color={4} />}
+            title="Mutações e reparo do DNA"
+            detail="Aula · excluída há 25 d"
+            leaves="some em 5 d"
+            when="há 25 d"
+            selected
+            cursor
+            menuOpen={false}
+            actions={OPCOES}
+            onSelect={nada}
+            onRestore={nada}
+            onMenu={nada}
+            onAction={nada}
+          />
+        </ul>
+        <Linha>
+          <Amostra estado="⋮ de toque">
+            <MoreButton label="Opções" expanded={false} onPress={nada} />
+          </Amostra>
+          <Amostra estado="confirmação">
+            <div style={{ position: 'relative', width: 440, height: 220 }}>
+              <ConfirmBox title="Apagar de vez?" confirmLabel="Apagar de vez" onCancel={nada} onConfirm={nada}>
+                <p>
+                  <b>Mutações e reparo do DNA</b>
+                </p>
+              </ConfirmBox>
+            </div>
+          </Amostra>
+        </Linha>
       </Ficha>
       <Ficha
         nome="Prévia"

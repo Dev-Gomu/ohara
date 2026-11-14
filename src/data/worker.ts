@@ -52,6 +52,7 @@ async function open(request: Extract<Request, { type: 'open' }>): Promise<Result
   return {
     snapshot: state.snapshot,
     fresh: state.fresh,
+    trash: state.trash,
     deviceState: state.deviceState,
     diagnostics: state.diagnostics,
   };

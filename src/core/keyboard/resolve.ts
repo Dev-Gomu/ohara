@@ -1,5 +1,15 @@
 import type { Level, Resolved } from './actions';
-import { ADJUST_KEYS, KEYS, LINE_KEYS, OPTION_KEYS, type KeyRow, type LineSpot, type Mods } from './keys';
+import {
+  ADJUST_KEYS,
+  KEYS,
+  LINE_KEYS,
+  OPTION_KEYS,
+  TRASH_KEYS,
+  type KeyRow,
+  type LineSpot,
+  type Mods,
+  type TrashSpot,
+} from './keys';
 
 export interface KeyInput {
   code: string;
@@ -24,6 +34,8 @@ export interface KeyContext {
   cardLine?: readonly LineSpot[];
   // A linha acesa tem opções curtas: ← → trocam a opção em vez de ir ao bloco vizinho.
   choosing?: boolean;
+  // Janela da Lixeira aberta: onde está o foco dentro dela.
+  trash?: TrashSpot;
 }
 
 function modsOf(input: KeyInput): string {
@@ -71,6 +83,13 @@ export function resolve(
   if (context.cardLine && context.overlay === 'none' && mods === '') {
     const line = LINE_KEYS.find((key) => key.code === input.code && context.cardLine?.includes(key.when));
     if (line) return line.action;
+  }
+  if (context.trash && context.overlay === 'window' && (mods === '' || mods === 'a')) {
+    const spot = context.trash;
+    const own = TRASH_KEYS.find(
+      (key) => key.code === input.code && key.alt === (mods === 'a') && key.when.includes(spot),
+    );
+    if (own) return input.repeat && !own.repeats ? { type: 'swallow' } : own.action;
   }
   const rows = keys.filter((key) => key.code === input.code && key.mods === mods);
   if (context.overlay !== 'none') return resolveInOverlay(input, rows);

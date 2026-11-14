@@ -402,3 +402,30 @@ export const LINE_KEYS: readonly LineRow[] = [
   { label: 'Delete', code: 'Delete', when: 'image', action: { type: 'cardImageRemove' } },
   { label: 'Backspace', code: 'Backspace', when: 'image', action: { type: 'cardImageRemove' } },
 ];
+
+// Só valem com a janela da Lixeira aberta (D164); por isso ficam fora de KEYS. "when" diz onde está o foco:
+// na lista, na busca, no menu ⋮ ou na confirmação. No menu e na confirmação, setas, Tab e Enter são do
+// React Aria e dos botões; só o Esc é daqui, para fechar um nível por vez.
+export type TrashSpot = 'list' | 'search' | 'menu' | 'confirm';
+export interface TrashRow {
+  label: string;
+  code: string;
+  alt: boolean;
+  when: readonly TrashSpot[];
+  action: KeyAction;
+  text: string;
+  repeats: boolean;
+}
+const LIST_SEARCH: readonly TrashSpot[] = ['list', 'search'];
+export const TRASH_KEYS: readonly TrashRow[] = [
+  { label: '↑', code: 'ArrowUp', alt: false, when: LIST_SEARCH, action: { type: 'trashMove', delta: -1 }, text: 'anda', repeats: true },
+  { label: '↓', code: 'ArrowDown', alt: false, when: LIST_SEARCH, action: { type: 'trashMove', delta: 1 }, text: 'anda', repeats: true },
+  { label: '←', code: 'ArrowLeft', alt: false, when: ['list'], action: { type: 'trashKind', delta: -1 }, text: 'tipo', repeats: true },
+  { label: '→', code: 'ArrowRight', alt: false, when: ['list'], action: { type: 'trashKind', delta: 1 }, text: 'tipo', repeats: true },
+  { label: 'Enter', code: 'Enter', alt: false, when: ['list'], action: { type: 'trashRestore' }, text: 'restaura', repeats: false },
+  { label: 'Enter', code: 'Enter', alt: false, when: ['search'], action: { type: 'trashMove', delta: 0 }, text: 'volta à lista', repeats: false },
+  { label: 'Alt O', code: 'KeyO', alt: true, when: ['list'], action: { type: 'trashMenu' }, text: 'restaurar · apagar de vez', repeats: false },
+  { label: 'Alt F', code: 'KeyF', alt: true, when: LIST_SEARCH, action: { type: 'trashSearch' }, text: 'busca', repeats: false },
+  { label: 'Alt Z', code: 'KeyZ', alt: true, when: LIST_SEARCH, action: { type: 'undo' }, text: 'desfaz', repeats: false },
+  { label: 'Esc', code: 'Escape', alt: false, when: ['search', 'menu', 'confirm'], action: { type: 'trashBack' }, text: 'volta', repeats: false },
+];

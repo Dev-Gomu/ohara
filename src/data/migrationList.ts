@@ -4,6 +4,7 @@ import second from './migrations/002_arquivos.sql?raw';
 import third from './migrations/003_notas.sql?raw';
 import fourth from './migrations/004_faltas.sql?raw';
 import fifth from './migrations/005_imagens.sql?raw';
+import sixth from './migrations/006_lixeira.sql?raw';
 
 export const MIGRATIONS: readonly Migration[] = [
   { version: 1, sql: first },
@@ -11,4 +12,5 @@ export const MIGRATIONS: readonly Migration[] = [
   { version: 3, sql: third },
   { version: 4, sql: fourth },
   { version: 5, sql: fifth },
+  { version: 6, sql: sixth },
 ];

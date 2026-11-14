@@ -9,6 +9,8 @@
 
 - **Barra do topo da Mesa APLICADA (D137, 14/11):** sigla antes do título, alternadores só ícone e letra, botão ⋯ com Faltas/Notas/Ajuda em todas as telas (os 3 botões soltos saíram; atalhos seguem na tabela). **A conferir à mão:** menu pelo teclado (Alt 1 a 6 ... Enter no ⋯, setas, Esc), título longo cabendo, tablet. e2e de Faltas e Notas ajustados (clicam em Mais).
 
+- **Lixeira APLICADA (D164, D165, 14/11):** janela larga (tipos numa faixa horizontal no topo, pedido do usuário) pela Paleta ("Lixeira"), pelo menu ⋯ do topo e por "Ver lixeira" no aviso do Desfazer; migração 006; restaurar com Desfazer, Apagar de vez (lápide), limpeza de 30 dias ao abrir. Conferida com `npm run tela` nos dois temas (lista com cursor, menu ⋮, confirmação) e com roteiro do Playwright (excluir aula → Paleta → Enter restaura). **Sem teste:** tablet e toque (Restaurar e ⋮ na linha, régua por toque), limpeza real de 30 dias, Apagar de vez de anexo com PDF (bytes saindo do disco), "pai na lixeira" na tela (só no teste de unidade). A pasta da bancada não veio ao main (sairia ao aplicar).
+
 ## Próximo passo
 **Ordem sugerida (14/11):** (1) ~~aplicar o anexo de imagem~~ FEITO na noite de 14/11; (2) fechar o verso do cloze e aplicar (D157); (3) itens pequenos (← → nos atalhos, faixa das Anotações a 320 px, falha antiga do Acervo); (4) ~~R2 Configs~~ FEITO em 14/11; Etapa 11 (FSRS), Etapa 12. Sem teste ainda: arrastar imagem com mouse, seletor real, editor do cartão no tablet, Contido no escuro.
 

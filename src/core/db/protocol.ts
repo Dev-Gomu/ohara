@@ -18,7 +18,10 @@ export interface DbFailure {
 
 export type Change =
   | { op: 'put'; table: TableName; row: Row }
-  | { op: 'delete'; table: TableName; id: string }
+  // Exclusão lógica (vai à Lixeira, D164). `by` é a raiz da exclusão; sem ele, o próprio item.
+  | { op: 'delete'; table: TableName; id: string; by?: string; at?: string }
+  // Apagar de vez: lápide deleted = 2, sem conteúdo, para a sincronização não ressuscitar o item.
+  | { op: 'purge'; table: TableName; id: string }
   | { op: 'meta'; key: string; value: string }
   // Estado só deste aparelho (D28): página atual de cada aula etc. Não sincroniza.
   | { op: 'device'; key: string; value: string };
@@ -39,6 +42,8 @@ export interface OpenResult {
   snapshot: Snapshot;
   // Banco que nunca recebeu dados iniciais.
   fresh: boolean;
+  // Linhas na Lixeira (deleted = 1), com deleted_at e deleted_by.
+  trash: Snapshot;
   deviceState: Record<string, string>;
   diagnostics: Diagnostics;
 }

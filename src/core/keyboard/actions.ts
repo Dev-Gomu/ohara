@@ -28,6 +28,13 @@ export type KeyAction =
   | { type: 'cardLineMove'; delta: -1 | 1 }
   | { type: 'cardImageRemove' }
   | { type: 'cardImageZoom' }
+  // Janela da Lixeira (D164): delta 0 só devolve o foco da busca à lista.
+  | { type: 'trashMove'; delta: -1 | 0 | 1 }
+  | { type: 'trashKind'; delta: -1 | 1 }
+  | { type: 'trashRestore' }
+  | { type: 'trashMenu' }
+  | { type: 'trashSearch' }
+  | { type: 'trashBack' }
   | { type: 'swapHiddenBlock' }
   | { type: 'openOptions' }
   | { type: 'goToTopBar' }

@@ -139,7 +139,7 @@ export function AgendaMesa() {
         uso="Faixa aninhada no topo do bloco Anotações: formatação à esquerda, ampliar e ⋮ à direita. No bloco estreito o que não cabe vai para o menu ☰."
       >
         <Amostra estado="bloco largo, Negrito ligado">
-          <FormatBar groups={FORMATOS} onExpand={nada} onOptions={nada} />
+          <FormatBar tools={FORMATOS.flat()} styleTools={FORMATOS[0] ?? []} onExpand={nada} onOptions={nada} />
         </Amostra>
       </Ficha>
       <Ficha

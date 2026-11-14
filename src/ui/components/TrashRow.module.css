@@ -1,0 +1,184 @@
+/* Linha da Lixeira (D164), da bancada V2. Só tokens. */
+.linha {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--e3);
+  min-height: 56px;
+  padding: 6px var(--e3);
+  border-radius: var(--raio-item);
+  cursor: pointer;
+}
+
+.linha[data-sel='true'] {
+  background: var(--cor-escolhido);
+}
+
+.sigla {
+  display: inline-flex;
+  flex: none;
+  justify-content: center;
+  width: 52px;
+}
+
+.texto {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.titulo {
+  overflow: hidden;
+  font: var(--ui-item);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.linha[data-sel='true'] .titulo {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.apoio,
+.quando {
+  color: var(--cor-texto-2);
+  font: var(--ui-apoio);
+  font-variant-numeric: tabular-nums;
+}
+
+.linha[data-sel='true'] .apoio {
+  color: var(--cor-texto);
+}
+
+.fim {
+  white-space: nowrap;
+  color: var(--cor-atencao);
+  font-weight: 700;
+}
+
+.quando {
+  flex: none;
+}
+
+.acoes {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: var(--e1);
+}
+
+.mais {
+  display: inline-grid;
+  place-items: center;
+  width: var(--alvo);
+  height: var(--alvo);
+  border: 0;
+  border-radius: var(--raio-botao);
+  background: transparent;
+  color: var(--cor-texto);
+  cursor: pointer;
+}
+
+.mais[aria-expanded='true'] {
+  background: var(--sup-peca);
+}
+
+.menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  min-width: 220px;
+  padding: var(--e1);
+  border: var(--borda-bloco) solid var(--cor-cartao-2);
+  border-radius: var(--raio-campo);
+  background: var(--cor-cartao);
+  box-shadow: 0 8px 24px var(--cor-veu);
+  outline: none;
+}
+
+.opcao {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--e3);
+  min-height: var(--alvo);
+  padding: 0 var(--e3);
+  border-radius: var(--raio-item);
+  color: var(--cor-texto);
+  font: var(--ui-item);
+  cursor: pointer;
+  outline: none;
+}
+
+.opcao[data-focused] {
+  background: var(--cor-escolhido);
+  box-shadow: inset 0 0 0 2px var(--cor-cursor);
+}
+
+.opcao[data-perigo] {
+  color: var(--cor-atencao);
+  font-weight: 700;
+}
+
+.veu {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  padding: var(--e4);
+  border-radius: var(--raio-bloco);
+  background: var(--cor-veu);
+}
+
+.caixa {
+  width: min(420px, 100%);
+  padding: var(--e4) var(--e5);
+  border-radius: var(--raio-bloco);
+  background: var(--cor-cartao);
+  box-shadow: 0 8px 24px var(--cor-veu);
+}
+
+.caixa p {
+  margin: 0 0 var(--e2);
+}
+
+.pergunta {
+  margin: 0 0 var(--e2);
+  font: var(--voz-titulo);
+  text-transform: uppercase;
+}
+
+.pe {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--e2);
+  margin-top: var(--e4);
+}
+
+.bt {
+  min-height: var(--alvo);
+  border: 0;
+  border-radius: var(--raio-botao);
+  background: var(--sup-peca);
+  color: var(--cor-texto);
+  font: var(--ui-item);
+  cursor: pointer;
+}
+
+.bt:focus-visible {
+  outline: 2px solid var(--cor-cursor);
+  outline-offset: 2px;
+}
+
+.perigo {
+  background: transparent;
+  box-shadow: inset 0 0 0 2px var(--cor-atencao);
+  color: var(--cor-atencao);
+  font-weight: 700;
+}
