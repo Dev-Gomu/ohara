@@ -3,6 +3,8 @@
 Pequenos consertos de uso que não dependem de gosto. Uma versão só (`v1.tsx`), uma seção por item, "Hoje" e "Proposta" lado a lado; nas seções 1 a 3 dá para clicar e testar as teclas.
 Link (depois de trazer a branch ao main): http://localhost:5173/ohara/lab/livre.html?ideia=qualidade-vida
 
+**Decisão (14/11): todas aprovadas (D166), a aplicar.**
+
 **Recomendação:** aplicar tudo, nesta ordem: **3 (+5b) → 1 (+5d) → 5a+4 → 2 → 5c**. Cabe em duas sessões: a primeira com 3, 1 e 5d (teclado e entrada), a segunda com 4, 5a, 2 e 5c.
 
 | # | Item | Tamanho | Prioridade |
