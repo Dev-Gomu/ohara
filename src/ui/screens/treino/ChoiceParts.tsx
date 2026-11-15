@@ -300,4 +300,49 @@ export function Bar(props: BarProps) {
   );
 }
 
+interface SummaryProps {
+  tiles: readonly SubjectTile[];
+  hidden: number;
+  years: readonly Choice[];
+}
+
+// Em "Todos os cartões" o meio só informa: disciplinas com cartões para hoje e totais por ano.
+export function SummaryPanels({ tiles, hidden, years }: SummaryProps) {
+  return (
+    <div className={`${styles.par} ${styles.meio}`}>
+      <div className={`${blocoStyles.bloco} ${styles.painel}`}>
+        <span className={styles.rotulo}>Disciplinas · para hoje</span>
+        <div className={styles.grade}>
+          {tiles.map((tile) => (
+            <div key={tile.id} className={styles.peca}>
+              <SubjectPill code={tile.code} color={tile.color} />
+              <b className={styles.contagem}>{tile.due > 0 ? tile.due : ''}</b>
+              <small className={styles.situacao}>{tile.due > 0 ? 'hoje' : 'em dia'}</small>
+            </div>
+          ))}
+        </div>
+        {hidden > 0 && (
+          <p className={styles.mais}>
+            + {hidden} {hidden === 1 ? 'disciplina' : 'disciplinas'} no Personalizado
+          </p>
+        )}
+      </div>
+      <div className={`${blocoStyles.bloco} ${styles.painel}`}>
+        <span className={styles.rotulo}>No acervo · por ano</span>
+        <div className={styles.lista}>
+          {years.map((year) => (
+            <div key={year.id} className={styles.linha}>
+              <b>{year.label}</b>
+              <span>
+                {year.due > 0 ? `${year.due} hoje · ` : ''}
+                {countLabel(year.total)}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export const countLabel = (n: number): string => `${n} ${n === 1 ? 'cartão' : 'cartões'}`;

@@ -8,12 +8,23 @@
   overflow: auto;
 }
 
+/* Altura padrão da caixa inteira (D182): a mesma em Todos e em Personalizado. */
 .pilha {
   flex: none;
   width: 880px;
+  height: min(700px, 100%);
   display: flex;
   flex-direction: column;
   gap: var(--vao-mosaico);
+}
+
+.pilha > * {
+  flex: none;
+}
+
+.pilha > .meio {
+  flex: 1;
+  min-height: 0;
 }
 
 .par {
@@ -284,4 +295,40 @@
 .barra[data-foco] .opcoesBarra,
 :global(:root[data-entrada='toque']) .opcoesBarra {
   visibility: visible;
+}
+
+/* Todos os cartões: o meio é só leitura, nas mesmas duas metades do Personalizado. */
+.painel {
+  gap: var(--e3);
+  min-height: 0;
+  padding: var(--e3) var(--bloco-pad-x);
+  contain: size;
+}
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e1);
+  overflow: auto;
+}
+
+.linha {
+  display: flex;
+  align-items: center;
+  gap: var(--e3);
+  min-height: var(--alvo);
+  padding: 0 var(--e3);
+  border-radius: var(--raio-item);
+  background: var(--cor-cartao-2);
+}
+
+.linha b {
+  flex: 1;
+  font: var(--ui-item);
+}
+
+.linha span {
+  color: var(--cor-texto-2);
+  font: var(--ui-apoio);
+  font-variant-numeric: tabular-nums;
 }

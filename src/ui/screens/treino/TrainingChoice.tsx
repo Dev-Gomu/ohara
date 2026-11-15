@@ -37,6 +37,7 @@ import {
   MODOS,
   Modos,
   RulerBlock,
+  SummaryPanels,
   SubjectsPanel,
 } from './ChoiceParts';
 import styles from './Escolha.module.css';
@@ -64,6 +65,7 @@ export function TrainingChoice({ onStart }: TrainingChoiceProps) {
   const years = yearChoices(data, today);
   const periods = periodChoices(data, today);
   const { shown: tiles, hidden } = capTiles(subjectTiles(data, today, query), saved.subjects);
+  const summary = capTiles(subjectTiles(data, today, ''), []);
   const groups = lessonGroups(data, saved, today);
   const lessonRows = groups.flatMap((group) => group.rows);
 
@@ -216,6 +218,7 @@ export function TrainingChoice({ onStart }: TrainingChoiceProps) {
             customTotal={customCards.length}
             customEmpty={isEmptyScope(saved)}
           />
+          {!custom && <SummaryPanels tiles={summary.shown} hidden={summary.hidden} years={years} />}
           {custom && (
             <>
               <div className={styles.par}>
@@ -234,7 +237,7 @@ export function TrainingChoice({ onStart }: TrainingChoiceProps) {
                   onToggle={togglePeriod}
                 />
               </div>
-              <div className={styles.par}>
+              <div className={`${styles.par} ${styles.meio}`}>
                 <SubjectsPanel
                   tiles={tiles}
                   hidden={hidden}

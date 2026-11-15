@@ -1,0 +1,27 @@
+/* Bancada: refinos da V1 (A), mais calmos: letras menores, uma só escala, alinhamento com o resto. */
+.ti-bloco { gap: var(--e3); padding: var(--e3) var(--bloco-pad-x) var(--e3) var(--e5); }
+.ti-topo { display: flex; align-items: center; gap: var(--e3); }
+.ti-total { font: var(--voz-tela); font-variant-numeric: tabular-nums; }
+.ti-resumo { flex: 1; min-width: 0; display: grid; }
+.ti-resumo b { font: var(--ui-botao); }
+.ti-resumo span { color: var(--cor-texto-2); font: var(--ui-apoio); }
+.ti-trio { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--e2); }
+.ti-num { font: var(--voz-titulo); font-variant-numeric: tabular-nums; }
+.ti-zero { color: var(--cor-texto-2); }
+.ti-zero .ti-num { font-weight: 500; }
+.ti-rot { color: var(--cor-texto-2); font: var(--ui-item); }
+
+/* A: cartões com marca em pílula, nome em letra normal, número à direita. */
+.ti-a .ti-tile { display: flex; align-items: center; gap: var(--e2); min-height: 48px; padding: 0 var(--e4) 0 var(--e3); border-radius: var(--raio-item); background: var(--cor-cartao-2); }
+.ti-marca { flex: none; width: 6px; height: 20px; border-radius: var(--raio-pilula); background: var(--cor-materia); }
+.ti-a .ti-rot { flex: 1; }
+
+/* B: etiqueta colorida pequena, número ao lado. */
+.ti-b .ti-tile { display: flex; align-items: center; justify-content: space-between; gap: var(--e2); min-height: 48px; padding: 0 var(--e4) 0 var(--e3); border-radius: var(--raio-item); background: var(--cor-cartao-2); }
+
+/* C: régua única, como as do app: três segmentos numa ilha. */
+.ti-c .ti-ilha { display: flex; gap: var(--e1); padding: var(--e1); border-radius: var(--raio-pilula); background: var(--cor-cartao-2); }
+.ti-c .ti-seg { flex: 1; display: flex; align-items: center; justify-content: center; gap: var(--e2); height: 40px; border-radius: var(--raio-pilula); }
+.ti-c .ti-seg { position: relative; }
+.ti-c .ti-seg + .ti-seg::before { content: ''; position: absolute; left: -3px; top: 11px; bottom: 11px; width: 1px; background: var(--cor-rastro); }
+.ti-c .ti-num { font: var(--voz-item); }
