@@ -66,7 +66,7 @@ test('Acervo: a régua de anos filtra as matérias', async ({ page }) => {
   await expect(bloco(page)).toHaveText('acervo.anos');
   await page.keyboard.press('ArrowLeft');
   await expect(selecionado(page, 'acervo.anos')).toContainText('1º ano');
-  await expect(page.locator('[data-block="acervo.materias"] [data-nav-index]')).toHaveCount(1);
+  await expect(page.locator('[data-block="acervo.materias"] [data-nav-index]')).toHaveCount(2);
 });
 
 test('o Acervo lembra a matéria ao voltar de outra tela', async ({ page }) => {
@@ -160,7 +160,7 @@ test('Mesa: Alt N abre um cartão, Ctrl Enter salva os completos', async ({ page
   await page.keyboard.press('Control+Enter');
   const cartoes = page.locator('[data-block="mesa.cards"]');
   await expect(cartoes).toContainText('1 cartão salvo');
-  await expect(cartoes.getByRole('button', { name: 'Salvos 7' })).toBeVisible();
+  await expect(cartoes.getByRole('button', { name: 'Salvos 13' })).toBeVisible();
   await expect(cartoes.locator('textarea')).toHaveValue('Sem verso ainda');
 });
 

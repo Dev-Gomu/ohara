@@ -62,10 +62,10 @@
 - L1 # Estado do Ohara (atualizado em 14/11/2026)
 - L5 ## Onde estamos
 - L22 ## Pendências para a próxima sessão (salvo em 15/11, nesta ordem)
-- L36 ## Próximo passo
-- L72 ## A conferir (aplicado em 13/11, só check e e2e)
-- L75 ## Esperando o usuário
-- L79 ## Iniciativas abertas (máx. 3)
+- L37 ## Próximo passo
+- L73 ## A conferir (aplicado em 13/11, só check e e2e)
+- L76 ## Esperando o usuário
+- L80 ## Iniciativas abertas (máx. 3)
 
 ### docs/mapa.md
 - L1 # Mapa do projeto
@@ -255,6 +255,10 @@
 - src/core/study/queries.ts: `export const ALL_FOLDERS = 'todas';`
 - src/core/study/reminders.test.ts: (sem comentário nem export no topo)
 - src/core/study/reminders.ts: D174: some ao fim do dia; o que ficou em aberto reaparece nos dias seguintes como atrasado.
+- src/core/study/sample.test.ts: (sem comentário nem export no topo)
+- src/core/study/sample.ts: Dados do modo exemplo (?exemplo): um semestre inteiro de mentira, com todos os casos que o app
+- src/core/study/sampleCards.ts: Cartões do exemplo: [frente, verso, dias até vencer]. Negativo = atrasado; 0 = hoje.
+- src/core/study/sampleNotes.ts: Anotações do exemplo (HTML do editor). Só algumas aulas têm texto; as outras abrem vazias.
 - src/core/study/scope.test.ts: (sem comentário nem export no topo)
 - src/core/study/scope.ts: O que entra no treino (D179, D180). Quatro categorias, todas aceitam vários valores.
 - src/core/study/search.test.ts: (sem comentário nem export no topo)

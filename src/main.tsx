@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import type { DbErrorCode } from './core/db/protocol';
 import { EMPTY_STUDY } from './core/study/create';
 import { FILE_DIR } from './core/study/files';
-import { createFixtures } from './core/study/fixtures';
+import { createSample } from './core/study/sample';
 import type { StudyData } from './core/study/types';
 import { createClient, DbError, type DbClient } from './data/client';
 import { createDbStorage } from './data/dbStorage';
@@ -50,7 +50,7 @@ const NAMES = sample
     };
 
 function initialData(): StudyData {
-  if (sample) return createFixtures(today);
+  if (sample) return createSample(today);
   const year = { id: crypto.randomUUID(), name: String(new Date().getFullYear()), archived: false };
   return { ...EMPTY_STUDY, years: [year] };
 }
