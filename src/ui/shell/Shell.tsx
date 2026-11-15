@@ -18,6 +18,7 @@ import { Palette } from './Palette';
 import { PromptWindow } from './PromptWindow';
 import { UndoBar } from './UndoBar';
 import { ReminderWindow } from './ReminderWindow';
+import { Button } from '../components/Button';
 import { DicaGrupo } from '../components/DicaGrupo';
 import { TrashWindow } from './TrashWindow';
 import { FAULTS_OPEN, NOTES_OPEN } from '../study/navigation';
@@ -82,14 +83,15 @@ export function Shell() {
         <span data-testid="bloco">{focus.block}</span>. Última ação:{' '}
         <span data-testid="ultima-acao">{lastAction ?? 'nenhuma'}</span>
       </p>
-      {needRefresh && (
-        <div className={styles.aviso} role="status">
-          <span>Há uma versão nova.</span>
-          <button className={styles.botao} onClick={() => void updateServiceWorker(true)}>
-            Atualizar
-          </button>
-        </div>
-      )}
+      <div className={styles.avisos}>
+        {needRefresh && (
+          <div className={styles.aviso} role="status">
+            <span>Há uma versão nova.</span>
+            <Button onPress={() => void updateServiceWorker(true)}>Atualizar</Button>
+          </div>
+        )}
+        <UndoBar />
+      </div>
       <HelpWindow />
       <Palette />
       <ReminderWindow />
@@ -98,7 +100,6 @@ export function Shell() {
       <ConsultWindows />
       <TrashWindow />
       <PromptWindow />
-      <UndoBar />
     </DicaGrupo>
   );
 }

@@ -15,7 +15,7 @@
 
 ### Button.tsx
 - `function Button(props: ButtonProps)`
-  `interface ButtonProps { variant?: 'primary' | 'plain' | 'quiet'; shortcut?: string; cursor?: boolean; menuItem?: boolean; disabled?: boolean; label?: string; onPress?: () => void; children: ReactNode; }`
+  `interface ButtonProps { variant?: 'primary' | 'plain' | 'quiet'; shortcut?: string; cursor?: boolean; menuItem?: boolean; disabled?: boolean; label?: string; autoFocus?: boolean; onPress?: () => void; children: ReactNode; }`
 
 ### CardBack.tsx
 - `function Inline({ text, cloze }: InlineProps)`
@@ -284,6 +284,7 @@
 
 ### actions.ts
 - `function toggleReminder(id: string | undefined): void`
+- `function postponeReminder(id: string, date: string): void`
 
 ### attach.ts
 - `function attach(source: File, kind: FileKind, owner: { lessonId?: string; subjectId?: string }): Promise<void>`
@@ -355,6 +356,10 @@
 ### pdf.ts
 - `function openPdf(bytes: ArrayBuffer): Promise<PDFDocumentProxy>`
   O pdf.js assume a posse do buffer que recebe: passa uma cópia.
+
+### reminderOptions.ts
+- `function reminderOptions(item: Reminder | undefined): BlockOption[]`
+  D178: o ⋮ do bloco Lembretes ganha "Adiar" para o lembrete sob o cursor.
 
 ### screenMemory.ts
 - `function setScreenMemory(key: string, value: T): void`

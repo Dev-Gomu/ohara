@@ -347,6 +347,7 @@
 - src/ui/keyboard/listener.ts: (sem comentário nem export no topo)
 - src/ui/keyboard/store.ts: Devolver false deixa a tecla seguir o caminho normal.
 - src/ui/keyboard/tableAdjust.ts: Modo Ajustar da tabela (D149). Fora do React: o listener precisa saber na hora da tecla.
+- src/ui/keyboard/tableContext.ts: Cursor numa tabela das Anotações. Fora do React: o listener precisa saber na hora da tecla.
 - src/ui/keyboard/useBlocks.ts: Cada tela declara seus blocos. Sem deps: a contagem de itens muda com o filtro.
 - src/ui/mosaic/Mosaic.module.css: Ampliado cobre o mosaico sem desmontar os outros blocos: nada digitado se perde.
 - src/ui/mosaic/Mosaic.tsx: (sem comentário nem export no topo)
@@ -420,7 +421,7 @@
 - src/ui/shell/ReminderWindow.tsx: `export function ReminderWindow()`
 - src/ui/shell/ScreenFrame.module.css: (sem comentário nem export no topo)
 - src/ui/shell/ScreenFrame.tsx: Antes do título (a sigla da matéria na Mesa).
-- src/ui/shell/Shell.module.css: Tecla sobre o botão amarelo do aviso.
+- src/ui/shell/Shell.module.css: Pilha de avisos: o mais novo fica em cima, nenhum esconde o outro.
 - src/ui/shell/Shell.tsx: (sem comentário nem export no topo)
 - src/ui/shell/TopMenu.module.css: (sem comentário nem export no topo)
 - src/ui/shell/TopMenu.tsx: (sem comentário nem export no topo)
@@ -443,6 +444,7 @@
 - src/ui/study/reminderOptions.ts: D178: o ⋮ do bloco Lembretes ganha "Adiar" para o lembrete sob o cursor.
 - src/ui/study/screenMemory.ts: Estado de tela que sobrevive à troca de tela, só enquanto o app está aberto (D26).
 - src/ui/study/study.ts: Horário fixo nos dados de exemplo, para sempre haver uma aula de agora.
+- src/ui/study/undo.test.ts: A exclusão grava uma vez; o Desfazer grava de novo.
 - src/ui/study/undo.ts: Exclusão mostra "Ver lixeira" no aviso; restaurar, não.
 - src/ui/styles/base.css: (sem comentário nem export no topo)
 - src/ui/styles/fonts.css: Fontes da D67, servidas pelo app (D68). Licença OFL.

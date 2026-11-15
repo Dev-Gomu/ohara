@@ -5,6 +5,7 @@ import { cardLineContext } from './cardLine';
 import { isChoosing } from './choice';
 import { dispatch, getKeyboardState } from './store';
 import { isAdjusting } from './tableAdjust';
+import { isInTable } from './tableContext';
 import { TRASH_WINDOW } from '../shell/commands';
 import { trashSpot } from '../shell/trashState';
 
@@ -30,6 +31,7 @@ function onKeyDown(event: KeyboardEvent): void {
     overlay: overlayOf(focus),
     window: focus.window,
     adjusting: isAdjusting(),
+    inTable: isInTable(),
     choosing: isChoosing(focus),
     ...(cardLine ? { cardLine } : {}),
     ...(focus.window === TRASH_WINDOW ? { trash: trashSpot() } : {}),

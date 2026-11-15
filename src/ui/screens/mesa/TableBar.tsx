@@ -1,17 +1,20 @@
+import { useEffect } from 'react';
 import { useEditorState, type Editor } from '@tiptap/react';
 import { SIZE_STEP, type SizeAxis } from '../../../core/notes/tableSize';
 import { Button } from '../../components/Button';
 import { setAdjusting, useAdjusting } from '../../keyboard/tableAdjust';
+import { setInTable } from '../../keyboard/tableContext';
 import { equalizeColumns, measure, setSize, spotOf } from './tableOps';
 import styles from './TableBar.module.css';
 
-const COMMANDS: readonly { label: string; run: (e: Editor) => void }[] = [
-  { label: '+ Linha', run: (e) => void e.chain().focus().addRowAfter().run() },
-  { label: '+ Coluna', run: (e) => void e.chain().focus().addColumnAfter().run() },
-  { label: '− Linha', run: (e) => void e.chain().focus().deleteRow().run() },
-  { label: '− Coluna', run: (e) => void e.chain().focus().deleteColumn().run() },
+const COMMANDS: readonly { label: string; shortcut?: string; run: (e: Editor) => void }[] = [
+  { label: '+ Linha', shortcut: 'Alt Shift ↓', run: (e) => void e.chain().focus().addRowAfter().run() },
+  { label: '+ Coluna', shortcut: 'Alt Shift →', run: (e) => void e.chain().focus().addColumnAfter().run() },
+  { label: '− Linha', shortcut: 'Alt ⌫', run: (e) => void e.chain().focus().deleteRow().run() },
+  { label: '− Coluna', shortcut: 'Alt Shift ⌫', run: (e) => void e.chain().focus().deleteColumn().run() },
   {
     label: 'Igualar colunas',
+    shortcut: 'Alt R =',
     run: (e) => {
       const spot = spotOf(e.state);
       if (spot) equalizeColumns(e.view, spot);
@@ -46,6 +49,11 @@ export function TableBar({ editor, keep }: { editor: Editor | null; keep: string
     },
     equalityFn: (a, b) => a?.width === b?.width && a?.height === b?.height,
   });
+  const inTable = sizes !== null;
+  useEffect(() => {
+    setInTable(inTable);
+    return () => setInTable(false);
+  }, [inTable]);
   if (!editor || !sizes) return null;
   return (
     <div
@@ -67,7 +75,7 @@ export function TableBar({ editor, keep }: { editor: Editor | null; keep: string
       ) : (
         <>
           {COMMANDS.map((c) => (
-            <Button key={c.label} variant="quiet" onPress={() => c.run(editor)}>{c.label}</Button>
+            <Button key={c.label} variant="quiet" {...(c.shortcut !== undefined && { shortcut: c.shortcut })} onPress={() => c.run(editor)}>{c.label}</Button>
           ))}
           <Button variant="quiet" shortcut="Alt R" onPress={() => setAdjusting(true)}>Ajustar</Button>
         </>

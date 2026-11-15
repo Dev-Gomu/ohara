@@ -13,7 +13,7 @@ import { ask } from '../../shell/PromptWindow';
 import { storage } from '../../study/study';
 import { isAdjusting, setAdjusting } from '../../keyboard/tableAdjust';
 import { SizedRow, TableAdjust } from './tableAdjustExtension';
-import { measure, setSize, spotOf } from './tableOps';
+import { equalizeColumns, measure, setSize, spotOf } from './tableOps';
 import styles from './Mesa.module.css';
 
 type EditorHandler = (change: KeyAction) => boolean | void;
@@ -110,6 +110,22 @@ export function editorActions(
       setSize(editor.view, spot, change.axis, measure(editor.view, spot, change.axis) + change.delta);
     },
     tableAdjustEnd: () => setAdjusting(false),
+    tableAddRow: (change) => {
+      if (change.type !== 'tableAddRow') return;
+      if (change.where === 'after') run().addRowAfter().run();
+      else run().addRowBefore().run();
+    },
+    tableAddColumn: (change) => {
+      if (change.type !== 'tableAddColumn') return;
+      if (change.where === 'after') run().addColumnAfter().run();
+      else run().addColumnBefore().run();
+    },
+    tableDeleteRow: () => void run().deleteRow().run(),
+    tableDeleteColumn: () => void run().deleteColumn().run(),
+    tableEqualize: () => {
+      const spot = spotOf(editor.state);
+      if (spot) equalizeColumns(editor.view, spot);
+    },
     markSlidePage: () => void run().insertContent(`[slide ${page}] `).run(),
     heading: (change) => {
       if (change.type === 'heading') run().toggleHeading({ level: change.level }).run();

@@ -364,8 +364,28 @@ export const ADJUST_KEYS: readonly AdjustRow[] = [
       action: { type: 'tableAdjust', axis, delta: sign * SIZE_BIG_STEP },
     },
   ] as const),
+  { label: '=', code: 'Equal', shift: false, action: { type: 'tableEqualize' } },
   { label: 'Enter', code: 'Enter', shift: false, action: { type: 'tableAdjustEnd' } },
   { label: 'Esc', code: 'Escape', shift: false, action: { type: 'tableAdjustEnd' } },
+];
+
+// Só valem com o cursor numa tabela das Anotações (D166); por isso ficam fora de KEYS.
+// "Apagar tabela" fica sem tecla de propósito: é destrutivo.
+export interface TableRow {
+  label: string;
+  code: string;
+  mods: 'a' | 'as';
+  action: KeyAction;
+  text: string;
+}
+
+export const TABLE_KEYS: readonly TableRow[] = [
+  { label: 'Alt Shift ↓', code: 'ArrowDown', mods: 'as', action: { type: 'tableAddRow', where: 'after' }, text: '+ Linha abaixo' },
+  { label: 'Alt Shift ↑', code: 'ArrowUp', mods: 'as', action: { type: 'tableAddRow', where: 'before' }, text: '+ Linha acima' },
+  { label: 'Alt Shift →', code: 'ArrowRight', mods: 'as', action: { type: 'tableAddColumn', where: 'after' }, text: '+ Coluna à direita' },
+  { label: 'Alt Shift ←', code: 'ArrowLeft', mods: 'as', action: { type: 'tableAddColumn', where: 'before' }, text: '+ Coluna à esquerda' },
+  { label: 'Alt ⌫', code: 'Backspace', mods: 'a', action: { type: 'tableDeleteRow' }, text: '− Linha' },
+  { label: 'Alt Shift ⌫', code: 'Backspace', mods: 'as', action: { type: 'tableDeleteColumn' }, text: '− Coluna' },
 ];
 
 // Só valem com a Ajuda aberta: ← → trocam de lista (qualidade de vida, D166).

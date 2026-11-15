@@ -21,6 +21,12 @@ export type KeyAction =
   // Modo Ajustar da tabela (D149): delta em pixels, já com o passo pequeno ou grande.
   | { type: 'tableAdjust'; axis: 'width' | 'height'; delta: number }
   | { type: 'tableAdjustEnd' }
+  // Comandos da tabela com o cursor dentro dela (qualidade de vida, D166).
+  | { type: 'tableAddRow'; where: 'before' | 'after' }
+  | { type: 'tableAddColumn'; where: 'before' | 'after' }
+  | { type: 'tableDeleteRow' }
+  | { type: 'tableDeleteColumn' }
+  | { type: 'tableEqualize' }
   // Linha com opções curtas (Configs, D160): ← → trocam a opção escolhida.
   | { type: 'optionStep'; delta: -1 | 1 }
   | { type: 'helpTab'; step: -1 | 1 }

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { DbErrorCode } from '../../core/db/protocol';
 import { isoDay } from '../../core/study/dates';
+import { Button } from '../components/Button';
 import { downloadBytes } from '../study/download';
 import styles from './ErrorScreen.module.css';
 
@@ -78,24 +79,18 @@ export function ErrorScreen({ code, detail, onExport }: Props) {
         {exportError && <p className={styles.detalhe}>{exportError}</p>}
         <div className={styles.botoes}>
           {canExport && (
-            <button
-              type="button"
-              className={styles.botao}
-              autoFocus
-              onClick={() => void exportDb()}
-            >
+            <Button variant="primary" autoFocus onPress={() => void exportDb()}>
               Exportar banco
-            </button>
+            </Button>
           )}
           {message.retry && (
-            <button
-              type="button"
-              className={styles.botao}
+            <Button
+              variant={canExport ? 'plain' : 'primary'}
               autoFocus={!canExport}
-              onClick={() => window.location.reload()}
+              onPress={() => window.location.reload()}
             >
               {message.retry}
-            </button>
+            </Button>
           )}
         </div>
       </section>

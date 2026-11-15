@@ -15,13 +15,39 @@ interface Pending {
 
 let pending: Pending | null = null;
 let timer: ReturnType<typeof setTimeout> | undefined;
+let remaining = WINDOW_MS;
+let startedAt = 0;
 const listeners = new Set<() => void>();
+
+function arm(): void {
+  clearTimeout(timer);
+  startedAt = Date.now();
+  timer = setTimeout(() => set(null), remaining);
+}
 
 function set(next: Pending | null): void {
   pending = next;
   clearTimeout(timer);
-  if (next) timer = setTimeout(() => set(null), WINDOW_MS);
+  remaining = WINDOW_MS;
+  if (next && !isHidden()) arm();
   listeners.forEach((listener) => listener());
+}
+
+function isHidden(): boolean {
+  return typeof document !== 'undefined' && document.hidden;
+}
+
+// Com o app oculto o prazo para; ao voltar, segue com o que faltava.
+if (typeof document !== 'undefined') {
+  document.addEventListener('visibilitychange', () => {
+    if (!pending) return;
+    if (document.hidden) {
+      clearTimeout(timer);
+      remaining = Math.max(0, remaining - (Date.now() - startedAt));
+    } else {
+      arm();
+    }
+  });
 }
 
 // D: exclusão é lógica no banco e tem Desfazer (regras.md G8). `label` aparece no aviso.

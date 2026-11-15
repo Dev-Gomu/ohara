@@ -12,12 +12,14 @@ interface ButtonProps {
   // Desabilitado continua focável, para poder explicar o motivo.
   disabled?: boolean;
   label?: string;
+  // Tela de erro: abre sem o sistema de teclado e precisa do foco no primeiro botão.
+  autoFocus?: boolean;
   onPress?: () => void;
   children: ReactNode;
 }
 
 export function Button(props: ButtonProps) {
-  const { variant = 'plain', shortcut, cursor, menuItem, disabled, label, onPress, children } = props;
+  const { variant = 'plain', shortcut, cursor, menuItem, disabled, label, autoFocus, onPress, children } = props;
   return (
     <button
       type="button"
@@ -27,6 +29,7 @@ export function Button(props: ButtonProps) {
       data-cursor={cursor && !menuItem ? '' : undefined}
       aria-disabled={disabled || undefined}
       aria-label={label}
+      autoFocus={autoFocus}
       onClick={disabled ? undefined : onPress}
     >
       {children}

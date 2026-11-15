@@ -1,4 +1,4 @@
-import { Key } from '../components/Key';
+import { Button } from '../components/Button';
 import { useNotice } from '../study/notice';
 import { dispatch } from '../keyboard/store';
 import { runUndo, useUndo } from '../study/undo';
@@ -18,17 +18,13 @@ export function UndoBar() {
   return (
     <div className={styles.aviso} role="status" data-testid="desfazer">
       <span>{undo.label}</span>
-      <button type="button" className={styles.botao} onClick={runUndo}>
-        Desfazer <Key>Alt Z</Key>
-      </button>
+      <Button shortcut="Alt Z" onPress={runUndo}>
+        Desfazer
+      </Button>
       {undo.removal && (
-        <button
-          type="button"
-          className={styles.botao}
-          onClick={() => dispatch({ type: 'openWindow', window: TRASH_WINDOW })}
-        >
+        <Button onPress={() => dispatch({ type: 'openWindow', window: TRASH_WINDOW })}>
           Ver lixeira
-        </button>
+        </Button>
       )}
     </div>
   );

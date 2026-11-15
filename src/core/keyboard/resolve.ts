@@ -5,6 +5,7 @@ import {
   KEYS,
   LINE_KEYS,
   OPTION_KEYS,
+  TABLE_KEYS,
   TRASH_KEYS,
   type KeyRow,
   type LineSpot,
@@ -37,6 +38,8 @@ export interface KeyContext {
   choosing?: boolean;
   // Janela da Lixeira aberta: onde está o foco dentro dela.
   trash?: TrashSpot;
+  // Cursor numa tabela das Anotações: Alt Shift + setas e Alt ⌫ viram comandos da tabela.
+  inTable?: boolean;
   // Qual janela está aberta (só a Ajuda usa: ← → trocam de lista).
   window?: string | null;
 }
@@ -78,6 +81,10 @@ export function resolve(
       (key) => key.code === input.code && key.shift === input.shift && mods === (input.shift ? 's' : ''),
     );
     if (adjust) return input.repeat && adjust.action.type === 'tableAdjustEnd' ? { type: 'swallow' } : adjust.action;
+  }
+  if (context.inTable && context.level === 'field' && context.overlay === 'none') {
+    const table = TABLE_KEYS.find((key) => key.code === input.code && key.mods === mods);
+    if (table) return input.repeat ? { type: 'swallow' } : table.action;
   }
   if (context.choosing && context.level === 'nav' && context.overlay === 'none' && mods === '') {
     const option = OPTION_KEYS.find((key) => key.code === input.code);

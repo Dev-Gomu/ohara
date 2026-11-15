@@ -270,3 +270,23 @@ describe('Ajuda aberta: ← → trocam de lista', () => {
     expect(resolve(press('Escape'), help)?.type).toBe('escape');
   });
 });
+
+describe('comandos da tabela (D166)', () => {
+  const alt = (code: string, shift = false) => press(code, { alt: true, shift });
+  it('com o cursor na tabela, Alt Shift ↓ acrescenta linha', () => {
+    expect(resolve(alt('ArrowDown', true), { level: 'field', overlay: 'none', inTable: true })).toEqual({
+      type: 'tableAddRow',
+      where: 'after',
+    });
+  });
+  it('fora da tabela, Alt Shift ↓ não é da tabela', () => {
+    expect(resolve(alt('ArrowDown', true), { level: 'field', overlay: 'none' })).not.toEqual({
+      type: 'tableAddRow',
+      where: 'after',
+    });
+  });
+  it('Alt ⌫ apaga a linha só na tabela', () => {
+    expect(resolve(alt('Backspace'), { level: 'field', overlay: 'none', inTable: true })).toEqual({ type: 'tableDeleteRow' });
+    expect(resolve(alt('Backspace'), { level: 'field', overlay: 'none' })).toBeNull();
+  });
+});
