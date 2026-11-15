@@ -15,6 +15,8 @@ interface NavItemProps {
   subject?: number | undefined;
   // A linha tem opções curtas: ← → trocam a opção (D160).
   choice?: boolean;
+  // Item de escolha múltipla ou única: marcado é diferente de onde o cursor está.
+  marked?: boolean;
   children: ReactNode;
 }
 
@@ -31,7 +33,7 @@ export function useNavCursor(block: string, index: number): boolean {
 
 // Item de campo navegável. Quem desenha a seleção é a tela, pelo atributo data-sel.
 export function NavItem(props: NavItemProps) {
-  const { block, index, className, ring, onOpen, label, color, subject, choice, children } = props;
+  const { block, index, className, ring, onOpen, label, color, subject, choice, marked, children } = props;
   const { focus } = useKeyboardState();
   const element = useRef<HTMLButtonElement>(null);
   const selected = (focus.items[block] ?? 0) === index;
@@ -58,6 +60,8 @@ export function NavItem(props: NavItemProps) {
       data-cor={color}
       data-materia={subject}
       data-choice={choice ? '' : undefined}
+      data-marcado={marked}
+      aria-pressed={marked}
       data-cursor={focused && ring === 'cursor' ? '' : undefined}
       aria-current={selected}
       aria-label={label}

@@ -79,6 +79,14 @@ Esta é a tabela de atalhos que a Etapa 2 implementa. Cada linha vira um teste (
 | Espaço | Vira o cartão |
 | 1 · 2 · 3 · 4 | Errei, Difícil, Bom, Fácil |
 
+### Treino (escolha, D180)
+| Tecla | Ação |
+|---|---|
+| ← → nos Modos | Troca e já escolhe Todos ou Personalizado |
+| Setas | Andam entre Modos, Ano, Bimestre, Disciplina, Aulas e a barra |
+| Enter · Espaço | Marca e desmarca o item (Ano, Bimestre, Disciplina, Aulas); na barra, Enter inicia |
+| Alt F | Busca da Disciplina (só no Personalizado) |
+
 ### Editor (Anotações e Cartões)
 | Tecla | Ação |
 |---|---|

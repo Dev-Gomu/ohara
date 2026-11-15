@@ -105,26 +105,30 @@ test('Treino: Espaço vira, número responde, Errei volta para a fila', async ({
   await expect(bloco(page)).toHaveText('treino.resumo');
 });
 
-test('Treino: escolher uma aula só treina os cartões dela', async ({ page }) => {
+test('Treino: Personalizado com disciplina e aula só treina os cartões dela', async ({ page }) => {
   await page.keyboard.press('Alt+Digit4');
+  await expect(bloco(page)).toHaveText('treino.resumo');
+  const barra = page.locator('[data-block="treino.resumo"]');
+  const todos = await barra.textContent();
+  await page.keyboard.press('ArrowUp');
+  await page.keyboard.press('ArrowRight');
+  await expect(page.getByText('Marque uma disciplina para escolher aulas.')).toBeVisible();
   await page.keyboard.press('Alt+KeyF');
   await page.keyboard.type('imunologia');
   await page.keyboard.press('Enter');
   await expect(bloco(page)).toHaveText('treino.materias');
-  await page.keyboard.press('Enter');
-  await expect(bloco(page)).toHaveText('treino.resumo');
-  await page.keyboard.press('ArrowDown');
-  await page.keyboard.press('Enter');
+  await page.keyboard.press('Space');
   await page.keyboard.press('ArrowRight');
   await expect(bloco(page)).toHaveText('treino.escolha');
-  for (let step = 0; step < 9; step += 1) await page.keyboard.press('ArrowDown');
   await page.keyboard.press('Enter');
-  const resumo = page.locator('[data-block="treino.resumo"]');
-  await expect(resumo).toContainText('Imunologia · 1 aula');
+  await expect(page.getByText(/^1 de \d+$/)).toBeVisible();
+  await expect(barra).toContainText('no recorte');
+  expect(await barra.textContent()).not.toBe(todos);
+  for (let step = 0; step < 7; step += 1) await page.keyboard.press('ArrowDown');
+  await expect(bloco(page)).toHaveText('treino.resumo');
   await page.keyboard.press('ArrowLeft');
-  await page.keyboard.press('ArrowUp');
   await page.keyboard.press('Enter');
-  await expect(page.getByText(/^0 de 6$/)).toBeVisible();
+  await expect(page.getByText('Marque uma disciplina para escolher aulas.')).toBeVisible();
 });
 
 test('Mesa: Alt T vai às abas dos cartões e as setas e H L trocam entre Novo e Salvos', async ({

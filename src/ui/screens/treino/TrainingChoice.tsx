@@ -1,39 +1,47 @@
 import { useEffect, useRef, useState } from 'react';
+import { ankiTsv } from '../../../core/study/ankiExport';
 import {
   describeScope,
   dueCards,
-  EVERYTHING,
-  fullScope,
+  emptyScope,
+  isEmptyScope,
+  lessonGroups,
+  parseScope,
+  periodChoices,
+  pruneScope,
   scopeCards,
-  scopePeriods,
-  scopeRows,
-  togglePick,
+  stringifyScope,
+  toggleIn,
+  toggleSubject,
+  yearChoices,
   type Scope,
 } from '../../../core/study/scope';
-import { ankiTsv } from '../../../core/study/ankiExport';
 import { capTiles, subjectTiles } from '../../../core/study/subjectTiles';
-import { Block } from '../../components/Block';
-import { NavItem, useSelectedIndex } from '../../components/NavItem';
-import { dispatch } from '../../keyboard/store';
+import { useSelectedIndex } from '../../components/NavItem';
+import { dispatch, getKeyboardState } from '../../keyboard/store';
 import { useBlocks } from '../../keyboard/useBlocks';
 import { ScreenFrame } from '../../shell/ScreenFrame';
-import { useScreenMemory } from '../../study/screenMemory';
 import { downloadText, fileSlug } from '../../study/download';
-import { today, useStudy } from '../../study/study';
-import styles from './Treino.module.css';
-import inicio from './Inicio.module.css';
+import { storage, today, useStudy } from '../../study/study';
+import {
+  ANO,
+  AULAS,
+  Bar,
+  barIndexes,
+  BARRA,
+  BIMESTRE,
+  BUSCA,
+  COLUNAS,
+  DISCIPLINAS,
+  LessonsPanel,
+  MODOS,
+  Modos,
+  RulerBlock,
+  SubjectsPanel,
+} from './ChoiceParts';
+import styles from './Escolha.module.css';
 
-const SUMMARY = 'treino.resumo';
-const PERIOD = 'treino.periodo';
-const SEARCH = 'treino.busca';
-const SUBJECTS = 'treino.materias';
-const ROWS = 'treino.escolha';
-const COLUMNS = 7;
-
-interface Saved {
-  subjectId: string | null;
-  picks: readonly string[];
-}
+const SAVED_KEY = 'treino.filtros';
 
 interface TrainingChoiceProps {
   onStart: (cardIds: string[]) => void;
@@ -41,280 +49,224 @@ interface TrainingChoiceProps {
 
 export function TrainingChoice({ onStart }: TrainingChoiceProps) {
   const data = useStudy();
-  const [query, setQuery] = useState('');
-  const [adjust, setAdjust] = useState(false);
-  // A última escolha fica lembrada: quem treina o de sempre só aperta Enter.
-  const [saved, setSaved] = useScreenMemory<Saved>('treino.escopo', {
-    subjectId: null,
-    picks: [EVERYTHING],
-  });
-  const searching = query.trim() !== '';
-  const { shown: tiles, hidden } = capTiles(
-    subjectTiles(data, today, query),
-    searching ? null : saved.subjectId,
+  // O Treino sempre abre em "Todos os cartões"; só os filtros do Personalizado ficam lembrados.
+  const [custom, setCustom] = useState(false);
+  const [saved, setSaved] = useState<Scope>(() =>
+    pruneScope(data, parseScope(storage.getDeviceState(SAVED_KEY))),
   );
-  const tileIndex = useSelectedIndex(SUBJECTS, tiles.length);
-  const subjectId = tiles[tileIndex]?.id ?? null;
-  const periods = scopePeriods(data, subjectId);
-  const periodIndex = useSelectedIndex(PERIOD, periods.length + 1);
-  const picks = saved.subjectId === subjectId ? saved.picks : fullScope(subjectId).picks;
-  const scope: Scope = { subjectId, picks };
-  const rows = scopeRows(data, scope, today);
-  const rowIndex = useSelectedIndex(ROWS, rows.length);
+  const [query, setQuery] = useState('');
+  const scope = custom ? saved : emptyScope();
+  const change = (next: Scope) => {
+    setSaved(next);
+    storage.setDeviceState(SAVED_KEY, stringifyScope(next));
+  };
+
+  const years = yearChoices(data, today);
+  const periods = periodChoices(data, today);
+  const { shown: tiles, hidden } = capTiles(subjectTiles(data, today, query), saved.subjects);
+  const groups = lessonGroups(data, saved, today);
+  const lessonRows = groups.flatMap((group) => group.rows);
+
   const cards = scopeCards(data, scope);
   const due = dueCards(cards, today);
   const queue = due.length > 0 ? due : cards;
+  const customCards = scopeCards(data, saved);
+  const modeIndex = useSelectedIndex(MODOS, 2);
+  const idx = barIndexes(custom);
 
-  // Andar pela régua de período já escolhe: a seleção segue o foco.
-  const lastPeriod = useRef(periodIndex);
-  useEffect(() => {
-    if (lastPeriod.current === periodIndex) return;
-    lastPeriod.current = periodIndex;
-    const period = periods[periodIndex - 1];
-    setSaved({ subjectId, picks: period ? [period.id] : [EVERYTHING] });
-  });
-
-  const toggle = (index: number) => {
-    const row = rows[index];
-    if (row) setSaved({ subjectId, picks: togglePick(data, scope, row.id).picks });
-  };
+  const clear = () => change(emptyScope());
   const start = () => {
     if (queue.length > 0) onStart(queue.map((card) => card.id));
   };
-  // Exporta todos os cartões do recorte (não só os de hoje), prontos para importar no Anki (B02).
+  // Exporta todos os cartões do recorte (não só os de hoje), prontos para o Anki (B02).
   const exportAnki = () => {
     if (cards.length === 0) return;
     downloadText(ankiTsv(cards), `anki-${fileSlug(describeScope(data, scope), 'cartoes')}.txt`);
   };
-  const goToSubjects = () =>
-    dispatch({ type: 'jump', block: SUBJECTS, level: 'nav', items: { [SUBJECTS]: 0 } });
 
-  const savedTile = Math.max(
-    0,
-    tiles.findIndex((tile) => tile.id === saved.subjectId),
-  );
-  const savedPeriod =
-    saved.picks.length === 1 ? periods.findIndex((period) => period.id === saved.picks[0]) + 1 : 0;
+  const toggleYear = (id: string) => change({ ...saved, years: toggleIn(saved.years, id) });
+  const togglePeriod = (id: string) => change({ ...saved, periods: toggleIn(saved.periods, id) });
+  const toggleLesson = (id: string) => change({ ...saved, lessons: toggleIn(saved.lessons, id) });
+  const toggleSubjectId = (id: string) => change(toggleSubject(data, saved, id));
 
+  // Espaço e Enter marcam o item sob o cursor nos blocos de filtro.
+  const markFocused = (): boolean => {
+    const { focus } = getKeyboardState();
+    if (focus.level !== 'nav') return false;
+    const at = focus.items[focus.block] ?? 0;
+    const year = years[at];
+    const period = periods[at];
+    const tile = tiles[at];
+    const lesson = lessonRows[at];
+    if (focus.block === ANO && year) toggleYear(year.id);
+    else if (focus.block === BIMESTRE && period) togglePeriod(period.id);
+    else if (focus.block === DISCIPLINAS && tile) toggleSubjectId(tile.id);
+    else if (focus.block === AULAS && lesson) toggleLesson(lesson.id);
+    else return false;
+    return true;
+  };
+
+  // Na abertura o cursor nasce no Iniciar; depois, andar pelos modos já escolhe.
+  const opened = useRef(false);
+  useEffect(() => {
+    if (!opened.current) {
+      opened.current = true;
+      dispatch({
+        type: 'jump',
+        block: BARRA,
+        level: 'nav',
+        items: { [MODOS]: 0, [BARRA]: barIndexes(false).start },
+      });
+      return;
+    }
+    const next = modeIndex === 1;
+    setCustom(next);
+    dispatch({
+      type: 'jump',
+      block: MODOS,
+      level: 'nav',
+      items: { [BARRA]: barIndexes(next).start },
+    });
+  }, [modeIndex]);
+
+  const hasSubject = saved.subjects.length > 0;
+  const hasLessons = hasSubject && lessonRows.length > 0;
+  const lower = hasLessons ? AULAS : DISCIPLINAS;
   useBlocks({
     blocks: [
       {
-        id: SUMMARY,
+        id: MODOS,
         kind: 'nav',
-        nav: { axis: 'y', count: 3 },
-        neighbors: { down: PERIOD, ...(adjust ? { right: ROWS } : {}) },
-        onActivate: (index) =>
-          index === 0 ? start() : index === 1 ? setAdjust(!adjust) : exportAnki(),
+        nav: { axis: 'x', count: 2 },
+        neighbors: { down: custom ? ANO : BARRA },
+        enterGoesTo: BARRA,
       },
-      {
-        id: PERIOD,
-        kind: 'nav',
-        nav: { axis: 'x', count: periods.length + 1 },
-        neighbors: { up: SUMMARY, down: SUBJECTS },
-        enterGoesTo: SUMMARY,
-      },
-      { id: SEARCH, kind: 'text', neighbors: { up: PERIOD, down: SUBJECTS } },
-      {
-        id: SUBJECTS,
-        kind: 'nav',
-        nav: { axis: 'grid', count: tiles.length, columns: COLUMNS },
-        neighbors: { up: SEARCH },
-        resets: [PERIOD, ROWS],
-        enterGoesTo: SUMMARY,
-      },
-      ...(adjust
+      ...(custom
         ? [
             {
-              id: ROWS,
+              id: ANO,
               kind: 'nav' as const,
-              nav: { axis: 'y' as const, count: rows.length },
-              neighbors: { left: SUMMARY },
-              onActivate: () => toggle(rowIndex),
+              nav: { axis: 'x' as const, count: Math.max(1, years.length) },
+              neighbors: { up: MODOS, right: BIMESTRE, down: BUSCA },
+              onActivate: markFocused,
             },
+            {
+              id: BIMESTRE,
+              kind: 'nav' as const,
+              nav: { axis: 'x' as const, count: Math.max(1, periods.length) },
+              neighbors: { up: MODOS, left: ANO, down: lower },
+              onActivate: markFocused,
+            },
+            { id: BUSCA, kind: 'text' as const, neighbors: { up: ANO, down: DISCIPLINAS } },
+            {
+              id: DISCIPLINAS,
+              kind: 'nav' as const,
+              nav: { axis: 'grid' as const, count: tiles.length, columns: COLUNAS },
+              neighbors: { up: BUSCA, down: BARRA, ...(hasLessons ? { right: AULAS } : {}) },
+              onActivate: markFocused,
+            },
+            ...(hasLessons
+              ? [
+                  {
+                    id: AULAS,
+                    kind: 'nav' as const,
+                    nav: { axis: 'y' as const, count: lessonRows.length },
+                    neighbors: { up: BIMESTRE, left: DISCIPLINAS, down: BARRA },
+                    onActivate: markFocused,
+                  },
+                ]
+              : []),
           ]
         : []),
+      {
+        id: BARRA,
+        kind: 'nav',
+        nav: { axis: 'x', count: custom ? 3 : 2 },
+        neighbors: { up: custom ? DISCIPLINAS : MODOS },
+        onActivate: (index) => {
+          if (index === idx.clear) clear();
+          else if (index === idx.start) start();
+          else exportAnki();
+        },
+      },
     ],
-    arrival: {
-      block: SUMMARY,
-      level: 'nav',
-      items: { [SUBJECTS]: savedTile, [PERIOD]: savedPeriod, [ROWS]: 0 },
+    arrival: { block: BARRA, level: 'nav', items: { [MODOS]: 0, [BARRA]: 0 } },
+    actions: {
+      flipCard: () => markFocused(),
+      goToField: () => {
+        if (!custom) return false;
+        dispatch({ type: 'jump', block: BUSCA, level: 'field' });
+        return true;
+      },
     },
-    actions: { goToField: () => dispatch({ type: 'jump', block: SEARCH, level: 'field' }) },
   });
 
   const changeQuery = (value: string) => {
     setQuery(value);
-    // O foco vai para a primeira que casa, e o período volta a "Todos".
-    dispatch({
-      type: 'jump',
-      block: SEARCH,
-      level: 'field',
-      items: { [SUBJECTS]: 0, [PERIOD]: 0, [ROWS]: 0 },
-    });
+    dispatch({ type: 'jump', block: BUSCA, level: 'field', items: { [DISCIPLINAS]: 0 } });
   };
 
   return (
     <ScreenFrame title="Treino">
-      <div className={inicio.tela}>
-        <div className={inicio.coluna}>
-          <Block id={SUMMARY} className={inicio.resumo}>
-            <span className={inicio.rotulo}>Sua sessão</span>
-            <span className={inicio.numero}>{due.length}</span>
-            <span className={inicio.legenda}>
-              {cards.length === 0
-                ? 'Nenhum cartão aqui. Crie cartões no bloco Cartões da Mesa.'
-                : due.length === 1
-                  ? 'cartão para hoje'
-                  : 'cartões para hoje'}
-            </span>
-            <span className={inicio.recorte}>{describeScope(data, scope)}</span>
-            <span className={inicio.info}>
-              {cards.length} {cards.length === 1 ? 'cartão' : 'cartões'} no recorte
-            </span>
-            <NavItem
-              block={SUMMARY}
-              index={0}
-              className={inicio.iniciar}
-              ring="anel"
-              onOpen={start}
-            >
-              {startLabel(due.length, cards.length)}
-              <kbd className={inicio.tecla}>Enter</kbd>
-            </NavItem>
-            <NavItem
-              block={SUMMARY}
-              index={1}
-              className={inicio.ajustar}
-              ring="anel"
-              onOpen={() => setAdjust(!adjust)}
-            >
-              {adjust ? 'Ocultar o que treinar' : 'Ajustar o que treinar'}
-              <span aria-hidden="true">{adjust ? ' ‹' : ' ›'}</span>
-            </NavItem>
-            <NavItem
-              block={SUMMARY}
-              index={2}
-              className={inicio.ajustar}
-              ring="anel"
-              onOpen={exportAnki}
-            >
-              Exportar para o Anki
-            </NavItem>
-          </Block>
-
-          <Block id={PERIOD} className={inicio.periodo}>
-            <span className={inicio.rotulo}>Estudar</span>
-            <div className={inicio.regua}>
-              {['Todos', ...periods.map((period) => period.label)].map((label, index) => (
-                <NavItem
-                  key={label}
-                  block={PERIOD}
-                  index={index}
-                  className={inicio.periodoItem}
-                  ring="anel"
-                >
-                  {label}
-                </NavItem>
-              ))}
-            </div>
-          </Block>
-
-          <Block id={SEARCH} className={inicio.busca}>
-            <form
-              className={inicio.buscaForm}
-              role="search"
-              onSubmit={(event) => {
-                event.preventDefault();
-                if (tiles.length > 0) goToSubjects();
-              }}
-            >
-              <span className={inicio.rotulo}>Disciplina</span>
-              <input
-                className={inicio.campo}
-                data-field
-                aria-label="Buscar disciplina"
-                placeholder="Digite a sigla ou o nome"
-                value={query}
-                onChange={(event) => changeQuery(event.target.value)}
-              />
-              <kbd className={inicio.tecla}>Alt F</kbd>
-            </form>
-          </Block>
-
-          <Block id={SUBJECTS} className={inicio.materias}>
-            <div className={inicio.grade}>
-              {tiles.map((tile, index) => (
-                <NavItem
-                  key={tile.id ?? 'todas'}
-                  block={SUBJECTS}
-                  index={index}
-                  className={inicio.peca}
-                  ring="anel"
-                  label={`${tile.name}, ${dueLabel(tile.due)}`}
-                >
-                  {tile.color === null ? (
-                    <b className={inicio.todas}>Todas</b>
-                  ) : (
-                    <span className={inicio.sigla} data-materia={tile.color}>
-                      {tile.code}
-                    </span>
-                  )}
-                  <b className={inicio.contagem}>{tile.due > 0 ? tile.due : ''}</b>
-                  <small className={inicio.situacao}>{tile.due > 0 ? 'hoje' : 'em dia'}</small>
-                </NavItem>
-              ))}
-            </div>
-            {tiles.length === 0 && <p className={inicio.mais}>Nenhuma disciplina com “{query}”.</p>}
-            {hidden > 0 && (
-              <p className={inicio.mais}>
-                + {hidden} {hidden === 1 ? 'disciplina' : 'disciplinas'} · digite para buscar
-              </p>
-            )}
-          </Block>
+      <div className={styles.tela}>
+        <div className={styles.pilha}>
+          <Modos
+            custom={custom}
+            allTotal={data.cards.length}
+            customTotal={customCards.length}
+            customEmpty={isEmptyScope(saved)}
+          />
+          {custom && (
+            <>
+              <div className={styles.par}>
+                <RulerBlock
+                  id={ANO}
+                  label="Ano"
+                  choices={years}
+                  marked={saved.years}
+                  onToggle={toggleYear}
+                />
+                <RulerBlock
+                  id={BIMESTRE}
+                  label="Bimestre"
+                  choices={periods}
+                  marked={saved.periods}
+                  onToggle={togglePeriod}
+                />
+              </div>
+              <div className={styles.par}>
+                <SubjectsPanel
+                  tiles={tiles}
+                  hidden={hidden}
+                  query={query}
+                  marked={saved.subjects}
+                  onQuery={changeQuery}
+                  onSubmit={() => {
+                    if (tiles.length > 0) {
+                      dispatch({ type: 'jump', block: DISCIPLINAS, level: 'nav' });
+                    }
+                  }}
+                  onToggle={toggleSubjectId}
+                />
+                <LessonsPanel groups={groups} hasSubject={hasSubject} onToggle={toggleLesson} />
+              </div>
+            </>
+          )}
+          <Bar
+            custom={custom}
+            due={due.length}
+            total={cards.length}
+            startLabel={startLabel(due.length, cards.length)}
+            canStart={cards.length > 0}
+            onClear={clear}
+            onStart={start}
+            onExport={exportAnki}
+          />
         </div>
-
-        {adjust && (
-          <Block
-            id={ROWS}
-            title="O que treinar"
-            count={String(rows.length)}
-            className={inicio.lista}
-          >
-            <div className={styles.lista}>
-              {rows.map((row, index) => (
-                <NavItem
-                  key={row.id}
-                  block={ROWS}
-                  index={index}
-                  className={styles.linha}
-                  onOpen={() => toggle(index)}
-                >
-                  <span
-                    className={styles.marca}
-                    data-tipo={row.kind}
-                    aria-checked={row.checked}
-                    role="checkbox"
-                  >
-                    {row.checked ? '✓' : ''}
-                  </span>
-                  <b className={styles.rotulo} data-tipo={row.kind}>
-                    {row.label}
-                  </b>
-                  <span className={styles.contagem}>
-                    {row.due > 0 ? `${row.due} hoje · ` : ''}
-                    {row.total} {row.total === 1 ? 'cartão' : 'cartões'}
-                  </span>
-                </NavItem>
-              ))}
-            </div>
-          </Block>
-        )}
       </div>
     </ScreenFrame>
   );
 }
-
-const dueLabel = (due: number): string => (due > 0 ? `${due} hoje` : 'em dia');
 
 // Sem cartão vencido, ainda dá para adiantar: estudar uma aula antes da prova, por exemplo.
 function startLabel(due: number, total: number): string {

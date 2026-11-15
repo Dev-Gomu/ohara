@@ -1,0 +1,287 @@
+/* Escolha do Treino (D180): coluna de 880 px, sempre em duas metades iguais. */
+.tela {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 0;
+  overflow: auto;
+}
+
+.pilha {
+  flex: none;
+  width: 880px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--vao-mosaico);
+}
+
+.par {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--vao-mosaico);
+}
+
+.rotulo {
+  color: var(--cor-texto-2);
+  font: var(--ui-rotulo);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.apoio {
+  color: var(--cor-texto-2);
+  font: var(--ui-apoio);
+}
+
+.visto {
+  flex: none;
+  width: 14px;
+  height: 14px;
+}
+
+.modo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e1);
+  padding: var(--e4) var(--bloco-pad-x);
+  border-radius: var(--raio-bloco);
+  text-align: left;
+}
+
+.modo[data-marcado='true'] {
+  background: var(--cor-escolhido);
+}
+
+.modoNome {
+  font: var(--voz-item);
+}
+
+.pe {
+  margin-top: var(--e2);
+  font: var(--ui-item);
+  font-variant-numeric: tabular-nums;
+}
+
+.faixa {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--e3);
+  padding: var(--e2) var(--bloco-pad-x);
+}
+
+.faixaRotulo {
+  flex: none;
+  width: 76px;
+}
+
+.regua {
+  display: flex;
+  flex: 1;
+  gap: var(--e1);
+  padding: var(--e1);
+  border-radius: var(--raio-pilula);
+  background: var(--cor-cartao-2);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.item {
+  display: inline-flex;
+  flex: 1 0 0;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 var(--e2);
+  border-radius: var(--raio-pilula);
+  color: var(--cor-texto-2);
+  font: var(--ui-item);
+  font-variant-numeric: tabular-nums;
+}
+
+.item[data-marcado='true'] {
+  background: var(--cor-escolhido);
+  color: var(--cor-texto);
+}
+
+.vazioRegua {
+  flex: 1;
+  color: var(--cor-texto-2);
+  font: var(--ui-item);
+}
+
+/* O painel da disciplina reúne dois blocos do teclado (busca e grade) numa caixa só. */
+.disc {
+  gap: var(--e3);
+  padding: var(--e2) var(--bloco-pad-x) var(--bloco-pad-x);
+}
+
+.interno {
+  border: 0;
+  background: none;
+}
+
+.buscaForm {
+  display: flex;
+  align-items: center;
+  gap: var(--e4);
+}
+
+.campo {
+  flex: 1;
+  min-width: 0;
+  height: 40px;
+  padding: 0 var(--e4);
+  border: 0;
+  border-radius: var(--raio-pilula);
+  background: var(--cor-cartao-2);
+  color: var(--cor-texto);
+  font: var(--ui-item);
+}
+
+.campo::placeholder {
+  color: var(--cor-texto-2);
+  font-weight: 500;
+}
+
+.grade {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--e2);
+}
+
+.peca {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 2px;
+  min-height: 84px;
+  padding: var(--e2) var(--e1);
+  border-radius: var(--raio-item);
+  background: var(--cor-cartao-2);
+}
+
+.peca[data-marcado='true'] {
+  background: var(--cor-escolhido);
+}
+
+.selo {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  display: grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  border-radius: var(--raio-minimo);
+  background: var(--cor-acao);
+  color: var(--cor-sobre-acao);
+}
+
+.selo .visto {
+  width: 10px;
+  height: 10px;
+}
+
+.contagem {
+  min-height: 20px;
+  font: var(--voz-mini);
+}
+
+.situacao {
+  color: var(--cor-texto-2);
+  font: var(--ui-apoio);
+}
+
+.mais {
+  display: grid;
+  place-items: center;
+  height: 40px;
+  border-radius: var(--raio-pilula);
+  background: var(--cor-cartao-2);
+  color: var(--cor-texto-2);
+  font: var(--ui-item);
+}
+
+/* A altura vem da disciplina ao lado; a lista de aulas rola por dentro. */
+.aulas {
+  min-height: 0;
+  contain: size;
+}
+
+.vazio {
+  padding: var(--e2) var(--bloco-pad-x);
+  color: var(--cor-texto-2);
+  font: var(--leitura-texto);
+}
+
+.grupo {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--e2);
+  min-height: 36px;
+  padding: 0 var(--e3);
+}
+
+.grupoNome {
+  flex: 1;
+  font: var(--ui-item);
+}
+
+.aulaLinha {
+  min-height: var(--alvo);
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.aula {
+  overflow: hidden;
+  font: var(--ui-item);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.barra {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--e3);
+  padding: var(--e3) var(--bloco-pad-x) var(--e3) var(--e5);
+}
+
+.numero {
+  font: var(--voz-numero-mini);
+  font-variant-numeric: tabular-nums;
+}
+
+.resumo {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+}
+
+.recorte {
+  font: var(--voz-mini);
+}
+
+.barra > button[data-tipo='primary'],
+.barra > button[data-tipo='plain'] {
+  min-height: 48px;
+}
+
+.semFundo,
+.semFundo[data-foco] {
+  background: none;
+}
+
+/* O ⋮ da barra só aparece com o cursor no bloco ou no toque, como nos outros blocos. */
+.opcoesBarra {
+  visibility: hidden;
+}
+
+.barra[data-foco] .opcoesBarra,
+:global(:root[data-entrada='toque']) .opcoesBarra {
+  visibility: visible;
+}

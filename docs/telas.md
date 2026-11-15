@@ -26,7 +26,7 @@ Trabalho em uma aula. Título: nome da aula, data e sigla.
 Biblioteca. **Início:** régua de anos e grade de matérias (cor, sigla, nome, aulas, último acesso); ano arquivado é só consulta. **Matéria aberta:** régua de pastas (Todas, bimestres, Sem bimestre, Nova pasta), lista de aulas por data e prévia da aula. Abas Aulas e Cartões dentro da matéria. Busca por matéria, aula ou cartão com Alt F.
 
 ## 4. Treino (Alt 4)
-Revisão com repetição espaçada. **Escolha:** régua de matérias (Todas ou uma), lista do que treinar (tudo, bimestres e, na matéria, cada aula, com marcar várias) e resumo com Iniciar; a escolha fica lembrada e o foco nasce em Iniciar. Sem cartão vencido, Iniciar vira "Adiantar". Em sessão: cartão ampliado, Espaço vira, 1 a 4 respondem (Errei, Difícil, Bom, Fácil), progresso à vista. Fim de sessão com resumo.
+Revisão com repetição espaçada. **Escolha (D180):** dois modos, "Todos os cartões" (padrão, Enter começa) e "Personalizado", que abre Ano, Bimestre, Disciplina e Aulas, todos com várias marcações (sem marcação não restringe; entre categorias é "e"). Alcança todos os anos, inclusive arquivados (D179). Aulas pede uma disciplina marcada. Barra com o número de hoje, Limpar filtros, Iniciar e ⋮ (Exportar para o Anki). Sempre abre em Todos com o foco em Iniciar; os filtros do Personalizado ficam lembrados no aparelho. Sem cartão vencido, Iniciar vira "Adiantar". Em sessão: cartão ampliado, Espaço vira, 1 a 4 respondem (Errei, Difícil, Bom, Fácil), progresso à vista. Fim de sessão com resumo.
 
 ## 5. Agenda (Alt 5)
 Régua de visão (Semana, Mês, Grade), grade de horários, provas, trabalhos, compromissos e lembretes. Porta de entrada das Notas, que chegam na Etapa 13.

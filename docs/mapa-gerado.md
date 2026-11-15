@@ -96,11 +96,11 @@
 - L1 # Ohara: teclado
 - L8 ## Regras de uso
 - L19 ## Tabela final
-- L96 ## Decisões desta etapa
-- L102 ## Testado (PC, Linux, Chrome instalado como app)
-- L108 ## Testado no tablet (Galaxy Tab S7 FE, na horizontal)
-- L114 ## Checkpoint da Etapa 6 (07/11/2026)
-- L118 ## Pendências
+- L104 ## Decisões desta etapa
+- L110 ## Testado (PC, Linux, Chrome instalado como app)
+- L116 ## Testado no tablet (Galaxy Tab S7 FE, na horizontal)
+- L122 ## Checkpoint da Etapa 6 (07/11/2026)
+- L126 ## Pendências
 
 ### docs/telas.md
 - L1 # Ohara: telas
@@ -256,14 +256,14 @@
 - src/core/study/reminders.test.ts: (sem comentário nem export no topo)
 - src/core/study/reminders.ts: D174: some ao fim do dia; o que ficou em aberto reaparece nos dias seguintes como atrasado.
 - src/core/study/scope.test.ts: (sem comentário nem export no topo)
-- src/core/study/scope.ts: O que entra no treino. Sem matéria, as linhas são os bimestres de todas as matérias,
+- src/core/study/scope.ts: O que entra no treino (D179, D180). Quatro categorias, todas aceitam vários valores.
 - src/core/study/search.test.ts: (sem comentário nem export no topo)
 - src/core/study/search.ts: Matéria abre a própria matéria; aula e cartão abrem a aula na Mesa.
 - src/core/study/session.test.ts: (sem comentário nem export no topo)
 - src/core/study/session.ts: A data da próxima revisão vem do FSRS na Etapa 11. Aqui só se decide a fila da sessão.
 - src/core/study/storage.ts: A tela só conhece esta interface: o banco (data/) e a memória (testes) a implementam.
 - src/core/study/subjectTiles.test.ts: (sem comentário nem export no topo)
-- src/core/study/subjectTiles.ts: Peça da grade de disciplinas do Treino. id nulo é "Todas".
+- src/core/study/subjectTiles.ts: Peça da grade de disciplinas do Treino. Todas as disciplinas entram, de qualquer ano (D179).
 - src/core/study/symbols.test.ts: (sem comentário nem export no topo)
 - src/core/study/symbols.ts: Símbolos ao digitar (D139): tabela própria, do zero. Mais longo primeiro, para "<->" não virar "<" + "->".
 - src/core/study/trash.test.ts: (sem comentário nem export no topo)
@@ -400,7 +400,8 @@
 - src/ui/screens/mesa/useCardImagesEditor.ts: Anexa no cartão da linha; sem lado, decide pela linha (pergunta ou imagem da frente: frente).
 - src/ui/screens/mesa/useCardsEditor.ts: `export type CardsMode = 'novo' | 'salvos';`
 - src/ui/screens/mesa/useNotesEditor.ts: `export function useNotesEditor(lessonId: string, html: string): Editor | null`
-- src/ui/screens/treino/Inicio.module.css: Tela inicial do Treino: uma coluna de blocos no centro; "Ajustar" abre a lista ao lado.
+- src/ui/screens/treino/ChoiceParts.tsx: `export const MODOS = 'treino.modos';`
+- src/ui/screens/treino/Escolha.module.css: Escolha do Treino (D180): coluna de 880 px, sempre em duas metades iguais.
 - src/ui/screens/treino/TrainingChoice.tsx: (sem comentário nem export no topo)
 - src/ui/screens/treino/TrainingSession.tsx: Pergunta longa encolhe a letra em dois degraus (140 e 360 letras), D150.
 - src/ui/screens/treino/Treino.module.css: O cursor da lista não comanda nada: só aparece com o bloco ativo (diretriz 3.2).
