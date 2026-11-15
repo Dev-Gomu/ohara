@@ -61,10 +61,11 @@
 ### docs/estado.md
 - L1 # Estado do Ohara (atualizado em 14/11/2026)
 - L5 ## Onde estamos
-- L16 ## Próximo passo
-- L52 ## A conferir (aplicado em 13/11, só check e e2e)
-- L55 ## Esperando o usuário
-- L59 ## Iniciativas abertas (máx. 3)
+- L21 ## Pendências para a próxima sessão (salvo em 15/11, nesta ordem)
+- L32 ## Próximo passo
+- L68 ## A conferir (aplicado em 13/11, só check e e2e)
+- L71 ## Esperando o usuário
+- L75 ## Iniciativas abertas (máx. 3)
 
 ### docs/mapa.md
 - L1 # Mapa do projeto
@@ -73,8 +74,8 @@
 ### docs/pecas.md
 - L2 # Cartão de peças
 - L4 ## Peças (src/ui/components)
-- L225 ## Store do teclado e das telas (src/ui/keyboard)
-- L242 ## Estudo (src/ui/study)
+- L266 ## Store do teclado e das telas (src/ui/keyboard)
+- L283 ## Estudo (src/ui/study)
 
 ### docs/prompt-propostas-visuais.md
 - L1 # Prompt: propostas visuais do Ohara (6 frentes)
@@ -95,11 +96,11 @@
 - L1 # Ohara: teclado
 - L8 ## Regras de uso
 - L19 ## Tabela final
-- L95 ## Decisões desta etapa
-- L101 ## Testado (PC, Linux, Chrome instalado como app)
-- L107 ## Testado no tablet (Galaxy Tab S7 FE, na horizontal)
-- L113 ## Checkpoint da Etapa 6 (07/11/2026)
-- L117 ## Pendências
+- L96 ## Decisões desta etapa
+- L102 ## Testado (PC, Linux, Chrome instalado como app)
+- L108 ## Testado no tablet (Galaxy Tab S7 FE, na horizontal)
+- L114 ## Checkpoint da Etapa 6 (07/11/2026)
+- L118 ## Pendências
 
 ### docs/telas.md
 - L1 # Ohara: telas
@@ -219,8 +220,9 @@
 - src/core/notes/tableSize.test.ts: (sem comentário nem export no topo)
 - src/core/notes/tableSize.ts: Tamanho das células de uma tabela (D149). Largura é por coluna; altura é só mínima, por linha.
 - src/core/secret/codec.ts: RFC 4648: 32 letras, então um byte & 31 é uniforme, sem viés.
+- src/core/secret/pairing.ts: D172: aparelho novo recebe a chave mestra + a vault de outro aparelho, por QR ou texto.
 - src/core/secret/vault.test.ts: Poucas iterações só nos testes, para não demorar; o padrão de verdade é conferido abaixo.
-- src/core/secret/vault.ts: D87: PBKDF2-SHA256 com 600 000 iterações. O valor fica gravado na vault para poder subir depois.
+- src/core/secret/vault.ts: D87: PBKDF2-SHA256 com 600 000 iterações, agora só para o PIN e o código (D172: sem frase).
 - src/core/study/agenda.test.ts: (sem comentário nem export no topo)
 - src/core/study/agenda.ts: A semana mostra de 7h às 19h; aula fora disso alarga a faixa em vez de sumir.
 - src/core/study/ankiExport.test.ts: (sem comentário nem export no topo)
@@ -251,6 +253,8 @@
 - src/core/study/notesExcerpt.test.ts: (sem comentário nem export no topo)
 - src/core/study/queries.test.ts: (sem comentário nem export no topo)
 - src/core/study/queries.ts: `export const ALL_FOLDERS = 'todas';`
+- src/core/study/reminders.test.ts: (sem comentário nem export no topo)
+- src/core/study/reminders.ts: D174: some ao fim do dia; o que ficou em aberto reaparece nos dias seguintes como atrasado.
 - src/core/study/scope.test.ts: (sem comentário nem export no topo)
 - src/core/study/scope.ts: O que entra no treino. Sem matéria, as linhas são os bimestres de todas as matérias,
 - src/core/study/search.test.ts: (sem comentário nem export no topo)
@@ -284,22 +288,27 @@
 - src/ui/components/BlockIcon.tsx: `export type IconName = keyof typeof PATHS;`
 - src/ui/components/Button.module.css: Sobre azul cheio o cursor ganha um segundo aro, para não sumir.
 - src/ui/components/Button.tsx: 'primary': azul cheio, um por bloco. 'quiet': só texto, para ajuste menor.
-- src/ui/components/CardBack.module.css: Cartão de estudo (D138, D155): frente cheia no azul de ação, verso no mesmo contorno.
+- src/ui/components/CardBack.module.css: Cartão de estudo (D138, D169): contornado, de fundo claro; uma linha de 2 px separa frente e verso.
 - src/ui/components/CardBack.tsx: (sem comentário nem export no topo)
 - src/ui/components/CardImages.module.css: Anexo de imagem nos cartões (D158, bancada anexo-funcional V1).
 - src/ui/components/CardImages.tsx: De onde a peça tira as imagens: a tela passa o índice do banco (a peça não lê dados).
 - src/ui/components/Cards.module.css: Dia de avaliação: peça recuada com os bloquinhos das matérias.
 - src/ui/components/Cards.tsx: Texto do app, já pronto: "prova", "trabalho", "apres.".
+- src/ui/components/CheckItem.module.css: Peça CheckItem (aprovada na bancada lembretes-check, V2): linha com caixa que enche e texto riscado.
+- src/ui/components/CheckItem.tsx: Item de checklist: a caixa enche com mola, o visto se desenha e o texto é riscado da esquerda.
 - src/ui/components/Controls.module.css: Em coluna, o flex: 1 esmagaria ou esticaria o campo.
 - src/ui/components/Controls.tsx: Campo de busca e de formulário. As teclas são do texto: o listener cuida disso pelo nível.
 - src/ui/components/DayItem.module.css: (sem comentário nem export no topo)
 - src/ui/components/DayItem.tsx: Posição da cor da matéria: tinge o cartão inteiro (D128).
+- src/ui/components/Dica.module.css: Peça Dica (aprovada na bancada dica-formatacao, V2 azul sem desfoque).
+- src/ui/components/Dica.tsx: Envolve um botão: mostra nome e atalho num balão. Só recebe `aria-describedby`; clique e foco do botão ficam como estão.
+- src/ui/components/DicaGrupo.tsx: `export interface DicaGroup`
 - src/ui/components/FaultCell.module.css: Bolinha de notificação no canto superior direito da sigla; o anel vem da cor do bloco.
 - src/ui/components/FaultCell.tsx: Horas faltadas e limite até agora; null enquanto não houve aula.
 - src/ui/components/Filter.module.css: (sem comentário nem export no topo)
 - src/ui/components/Filter.tsx: Filtro de uma escolha por matéria: marca na cor da matéria sempre à vista (serve de legenda);
 - src/ui/components/FormatBar.module.css: (sem comentário nem export no topo)
-- src/ui/components/FormatBar.tsx: Nome do desenho em FormatIcons (quando falta, usa o id).
+- src/ui/components/FormatBar.tsx: Mostrado na dica ao lado do nome.
 - src/ui/components/FormatIcons.tsx: Conjunto próprio (D147): ícones da barra de formatação, do menu Aa e o caderno, desenhados juntos na grade 24.
 - src/ui/components/Grades.tsx: Peças de Notas aprovadas nos degraus 1 a 3 (D121 a D124). Só desenho: as contas vêm da tela.
 - src/ui/components/GradesCelulas.module.css: ---------- 1. Célula de nota ----------
@@ -314,6 +323,9 @@
 - src/ui/components/NavItem.tsx: 'anel' = controle pequeno (contorno fino de 2px); 'anel-interno' = item de lista (4px);
 - src/ui/components/Pill.module.css: (sem comentário nem export no topo)
 - src/ui/components/Pill.tsx: Matéria: só a sigla, sobre a cor guardada como posição.
+- src/ui/components/PinSlots.module.css: Peça PinSlots (aprovada na bancada pin-slots, V2): 6 casas, cores só por papel.
+- src/ui/components/PinSlots.tsx: Código de N casas (PIN). Porte do Code Slots do React Bits, aprovado na bancada (V2).
+- src/ui/components/PinSlotsParts.tsx: Uma casa: o enchimento "pousa" com mola e o dígito sobe; no acerto, afunda em cascata.
 - src/ui/components/Preview.module.css: Só o corpo rola: título e ações não pulam ao trocar de item.
 - src/ui/components/Preview.tsx: Linha de apoio: hora, matéria, contagens.
 - src/ui/components/Ruler.module.css: "+" desenhado com duas barras: o glifo de texto desalinhava dentro da pílula.
@@ -326,6 +338,7 @@
 - src/ui/components/TrashRow.tsx: ⋮ de toque (44 px): abre as mesmas opções do Alt O.
 - src/ui/components/Window.module.css: (sem comentário nem export no topo)
 - src/ui/components/Window.tsx: De onde a janela veio (bloco ou tela): rótulo pequeno acima do título.
+- src/ui/components/dicaController.ts: Dica "aquecida" (porte do WarmTooltip, React Bits; D175): a primeira espera um instante; enquanto
 - src/ui/faltas/Faltas.tsx: (sem comentário nem export no topo)
 - src/ui/faltas/summary.ts: Horas faltadas e o limite até agora; null enquanto não houve aula.
 - src/ui/keyboard/bars.ts: Barras de um bloco: a de cima é o cabeçalho (abas, ferramentas) e a de baixo é o rodapé
@@ -338,10 +351,14 @@
 - src/ui/mosaic/Mosaic.module.css: Ampliado cobre o mosaico sem desmontar os outros blocos: nada digitado se perde.
 - src/ui/mosaic/Mosaic.tsx: (sem comentário nem export no topo)
 - src/ui/mosaic/useMosaic.ts: O arranjo vive em memória até existir banco: o banco o guardará por aula e por aparelho.
+- src/ui/notas/CofrePin.tsx: PIN digitado na própria tela das Notas (sem janela): abrir ou criar.
 - src/ui/notas/Notas.module.css: (sem comentário nem export no topo)
 - src/ui/notas/Notas.tsx: `export function Notas()`
 - src/ui/notas/NotasAberto.tsx: (sem comentário nem export no topo)
-- src/ui/notas/forms.ts: `export function askSetup(): void`
+- src/ui/notas/Qr.module.css: (sem comentário nem export no topo)
+- src/ui/notas/QrCode.tsx: QR do "Adicionar outro aparelho" (D172). Desenhado em SVG com as cores do tema.
+- src/ui/notas/QrScanner.tsx: Lê o QR do aparelho antigo pela câmera: BarcodeDetector do navegador, ou jsQR (carregado só aqui).
+- src/ui/notas/forms.ts: (sem comentário nem export no topo)
 - src/ui/notas/model.ts: Contas de tela de Notas: transforma itens e esquema nos números que as peças mostram (D123).
 - src/ui/notas/session.ts: D41: a chave mestra só existe em memória e some depois de 2 minutos sem uso.
 - src/ui/screens/acervo/Acervo.module.css: A grade de matérias não tem fundo: o foco fica só no cartão, sem contorno em volta do bloco.
@@ -366,7 +383,7 @@
 - src/ui/screens/hub/Hub.tsx: Altura que as Provas precisam: cartão de 86 px mais a margem de 8 px dos dois lados.
 - src/ui/screens/hub/HubBlocks.tsx: `export function ExamsBlock({ id, days }: { id: string; days: readonly AssessmentDay[] })`
 - src/ui/screens/mesa/CardEditor.module.css: Cartão novo: o cartão é o editor (D138). Mesmas cores do cartão salvo (D155).
-- src/ui/screens/mesa/CardEditor.tsx: A linha cresce com o texto, em quantas linhas visuais precisar.
+- src/ui/screens/mesa/CardEditor.tsx: Na frente, cada lacuna vira uma pílula com a resposta e o número no fim (D169).
 - src/ui/screens/mesa/CardsBlock.module.css: Cartões salvos (D151): lista com número, pergunta (até duas linhas) e começo do verso.
 - src/ui/screens/mesa/CardsBlock.tsx: Salvar fica no cabeçalho, ao lado do ⋮ (D140); sem rodapé, a área de digitação ganha a altura.
 - src/ui/screens/mesa/Mesa.module.css: (sem comentário nem export no topo)
@@ -380,7 +397,7 @@
 - src/ui/screens/mesa/tableAdjustExtension.ts: Altura é só mínima (D149): a linha guarda `minHeight` e a mostra como `height` (na tabela, mínimo).
 - src/ui/screens/mesa/tableOps.ts: Onde está o cursor dentro de uma tabela (sem células mescladas: o app não as cria).
 - src/ui/screens/mesa/useCardImagesEditor.ts: Anexa no cartão da linha; sem lado, decide pela linha (pergunta ou imagem da frente: frente).
-- src/ui/screens/mesa/useCardsEditor.ts: Cartão aberto no lugar da linha, na lista de salvos (D151).
+- src/ui/screens/mesa/useCardsEditor.ts: `export type CardsMode = 'novo' | 'salvos';`
 - src/ui/screens/mesa/useNotesEditor.ts: `export function useNotesEditor(lessonId: string, html: string): Editor | null`
 - src/ui/screens/treino/Inicio.module.css: Tela inicial do Treino: uma coluna de blocos no centro; "Ajustar" abre a lista ao lado.
 - src/ui/screens/treino/TrainingChoice.tsx: (sem comentário nem export no topo)
@@ -399,7 +416,7 @@
 - src/ui/shell/Palette.module.css: (sem comentário nem export no topo)
 - src/ui/shell/Palette.tsx: D13: React Aria, já presente no app. As setas e o Enter ficam com ele enquanto a janela
 - src/ui/shell/PromptWindow.module.css: (sem comentário nem export no topo)
-- src/ui/shell/PromptWindow.tsx: Formulário curto de qualquer tela. Enter envia, Esc cancela.
+- src/ui/shell/PromptWindow.tsx: Só com campo `pin`: confere assim que as casas enchem. Devolve o aviso de erro, ou null se abriu.
 - src/ui/shell/ReminderWindow.tsx: `export function ReminderWindow()`
 - src/ui/shell/ScreenFrame.module.css: (sem comentário nem export no topo)
 - src/ui/shell/ScreenFrame.tsx: Antes do título (a sigla da matéria na Mesa).
@@ -423,6 +440,7 @@
 - src/ui/study/navigation.ts: O bloco vazio faz a matéria aplicar o foco de chegada, com a pasta inicial da D76.
 - src/ui/study/notice.ts: Aviso curto sem ação (ex.: arquivo grande demais).
 - src/ui/study/pdf.ts: pdf.js só carrega quando o primeiro PDF é aberto; o worker dele vai no precache do PWA.
+- src/ui/study/reminderOptions.ts: D178: o ⋮ do bloco Lembretes ganha "Adiar" para o lembrete sob o cursor.
 - src/ui/study/screenMemory.ts: Estado de tela que sobrevive à troca de tela, só enquanto o app está aberto (D26).
 - src/ui/study/study.ts: Horário fixo nos dados de exemplo, para sempre haver uma aula de agora.
 - src/ui/study/undo.ts: Exclusão mostra "Ver lixeira" no aviso; restaurar, não.

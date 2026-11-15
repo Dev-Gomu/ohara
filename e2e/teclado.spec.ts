@@ -138,6 +138,8 @@ test('Alt / abre a ajuda com toda a tabela, e Esc fecha sem mudar o nível', asy
   await page.getByRole('button', { name: /^Todos/ }).click();
   await expect(page.getByTestId('atalho')).toHaveCount(helpLines().length);
   await page.keyboard.press('Escape');
+  await expect(ajuda(page)).toBeVisible();
+  await page.keyboard.press('Escape');
   await expect(ajuda(page)).toBeHidden();
   await expect(nivel(page)).toHaveText('campo');
   await expect(anotacoes(page)).toBeFocused();

@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { Dialog, Menu, MenuItem, Modal, ModalOverlay } from 'react-aria-components';
+import { Dica } from '../components/Dica';
 import { Key } from '../components/Key';
 import { dispatch, useKeyboardState } from '../keyboard/store';
 import { openFaults, openNotes } from '../study/navigation';
@@ -9,12 +10,26 @@ import styles from './TopMenu.module.css';
 const WINDOW = 'topmenu';
 
 const Traco = ({ children }: { children: ReactNode }) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
     {children}
   </svg>
 );
 
-const ITEMS: readonly { id: string; label: string; keys?: string; icon: ReactNode; run: () => void }[] = [
+const ITEMS: readonly {
+  id: string;
+  label: string;
+  keys?: string;
+  icon: ReactNode;
+  run: () => void;
+}[] = [
   {
     id: 'faltas',
     label: 'Faltas',
@@ -59,19 +74,20 @@ const ITEMS: readonly { id: string; label: string; keys?: string; icon: ReactNod
 // Botão de três traços na barra do topo, em todas as telas (D137). Enter no nível menu o clica.
 export function TopMenuButton({ cursor }: { cursor: boolean }) {
   return (
-    <button
-      type="button"
-      className={cursor ? `${styles.botao} anel-fino` : styles.botao}
-      data-menu-item=""
-      title="Faltas, Notas, Lixeira e Ajuda"
-      aria-label="Mais"
-      aria-haspopup="menu"
-      onClick={() => dispatch({ type: 'openWindow', window: WINDOW })}
-    >
-      <Traco>
-        <path d="M5 7h14M5 12h14M5 17h14" />
-      </Traco>
-    </button>
+    <Dica content="Mais" side="bottom">
+      <button
+        type="button"
+        className={cursor ? `${styles.botao} anel-fino` : styles.botao}
+        data-menu-item=""
+        aria-label="Mais"
+        aria-haspopup="menu"
+        onClick={() => dispatch({ type: 'openWindow', window: WINDOW })}
+      >
+        <Traco>
+          <path d="M5 7h14M5 12h14M5 17h14" />
+        </Traco>
+      </button>
+    </Dica>
   );
 }
 
@@ -96,7 +112,13 @@ export function TopMenuWindow() {
     >
       <Modal className={styles.caixa}>
         <Dialog aria-label="Mais" data-testid="menu-topo" className={styles.janela}>
-          <Menu autoFocus="first" aria-label="Mais" items={ITEMS} onAction={run} className={styles.lista}>
+          <Menu
+            autoFocus="first"
+            aria-label="Mais"
+            items={ITEMS}
+            onAction={run}
+            className={styles.lista}
+          >
             {(item) => (
               <MenuItem className={styles.item} textValue={item.label}>
                 <span className={styles.icone}>{item.icon}</span>

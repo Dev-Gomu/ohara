@@ -18,6 +18,7 @@ import { Palette } from './Palette';
 import { PromptWindow } from './PromptWindow';
 import { UndoBar } from './UndoBar';
 import { ReminderWindow } from './ReminderWindow';
+import { DicaGrupo } from '../components/DicaGrupo';
 import { TrashWindow } from './TrashWindow';
 import { FAULTS_OPEN, NOTES_OPEN } from '../study/navigation';
 import { setScreenMemory } from '../study/screenMemory';
@@ -68,11 +69,12 @@ export function Shell() {
       (document.activeElement as HTMLElement).blur();
     }
     const bar = document.activeElement?.closest('[data-bar]');
-    if (bar && !bar.closest(`[data-block="${focus.block}"]`)) (document.activeElement as HTMLElement).blur();
+    if (bar && !bar.closest(`[data-block="${focus.block}"]`))
+      (document.activeElement as HTMLElement).blur();
   }, [focus.level, focus.block, overlay]);
 
   return (
-    <>
+    <DicaGrupo>
       <View />
       <p className="so-leitor" role="status">
         Tela: <span data-testid="tela">{screen}</span>. Nível:{' '}
@@ -97,6 +99,6 @@ export function Shell() {
       <TrashWindow />
       <PromptWindow />
       <UndoBar />
-    </>
+    </DicaGrupo>
   );
 }

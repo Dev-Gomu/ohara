@@ -6,7 +6,8 @@ import {
 } from '../../../core/study/queries';
 import { leaf, split } from '../../../core/mosaic/tree';
 import { longDate, monthGrid } from '../../../core/study/dates';
-import { visibleReminders } from '../../../core/study/reminders';
+import { reminderOptions } from '../../study/reminderOptions';
+import { upcomingReminders, visibleReminders } from '../../../core/study/reminders';
 import { dispatch, getKeyboardState } from '../../keyboard/store';
 import { useBlocks } from '../../keyboard/useBlocks';
 import { Mosaic } from '../../mosaic/Mosaic';
@@ -54,6 +55,7 @@ export function Hub() {
   const events = eventsOn(data, today);
   const faults = faultLines(data);
   const reminders = visibleReminders(data.reminders, today);
+  const scheduled = upcomingReminders(data.reminders, today).length;
   const days = monthGrid(today);
   const todayIndex = days.indexOf(today);
 
@@ -104,7 +106,12 @@ export function Hub() {
       level: 'nav',
       items: { [TODAY]: currentEventIndex(events, nowTime), [CALENDAR]: todayIndex },
     },
-    options: mosaic.options,
+    options: (block) => [
+      ...(block === REMINDERS
+        ? reminderOptions(reminders[getKeyboardState().focus.items[REMINDERS] ?? 0])
+        : []),
+      ...mosaic.options(block),
+    ],
     actions: {
       ...mosaic.actions,
       newItem: () => {
@@ -119,7 +126,14 @@ export function Hub() {
     if (id === CALENDAR) return <CalendarBlock id={id} days={days} exams={exams} />;
     if (id === TODAY) return <TodayBlock id={id} events={events} />;
     if (id === FAULTS) return <FaultsBlock id={id} lines={faults} />;
-    return <RemindersBlock id={id} reminders={reminders} onToggle={toggleReminder} />;
+    return (
+      <RemindersBlock
+        id={id}
+        reminders={reminders}
+        scheduled={scheduled}
+        onToggle={toggleReminder}
+      />
+    );
   }
 
   return (

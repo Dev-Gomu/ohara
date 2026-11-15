@@ -42,3 +42,12 @@
   padding: var(--e3);
   color: var(--cor-texto-2);
 }
+
+.dia {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e1);
+  margin-top: var(--e3);
+  color: var(--cor-texto-2);
+  font: var(--leitura-campo);
+}

@@ -6,14 +6,21 @@ import styles from './Palette.module.css';
 
 export function ReminderWindow() {
   const [text, setText] = useState('');
+  const [date, setDate] = useState(today);
 
   function save(event: FormEvent) {
     event.preventDefault();
     const clean = text.trim();
     if (clean === '') return;
-    const reminder = { id: crypto.randomUUID(), text: clean, date: today, done: false };
+    const reminder = {
+      id: crypto.randomUUID(),
+      text: clean,
+      date: date < today ? today : date,
+      done: false,
+    };
     storage.write((data) => ({ ...data, reminders: [...data.reminders, reminder] }));
     setText('');
+    setDate(today);
     dispatch({ type: 'escape' });
   }
 
@@ -28,6 +35,16 @@ export function ReminderWindow() {
           value={text}
           onChange={(event) => setText(event.target.value)}
         />
+        <label className={styles.dia}>
+          Para o dia
+          <input
+            type="date"
+            className={styles.busca}
+            value={date}
+            min={today}
+            onChange={(event) => setDate(event.target.value || today)}
+          />
+        </label>
       </form>
     </Window>
   );

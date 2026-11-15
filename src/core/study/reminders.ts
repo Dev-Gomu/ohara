@@ -31,3 +31,12 @@ export function toggledReminder(item: Reminder, today: string): Reminder {
   const done = !item.done;
   return { ...item, done, date: done && item.date < today ? today : item.date };
 }
+
+// D178: adiar leva o lembrete para outro dia; ele some da lista até lá e volta ao chegar o dia.
+export function postponedReminder(item: Reminder, date: string): Reminder {
+  return { ...item, date, done: false };
+}
+
+export function upcomingReminders(items: readonly Reminder[], today: string): Reminder[] {
+  return items.filter((item) => !item.done && item.date > today);
+}

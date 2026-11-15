@@ -1,6 +1,7 @@
 import { createContext, useContext, type ReactNode } from 'react';
 import { dispatch, useKeyboardState } from '../keyboard/store';
 import { BlockIcon, type IconName } from './BlockIcon';
+import { Dica } from './Dica';
 import { Key } from './Key';
 import styles from './Block.module.css';
 
@@ -65,14 +66,16 @@ export function Block(props: BlockProps) {
             {tools}
             {shortcut !== undefined && <Key>{shortcut}</Key>}
             {menu && (
-              <button
-                type="button"
-                className={styles.opcoes}
-                aria-label={`Opções de ${title}`}
-                onClick={() => dispatch({ type: 'openOptions' })}
-              >
-                ⋮
-              </button>
+              <Dica content="Opções" shortcut="Alt O">
+                <button
+                  type="button"
+                  className={styles.opcoes}
+                  aria-label={`Opções de ${title}`}
+                  onClick={() => dispatch({ type: 'openOptions' })}
+                >
+                  ⋮
+                </button>
+              </Dica>
             )}
           </div>
         </header>

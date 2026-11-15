@@ -216,10 +216,11 @@ const lateNote = (item: Reminder): string | undefined =>
 interface RemindersProps {
   id: string;
   reminders: readonly Reminder[];
+  scheduled: number;
   onToggle: (id: string) => void;
 }
 
-export function RemindersBlock({ id, reminders, onToggle }: RemindersProps) {
+export function RemindersBlock({ id, reminders, scheduled, onToggle }: RemindersProps) {
   return (
     <Block id={id} title="Lembretes" shortcut="Alt I" menu>
       <div className={styles.lista}>
@@ -237,6 +238,11 @@ export function RemindersBlock({ id, reminders, onToggle }: RemindersProps) {
           </CheckItem>
         ))}
       </div>
+      {scheduled > 0 && (
+        <p className={styles.vazio}>
+          {scheduled === 1 ? '1 agendado para depois' : `${scheduled} agendados para depois`}
+        </p>
+      )}
       <div className={styles.novo}>
         <Button variant="primary" onPress={() => dispatch({ type: 'quickReminder' })}>
           Novo lembrete

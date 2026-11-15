@@ -30,7 +30,7 @@ test('Acervo: a 3ª aula do 2º bimestre custa as teclas previstas', async ({ pa
   await expect(bloco(page)).toHaveText('acervo.aulas');
   await page.keyboard.press('ArrowDown');
   await page.keyboard.press('ArrowDown');
-  await expect(page.getByRole('heading', { level: 2, name: 'Tolerância' })).toBeVisible();
+  await expect(page.locator('[data-block="acervo.aulas"] [data-cursor]')).toContainText('Tolerância');
   await page.keyboard.press('Enter');
   await expect(tela(page)).toHaveText('mesa');
   await expect(page.locator('nav h1')).toHaveText('Tolerância e autoimunidade');

@@ -18,13 +18,16 @@
 - **ADIADA (14/11, pedido do usuário): interface de criação de cartões, cloze e simples.** Nada aplicado; volta só quando o usuário pedir. Bancadas guardadas para referência: `lab/livre/criar-cartao/` (P1 Limpo: faixa azul + verso, Extra opcional no cloze, contagem só no Salvar N; lacuna com número `{{cN::}}`) e `lab/livre/pilula-cloze/` (marca da lacuna). Já gostou: P1 Limpo; lacuna crua como no Anki com sintaxe e cN em tom fraco; marca-texto com respiro de 4 px e canto de 2 px (Q2); paleta C1 Gelo (OKLCH, claridade igual) **só no fundo branco**. Sem solução: cor da lacuna na faixa azul (recusadas: cor atrás da letra branca, marca neutra, cor só na marcação, marca clara com letra escura). Recusadas no caminho: A (muda de forma), C (palavras), B1 a B3, P2 Miniaturas, P3 Verso vivo, colchetes `[ ]` no lugar de `{{c1::}}`. Limite técnico: o campo é textarea com espelho, então nada pode mudar a largura das letras (sem negrito, folga só por sombra); resposta com hífen no fim da linha quebra a marca. As teclas da bancada não estão na tabela de teclas.
 - **Lixeira APLICADA (D164, D167, 14/11):** janela larga (tipos numa faixa horizontal no topo, pedido do usuário) pela Paleta ("Lixeira"), pelo menu ⋯ do topo e por "Ver lixeira" no aviso do Desfazer; migração 006; restaurar com Desfazer, Apagar de vez (lápide), limpeza de 30 dias ao abrir. Conferida com `npm run tela` nos dois temas (lista com cursor, menu ⋮, confirmação) e com roteiro do Playwright (excluir aula → Paleta → Enter restaura). **Sem teste:** tablet e toque (Restaurar e ⋮ na linha, régua por toque), limpeza real de 30 dias, Apagar de vez de anexo com PDF (bytes saindo do disco), "pai na lixeira" na tela (só no teste de unidade). A pasta da bancada saiu ao juntar as branches (14/11).
 
-## Pendências da sessão de 15/11 (PIN, Lembretes, Dica)
-Aplicado e sem commit: PinSlots (D171), CheckItem (D173), vida do lembrete (D174), Dica (D175). Falta:
-1. **Notas sem frase (D172):** chave aleatória + PIN de 6 números + QR por aparelho novo. Hoje o app ainda pede a frase. Sessão própria.
-2. **Vitrine (FEITA):** `PinSlots`, `CheckItem` e `Dica` em `lab/vitrine.html` + `npm run pecas`. Sessão própria.
-3. **Teste e2e (FEITA, e2e/lembretes.spec.ts):** lembretes (atrasado no topo, feito embaixo, feito de ontem some) e a Dica (aparece e desliza). O e2e do PIN fica com a sessão 1, que muda o fluxo.
-4. **Aguardando o usuário (nada aprovado):** usar a `Dica` nos outros botões só de ícone; lembrete com data futura e "adiar" (backlog); atualizar a regra N3 em `docs/regras.md` quando a sessão 1 fechar.
-5. **Git:** nada commitado. Pedir commit em partes: PIN, Lembretes, Dica, docs.
+## Pendências para a próxima sessão (salvo em 15/11, nesta ordem)
+Tudo da sessão de 15/11 está commitado (PIN e Notas sem frase D171/D172/D176, Lembretes D173/D174, Dica D175, criador de cartões D177, vitrine). Falta, em ordem:
+1. ~~Duas falhas do e2e~~ **FEITA (15/11):** eram testes velhos (Esc da Ajuda agora é em dois passos, D166; aulas do Acervo viraram botões). Só os testes mudaram.
+2. **Câmera real do QR (Notas, D172):** só foi testado o código escrito; testar a leitura pela câmera no tablet e no PC.
+3. **Tablet deitado, editor de cartões (D170):** tocar numa linha, teclado virtual e linhas que quebram.
+4. ~~Dica nos outros botões~~ **FEITA (D178):** ⋮ dos blocos e botão Mais do topo.
+5. ~~Lembrete com data futura e adiar~~ **FEITA (D178):** dia na janela do Alt I; Adiar no ⋮ do bloco. **A conferir à mão:** Adiar pelo teclado no Hub.
+6. **Acervo novo:** pacote `acervo-claudeweb.zip` (raiz, fora do git) para levar ao Claude Web (visual das matérias em pasta/estante); voltar com a proposta, depois bancada e aplicação em sessões separadas.
+7. **Tutorial de primeiro acesso:** pacote `tutorial-primeiro-acesso-claudeweb.zip` (fora do git, na raiz) para levar ao Claude Web e voltar com a proposta; depois, bancada e aplicação em sessões separadas.
+Arquivos soltos na raiz, fora do git: `criador-cartoes-claudeweb.zip`, `tutorial-primeiro-acesso-claudeweb.zip`, `relatorio-noite-14-11.md`.
 
 ## Próximo passo
 **Fila de aplicação (14/11, uma por sessão, nesta ordem; marque FEITA ao terminar):**
