@@ -5,7 +5,7 @@ import {
   upcomingExams,
 } from '../../../core/study/queries';
 import { leaf, split } from '../../../core/mosaic/tree';
-import { longDate, monthGrid } from '../../../core/study/dates';
+import { longDate, sixWeekGrid } from '../../../core/study/dates';
 import { reminderOptions } from '../../study/reminderOptions';
 import { upcomingReminders, visibleReminders } from '../../../core/study/reminders';
 import { dispatch, getKeyboardState } from '../../keyboard/store';
@@ -56,7 +56,7 @@ export function Hub() {
   const faults = faultLines(data);
   const reminders = visibleReminders(data.reminders, today);
   const scheduled = upcomingReminders(data.reminders, today).length;
-  const days = monthGrid(today);
+  const days = sixWeekGrid(today);
   const todayIndex = days.indexOf(today);
 
   useBlocks({

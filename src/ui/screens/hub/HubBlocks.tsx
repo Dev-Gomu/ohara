@@ -77,11 +77,20 @@ interface CalendarProps {
 export function CalendarBlock({ id, days, exams }: CalendarProps) {
   const data = useStudy();
   const month = parseDay(today).getMonth();
+  const name = monthName(today);
+  const title = name.charAt(0).toUpperCase() + name.slice(1);
   const chosen = days[useSelectedIndex(id, days.length)] ?? today;
   const rows = dayRows(data, chosen);
   const away = daysBetween(today, chosen);
   return (
-    <Block id={id} title={monthName(today)} label="Calendário" count={today.slice(0, 4)} menu>
+    <Block
+      id={id}
+      title={title}
+      label="Calendário"
+      count={today.slice(0, 4)}
+      menu
+      className={styles.blocoCalendario}
+    >
       <div className={styles.calendario}>
         {WEEK.map((day, index) => (
           <span key={index} className={styles.semana}>

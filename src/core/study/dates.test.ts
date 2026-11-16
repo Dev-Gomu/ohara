@@ -4,6 +4,7 @@ import {
   daysBetween,
   longDate,
   monthGrid,
+  sixWeekGrid,
   monthShort,
   shortDate,
   weekdayShort,
@@ -37,5 +38,13 @@ describe('datas', () => {
 
   it('a grade começa no mês anterior quando preciso', () => {
     expect(monthGrid('2026-12-15')[0]).toBe('2026-11-29');
+  });
+
+  it('a grade do Hub tem sempre 6 semanas', () => {
+    const grid = sixWeekGrid('2026-11-07');
+    expect(grid).toHaveLength(42);
+    expect(grid[0]).toBe('2026-11-01');
+    expect(grid.at(-1)).toBe('2026-12-12');
+    expect(sixWeekGrid('2026-08-10')[0]).toBe('2026-07-26');
   });
 });

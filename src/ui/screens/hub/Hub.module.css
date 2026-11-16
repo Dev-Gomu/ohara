@@ -8,22 +8,50 @@
   overflow-x: auto;
 }
 
+/* Calendário (D186). O número do dia fica no meio de uma pílula invisível de 52 px, então
+   título, data e lista alinham pelo número da 1ª coluna, não pela borda. Proporção do
+   calendário do Google: semana = 0,915 da coluna; linha do título = 0,975. cqw = largura do bloco. */
+.blocoCalendario {
+  container-type: inline-size;
+  --cal-margem: var(--e3);
+  --cal-coluna: calc((100cqw - 2 * var(--cal-margem)) / 7);
+  --cal-texto: calc(var(--cal-margem) + var(--cal-coluna) / 2 - 8px);
+}
+
+.blocoCalendario > header {
+  box-sizing: border-box;
+  height: calc(var(--cal-coluna) * 0.975 + var(--e1));
+  padding: var(--e1) calc(var(--cal-margem) + var(--cal-coluna) / 2 - 8px) 0 var(--cal-texto);
+}
+
+.blocoCalendario > header h2,
+.blocoCalendario > header > span {
+  font: var(--voz-titulo);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.blocoCalendario > header h2 {
+  color: var(--cor-texto);
+}
+
+.blocoCalendario > header > span {
+  font-weight: 600;
+}
+
 .calendario {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
+  grid-auto-rows: calc(var(--cal-coluna) * 0.915);
   justify-items: center;
-  gap: var(--e1) 0;
-  flex: none;
-  aspect-ratio: 1 / 1;
-  grid-template-rows: auto;
-  grid-auto-rows: minmax(0, 1fr);
   align-items: center;
-  padding: 0 var(--e3) var(--e2);
+  flex: none;
+  padding: 0 var(--cal-margem);
 }
 
 .semana {
   color: var(--cor-texto-2);
-  font: var(--ui-rotulo);
+  font: var(--ui-apoio);
 }
 
 .lista {
@@ -65,7 +93,7 @@
 
 .doDia {
   flex: none;
-  padding: var(--e2) var(--bloco-pad-x) var(--e1);
+  padding: var(--e2) var(--cal-margem) var(--e1) var(--cal-texto);
   color: var(--cor-texto-2);
   font: var(--ui-apoio);
 }
@@ -81,7 +109,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--e1);
-  padding: 0 10px 10px;
+  padding: 0 var(--cal-margem) 10px;
   overflow: auto;
 }
 
@@ -90,7 +118,7 @@
   align-items: center;
   gap: var(--e3);
   min-height: 48px;
-  padding: 0 var(--e3);
+  padding: 0 var(--e3) 0 calc(var(--cal-coluna) / 2 - 8px);
   border-radius: var(--raio-item);
   background: var(--sup-peca);
   font: var(--ui-item);

@@ -61,11 +61,11 @@
 ### docs/estado.md
 - L1 # Estado do Ohara (atualizado em 15/11/2026)
 - L5 ## Onde estamos
-- L26 ## Pendências para a próxima sessão (salvo em 15/11, nesta ordem)
-- L41 ## Próximo passo
-- L77 ## A conferir (aplicado em 13/11, só check e e2e)
-- L80 ## Esperando o usuário
-- L84 ## Iniciativas abertas (máx. 3)
+- L28 ## Pendências para a próxima sessão (salvo em 15/11, nesta ordem)
+- L43 ## Próximo passo
+- L79 ## A conferir (aplicado em 13/11, só check e e2e)
+- L82 ## Esperando o usuário
+- L86 ## Iniciativas abertas (máx. 3)
 
 ### docs/mapa.md
 - L1 # Mapa do projeto
@@ -390,7 +390,7 @@
 - src/ui/screens/configs/appearanceRows.ts: Enter passa à próxima opção, voltando à primeira no fim.
 - src/ui/screens/configs/configsData.ts: Opções curtas da linha (D160): ← → ou toque escolhem; Enter passa para a próxima.
 - src/ui/screens/configs/trainingRows.ts: Régua de 80% a 97%, passo de 1% (Etapa 11). O valor vai ao banco e sincroniza.
-- src/ui/screens/hub/Hub.module.css: (sem comentário nem export no topo)
+- src/ui/screens/hub/Hub.module.css: Calendário (D186). O número do dia fica no meio de uma pílula invisível de 52 px, então
 - src/ui/screens/hub/Hub.tsx: Altura que as Provas precisam: cartão de 86 px mais a margem de 8 px dos dois lados.
 - src/ui/screens/hub/HubBlocks.tsx: `export function ExamsBlock({ id, days }: { id: string; days: readonly AssessmentDay[] })`
 - src/ui/screens/mesa/CardEditor.module.css: Cartão novo: o cartão é o editor (D138). Mesmas cores do cartão salvo (D155).

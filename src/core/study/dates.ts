@@ -58,6 +58,12 @@ export function monthGrid(day: string): string[] {
   return Array.from({ length: total }, (_, index) => addDays(start, index));
 }
 
+// Sempre 6 semanas (42 dias): o calendário do Hub não muda de altura de um mês para outro (D186).
+export function sixWeekGrid(day: string): string[] {
+  const start = monthGrid(day)[0] ?? day;
+  return Array.from({ length: 42 }, (_, index) => addDays(start, index));
+}
+
 export function weekOf(day: string): string[] {
   const start = addDays(day, -parseDay(day).getDay());
   return Array.from({ length: 7 }, (_, index) => addDays(start, index));
