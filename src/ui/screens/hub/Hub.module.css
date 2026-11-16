@@ -13,6 +13,8 @@
    calendário do Google: semana = 0,915 da coluna; linha do título = 0,975. cqw = largura do bloco. */
 .blocoCalendario {
   container-type: inline-size;
+  /* Largura mínima: abaixo disso as 6 semanas ficam apertadas demais. */
+  min-width: 320px;
   --cal-margem: var(--e3);
   --cal-coluna: calc((100cqw - 2 * var(--cal-margem)) / 7);
   --cal-texto: calc(var(--cal-margem) + var(--cal-coluna) / 2 - 8px);

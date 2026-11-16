@@ -66,6 +66,22 @@ function elasticFrames(start: number, end: number, width: number): Keyframe[] {
   });
 }
 
+// Mesma mola do elástico, para um item que muda de lugar na vertical: começa deslocado e assenta com folguinha.
+export function slideFrames(distance: number): Keyframe[] {
+  const steps = 28;
+  return Array.from({ length: steps + 1 }, (_, step) => {
+    const p = step / steps;
+    const eased = p >= 1 ? 1 : 1 - Math.exp(-9 * p) * Math.cos(7 * p);
+    return { transform: `translateY(${distance * (1 - eased)}px)` };
+  });
+}
+
+export const SLIDE_DURATION = 560;
+
+export function slideEnabled(): boolean {
+  return currentTopAnimation() !== 'nenhuma' && !reducedMotion();
+}
+
 function play(parts: TopBarParts, from: number, to: number): void {
   const start = parts.numbers[from]?.offsetLeft;
   const end = parts.numbers[to]?.offsetLeft;

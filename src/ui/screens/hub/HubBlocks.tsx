@@ -1,3 +1,4 @@
+import { useLayoutEffect, useMemo, useRef, type RefObject } from 'react';
 import {
   daysBetween,
   longDate,
@@ -23,6 +24,7 @@ import type { FaultLine } from '../../faltas/summary';
 import { dispatch } from '../../keyboard/store';
 import { openLesson } from '../../study/navigation';
 import { nowTime, today, useStudy } from '../../study/study';
+import { SLIDE_DURATION, slideEnabled, slideFrames } from '../../shell/topAnimation';
 import styles from './Hub.module.css';
 
 function remaining(date: string): string {
@@ -229,10 +231,34 @@ interface RemindersProps {
   onToggle: (id: string) => void;
 }
 
+// Quando a ordem muda (feito desce, o resto sobe), cada linha desliza do lugar antigo com a mola do elástico.
+function useSlideReorder(ids: readonly string[]): RefObject<HTMLDivElement | null> {
+  const list = useRef<HTMLDivElement | null>(null);
+  const tops = useRef<Map<string, number>>(new Map());
+  useLayoutEffect(() => {
+    const rows = Array.from(list.current?.children ?? []);
+    const next = new Map<string, number>();
+    rows.forEach((row, index) => {
+      const key = ids[index];
+      if (key === undefined) return;
+      const top = row.getBoundingClientRect().top;
+      next.set(key, top);
+      const before = tops.current.get(key);
+      if (before !== undefined && before !== top && slideEnabled()) {
+        row.animate(slideFrames(before - top), { duration: SLIDE_DURATION, easing: 'linear' });
+      }
+    });
+    tops.current = next;
+  }, [ids]);
+  return list;
+}
+
 export function RemindersBlock({ id, reminders, scheduled, onToggle }: RemindersProps) {
+  const ids = useMemo(() => reminders.map((item) => item.id), [reminders]);
+  const list = useSlideReorder(ids);
   return (
     <Block id={id} title="Lembretes" shortcut="Alt I" menu>
-      <div className={styles.lista}>
+      <div className={styles.lista} ref={list}>
         {reminders.length === 0 && <p className={styles.vazio}>Nada para hoje.</p>}
         {reminders.map((item, index) => (
           <CheckItem
