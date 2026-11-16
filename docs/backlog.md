@@ -74,3 +74,4 @@ Lista curta do que foi **adiado ou ainda não decidido**. O que está no plano d
 - ~~Vitrine não abre (erro no `FormatBar`)~~ corrigido na sessão da Lixeira (14/11).
 - Lixeira (D164): avaliações do boletim excluídas não aparecem na lista (o título é cifrado; ficam lá 30 dias e saem). Imagem tirada de um cartão também não aparece (sem a linha `{img:}` ela não teria onde voltar) (14/11).
 - Lixeira: ⋮ de toque (`MoreButton`, 44 px) em todo item escolhido que já tem Alt O, começando pela régua de pastas (LEIA-ME da bancada, 14/11).
+- Tirar o painel de teste do FSRS do Treino (`treino/FsrsPanel.tsx`) quando acabar a fase de teste (pedido 15/11).

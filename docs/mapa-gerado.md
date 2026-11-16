@@ -412,6 +412,8 @@
 - src/ui/screens/mesa/useNotesEditor.ts: `export function useNotesEditor(lessonId: string, html: string): Editor | null`
 - src/ui/screens/treino/ChoiceParts.tsx: `export const MODOS = 'treino.modos';`
 - src/ui/screens/treino/Escolha.module.css: Escolha do Treino (D180): coluna de 880 px, sempre em duas metades iguais.
+- src/ui/screens/treino/FsrsPanel.module.css: Painel de teste do FSRS: discreto, abaixo do cartão.
+- src/ui/screens/treino/FsrsPanel.tsx: Painel de teste (pedido do usuário, 15/11): mostra o que o FSRS sabe do cartão. Sai depois da fase de teste.
 - src/ui/screens/treino/TrainingChoice.tsx: (sem comentário nem export no topo)
 - src/ui/screens/treino/TrainingSession.tsx: Fim da sessão: quando volta o próximo cartão do recorte.
 - src/ui/screens/treino/Treino.module.css: O cursor da lista não comanda nada: só aparece com o bloco ativo (diretriz 3.2).

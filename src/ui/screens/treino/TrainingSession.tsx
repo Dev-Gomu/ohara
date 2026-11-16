@@ -14,6 +14,7 @@ import { hasCloze } from '../../../core/study/cloze';
 import { useCardView } from '../../study/cardView';
 import { openZoom, useCardImages, useZoom } from '../../study/cardImages';
 import { storage, useStudy } from '../../study/study';
+import { FsrsPanel } from './FsrsPanel';
 import styles from './Treino.module.css';
 
 const CARD = 'treino.cartao';
@@ -153,6 +154,7 @@ export function TrainingSession({ session, scope, onChange }: TrainingSessionPro
                 </button>
               ))}
             </div>
+            {card && <FsrsPanel card={card} retention={params.retention} next={intervals} />}
           </div>
         ) : (
           <div className={styles.palco}>
@@ -164,6 +166,7 @@ export function TrainingSession({ session, scope, onChange }: TrainingSessionPro
               {sides.front.map((id) => picture(id, 'grande'))}
               <span className={styles.dica}>Toque ou Espaço para revelar</span>
             </NavItem>
+            {card && <FsrsPanel card={card} retention={params.retention} next={null} />}
           </div>
         )}
       </Block>

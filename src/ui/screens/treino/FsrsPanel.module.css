@@ -1,0 +1,38 @@
+/* Painel de teste do FSRS: discreto, abaixo do cartão. */
+.painel {
+  display: grid;
+  gap: var(--e2);
+  padding: var(--e3) var(--e4);
+  border-radius: var(--raio-item);
+  background: var(--cor-cartao-2);
+  color: var(--cor-texto-2);
+  font: var(--ui-apoio);
+}
+
+.titulo {
+  color: var(--cor-texto);
+  font: var(--ui-sigla);
+}
+
+.lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e1) var(--e4);
+  margin: 0;
+}
+
+.item {
+  display: flex;
+  gap: var(--e1);
+}
+
+.item dd {
+  margin: 0;
+  color: var(--cor-texto);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.nota {
+  margin: 0;
+}
