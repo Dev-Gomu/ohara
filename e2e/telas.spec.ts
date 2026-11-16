@@ -118,6 +118,13 @@ test('Treino (FSRS): Errei volta na mesma sessão, Fácil tira o cartão', async
   await expect(page.getByRole('button', { name: /Errei/ })).toContainText('min');
   await page.keyboard.press('Digit1');
   await expect(pergunta).not.toHaveText(primeira);
+  // Alt Z desfaz a resposta: o mesmo cartão volta, já virado; responder de novo segue igual.
+  await expect(page.getByTestId('desfazer')).toContainText('Respondido: Errei');
+  await page.keyboard.press('Alt+KeyZ');
+  await expect(page.getByRole('button', { name: /Errei/ })).toBeVisible();
+  await expect(page.locator('[data-block="treino.cartao"]')).toContainText(primeira);
+  await page.keyboard.press('Digit1');
+  await expect(pergunta).not.toHaveText(primeira);
   await expect(page.getByText(/^0 de/)).toBeVisible();
   // Passados 2 minutos, o cartão do Errei venceu e passa à frente da fila do dia.
   await page.clock.fastForward('02:00');

@@ -29,13 +29,13 @@ export interface Session {
 const byDue = (a: Card, b: Card): number => (a.due < b.due ? -1 : a.due > b.due ? 1 : 0);
 
 // Regra 1: vencidos até o fim de hoje. Aprendendo e reaprendendo pela data, depois revisão
-// pela data, por último os novos na ordem de criação (a ordem do banco). Sem limite de novos.
-export function dueQueue(cards: readonly Card[], today: string): Card[] {
+// pela data, por último os novos na ordem de criação (a ordem do banco), até `newLeft` (null = todos).
+export function dueQueue(cards: readonly Card[], today: string, newLeft: number | null = null): Card[] {
   const due = cards.filter((card) => dayOf(card.due) <= today);
   const learning = due.filter((card) => card.state === 1 || card.state === 3).sort(byDue);
   const review = due.filter((card) => card.state === 2).sort(byDue);
   const fresh = due.filter((card) => card.state === 0);
-  return [...learning, ...review, ...fresh];
+  return [...learning, ...review, ...(newLeft === null ? fresh : fresh.slice(0, newLeft))];
 }
 
 // Regra 5 (Adiantar, D80): sem vencidos, os 20 de data mais próxima.
@@ -43,8 +43,8 @@ export function advanceQueue(cards: readonly Card[]): Card[] {
   return [...cards].sort(byDue).slice(0, ADVANCE_LIMIT);
 }
 
-export const sessionQueue = (cards: readonly Card[], today: string): Card[] => {
-  const due = dueQueue(cards, today);
+export const sessionQueue = (cards: readonly Card[], today: string, newLeft: number | null = null): Card[] => {
+  const due = dueQueue(cards, today, newLeft);
   return due.length > 0 ? due : advanceQueue(cards);
 };
 

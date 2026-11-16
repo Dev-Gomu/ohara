@@ -112,7 +112,7 @@ function aboutRows(diag: Diagnostics | null): Row[] {
 export function buildSections(diag: Diagnostics | null): readonly Section[] {
   return [
     { name: 'Aparência', summary: 'Tema, paleta, barra do topo, cartões', rows: appearanceRows() },
-    { name: 'Treino', summary: 'Retenção desejada do FSRS', rows: trainingRows() },
+    { name: 'Treino', summary: 'Retenção e novos por dia', rows: trainingRows() },
     {
       name: 'Atalhos',
       summary: 'Lista gerada da tabela de teclas',

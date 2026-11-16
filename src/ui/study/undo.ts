@@ -80,6 +80,11 @@ export function restoreWithUndo(label: string, root: string): void {
   });
 }
 
+// Desfazer de outra ação (ex.: a resposta do Treino), no mesmo aviso e com o mesmo prazo.
+export function offerUndo(label: string, undo: () => void): void {
+  set({ label, removal: false, undo });
+}
+
 export function runUndo(): void {
   if (!pending) return;
   const { undo } = pending;

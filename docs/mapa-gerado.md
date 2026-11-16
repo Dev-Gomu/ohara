@@ -61,11 +61,11 @@
 ### docs/estado.md
 - L1 # Estado do Ohara (atualizado em 15/11/2026)
 - L5 ## Onde estamos
-- L24 ## Pendências para a próxima sessão (salvo em 15/11, nesta ordem)
-- L39 ## Próximo passo
-- L75 ## A conferir (aplicado em 13/11, só check e e2e)
-- L78 ## Esperando o usuário
-- L82 ## Iniciativas abertas (máx. 3)
+- L26 ## Pendências para a próxima sessão (salvo em 15/11, nesta ordem)
+- L41 ## Próximo passo
+- L77 ## A conferir (aplicado em 13/11, só check e e2e)
+- L80 ## Esperando o usuário
+- L84 ## Iniciativas abertas (máx. 3)
 
 ### docs/mapa.md
 - L1 # Mapa do projeto
@@ -274,7 +274,7 @@
 - src/core/study/symbols.test.ts: (sem comentário nem export no topo)
 - src/core/study/symbols.ts: Símbolos ao digitar (D139): tabela própria, do zero. Mais longo primeiro, para "<->" não virar "<" + "->".
 - src/core/study/train.test.ts: (sem comentário nem export no topo)
-- src/core/study/train.ts: Uma resposta numa escrita só: o cartão com a nova agenda e a linha do histórico.
+- src/core/study/train.ts: Padrão do Anki. null = sem limite.
 - src/core/study/trash.test.ts: (sem comentário nem export no topo)
 - src/core/study/trash.ts: Lixeira (D164): o item fica 30 dias; nos últimos 7 a linha avisa quando some.
 - src/core/study/trashList.ts: Ordem da régua. `male`: "excluído" (cartão, anexo, lembrete) ou "excluída".

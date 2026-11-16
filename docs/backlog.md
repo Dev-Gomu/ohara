@@ -23,7 +23,7 @@ Lista curta do que foi **adiado ou ainda não decidido**. O que está no plano d
 |---|---|---|
 | B04 | **Dropbox como provedor de sincronização** | Etapa 12, só se o teste Drive vs Dropbox favorecer (ver D32, D33) |
 | B05 | **Migrar para TypeScript 7.x** | Quando o 7.1 e o typescript-eslint o suportarem (ver D06) |
-| B06 | **Otimizador de parâmetros do FSRS no navegador** | Etapa 11, se for viável rodar sem servidor (ver D44) |
+| B06 | **Otimizador do FSRS: falta só o cálculo** (D185: `fsrs-browser` + isolamento COOP/COEP pelo service worker + botão Otimizar) | Quando Configs > Treino mostrar perto de 1.000 respostas |
 | B07 | **Novos blocos de mosaico** (ex.: Lembretes ou Agenda como bloco da Mesa) | Depois do checkpoint da Etapa 6, se as janelas de consulta não bastarem |
 
 ## Propostas visuais pedidas (13/11/2026, o usuário vai mandar o prompt; bancadas de até 3 versões, claro e escuro)
@@ -51,7 +51,7 @@ Lista curta do que foi **adiado ou ainda não decidido**. O que está no plano d
 
 *(vazio; acrescente uma linha por ideia, com data)*
 - 2026-11-05: **B09 Importar o backup .zip do app antigo** (matérias, aulas, anotações, cartões, provas) para o app novo, sem migrar código. Só depois da Fase B.
-- 2026-11-05: Ideias que sobraram do legado, sem decisão: cloze nos cartões, suspender cartão, estudar só uma prova, limite de novos por dia, pomodoro, paleta de comandos no gerenciador de cartões, escolha do ícone de atalhos (o "?" do legado não agradou).
+- 2026-11-05: Ideias que sobraram do legado, sem decisão: cloze nos cartões, suspender cartão, estudar só uma prova, pomodoro, paleta de comandos no gerenciador de cartões, escolha do ícone de atalhos (o "?" do legado não agradou).
 - 2026-11-05: Manter o app antigo no ar até o novo ter tudo o que o usuário usa.
 - 2026-11-07: **Agenda (Etapa 9, regras em `regras.md`):** Mover e Sem aula na Prévia, aula avulsa, inverter quinzenal, editar a Grade pelo cronograma, prova só com a matéria, campos de prova (bimestre, conteúdo, local, observação), atrasados no topo da Lista, importar .ics como atalho da Grade.
 - 2026-11-07: **Busca FTS** do SQLite quando a busca em memória ficar lenta. Fora da Etapa 7.

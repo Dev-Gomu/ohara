@@ -1,7 +1,20 @@
 import { describe, expect, it } from 'vitest';
 import { EMPTY_STUDY } from './create';
 import { newSchedule } from './schedule';
-import { answerCard, nextDue, retentionOf, setRetention, stateCounts, trainParams } from './train';
+import {
+  answerCard,
+  newLeftToday,
+  newLimitOf,
+  nextDue,
+  retentionOf,
+  setNewLimit,
+  setRetention,
+  setWeights,
+  weightsOf,
+  stateCounts,
+  trainParams,
+  undoAnswer,
+} from './train';
 
 const NOW = new Date(2026, 10, 15, 10, 0, 0);
 const data = {
@@ -32,5 +45,39 @@ describe('treino no banco', () => {
     expect(nextDue([{ due: '2026-11-20' }, { due: '2026-11-16T08:00:00' }])).toBe('2026-11-16T08:00:00');
     expect(nextDue([])).toBeNull();
     expect(stateCounts([{ state: 0 }, { state: 1 }, { state: 3 }, { state: 2 }])).toEqual({ fresh: 1, learning: 2, review: 1 });
+  });
+
+  it('desfazer volta a agenda de antes e tira a linha do histórico', () => {
+    const before = data.cards[0];
+    if (!before) throw new Error('sem cartão');
+    const answered = answerCard(data, 'c', 1, NOW, trainParams(data, false), 'r1');
+    const undone = undoAnswer(answered, before, 'r1');
+    expect(undone.cards[0]).toEqual(before);
+    expect(undone.reviews).toEqual([]);
+  });
+
+  it('limite de novos: padrão 20, sem limite, e desconta os novos já vistos hoje', () => {
+    expect(newLimitOf(data)).toBe(20);
+    expect(newLimitOf(setNewLimit(data, null))).toBeNull();
+    const limited = setNewLimit(data, 5);
+    const once = answerCard(limited, 'c', 1, NOW, trainParams(limited, false), 'r1');
+    const twice = answerCard(once, 'c', 3, new Date(NOW.getTime() + 60_000), trainParams(once, false), 'r2');
+    expect(newLeftToday(twice, '2026-11-15')).toBe(4);
+    expect(newLeftToday(twice, '2026-11-16')).toBe(5);
+    expect(newLeftToday(setNewLimit(twice, null), '2026-11-15')).toBeNull();
+  });
+
+  it('pesos ajustados entram no agendamento; inválidos são ignorados', () => {
+    const later = new Date(NOW.getTime() + 60_000);
+    const base = trainParams(data, false);
+    const plain = answerCard(data, 'c', 4, later, base, 'r');
+    const weights = [0.5, 2.5, 4, 20, 6.4, 0.83, 3, 0.001, 1.87, 0.17, 0.8, 1.48, 0.06, 0.26, 1.65, 0.6, 1.87, 0.54, 0.09, 0.07, 0.15];
+    const tuned = setWeights(data, weights);
+    expect(weightsOf(tuned)).toEqual(weights);
+    const custom = answerCard(tuned, 'c', 4, later, trainParams(tuned, false), 'r');
+    expect(custom.cards[0]?.due).not.toBe(plain.cards[0]?.due);
+    expect(weightsOf(setWeights(data, [1, 2]))).toBeUndefined();
+    expect(weightsOf(setWeights(tuned, null))).toBeUndefined();
+    expect(trainParams({ ...data, settings: [{ id: 'train.weights', value: 'x' }] }).weights).toBeUndefined();
   });
 });

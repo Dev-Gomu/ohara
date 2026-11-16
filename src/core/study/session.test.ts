@@ -31,6 +31,12 @@ describe('fila do dia (regra 1)', () => {
     expect(ids(dueQueue(cards, TODAY))).toEqual(['reapr', 'apr', 'rev-1', 'rev-2', 'novo-b', 'novo-a']);
   });
 
+  it('novos param no limite do dia; revisões não contam', () => {
+    const cards = [card('n1', TODAY), card('n2', TODAY), card('n3', TODAY), card('r', '2026-11-14T08:00:00', 2)];
+    expect(ids(dueQueue(cards, TODAY, 2))).toEqual(['r', 'n1', 'n2']);
+    expect(ids(dueQueue(cards, TODAY, 0))).toEqual(['r']);
+  });
+
   it('entra quem vence mais tarde hoje', () => {
     expect(ids(dueQueue([card('tarde', '2026-11-15T22:00:00', 2)], TODAY))).toEqual(['tarde']);
   });

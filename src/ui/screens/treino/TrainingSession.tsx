@@ -2,7 +2,8 @@ import { useEffect } from 'react';
 import { intervalLabel, preview } from '../../../core/study/fsrs';
 import { parseStamp } from '../../../core/study/schedule';
 import { flip, isFinished, rate, skip, type Grade, type Session } from '../../../core/study/session';
-import { answerCard, nextDue, trainParams } from '../../../core/study/train';
+import { answerCard, nextDue, trainParams, undoAnswer } from '../../../core/study/train';
+import { offerUndo } from '../../study/undo';
 import { imagesBySide } from '../../../core/study/cardImages';
 import { Block } from '../../components/Block';
 import { CardPicture, ImageZoom, type ImageSource } from '../../components/CardImages';
@@ -18,6 +19,8 @@ import { FsrsPanel } from './FsrsPanel';
 import styles from './Treino.module.css';
 
 const CARD = 'treino.cartao';
+
+const GRADE_NAMES: Readonly<Record<Grade, string>> = { 1: 'Errei', 2: 'Difícil', 3: 'Bom', 4: 'Fácil' };
 
 const GRADES: readonly [Grade, string][] = [
   [1, 'Errei'],
@@ -59,14 +62,23 @@ export function TrainingSession({ session, scope, onChange }: TrainingSessionPro
   const respond = (grade: Grade) => {
     if (!card || !session.flipped) return;
     const now = new Date();
+    const before = card;
+    const reviewId = crypto.randomUUID();
     let due = card.due;
     storage.write((current) => {
-      const next = answerCard(current, card.id, grade, now, trainParams(current), crypto.randomUUID());
+      const next = answerCard(current, card.id, grade, now, trainParams(current), reviewId);
       due = next.cards.find((item) => item.id === card.id)?.due ?? due;
       return next;
     });
     void storage.flush();
     onChange(rate(session, grade, due, now));
+    // Desfazer: volta a agenda, apaga de vez a linha do histórico (não vai à Lixeira) e reabre o cartão.
+    offerUndo(`Respondido: ${GRADE_NAMES[grade]}`, () => {
+      storage.write((current) => undoAnswer(current, before, reviewId));
+      const gone = storage.readTrash().filter((entry) => entry.table === 'reviews' && entry.item.id === reviewId);
+      void storage.purge(gone).then(() => storage.flush());
+      onChange({ ...session, flipped: true });
+    });
   };
   const question = card?.question ?? '';
   const answer = card?.answer ?? '';

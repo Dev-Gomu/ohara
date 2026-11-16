@@ -16,7 +16,14 @@ export const GRADES: readonly Grade[] = [1, 2, 3, 4];
 export interface TrainParams {
   retention: number;
   fuzz: boolean;
+  // Os 21 pesos do FSRS-6 ajustados pelo otimizador (B06); ausente = padrão da biblioteca.
+  weights?: readonly number[];
 }
+
+export const WEIGHT_COUNT = 21;
+
+export const validWeights = (value: unknown): value is number[] =>
+  Array.isArray(value) && value.length === WEIGHT_COUNT && value.every((n) => typeof n === 'number' && Number.isFinite(n));
 
 export const RETENTION = { min: 0.8, max: 0.97, standard: 0.9 } as const;
 
@@ -59,6 +66,7 @@ const scheduler = (params: TrainParams) =>
     generatorParameters({
       request_retention: clampRetention(params.retention),
       enable_fuzz: params.fuzz,
+      ...(params.weights ? { w: params.weights } : {}),
     }),
   );
 

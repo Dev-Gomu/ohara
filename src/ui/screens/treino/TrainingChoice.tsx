@@ -1,10 +1,9 @@
-import { sessionQueue } from '../../../core/study/session';
-import { stateCounts } from '../../../core/study/train';
+import { dueQueue, sessionQueue } from '../../../core/study/session';
+import { newLeftToday, stateCounts } from '../../../core/study/train';
 import { useEffect, useRef, useState } from 'react';
 import { ankiTsv } from '../../../core/study/ankiExport';
 import {
   describeScope,
-  dueCards,
   emptyScope,
   isEmptyScope,
   lessonGroups,
@@ -72,8 +71,9 @@ export function TrainingChoice({ onStart }: TrainingChoiceProps) {
   const lessonRows = groups.flatMap((group) => group.rows);
 
   const cards = scopeCards(data, scope);
-  const due = dueCards(cards, today);
-  const queue = sessionQueue(cards, today);
+  const newLeft = newLeftToday(data, today);
+  const due = dueQueue(cards, today, newLeft);
+  const queue = sessionQueue(cards, today, newLeft);
   const customCards = scopeCards(data, saved);
   const modeIndex = useSelectedIndex(MODOS, 2);
   const idx = barIndexes(custom);
