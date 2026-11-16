@@ -1,4 +1,4 @@
-import { useLayoutEffect, useMemo, useRef, type RefObject } from 'react';
+import { useLayoutEffect, useRef, type RefObject } from 'react';
 import {
   daysBetween,
   longDate,
@@ -232,16 +232,20 @@ interface RemindersProps {
 }
 
 // Quando a ordem muda (feito desce, o resto sobe), cada linha desliza do lugar antigo com a mola do elástico.
+// Posição medida dentro da lista e só reage à troca de ordem: mudança de layout ou rolagem não anima.
 function useSlideReorder(ids: readonly string[]): RefObject<HTMLDivElement | null> {
   const list = useRef<HTMLDivElement | null>(null);
   const tops = useRef<Map<string, number>>(new Map());
+  const order = ids.join(',');
   useLayoutEffect(() => {
-    const rows = Array.from(list.current?.children ?? []);
+    const box = list.current;
+    if (!box) return;
+    const origin = box.getBoundingClientRect().top - box.scrollTop;
     const next = new Map<string, number>();
-    rows.forEach((row, index) => {
+    Array.from(box.children).forEach((row, index) => {
       const key = ids[index];
       if (key === undefined) return;
-      const top = row.getBoundingClientRect().top;
+      const top = row.getBoundingClientRect().top - origin;
       next.set(key, top);
       const before = tops.current.get(key);
       if (before !== undefined && before !== top && slideEnabled()) {
@@ -249,12 +253,13 @@ function useSlideReorder(ids: readonly string[]): RefObject<HTMLDivElement | nul
       }
     });
     tops.current = next;
-  }, [ids]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- só a ordem importa
+  }, [order]);
   return list;
 }
 
 export function RemindersBlock({ id, reminders, scheduled, onToggle }: RemindersProps) {
-  const ids = useMemo(() => reminders.map((item) => item.id), [reminders]);
+  const ids = reminders.map((item) => item.id);
   const list = useSlideReorder(ids);
   return (
     <Block id={id} title="Lembretes" shortcut="Alt I" menu>
