@@ -1,4 +1,4 @@
-# Estado do Ohara (atualizado em 15/11/2026)
+# Estado do Ohara (atualizado em 16/11/2026)
 
 **Leia só este arquivo para retomar.** Detalhes de cada sessão: `docs/plano/faxina.md`. Fila: `docs/plano/_indice.md`.
 
@@ -23,6 +23,7 @@
 
 - **Treino: Desfazer e novos por dia APLICADOS (D184, 15/11):** aviso "Respondido: X" com Desfazer (Alt Z); Configs > Treino > Novos por dia (padrão 20). Painel de teste do FSRS no Treino (sai depois, ver backlog). **Falta do FSRS:** o cálculo do otimizador (D185, B06: base pronta, espera cerca de 1.000 respostas e o isolamento pelo service worker) e sincronizar as respostas (Etapa 12).
 
+- **Calendário mínimo e lembrete deslizando APLICADOS (D187, 16/11):** largura mínima de 320 px no calendário; lembrete marcado desliza para baixo com o elástico. Pendente: confirmar se a divisória do mosaico respeita o mínimo ao arrastar.
 - **Calendário do Hub APLICADO (D186, 15/11):** título "Novembro 2026" na letra do app, alinhado ao número do dia (não à pílula), proporção do calendário do Google, sempre 6 semanas (`sixWeekGrid`). Bancada removida. **A conferir à mão:** tablet deitado e mês de 6 semanas reais. Ideias para a lista do dia (aula passada esmaecida, respiro da data) ficaram só na conversa.
 
 ## Pendências para a próxima sessão (salvo em 15/11, nesta ordem)
