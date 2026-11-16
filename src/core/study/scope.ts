@@ -1,3 +1,4 @@
+import { dayOf } from './schedule';
 import type { Card, Lesson, StudyData } from './types';
 
 // O que entra no treino (D179, D180). Quatro categorias, todas aceitam vários valores.
@@ -49,7 +50,7 @@ export function scopeCards(data: StudyData, scope: Scope): Card[] {
 }
 
 export const dueCards = (cards: readonly Card[], today: string): Card[] =>
-  cards.filter((card) => card.due <= today);
+  cards.filter((card) => dayOf(card.due) <= today);
 
 export interface Counted {
   due: number;

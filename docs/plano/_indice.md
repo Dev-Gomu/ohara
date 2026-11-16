@@ -9,7 +9,7 @@
 | 3 | Três paletas oficiais (Gelo suave, Gelo, Índigo) | Fable na bancada, Sonnet no código | feita |
 | 4 | Publicação (teste da Agenda, roteiro de 5 min, main) | Sonnet | feita (12/11/2026) |
 | R1 a R4 | Refinos: Acervo, Configs, Mesa, Janelas (R5 Treino só após a 11); uma tela por sessão, detalhes em `faxina.md` | Fable na bancada, Sonnet/Opus na aplicação | **próxima: R1** |
-| 5 | Etapa 11, Treino com FSRS (`etapa-11.md`) | Opus | |
+| 5 | Etapa 11, Treino com FSRS (`etapa-11.md`) | Opus | feita (15/11/2026, D183) |
 | 6 | Etapa 12, sincronização (`etapa-12.md`) | Opus, modo de plano | |
 | 7+ | Sobra dos refinos e refino do Treino | Sonnet | |
 

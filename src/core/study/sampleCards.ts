@@ -1,6 +1,7 @@
 import { addDays } from './dates';
 import { expandCloze } from './cloze';
-import type { Card, CardImage, Lesson } from './types';
+import { newSchedule } from './schedule';
+import type { Card, CardImage, Lesson, Schedule } from './types';
 
 // Cartões do exemplo: [frente, verso, dias até vencer]. Negativo = atrasado; 0 = hoje.
 // O verso usa as marcas do editor: "# ", "## ", "+ ", "-- ", "? ", listas e **negrito**.
@@ -175,8 +176,25 @@ export function sampleCards(today: string, lessons: readonly Lesson[]): Card[] {
         lessonId,
         question,
         answer,
-        due: addDays(today, due),
+        ...sampleSchedule(today, due, at),
       })),
     );
   });
+}
+
+// Data 0 é novo; negativa, atrasado (alguns ainda aprendendo); positiva, revisão marcada.
+function sampleSchedule(today: string, offset: number, at: number): Schedule {
+  if (offset === 0) return newSchedule(today);
+  const learning = offset < 0 && at % 2 === 1;
+  return {
+    due: learning ? `${today}T07:30:00` : `${addDays(today, offset)}T08:00:00`,
+    state: learning ? 1 : 2,
+    stability: learning ? 0.4 : Math.abs(offset) * 1.5 + 1,
+    difficulty: 5,
+    reps: learning ? 1 : 3,
+    lapses: 0,
+    learningSteps: learning ? 1 : 0,
+    scheduledDays: learning ? 0 : Math.abs(offset),
+    lastReview: `${addDays(today, learning ? -1 : -Math.abs(offset))}T08:00:00`,
+  };
 }

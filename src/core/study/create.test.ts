@@ -34,7 +34,7 @@ describe('criar', () => {
   it('cartões novos entram na aula, vencidos hoje', () => {
     const drafts = [{ front: 'IL-6', back: 'Fígado' }];
     const next = addCards(data, 'imu-a7', drafts, ['novo'], '2026-11-07');
-    expect(next.cards.at(-1)).toEqual({
+    expect(next.cards.at(-1)).toMatchObject({
       id: 'novo',
       lessonId: 'imu-a7',
       question: 'IL-6',

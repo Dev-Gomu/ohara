@@ -22,7 +22,32 @@ function MenuSample({ mode }: { mode: string }) {
   return <span className={styles.abas}>{tab(1, 'hub', false)}{tab(2, 'mesa', true)}</span>;
 }
 
+// Régua numérica: − e + andam um passo; no teclado, ← →.
+function StepView({ choice, onChange }: { choice: Choice; onChange: () => void }) {
+  const at = choice.options.findIndex((option) => option.id === choice.current);
+  const step = (delta: number) => (event: MouseEvent) => {
+    event.stopPropagation();
+    const next = choice.options[at + delta];
+    if (next) choice.set(next.id);
+    onChange();
+  };
+  return (
+    <span className={styles.par}>
+      <span role="button" aria-label="Menos" className={styles.op} onClick={step(-1)}>
+        −
+      </span>
+      <span className={styles.op} data-on="true">
+        {choice.options[at]?.name}
+      </span>
+      <span role="button" aria-label="Mais" className={styles.op} onClick={step(1)}>
+        +
+      </span>
+    </span>
+  );
+}
+
 export function ChoiceView({ choice, onChange }: { choice: Choice; onChange: () => void }) {
+  if (choice.look === 'passo') return <StepView choice={choice} onChange={onChange} />;
   if (choice.look === 'curta') {
     return (
       <span className={styles.par} role="radiogroup">

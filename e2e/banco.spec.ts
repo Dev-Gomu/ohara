@@ -64,7 +64,7 @@ test.describe('banco real (OPFS), começando vazio', () => {
 
   test('Exportar banco baixa um arquivo com conteúdo', async ({ page }) => {
     await page.keyboard.press('Alt+Digit6');
-    for (let step = 0; step < 3; step += 1) await page.keyboard.press('ArrowDown');
+    for (let step = 0; step < 4; step += 1) await page.keyboard.press('ArrowDown');
     await page.keyboard.press('Enter');
     const download = page.waitForEvent('download');
     await page.keyboard.press('Enter');
@@ -76,7 +76,7 @@ test.describe('banco real (OPFS), começando vazio', () => {
 
   test('Sobre mostra o armazenamento e o SQLite', async ({ page }) => {
     await page.keyboard.press('Alt+Digit6');
-    for (let step = 0; step < 5; step += 1) await page.keyboard.press('ArrowDown');
+    for (let step = 0; step < 6; step += 1) await page.keyboard.press('ArrowDown');
     await expect(page.getByText('Armazenamento persistente')).toBeVisible();
     await expect(page.getByText(/Versão 3\./)).toBeVisible();
   });

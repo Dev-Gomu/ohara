@@ -1,3 +1,4 @@
+import type { StateCounts } from '../../../core/study/train';
 import type { ReactNode } from 'react';
 import type { Choice, LessonGroup } from '../../../core/study/scope';
 import type { SubjectTile } from '../../../core/study/subjectTiles';
@@ -246,6 +247,7 @@ export function LessonsPanel({ groups, hasSubject, onToggle }: LessonsProps) {
 interface BarProps {
   custom: boolean;
   due: number;
+  counts: StateCounts;
   total: number;
   startLabel: string;
   canStart: boolean;
@@ -260,13 +262,14 @@ export function barIndexes(custom: boolean): { clear: number; start: number; mor
 }
 
 export function Bar(props: BarProps) {
-  const { custom, due, total, startLabel, canStart, onClear, onStart, onExport } = props;
+  const { custom, due, counts, total, startLabel, canStart, onClear, onStart, onExport } = props;
   const at = barIndexes(custom);
   const onClearCursor = useNavCursor(BARRA, at.clear);
   const onStartCursor = useNavCursor(BARRA, at.start);
   const apoio = total === 0 ? 'Nenhum cartão com estes filtros' : `${countLabel(total)} no recorte`;
   return (
     <Block id={BARRA} className={styles.barra}>
+      <div className={styles.barraTopo}>
       <span className={styles.numero}>{due}</span>
       <span className={styles.resumo}>
         <b className={styles.recorte}>{due === 1 ? 'cartão para hoje' : 'cartões para hoje'}</b>
@@ -296,9 +299,26 @@ export function Bar(props: BarProps) {
       >
         ⋮
       </NavItem>
+      </div>
+      <div className={styles.trio}>
+        {KINDS.map(([key, name, color]) => (
+          <div key={key} className={styles.tipo} data-zero={counts[key] === 0}>
+            <span className={styles.marcaTipo} data-materia={color} />
+            <span className={styles.nomeTipo}>{name}</span>
+            <b className={styles.numTipo}>{counts[key]}</b>
+          </div>
+        ))}
+      </div>
     </Block>
   );
 }
+
+// D181: as três cores vêm da paleta das matérias (posição, não valor).
+const KINDS: readonly (readonly [keyof StateCounts, string, number])[] = [
+  ['fresh', 'Novos', 3],
+  ['learning', 'Aprendendo', 5],
+  ['review', 'Revisar', 0],
+];
 
 interface SummaryProps {
   tiles: readonly SubjectTile[];

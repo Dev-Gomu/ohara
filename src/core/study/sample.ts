@@ -276,6 +276,8 @@ export function createSample(today: string): StudyData {
     cardImages: SAMPLE_IMAGES,
     vault: [],
     secrets: [],
+    reviews: [],
+    settings: [],
     noteVersions: sampleVersions(today),
   };
 }

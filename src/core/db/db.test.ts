@@ -47,6 +47,19 @@ const file = {
   subjectId: null,
 };
 
+const reviewRow = {
+  id: 'r',
+  cardId: 'c',
+  grade: 3,
+  state: 1,
+  due: '2026-11-15T10:10:00',
+  stability: 2.3,
+  difficulty: 5.1,
+  scheduledDays: 0,
+  learningSteps: 1,
+  reviewedAt: '2026-11-15T10:00:00',
+};
+
 describe('toRow e fromRow', () => {
   it.each(SPECS.map((spec) => [spec.table, spec]))('ida e volta em %s', (_name, spec) => {
     const items = (base[spec.collection] as object[]).slice(0, 5);
@@ -63,7 +76,11 @@ describe('toRow e fromRow', () => {
                 ? [secretRow]
                 : spec.table === 'card_images'
                   ? [imageRow]
-                  : items;
+                  : spec.table === 'reviews'
+                    ? [reviewRow]
+                    : spec.table === 'settings'
+                      ? [{ id: 'train.retention', value: '0.9' }]
+                      : items;
     expect(sample.length).toBeGreaterThan(0);
     for (const item of sample) {
       expect(fromRow(spec.table, toRow(spec.table, item))).toEqual(item);
@@ -128,11 +145,13 @@ describe('diffStudy', () => {
       cardImages: [imageRow],
       vault: [vaultRow],
       secrets: [secretRow],
+      reviews: [{ id: 'r', cardId: 'c', grade: 3, state: 1, due: 'd', stability: 1, difficulty: 5, scheduledDays: 0, learningSteps: 1, reviewedAt: 'r' }],
+      settings: [{ id: 'train.retention', value: '0.9' }],
       noteVersions: [{ id: 'v', lessonId: 'a', at: 1, html: 'h' }],
     };
     const changes = diffStudy(base, after);
-    expect(changes).toHaveLength(15);
-    expect(new Set(changes.map((item) => ('table' in item ? item.table : ''))).size).toBe(15);
+    expect(changes).toHaveLength(17);
+    expect(new Set(changes.map((item) => ('table' in item ? item.table : ''))).size).toBe(17);
   });
 });
 

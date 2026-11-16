@@ -59,13 +59,13 @@
 - L10 ## Checklist
 
 ### docs/estado.md
-- L1 # Estado do Ohara (atualizado em 14/11/2026)
+- L1 # Estado do Ohara (atualizado em 15/11/2026)
 - L5 ## Onde estamos
-- L22 ## Pendências para a próxima sessão (salvo em 15/11, nesta ordem)
-- L37 ## Próximo passo
-- L73 ## A conferir (aplicado em 13/11, só check e e2e)
-- L76 ## Esperando o usuário
-- L80 ## Iniciativas abertas (máx. 3)
+- L24 ## Pendências para a próxima sessão (salvo em 15/11, nesta ordem)
+- L39 ## Próximo passo
+- L75 ## A conferir (aplicado em 13/11, só check e e2e)
+- L78 ## Esperando o usuário
+- L82 ## Iniciativas abertas (máx. 3)
 
 ### docs/mapa.md
 - L1 # Mapa do projeto
@@ -248,6 +248,8 @@
 - src/core/study/files.test.ts: (sem comentário nem export no topo)
 - src/core/study/files.ts: Limite por arquivo (D31).
 - src/core/study/fixtures.ts: Título, dias antes de hoje, pasta (1, 2 ou 0 para sem pasta)
+- src/core/study/fsrs.test.ts: Cartão em revisão: Fácil num novo e depois Bom, 10 dias mais tarde.
+- src/core/study/fsrs.ts: Função fina em volta do ts-fsrs (D43, D86): o resto do app só conhece estes tipos.
 - src/core/study/ics.test.ts: (sem comentário nem export no topo)
 - src/core/study/ics.ts: O formato limita a linha a 75 caracteres; a continuação começa com espaço.
 - src/core/study/notesExcerpt.test.ts: (sem comentário nem export no topo)
@@ -259,17 +261,20 @@
 - src/core/study/sample.ts: Dados do modo exemplo (?exemplo): um semestre inteiro de mentira, com todos os casos que o app
 - src/core/study/sampleCards.ts: Cartões do exemplo: [frente, verso, dias até vencer]. Negativo = atrasado; 0 = hoje.
 - src/core/study/sampleNotes.ts: Anotações do exemplo (HTML do editor). Só algumas aulas têm texto; as outras abrem vazias.
+- src/core/study/schedule.ts: Cartão que nunca foi respondido: entra no Treino a partir de `due` (data local).
 - src/core/study/scope.test.ts: (sem comentário nem export no topo)
 - src/core/study/scope.ts: O que entra no treino (D179, D180). Quatro categorias, todas aceitam vários valores.
 - src/core/study/search.test.ts: (sem comentário nem export no topo)
 - src/core/study/search.ts: Matéria abre a própria matéria; aula e cartão abrem a aula na Mesa.
 - src/core/study/session.test.ts: (sem comentário nem export no topo)
-- src/core/study/session.ts: A data da próxima revisão vem do FSRS na Etapa 11. Aqui só se decide a fila da sessão.
+- src/core/study/session.ts: Quem volta à mesma sessão: o cartão cuja nova data cai em até 20 minutos (Etapa 11, regra 2).
 - src/core/study/storage.ts: A tela só conhece esta interface: o banco (data/) e a memória (testes) a implementam.
 - src/core/study/subjectTiles.test.ts: (sem comentário nem export no topo)
 - src/core/study/subjectTiles.ts: Peça da grade de disciplinas do Treino. Todas as disciplinas entram, de qualquer ano (D179).
 - src/core/study/symbols.test.ts: (sem comentário nem export no topo)
 - src/core/study/symbols.ts: Símbolos ao digitar (D139): tabela própria, do zero. Mais longo primeiro, para "<->" não virar "<" + "->".
+- src/core/study/train.test.ts: (sem comentário nem export no topo)
+- src/core/study/train.ts: Uma resposta numa escrita só: o cartão com a nova agenda e a linha do histórico.
 - src/core/study/trash.test.ts: (sem comentário nem export no topo)
 - src/core/study/trash.ts: Lixeira (D164): o item fica 30 dias; nos últimos 7 a linha avisa quando some.
 - src/core/study/trashList.ts: Ordem da régua. `male`: "excluído" (cartão, anexo, lembrete) ou "excluída".
@@ -384,6 +389,7 @@
 - src/ui/screens/configs/Configs.tsx: Grupo que mostra, ao lado das linhas, o cartão real que muda com elas (D160).
 - src/ui/screens/configs/appearanceRows.ts: Enter passa à próxima opção, voltando à primeira no fim.
 - src/ui/screens/configs/configsData.ts: Opções curtas da linha (D160): ← → ou toque escolhem; Enter passa para a próxima.
+- src/ui/screens/configs/trainingRows.ts: Régua de 80% a 97%, passo de 1% (Etapa 11). O valor vai ao banco e sincroniza.
 - src/ui/screens/hub/Hub.module.css: (sem comentário nem export no topo)
 - src/ui/screens/hub/Hub.tsx: Altura que as Provas precisam: cartão de 86 px mais a margem de 8 px dos dois lados.
 - src/ui/screens/hub/HubBlocks.tsx: `export function ExamsBlock({ id, days }: { id: string; days: readonly AssessmentDay[] })`
@@ -407,9 +413,9 @@
 - src/ui/screens/treino/ChoiceParts.tsx: `export const MODOS = 'treino.modos';`
 - src/ui/screens/treino/Escolha.module.css: Escolha do Treino (D180): coluna de 880 px, sempre em duas metades iguais.
 - src/ui/screens/treino/TrainingChoice.tsx: (sem comentário nem export no topo)
-- src/ui/screens/treino/TrainingSession.tsx: Pergunta longa encolhe a letra em dois degraus (140 e 360 letras), D150.
+- src/ui/screens/treino/TrainingSession.tsx: Fim da sessão: quando volta o próximo cartão do recorte.
 - src/ui/screens/treino/Treino.module.css: O cursor da lista não comanda nada: só aparece com o bloco ativo (diretriz 3.2).
-- src/ui/screens/treino/Treino.tsx: `export function Treino()`
+- src/ui/screens/treino/Treino.tsx: Cartões do recorte inteiro: o resumo do fim mostra o próximo vencimento entre eles.
 - src/ui/shell/ConsultWindows.module.css: (sem comentário nem export no topo)
 - src/ui/shell/ConsultWindows.tsx: Janelas de consulta: olhar sem perder o lugar. Esc devolve ao ponto de origem.
 - src/ui/shell/ErrorScreen.module.css: (sem comentário nem export no topo)

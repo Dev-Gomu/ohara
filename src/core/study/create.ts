@@ -1,4 +1,5 @@
 import type { Draft } from './cardText';
+import { newSchedule } from './schedule';
 import type {
   Card,
   ClassEvent,
@@ -28,6 +29,8 @@ export const EMPTY_STUDY: StudyData = {
   cardImages: [],
   vault: [],
   secrets: [],
+  reviews: [],
+  settings: [],
   noteVersions: [],
 };
 
@@ -114,7 +117,7 @@ export function addCards(
     lessonId,
     question: draft.front,
     answer: draft.back,
-    due: today,
+    ...newSchedule(today),
   }));
   return { ...data, cards: [...data.cards, ...cards] };
 }

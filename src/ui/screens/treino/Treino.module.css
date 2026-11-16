@@ -135,6 +135,18 @@
   box-shadow: inset 0 0 0 1.5px var(--cor-acao);
   color: var(--cor-texto);
   font: var(--ui-botao);
+  flex-wrap: wrap;
+  align-content: center;
+  row-gap: 0;
+}
+
+/* Intervalo do FSRS embaixo do nome (Etapa 11): "10 min", "3 d". */
+.intervalo {
+  flex-basis: 100%;
+  font: var(--ui-apoio);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  opacity: 0.8;
 }
 
 /* Só "Bom", a nota mais usada, vem preenchida (D150). */

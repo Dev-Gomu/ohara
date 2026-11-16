@@ -8,11 +8,13 @@ import { showNotice } from '../../study/notice';
 import { ask } from '../../shell/PromptWindow';
 import { storage } from '../../study/study';
 import { appearanceRows } from './appearanceRows';
+import { trainingRows } from './trainingRows';
 
 // Opções curtas da linha (D160): ← → ou toque escolhem; Enter passa para a próxima.
 export interface Choice {
   // 'curta': opções escritas à direita; 'paleta' e 'menu': amostras com marca e nome embaixo.
-  look: 'curta' | 'paleta' | 'menu';
+  // 'passo': valor com − e + (régua numérica), ← → andam um passo.
+  look: 'curta' | 'paleta' | 'menu' | 'passo';
   options: readonly { id: string; name: string }[];
   current: string;
   set: (id: string) => void;
@@ -110,6 +112,7 @@ function aboutRows(diag: Diagnostics | null): Row[] {
 export function buildSections(diag: Diagnostics | null): readonly Section[] {
   return [
     { name: 'Aparência', summary: 'Tema, paleta, barra do topo, cartões', rows: appearanceRows() },
+    { name: 'Treino', summary: 'Retenção desejada do FSRS', rows: trainingRows() },
     {
       name: 'Atalhos',
       summary: 'Lista gerada da tabela de teclas',

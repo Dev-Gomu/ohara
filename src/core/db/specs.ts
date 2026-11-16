@@ -14,6 +14,8 @@ export type TableName =
   | 'folders'
   | 'lessons'
   | 'cards'
+  | 'reviews'
+  | 'settings'
   | 'exams'
   | 'events'
   | 'slots'
@@ -79,7 +81,42 @@ export const SPECS: readonly TableSpec[] = [
     table: 'cards',
     collection: 'cards',
     sync: true,
-    columns: [text('lessonId'), text('question'), text('answer'), text('due')],
+    columns: [
+      text('lessonId'),
+      text('question'),
+      text('answer'),
+      text('due'),
+      num('state'),
+      num('stability'),
+      num('difficulty'),
+      num('reps'),
+      num('lapses'),
+      num('learningSteps'),
+      num('scheduledDays'),
+      optional('lastReview'),
+    ],
+  },
+  {
+    table: 'reviews',
+    collection: 'reviews',
+    sync: true,
+    columns: [
+      text('cardId'),
+      num('grade'),
+      num('state'),
+      text('due'),
+      num('stability'),
+      num('difficulty'),
+      num('scheduledDays'),
+      num('learningSteps'),
+      text('reviewedAt'),
+    ],
+  },
+  {
+    table: 'settings',
+    collection: 'settings',
+    sync: true,
+    columns: [text('value')],
   },
   {
     table: 'exams',

@@ -75,6 +75,11 @@ export default tseslint.config(
     rules: { 'no-restricted-imports': ['error', { patterns: [toData, toUi] }] },
   },
   {
+    // D86: só a função fina do FSRS importa a biblioteca (pura, sem E/S)
+    files: ['src/core/study/fsrs.ts'],
+    rules: { 'no-restricted-imports': ['error', { patterns: [toData, toUi] }] },
+  },
+  {
     // data: importa só core
     files: ['src/data/**/*.ts'],
     rules: { 'no-restricted-imports': ['error', { patterns: [toUi] }] },

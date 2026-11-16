@@ -256,14 +256,60 @@
 }
 
 .barra {
-  flex-direction: row;
-  align-items: center;
   gap: var(--e3);
   padding: var(--e3) var(--bloco-pad-x) var(--e3) var(--e5);
 }
 
+.barraTopo {
+  display: flex;
+  align-items: center;
+  gap: var(--e3);
+}
+
+/* D181: Novos, Aprendendo e Revisar, cartão com marca em pílula e número à direita. */
+.trio {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--e2);
+}
+
+.tipo {
+  display: flex;
+  align-items: center;
+  gap: var(--e2);
+  min-height: 48px;
+  padding: 0 var(--e4) 0 var(--e3);
+  border-radius: var(--raio-item);
+  background: var(--cor-cartao-2);
+}
+
+.marcaTipo {
+  flex: none;
+  width: 6px;
+  height: 20px;
+  border-radius: var(--raio-pilula);
+  background: var(--cor-materia);
+}
+
+.nomeTipo {
+  flex: 1;
+  min-width: 0;
+  color: var(--cor-texto-2);
+  font: var(--ui-item);
+}
+
+.numTipo {
+  font: var(--voz-titulo);
+  font-variant-numeric: tabular-nums;
+}
+
+.tipo[data-zero='true'] .numTipo {
+  color: var(--cor-texto-2);
+  font-weight: 500;
+}
+
 .numero {
-  font: var(--voz-numero-mini);
+  font: var(--voz-tela);
   font-variant-numeric: tabular-nums;
 }
 
@@ -277,8 +323,8 @@
   font: var(--voz-mini);
 }
 
-.barra > button[data-tipo='primary'],
-.barra > button[data-tipo='plain'] {
+.barraTopo > button[data-tipo='primary'],
+.barraTopo > button[data-tipo='plain'] {
   min-height: 48px;
 }
 

@@ -32,12 +32,48 @@ export interface Lesson {
   notes: string;
 }
 
-export interface Card {
+// Estado do FSRS (Etapa 11): 0 novo, 1 aprendendo, 2 revisão, 3 reaprendendo.
+export type CardState = 0 | 1 | 2 | 3;
+
+// Agenda do cartão. `due` é data local ("2026-11-15") enquanto o cartão nunca foi respondido,
+// depois data e hora local ("2026-11-15T10:30:00"); as duas se comparam como texto.
+export interface Schedule {
+  due: string;
+  state: CardState;
+  stability: number;
+  difficulty: number;
+  reps: number;
+  lapses: number;
+  learningSteps: number;
+  scheduledDays: number;
+  lastReview: string | null;
+}
+
+export interface Card extends Schedule {
   id: string;
   lessonId: string;
   question: string;
   answer: string;
+}
+
+// Uma resposta do Treino: só recebe linhas novas e guarda o histórico para o otimizador (B06).
+export interface Review {
+  id: string;
+  cardId: string;
+  grade: number;
+  state: CardState;
   due: string;
+  stability: number;
+  difficulty: number;
+  scheduledDays: number;
+  learningSteps: number;
+  reviewedAt: string;
+}
+
+// Preferência que sincroniza (ex.: "train.retention"); o id é a chave.
+export interface Setting {
+  id: string;
+  value: string;
 }
 
 // Prova exige só a matéria; data e hora vazias aparecem em "A completar" (regras.md C3).
@@ -161,5 +197,7 @@ export interface StudyData {
   cardImages: CardImage[];
   vault: VaultRow[];
   secrets: SecretRow[];
+  reviews: Review[];
+  settings: Setting[];
   noteVersions: readonly NoteVersion[];
 }

@@ -5,7 +5,7 @@ import type { Change } from '../core/db/protocol';
 import { fromRow, toRow, type Row } from '../core/db/rows';
 import { SPECS } from '../core/db/specs';
 import { createFixtures } from '../core/study/fixtures';
-import type { StudyData } from '../core/study/types';
+import type { Card, StudyData } from '../core/study/types';
 import { MIGRATIONS } from './migrationList';
 import {
   applyChanges,
@@ -48,6 +48,8 @@ const empty: StudyData = {
   cardImages: [],
   vault: [],
   secrets: [],
+  reviews: [],
+  settings: [],
   noteVersions: [],
 };
 
@@ -58,7 +60,18 @@ describe('SQL (SQLite em memória)', () => {
     const db = await memoryDb();
     migrate(db, MIGRATIONS);
     migrate(db, MIGRATIONS);
-    expect(schemaVersion(db)).toBe(6);
+    expect(schemaVersion(db)).toBe(7);
+  });
+
+  it('a migração 007 mantém os cartões antigos como novos, com a data', async () => {
+    const db = await memoryDb();
+    migrate(db, MIGRATIONS.slice(0, 6));
+    db.run(
+      "INSERT INTO cards (id, lesson_id, question, answer, due, updated_at) VALUES ('c', 'l', 'q', 'a', '2026-11-07', 'x')",
+    );
+    migrate(db, MIGRATIONS);
+    const card = fromRow<Card>('cards', loadSnapshot(db).cards?.[0] ?? {});
+    expect(card).toMatchObject({ due: '2026-11-07', state: 0, reps: 0, lapses: 0, lastReview: null });
   });
 
   it('ida e volta das nove tabelas e das versões', async () => {

@@ -105,6 +105,31 @@ test('Treino: Espaço vira, número responde, Errei volta para a fila', async ({
   await expect(bloco(page)).toHaveText('treino.resumo');
 });
 
+test('Treino (FSRS): Errei volta na mesma sessão, Fácil tira o cartão', async ({ page }) => {
+  await page.clock.install();
+  await page.reload({ waitUntil: 'load' });
+  await expect(bloco(page)).toHaveText('hub.agenda');
+  const pergunta = page.locator('[data-block="treino.cartao"] [data-pergunta]');
+  await page.keyboard.press('Alt+Digit4');
+  await expect(bloco(page)).toHaveText('treino.resumo');
+  await page.keyboard.press('Enter');
+  const primeira = (await pergunta.textContent()) ?? '';
+  await page.keyboard.press('Space');
+  await expect(page.getByRole('button', { name: /Errei/ })).toContainText('min');
+  await page.keyboard.press('Digit1');
+  await expect(pergunta).not.toHaveText(primeira);
+  await expect(page.getByText(/^0 de/)).toBeVisible();
+  // Passados 2 minutos, o cartão do Errei venceu e passa à frente da fila do dia.
+  await page.clock.fastForward('02:00');
+  await page.keyboard.press('Space');
+  await page.keyboard.press('Digit4');
+  await expect(pergunta).toHaveText(primeira);
+  await page.keyboard.press('Space');
+  await page.keyboard.press('Digit4');
+  await expect(pergunta).not.toHaveText(primeira);
+  await expect(page.getByText(/^2 de/)).toBeVisible();
+});
+
 test('Treino: Personalizado com disciplina e aula só treina os cartões dela', async ({ page }) => {
   await page.keyboard.press('Alt+Digit4');
   await expect(bloco(page)).toHaveText('treino.resumo');

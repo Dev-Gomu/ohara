@@ -1,3 +1,5 @@
+import { sessionQueue } from '../../../core/study/session';
+import { stateCounts } from '../../../core/study/train';
 import { useEffect, useRef, useState } from 'react';
 import { ankiTsv } from '../../../core/study/ankiExport';
 import {
@@ -45,7 +47,7 @@ import styles from './Escolha.module.css';
 const SAVED_KEY = 'treino.filtros';
 
 interface TrainingChoiceProps {
-  onStart: (cardIds: string[]) => void;
+  onStart: (cardIds: string[], scopeIds: string[]) => void;
 }
 
 export function TrainingChoice({ onStart }: TrainingChoiceProps) {
@@ -71,14 +73,19 @@ export function TrainingChoice({ onStart }: TrainingChoiceProps) {
 
   const cards = scopeCards(data, scope);
   const due = dueCards(cards, today);
-  const queue = due.length > 0 ? due : cards;
+  const queue = sessionQueue(cards, today);
   const customCards = scopeCards(data, saved);
   const modeIndex = useSelectedIndex(MODOS, 2);
   const idx = barIndexes(custom);
 
   const clear = () => change(emptyScope());
   const start = () => {
-    if (queue.length > 0) onStart(queue.map((card) => card.id));
+    if (queue.length > 0) {
+      onStart(
+        queue.map((card) => card.id),
+        cards.map((card) => card.id),
+      );
+    }
   };
   // Exporta todos os cartões do recorte (não só os de hoje), prontos para o Anki (B02).
   const exportAnki = () => {
@@ -258,8 +265,9 @@ export function TrainingChoice({ onStart }: TrainingChoiceProps) {
           <Bar
             custom={custom}
             due={due.length}
+            counts={stateCounts(due)}
             total={cards.length}
-            startLabel={startLabel(due.length, cards.length)}
+            startLabel={startLabel(due.length, queue.length)}
             canStart={cards.length > 0}
             onClear={clear}
             onStart={start}

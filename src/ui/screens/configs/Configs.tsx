@@ -87,7 +87,7 @@ export function Configs() {
       key={row.label}
       block={DETAIL}
       index={position}
-      className={row.choice && row.choice.look !== 'curta' ? `${styles.linha} ${styles.amostras}` : styles.linha}
+      className={row.choice && (row.choice.look === 'paleta' || row.choice.look === 'menu') ? `${styles.linha} ${styles.amostras}` : styles.linha}
       choice={row.choice !== undefined}
       onOpen={() => run(row)}
     >

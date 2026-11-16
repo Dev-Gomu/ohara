@@ -1,3 +1,4 @@
+import { newSchedule } from './schedule';
 import { addDays, parseDay } from './dates';
 import type { Card, ClassEvent, Folder, Lesson, Slot, StudyData, Subject } from './types';
 
@@ -148,7 +149,7 @@ function cardsFor(today: string, lessons: readonly Lesson[]): Card[] {
     lessonId: main?.id ?? '',
     question,
     answer,
-    due: today,
+    ...newSchedule(today),
   }));
   const others = extra.flatMap((lesson, index) =>
     Array.from({ length: 4 + index }, (_, number) => ({
@@ -156,7 +157,7 @@ function cardsFor(today: string, lessons: readonly Lesson[]): Card[] {
       lessonId: lesson.id,
       question: `Pergunta ${number + 1} de ${lesson.title}`,
       answer: `Resposta ${number + 1}`,
-      due: addDays(today, number),
+      ...newSchedule(addDays(today, number)),
     })),
   );
   return [...featured, ...others];
@@ -242,6 +243,8 @@ export function createFixtures(today: string): StudyData {
     cardImages: [],
     vault: [],
     secrets: [],
+    reviews: [],
+    settings: [],
     noteVersions: [],
   };
 }
